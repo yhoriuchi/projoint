@@ -56,7 +56,7 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet)
 
   for (i in 1:n_tasks) {
     responses <- responses %>%
-      mutate(task = ifelse(outcome_qnum == outcomes[i], i, task))
+      mutate(task = ifelse(outcome_qnum == .outcomes[i], i, task))
   }
 
   out <- attribute_levels %>%
