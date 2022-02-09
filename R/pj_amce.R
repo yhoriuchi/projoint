@@ -16,7 +16,6 @@
 
 pj_amce <- function(data, formula, id = ~ 0, n_boot = 100, tau = 0.25, ...){
 
-  id <- NULL
   estimate <- estimate_fixed <- NULL
   std.error <- z <- p <- lower <- upper <- NULL
   feature <- level <- NULL
