@@ -11,9 +11,13 @@ pj_amce(data, formula, id = ~0, n_boot = 100, tau = 0.25, ...)
 
 \item{formula}{(Description from the cregg package's amce function) A formula specifying an AMCE model to be estimated. All variables should be factors; all levels across features should be unique. Two-way constraints can be specified with an asterisk (*) between RHS features. The specific constrained level pairs within these features are then detected automatically. Higher-order constraints are not allowed.}
 
+\item{id}{A formula with a single right-hand-side variable indicating the respondent-level identifier}
+
 \item{n_boot}{The number of bootstrapped samples}
 
 \item{tau}{The estimated/assumed swapping error}
+
+\item{...}{Optional arguments to pass to \code{amce()}. For documentation see the \code{cregg} library.}
 }
 \value{
 A data frame of class \dQuote{cj_amce}
