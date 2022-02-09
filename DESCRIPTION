@@ -12,9 +12,7 @@ Imports:
     magrittr, 
     readr,
     tidyr,
-    stats,
-    stringr,
-    survey
+    stringr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
