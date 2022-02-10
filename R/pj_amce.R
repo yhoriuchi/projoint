@@ -16,6 +16,10 @@
 
 pj_amce <- function(data, formula, id = ~ 0, n_boot = 100, tau = 0.25, ...){
 
+  if(tau <0 | tau > 1){
+    stop("tau must be between 0 and 1")  
+  }
+  
   estimate <- estimate_fixed <- NULL
   std.error <- z <- p <- lower <- upper <- NULL
   feature <- level <- NULL
