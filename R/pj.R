@@ -1,12 +1,12 @@
-#' @rdname pj_amce
-#' @title Adjust AMCEs based on our method
-#' @description Adjust AMCEs based on the estimate/assumed measurement error and return a tidy data frame of results
-#'
+#' @rdname pj
+#' @title Adjust AMCEs or MMs based on our method
+#' @description Adjust Average Marginal Component Effects (AMCEs) or Marginal Means (MMs) based on the estimate/assumed measurement error and return a tidy data frame of results
 #' @import dplyr
 #' @import cregg
 #' @param data (Description from the cregg package's amce function) A data frame containing variables specified in \code{formula}. All RHS variables should be factors; the base level for each will be used in estimation and its reported AMCE will be NA (for printing). Optionally, this can instead be an object of class \dQuote{survey.design} returned by \code{\link[survey]{svydesign}}.
 #' @param formula (Description from the cregg package's amce function) A formula specifying an AMCE model to be estimated. All variables should be factors; all levels across features should be unique. Two-way constraints can be specified with an asterisk (*) between RHS features. The specific constrained level pairs within these features are then detected automatically. Higher-order constraints are not allowed.
 #' @param id A formula with a single right-hand-side variable indicating the respondent-level identifier
+#' @param estimand A character string specifying an estimate type. Current options are average marginal component effects (“amce”) or marginal means (“mm”),
 #' @param n_boot The number of bootstrapped samples
 #' @param tau The estimated/assumed swapping error
 #' @param ... Optional arguments to pass to \code{amce()}. For documentation see the \code{cregg} library.
@@ -14,12 +14,13 @@
 #' @export
 #'
 
-pj_amce <- function(data, formula, id = ~ 0, n_boot = 100, tau = 0.25, ...){
+projoint <- function(data, formula, id = ~ 0, estimand = c("amce", "mm"),
+                     n_boot = 100, tau = 0.25, ...){
 
-  if(tau <0 | tau > 1){
-    stop("tau must be between 0 and 1")  
+  if (tau < 0 | tau > 1){
+    stop("tau must be between 0 and 1")
   }
-  
+
   estimate <- estimate_fixed <- NULL
   std.error <- z <- p <- lower <- upper <- NULL
   feature <- level <- NULL
@@ -42,16 +43,37 @@ pj_amce <- function(data, formula, id = ~ 0, n_boot = 100, tau = 0.25, ...){
     # add data
     boot_df <- boot_ids %>% dplyr::left_join(d, by = "ID")
 
+    # Randomly pick a tau from the binomial distribution
+    tau <- stats::rbinom(1, length(ids), tau) / length(ids)
+
     # Run a model
-    boot_out <- cregg::amce(boot_df, formula, id, ...) %>%
+    boot_out <- cregg::cj(boot_df, formula, ~ID, estimate = estimand, ...) %>%
+
       # Suppress the warning message shown when using cregg::amce()
       suppressWarnings() %>%
+
       # Add the number for each bootstrapped sample
       dplyr::mutate(sample = i)
 
-    # Bind the results and fix the estimates
-    out <- dplyr::bind_rows(out, boot_out) %>%
-      dplyr::mutate(estimate_fixed = estimate / (1 - 2 * stats::rbinom(1, length(ids), tau) / length(ids)))
+    # Fix the estimate
+
+    if (estimand == "amce"){
+
+      boot_out_fixed <- boot_out %>%
+        dplyr::mutate(estimate_fixed = estimate / (1 - 2 * tau))
+
+    } else if (estimand == "mm"){
+
+      boot_out_fixed <- boot_out %>%
+        dplyr::mutate(estimate_fixed = (estimate - tau) / (1 - 2 * tau))
+
+    }
+
+    # Bind the results
+    out <- dplyr::bind_rows(
+      out,
+      boot_out_fixed
+    )
 
   }
 
@@ -64,8 +86,20 @@ pj_amce <- function(data, formula, id = ~ 0, n_boot = 100, tau = 0.25, ...){
                      upper = stats::quantile(estimate_fixed, 0.975),
                      .groups = "drop")
 
-  # Return a data frame with "cj_amce" class
-  structure(out_ci, class = c("cj_amce", "data.frame")) %>%
-    return()
+  if (estimand == "amce"){
+
+    # Return a data frame with "cj_amce" class
+    structure(out_ci, class = c("cj_amce", "data.frame")) %>%
+      return()
+
+  } else if (estimand == "mm"){
+
+    # Return a data frame with "cj_mm" class
+    structure(out_ci, class = c("cj_mm", "data.frame")) %>%
+      return()
+  }
+
+
 
 }
+
