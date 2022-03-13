@@ -14,8 +14,8 @@
 #' @export
 #'
 
-projoint <- function(data, formula, id = ~ 0, estimand = c("amce", "mm"),
-                     n_boot = 100, tau = 0.25, ...){
+pj <- function(data, formula, id = ~ 0, estimand = c("amce", "mm"),
+               n_boot = 100, tau = 0.25, ...){
 
   if (tau < 0 | tau > 1){
     stop("tau must be between 0 and 1")
@@ -55,30 +55,31 @@ projoint <- function(data, formula, id = ~ 0, estimand = c("amce", "mm"),
       # Add the number for each bootstrapped sample
       dplyr::mutate(sample = i)
 
-    # Fix the estimate
-
-    if (estimand == "amce"){
-
-      boot_out_fixed <- boot_out %>%
-        dplyr::mutate(estimate_fixed = estimate / (1 - 2 * tau))
-
-    } else if (estimand == "mm"){
-
-      boot_out_fixed <- boot_out %>%
-        dplyr::mutate(estimate_fixed = (estimate - tau) / (1 - 2 * tau))
-
-    }
-
     # Bind the results
+
     out <- dplyr::bind_rows(
       out,
-      boot_out_fixed
+      boot_out
     )
 
   }
 
+  # Fix the estimate
+
+  if (estimand == "amce"){
+
+    out_fixed <- out %>%
+      dplyr::mutate(estimate_fixed = estimate / (1 - 2 * tau))
+
+  } else if (estimand == "mm"){
+
+    out_fixed <- out %>%
+      dplyr::mutate(estimate_fixed = (estimate - tau) / (1 - 2 * tau))
+
+  }
+
   # Calculate the 95% confidence intervals
-  out_ci <- out %>%
+  out_ci <- out_fixed %>%
     dplyr::select(-estimate, -std.error, -z, -p, -lower, -upper) %>%
     dplyr::group_by(feature, level) %>%
     dplyr::summarize(estimate = mean(estimate_fixed),
@@ -98,7 +99,6 @@ projoint <- function(data, formula, id = ~ 0, estimand = c("amce", "mm"),
     structure(out_ci, class = c("cj_mm", "data.frame")) %>%
       return()
   }
-
 
 
 }
