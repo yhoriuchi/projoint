@@ -66,7 +66,9 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet, .flipped = TRU
   }
 
   response_cleaned <- responses %>%
-    mutate(selected = str_extract(response, "\\d") %>% as.integer()) %>%
+    mutate(selected = str_extract(response, ".^"),
+           selected = case_when(selected %in% c("1", "A") ~ 1,
+                                selected %in% c("2", "B") ~ 2)) %>%
     select(-response, -outcome_qnum)
 
 
