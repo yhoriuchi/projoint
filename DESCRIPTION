@@ -11,6 +11,7 @@ Imports:
     dplyr, 
     magrittr, 
     readr,
+    rlang,
     tidyr,
     stringr
 License: MIT + file LICENSE
