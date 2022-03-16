@@ -50,7 +50,8 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet, .flipped = TRU
            level = level_name) %>%
     filter(task <= n_tasks) %>%
     group_by(id, task) %>%
-    pivot_wider(names_from = "attribute", values_from = "level")
+    pivot_wider(names_from = "attribute", values_from = "level") %>%
+    ungroup()
 
   attribute_levels_repeated <- attribute_levels %>%
     filter(task == 1)
@@ -91,6 +92,8 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet, .flipped = TRU
 
   # Merge and return
   left_join(out1, out2) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate(id = as.character(id)) %>%
     return()
 
 }
