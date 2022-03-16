@@ -4,7 +4,7 @@
 \alias{reshape_conjoint}
 \title{Reshape data for conjoint analysis}
 \usage{
-reshape_conjoint(.data, .idvar, .outcomes, .alphabet)
+reshape_conjoint(.data, .idvar, .outcomes, .alphabet, .flipped = TRUE)
 }
 \arguments{
 \item{.data}{A data frame}
@@ -14,6 +14,8 @@ reshape_conjoint(.data, .idvar, .outcomes, .alphabet)
 \item{.outcomes}{A character vector of outcome variables}
 
 \item{.alphabet}{The alphabet used for conjoint attribute-levels}
+
+\item{.flipped}{TRUE if the profiles of the repeated task are flipped (recommended)}
 }
 \value{
 A data frame (long format) ready for conjoint analysis

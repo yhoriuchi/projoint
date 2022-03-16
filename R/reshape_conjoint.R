@@ -9,14 +9,17 @@
 #' @param .idvar A variable name for the respondent identifier
 #' @param .outcomes A character vector of outcome variables
 #' @param .alphabet The alphabet used for conjoint attribute-levels
+#' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
 #' @return A data frame (long format) ready for conjoint analysis
 #' @export
 #'
-reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet)
+
+reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet, .flipped = TRUE)
 {
 
   . <- code <- x <- name <- attribute <- attribute_name <- NULL
   level_name <- task <- outcome_qnum <- outcomes <- NULL
+  profile <- response <- selected <- selected_repeated <-  NULL
 
   idvar_quo <- enquo(.idvar)
   n_tasks <- length(.outcomes)
@@ -49,6 +52,9 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet)
     group_by(id, task) %>%
     pivot_wider(names_from = "attribute", values_from = "level")
 
+  attribute_levels_repeated <- attribute_levels %>%
+    filter(task == 1)
+
   responses <- df %>%
     select(id, all_of(.outcomes)) %>%
     pivot_longer(names_to = "outcome_qnum", values_to = "response", cols = 2:ncol(.)) %>%
@@ -59,7 +65,30 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet)
       mutate(task = ifelse(outcome_qnum == .outcomes[i], i, task))
   }
 
-  out <- attribute_levels %>%
-    left_join(responses, by = c("id", "task"))
+  response_cleaned <- responses %>%
+    mutate(selected = str_extract(response, "\\d") %>% as.integer()) %>%
+    select(-response, -outcome_qnum)
+
+
+  # Tasks to estimate AMCEs/MMs
+  out1 <- attribute_levels %>%
+    left_join(response_cleaned %>%
+                filter(task != n_tasks), by = c("id", "task")) %>%
+    mutate(selected = ifelse(profile == selected, 1, 0))
+
+  # Tasks to estimate ICR
+  out2 <- attribute_levels_repeated %>%
+    left_join(response_cleaned %>%
+                filter(task == n_tasks) %>%
+                mutate(task = 1), by = c("id", "task")) %>%
+    mutate(selected = case_when(profile == selected & .flipped == FALSE ~ 1,
+                                profile == selected & .flipped == TRUE  ~ 0,
+                                profile != selected & .flipped == FALSE ~ 0,
+                                profile != selected & .flipped == TRUE  ~ 1)) %>%
+    rename(selected_repeated = selected)
+
+  # Merge and return
+  left_join(out1, out2) %>%
+    return()
 
 }
