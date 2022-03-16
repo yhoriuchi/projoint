@@ -94,6 +94,8 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet, .flipped = TRU
   left_join(out1, out2) %>%
     mutate_if(is.character, as.factor) %>%
     mutate(id = as.character(id)) %>%
+    filter(!is.na(selected) & !is.na(selected_repeated)) %>%
+    as.data.frame() %>%
     return()
 
 }
