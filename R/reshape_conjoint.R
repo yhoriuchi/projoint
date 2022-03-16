@@ -76,25 +76,32 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet, .flipped = TRU
   # Tasks to estimate AMCEs/MMs
   out1 <- attribute_levels %>%
     left_join(response_cleaned %>%
-                filter(task != n_tasks), by = c("id", "task")) %>%
+                filter(task != n_tasks),
+              by = c("id", "task")) %>%
     mutate(selected = ifelse(profile == selected, 1, 0))
 
   # Tasks to estimate ICR
   out2 <- attribute_levels_repeated %>%
     left_join(response_cleaned %>%
                 filter(task == n_tasks) %>%
-                mutate(task = 1), by = c("id", "task")) %>%
+                mutate(task = 1),
+              by = c("id", "task")) %>%
     mutate(selected = case_when(profile == selected & .flipped == FALSE ~ 1,
                                 profile == selected & .flipped == TRUE  ~ 0,
                                 profile != selected & .flipped == FALSE ~ 0,
                                 profile != selected & .flipped == TRUE  ~ 1)) %>%
     rename(selected_repeated = selected)
 
+  # Attribute_names
+  attribute_names <- temp1 %>%
+    count(attribute_name) %>%
+    pull(attribute_name)
+
   # Merge and return
-  left_join(out1, out2) %>%
+  left_join(out1, out2,
+            by = c(c("id", "task", "profile"), attribute_names)) %>%
     mutate_if(is.character, as.factor) %>%
     mutate(id = as.character(id)) %>%
-    filter(!is.na(selected) & !is.na(selected_repeated)) %>%
     as.data.frame() %>%
     return()
 
