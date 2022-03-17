@@ -1,5 +1,5 @@
 #' @rdname pj
-#' @title Adjust AMCEs or MMs based on our method
+#' @title Adjust AMCEs or MMs to account for measurement error
 #' @description Adjust Average Marginal Component Effects (AMCEs) or Marginal Means (MMs) based on the estimate/assumed measurement error and return a tidy data frame of results
 #' @import dplyr
 #' @import cregg
@@ -7,8 +7,8 @@
 #' @param formula (Description from the cregg package's amce function) A formula specifying an AMCE model to be estimated. All variables should be factors; all levels across features should be unique. Two-way constraints can be specified with an asterisk (*) between RHS features. The specific constrained level pairs within these features are then detected automatically. Higher-order constraints are not allowed.
 #' @param id A formula with a single right-hand-side variable indicating the respondent-level identifier
 #' @param estimand A character string specifying an estimate type. Current options are average marginal component effects (“amce”) or marginal means (“mm”),
-#' @param n_boot The number of bootstrapped samples
-#' @param tau The estimated/assumed swapping error
+#' @param n_boot The number of bootstrapped samples. Defaults to 100.
+#' @param tau The estimated/assumed swapping error. Defaults to 0.25.
 #' @param ... Optional arguments to pass to \code{amce()}. For documentation see the \code{cregg} library.
 #' @return A data frame of class \dQuote{cj_amce}
 #' @export
