@@ -4,12 +4,10 @@
 \alias{read_Qualtrics}
 \title{Read the Qualtrics data}
 \usage{
-read_Qualtrics(.file, .folder = "data/")
+read_Qualtrics(.file)
 }
 \arguments{
 \item{.file}{The name of a Qualtrics data file (in CSV)}
-
-\item{.folder}{The name of a sub-folder relative to the working directory}
 }
 \value{
 A data frame (wide format) with column names

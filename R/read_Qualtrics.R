@@ -4,18 +4,16 @@
 #'
 #' @import readr
 #' @param .file The name of a Qualtrics data file (in CSV)
-#' @param .folder The name of a sub-folder relative to the working directory
 #' @return A data frame (wide format) with column names
 #' @export
 #'
-read_Qualtrics <- function(.file, .folder = "data/"){
+read_Qualtrics <- function(.file){
 
-  colnames <- paste0(.folder, "/", .file) %>%
+  colnames <- .file %>%
     read_csv() %>%
     names()
 
-  qualtrics <- read_csv(paste0(.folder, "/", .file), skip = 2)
-  colnames(qualtrics) <- colnames
+  qualtrics <- read_csv(.file, skip = 2)
   colnames(qualtrics) <- colnames
 
   return(qualtrics)
