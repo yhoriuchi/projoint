@@ -5,7 +5,6 @@
 #' @import dplyr
 #' @param .data A data frame (ashaped for conjoint analysis)
 #' @return A numeric
-#' @export
 #'
 
 calculate_tau <- function(.data){

@@ -1,12 +1,11 @@
 #' Check the distribution of levels for each attribute
 #'
-#' After generating test responses, it is worth checking the distribution of levels for each attribute using this function.
+#' After generating test responses, it is worth checking the distribution of levels for each attribute using this function to ensure balanced randomization.
 #'
 #' @import dplyr
 #' @import rlang
-#' @param .data A data frame specifically for conjiont analysis (use reshape_conjiont())
+#' @param .data A data frame specifically for conjoint analysis (use reshape_conjoint())
 #' @return A data frame
-#' @export
 #'
 
 check_distribution <- function(.data){
