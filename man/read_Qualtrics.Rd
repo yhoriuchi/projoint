@@ -2,16 +2,17 @@
 % Please edit documentation in R/read_Qualtrics.R
 \name{read_Qualtrics}
 \alias{read_Qualtrics}
-\title{Read the Qualtrics data}
+\title{Reads and lightly processes a CSV file downloaded from Qualtrics}
 \usage{
 read_Qualtrics(.file)
 }
 \arguments{
-\item{.file}{The name of a Qualtrics data file (in CSV)}
+\item{.file}{The file name containing Qualtrics responses, preferably ending in ".csv"}
 }
 \value{
-A data frame (wide format) with column names
+A data frame containing Qualtrics responses.
 }
 \description{
-Read the CSV file downloaded from Qualtrics
+This function reads a Qualtrics-produced CSV file and removes the first two rows, preserving headers.
+The output data frame is in wide format; to convert to long format, see reshape_conjoint()
 }

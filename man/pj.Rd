@@ -2,7 +2,7 @@
 % Please edit documentation in R/pj.R
 \name{pj}
 \alias{pj}
-\title{Adjust AMCEs or MMs based on our method}
+\title{Adjust AMCEs or MMs to account for measurement error}
 \usage{
 pj(
   data,
@@ -23,9 +23,9 @@ pj(
 
 \item{estimand}{A character string specifying an estimate type. Current options are average marginal component effects (“amce”) or marginal means (“mm”),}
 
-\item{n_boot}{The number of bootstrapped samples}
+\item{n_boot}{The number of bootstrapped samples. Defaults to 100.}
 
-\item{tau}{The estimated/assumed swapping error}
+\item{tau}{The estimated/assumed swapping error. Defaults to 0.25.}
 
 \item{...}{Optional arguments to pass to \code{amce()}. For documentation see the \code{cregg} library.}
 }

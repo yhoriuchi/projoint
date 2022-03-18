@@ -7,11 +7,11 @@
 check_distribution(.data)
 }
 \arguments{
-\item{.data}{A data frame specifically for conjiont analysis (use reshape_conjiont())}
+\item{.data}{A data frame specifically for conjoint analysis (use reshape_conjoint())}
 }
 \value{
 A data frame
 }
 \description{
-After generating test responses, it is worth checking the distribution of levels for each attribute using this function.
+After generating test responses, it is worth checking the distribution of levels for each attribute using this function to ensure balanced randomization.
 }

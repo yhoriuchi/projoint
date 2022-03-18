@@ -2,24 +2,24 @@
 % Please edit documentation in R/reshape_conjoint.R
 \name{reshape_conjoint}
 \alias{reshape_conjoint}
-\title{Reshape data for conjoint analysis}
+\title{Reshapes survey response data for conjoint analysis}
 \usage{
-reshape_conjoint(.data, .idvar, .outcomes, .alphabet, .flipped = TRUE)
+reshape_conjoint(.data, .idvar, .outcomes, .alphabet = "F", .flipped = TRUE)
 }
 \arguments{
-\item{.data}{A data frame}
+\item{.data}{A data frame, preferably from read_Qualtrics()}
 
-\item{.idvar}{A variable name for the respondent identifier}
+\item{.idvar}{A character identifying the column name containing respondent IDs}
 
-\item{.outcomes}{A character vector of outcome variables}
+\item{.outcomes}{A character vector identifying the column names that contain outcomes}
 
-\item{.alphabet}{The alphabet used for conjoint attribute-levels}
+\item{.alphabet}{The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".}
 
 \item{.flipped}{TRUE if the profiles of the repeated task are flipped (recommended)}
 }
 \value{
-A data frame (long format) ready for conjoint analysis
+A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis. See pj().
 }
 \description{
-Reshape the wide-format data to the long-format data
+This function takes a data frame, preferably from read_Qualtrics(), and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
 }
