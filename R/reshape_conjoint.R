@@ -1,16 +1,16 @@
 #' Reshapes survey response data for conjoint analysis
 #'
-#' This function takes a data frame, preferably from read_Qualtrics(), and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
+#' This function takes a data frame, preferably from \dQuote{read_Qualtrics()}, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
 #'
 #' @import dplyr
 #' @import tidyr
 #' @import stringr
-#' @param .data A data frame, preferably from read_Qualtrics()
+#' @param .data A data frame, preferably from \dQuote{read_Qualtrics()}
 #' @param .idvar A character identifying the column name containing respondent IDs
 #' @param .outcomes A character vector identifying the column names that contain outcomes
 #' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F". 
 #' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
-#' @return A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis. See pj().
+#' @return A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis. See \dQuote{pj}.
 #' @export
 #'
 
