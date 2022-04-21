@@ -1,8 +1,8 @@
 read_Qualtrics <- function(.file){
 
-  # if(!exists(.file)){
-  #   stop("Error: The specified file cannot be found.")
-  # }
+  if(!file.exists(.file)){
+    stop("Error: The specified file cannot be found.")
+  }
 
   colnames <- .file %>%
     readr::read_csv() %>%
