@@ -5,10 +5,10 @@ read_Qualtrics <- function(.file){
   }
 
   colnames <- .file %>%
-    read_csv() %>%
+    readr::read_csv() %>%
     names()
 
-  qualtrics <- read_csv(.file, skip = 2)
+  qualtrics <- readr::read_csv(.file, skip = 2)
   colnames(qualtrics) <- colnames
 
   return(qualtrics)

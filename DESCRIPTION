@@ -17,4 +17,6 @@ Imports:
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.1.2
-
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
