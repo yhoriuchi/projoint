@@ -4,7 +4,7 @@
 \alias{reshape_conjoint}
 \title{Reshapes survey response data for conjoint analysis}
 \usage{
-reshape_conjoint(.data, .idvar, .outcomes, .alphabet = "F")
+reshape_conjoint(.data, .idvar, .outcomes, .alphabet = "F", .flipped = TRUE)
 }
 \arguments{
 \item{.data}{A data frame, preferably from \dQuote{read_Qualtrics()}}
@@ -14,6 +14,8 @@ reshape_conjoint(.data, .idvar, .outcomes, .alphabet = "F")
 \item{.outcomes}{A character vector identifying the column names that contain outcomes}
 
 \item{.alphabet}{The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".}
+
+\item{.flipped}{TRUE if the profiles of the repeated task are flipped (recommended)}
 }
 \value{
 A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis. See \dQuote{pj}.

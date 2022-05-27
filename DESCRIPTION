@@ -1,15 +1,17 @@
-Package: cjdata
+Package: projoint
 Type: Package
-Title: A simple package to read and reshape data for conjoint analysis
+Title: Measure and Fix the Measurement Error Bias in Conjiont Analysis
 Version: 0.1.0
-Author: Yusaku Horiuchi
+Author: Yusaku Horiuchi, Gary King, Aaron, Aaron Kaufman
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
-Description: This is a small package to read a CSV file from Qualtrics,
-    and reshape it for conjoint anlaysis. The current version only 
-    supports analysis for a binary-choice outcome.
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
 Imports:
-    readr,
+    cregg,
     dplyr, 
+    magrittr, 
+    readr,
+    rlang,
     tidyr,
     stringr
 License: MIT + file LICENSE
