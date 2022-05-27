@@ -1,6 +1,5 @@
-# projoint
-A package to avoid measurement error bias in conjoint analysis
-
+# cjdata
+A very small package to read a CSV file from Qualtrics and reshape the data for conjoint analysis. The current version only supports analysis for a binary-choice outcome. Users should wrangle respondent-level separately and merge them by each respondent's id. 
 
 
 ### Notes:
