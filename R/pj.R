@@ -7,6 +7,7 @@
 #' @param formula (Description from the cregg package's amce function) A formula specifying an AMCE model to be estimated. All variables should be factors; all levels across features should be unique. Two-way constraints can be specified with an asterisk (*) between RHS features. The specific constrained level pairs within these features are then detected automatically. Higher-order constraints are not allowed.
 #' @param id A formula with a single right-hand-side variable indicating the respondent-level identifier
 #' @param estimand A character string specifying an estimate type. Current options are average marginal component effects (“amce”) or marginal means (“mm”),
+#' @param by A formula with a single right-hand-side variable indicating the variable by which to estimate subgroup differences
 #' @param n_boot The number of bootstrapped samples. Defaults to 100.
 #' @param tau The estimated/assumed swapping error. Defaults to 0.25.
 #' @param ... Optional arguments to pass to \code{amce()}. For documentation see the \code{cregg} library.
@@ -14,7 +15,7 @@
 #' @export
 #'
 
-pj <- function(data, formula, id = ~ 0, estimand = c("amce", "mm"),
+pj <- function(data, formula, id = ~ 0, estimand = c("amce", "mm"), by = NULL,
                n_boot = 100, tau = 0.25, ...){
 
   if (tau < 0 | tau > 1){
@@ -47,7 +48,7 @@ pj <- function(data, formula, id = ~ 0, estimand = c("amce", "mm"),
     tau <- stats::rbinom(1, length(ids), tau) / length(ids)
 
     # Run a model
-    boot_out <- cregg::cj(boot_df, formula, ~ID, estimate = estimand, ...) %>%
+    boot_out <- cregg::cj(boot_df, formula, ~ID, estimate = estimand, by = by, ...) %>%
 
       # Suppress the warning message shown when using cregg::amce()
       suppressWarnings() %>%
