@@ -2,36 +2,16 @@
 % Please edit documentation in R/pj.R
 \name{pj}
 \alias{pj}
-\title{Adjust AMCEs or MMs to account for measurement error}
+\title{Calculates the intra-respondent reliability (IRR), average marginal component effect (AMCE), marginal mean (MM), and correcte AMCEs and MMs for a given conjoint data set.}
 \usage{
-pj(
-  data,
-  formula,
-  id = ~0,
-  estimand = c("amce", "mm"),
-  n_boot = 100,
-  tau = 0.25,
-  ...
-)
+pj(.data)
 }
 \arguments{
-\item{data}{(Description from the cregg package's amce function) A data frame containing variables specified in \code{formula}. All RHS variables should be factors; the base level for each will be used in estimation and its reported AMCE will be NA (for printing). Optionally, this can instead be an object of class \dQuote{survey.design} returned by \code{\link[survey]{svydesign}}.}
-
-\item{formula}{(Description from the cregg package's amce function) A formula specifying an AMCE model to be estimated. All variables should be factors; all levels across features should be unique. Two-way constraints can be specified with an asterisk (*) between RHS features. The specific constrained level pairs within these features are then detected automatically. Higher-order constraints are not allowed.}
-
-\item{id}{A formula with a single right-hand-side variable indicating the respondent-level identifier}
-
-\item{estimand}{A character string specifying an estimate type. Current options are average marginal component effects (“amce”) or marginal means (“mm”),}
-
-\item{n_boot}{The number of bootstrapped samples. Defaults to 100.}
-
-\item{tau}{The estimated/assumed swapping error. Defaults to 0.25.}
-
-\item{...}{Optional arguments to pass to \code{amce()}. For documentation see the \code{cregg} library.}
+\item{.data}{A conjoint data set.}
 }
 \value{
-A data frame of class \dQuote{cj_amce}
+A summarized data set describing the results of a conjoint analysis, corrected for IRR measurement error.
 }
 \description{
-Adjust Average Marginal Component Effects (AMCEs) or Marginal Means (MMs) based on the estimate/assumed measurement error and return a tidy data frame of results
+Calculates the intra-respondent reliability (IRR), average marginal component effect (AMCE), marginal mean (MM), and correcte AMCEs and MMs for a given conjoint data set.
 }

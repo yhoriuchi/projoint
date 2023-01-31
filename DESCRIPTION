@@ -1,22 +1,21 @@
 Package: projoint
 Type: Package
-Title: Measure and Fix the Measurement Error Bias in Conjiont Analysis
-Version: 0.1.0
-Author: Yusaku Horiuchi, Gary King, Aaron, Aaron Kaufman
+Title: Measure and Fix the Measurement Error Bias in Conjoint Analysis
+Version: 0.2.0
+Author: Yusaku Horiuchi and Aaron Kaufman
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Analyzes data sets generated from conjoint experiments, correcting for measurement error.
 Imports:
-    cregg,
+    purrr,
     dplyr, 
-    magrittr, 
+    stats, 
     readr,
     rlang,
     tidyr,
     stringr
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

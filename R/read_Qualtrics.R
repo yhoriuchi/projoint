@@ -1,3 +1,10 @@
+#' Reads and reformats a Qualtrics csv.
+#'
+#' @param .file A filename corresponding to a csv downloaded from Qualtrics.
+#' @return A data frame
+
+
+
 read_Qualtrics <- function(.file){
 
   if(!file.exists(.file)){
@@ -5,10 +12,10 @@ read_Qualtrics <- function(.file){
   }
 
   colnames <- .file %>%
-    readr::read_csv() %>%
+    readr::read_csv(show_col_types = FALSE) %>%
     names()
 
-  qualtrics <- readr::read_csv(.file, skip = 2)
+  qualtrics <- readr::read_csv(.file, skip = 2, show_col_types = FALSE)
   colnames(qualtrics) <- colnames
 
   return(qualtrics)

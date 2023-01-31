@@ -8,7 +8,7 @@
 #' @param .data A data frame, preferably from \dQuote{read_Qualtrics()}
 #' @param .idvar A character identifying the column name containing respondent IDs
 #' @param .outcomes A character vector identifying the column names that contain outcomes
-#' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F". 
+#' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".
 #' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
 #' @return A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis. See \dQuote{pj}.
 #' @export
@@ -24,7 +24,13 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet = "F", .flipped
   idvar_quo <- enquo(.idvar)
   n_tasks <- length(.outcomes)
 
-  df <- .data %>% mutate(id = !!idvar_quo)
+  # Remove if a conjoint table is empty -------------------------------------
+
+  alphabet11 <- paste0(.alphabet, "-1-1") %>% rlang::sym()
+
+  df <- .data %>%
+    mutate(id = !!idvar_quo) %>%
+    filter(!is.na(!!alphabet11))
 
   temp1 <- df %>%
     select(id, contains(paste0(.alphabet, "-"))) %>%
@@ -42,20 +48,39 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet = "F", .flipped
     select(-x) %>%
     rename(level_name = name)
 
-  attribute_levels <- left_join(temp1, temp2,
-                                by = c("id", "task", "attribute")) %>%
+  attribute_levels_long <- left_join(temp1, temp2,
+                                     by = c("id", "task", "attribute")) %>%
     select(-attribute) %>%
     mutate_at(c("task", "profile"), .funs = as.numeric) %>%
     rename(attribute = attribute_name,
            level = level_name) %>%
-    filter(task <= n_tasks) %>%
+    filter(task <= n_tasks)
+
+  # Make a list of attributes and levels, as well as their IDs
+  labels <- attribute_levels_long %>%
+    arrange(attribute, level) %>%
+    select(attribute, level) %>%
+    distinct() %>%
+    group_by(attribute) %>%
+    mutate(attribute_id = cur_group_id(),
+           level_id = row_number()) %>%
+    ungroup() %>%
+    mutate(attribute_id = str_c("att", attribute_id),
+           level_id = str_c(attribute_id, ":level", level_id))
+
+  attribute_levels_wide <- attribute_levels_long %>%
+    left_join(labels) %>%
+    select(-attribute, -level) %>%
+    rename(attribute = attribute_id,
+           level = level_id) %>%
     group_by(id, task) %>%
     pivot_wider(names_from = "attribute", values_from = "level") %>%
     ungroup()
 
-  attribute_levels_repeated <- attribute_levels %>%
+  attribute_levels_repeated <- attribute_levels_wide %>%
     filter(task == 1)
 
+  # Response variable
   responses <- df %>%
     select(id, all_of(.outcomes)) %>%
     pivot_longer(names_to = "outcome_qnum", values_to = "response", cols = 2:ncol(.)) %>%
@@ -72,9 +97,8 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet = "F", .flipped
                                 selected %in% c("2", "B") ~ 2)) %>%
     select(-response, -outcome_qnum)
 
-
   # Tasks to estimate AMCEs/MMs
-  out1 <- attribute_levels %>%
+  out1 <- attribute_levels_wide %>%
     left_join(response_cleaned %>%
                 filter(task != n_tasks),
               by = c("id", "task")) %>%
@@ -92,17 +116,13 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet = "F", .flipped
                                 profile != selected & .flipped == TRUE  ~ 1)) %>%
     rename(selected_repeated = selected)
 
-  # Attribute_names
-  attribute_names <- temp1 %>%
-    count(attribute_name) %>%
-    pull(attribute_name)
-
-  # Merge and return
-  left_join(out1, out2,
-            by = c(c("id", "task", "profile"), attribute_names)) %>%
+  # Merge
+  out_final <- left_join(out1, out2) %>%
     mutate_if(is.character, as.factor) %>%
     mutate(id = as.character(id)) %>%
-    as.data.frame() %>%
-    return()
+    as.data.frame()
+
+  # Return
+  list(labels, out_final)
 
 }

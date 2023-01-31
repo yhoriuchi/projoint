@@ -2,16 +2,16 @@
 % Please edit documentation in R/calculate_tau.R
 \name{calculate_tau}
 \alias{calculate_tau}
-\title{Calculate "tau" (1 - Inter-coder Reliability)}
+\title{Calculate intra-respondent reliability (IRR) from a conjoint data set}
 \usage{
 calculate_tau(.data)
 }
 \arguments{
-\item{.data}{A data frame (ashaped for conjoint analysis)}
+\item{.data}{A conjoint data set.}
 }
 \value{
-A numeric
+A scalar indicating IRR.
 }
 \description{
-Based on the repeated task, calculate the proportion of tasks with different choices
+Calculate intra-respondent reliability (IRR) from a conjoint data set
 }

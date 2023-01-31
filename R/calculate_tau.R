@@ -1,21 +1,24 @@
-#' Calculate "tau" (1 - Inter-coder Reliability)
+#' Calculate intra-respondent reliability (IRR) from a conjoint data set
 #'
-#' Based on the repeated task, calculate the proportion of tasks with different choices
-#'
-#' @import dplyr
-#' @param .data A data frame (ashaped for conjoint analysis)
-#' @return A numeric
-#'
+#' @param .data A conjoint data set.
+#' @return A scalar indicating IRR.
+
+
 
 calculate_tau <- function(.data){
 
-  task <- profile <- selected <- selected_repeated <- same <- NULL
+  profile <- NULL
+  selected <- NULL
+  selected_repeated <- NULL
 
   .data %>%
-    # need only one task/profile to calculate tau
-    filter(task == 1 & profile == 1) %>%
-    mutate(same = selected != selected_repeated) %>%
-    pull(same) %>%
+    # select just one profile of a repeated task
+    dplyr::filter(profile == 1 & !is.na(selected_repeated)) %>%
+    # calculate tau (swapping error)
+    dplyr::mutate(tau = ifelse(selected != selected_repeated, 1, 0)) %>%
+    # save a vector
+    dplyr::pull(tau) %>%
+    # calculate a mean
     mean()
 
 }
