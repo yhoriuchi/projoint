@@ -1,6 +1,7 @@
-# projoint
-A package to avoid measurement error bias in conjoint analysis
+# <img src="man/figures/projoint.png" align="center" width="150" height="150" />
 
+# projoint
+Correcting Measurement Error Bias in Conjoint Survey Experiments
 
 
 ### Notes:
