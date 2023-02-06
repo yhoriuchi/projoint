@@ -1,0 +1,38 @@
+To-Do List for projoint R library
+
+Necessary for First Release
+1) Add input argument to allow tau to be either specified or estimated
+	a) When a specific tau is given, add noise via the SD of the binomial dist (more conservative SEs)
+2) Vignette
+	a) A data set with a repeated task
+	b) A data set that is a Qualtrics csv that has NO repeated task (to show how to specify tau)
+3) Documentation
+	a) Expand upon the roxygen descriptions with the above vignettes
+	b) Note that weights, interactions, hettx coming soon
+4) Unit tests
+	a) Figure out this -- maybe I can hire an RA
+5) pkgdown
+	a) Pages explaining how to set up JS/php using Anton's software
+	b) How to set up a repeated task in Qualtrics
+	c) How to estimate
+	d) Explanation of how some of our code fixes bugs in cj etc
+6) Automatic plotting
+7) Functionality for users to specify attribute orders, level orders, base categories
+   (better than cjoint) Prints out:
+Default,AttributeLevel,NewOrder
+1,att1:level1,
+2,att1:level2,
+
+Then users say dat$NewOrder = c(2,1,3,4,5)
+
+OR
+
+users can save as csv and add in the column manually, then read back into R
+
+
+Future Versions
+1) Adding weights (as per Kosuke's paper) -- do we have a data set with weights we can test with?
+	a) Read Kosuke & Naoki's paper again and find the data he uses
+	b) https://imai.fas.harvard.edu/research/conjoint.html
+2) Interaction effects
+3) Heterogeneous effects?
