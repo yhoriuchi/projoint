@@ -1,16 +1,23 @@
 #' Calculates the intra-respondent reliability (IRR), average marginal component effect (AMCE), marginal mean (MM), and correcte AMCEs and MMs for a given conjoint data set.
 #'
 #' @param .data A conjoint data set.
+#' @param .tau An optional numeric argument allowing the researcher to specify their own value of \texttt{tau}
 #' @return A summarized data set describing the results of a conjoint analysis, corrected for IRR measurement error.
 
 
 
-pj <- function(.data){
+pj <- function(.data, .tau = NULL){
   
   att_level <- NULL
-  
-  .tau <- calculate_tau(.data)
-  
+
+  if(is.NULL(.tau)){  
+    .tau <- calculate_tau(.data)
+  }else if(!is.NULL(.tau)){
+    if(.tau >= 1 | .tau <= .5){
+      stop(".tau must be between 0.5 and 1")
+    }
+  }
+
   mm_estimates <- calculate_mm(.data) %>% 
     tidyr::separate(att_level, sep = ":", into = c("attribute", "level"))
   

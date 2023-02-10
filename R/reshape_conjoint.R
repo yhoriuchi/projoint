@@ -5,6 +5,7 @@
 #' @import dplyr
 #' @import tidyr
 #' @import stringr
+#' @import rlang
 #' @param .data A data frame, preferably from \dQuote{read_Qualtrics()}
 #' @param .idvar A character identifying the column name containing respondent IDs
 #' @param .outcomes A character vector identifying the column names that contain outcomes
@@ -12,7 +13,14 @@
 #' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
 #' @return A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis. See \dQuote{pj}.
 #' @export
-#'
+#' @examples
+#' library(projoint)
+#' 
+#' data("exampleData1")
+#' head(exampleData1)
+#' reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
+#'                                  .outcomes = c("Q4.1", "Q5.1", "Q6.1", "Q7.1", "Q8.1","Q9.1"),
+#'                                  .alphabet ="A")
 
 reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet = "F", .flipped = TRUE)
 {
@@ -21,7 +29,7 @@ reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet = "F", .flipped
   level_name <- task <- outcome_qnum <- outcomes <- NULL
   profile <- response <- selected <- selected_repeated <-  NULL
 
-  idvar_quo <- enquo(.idvar)
+  idvar_quo <- rlang::enquo(.idvar)
   n_tasks <- length(.outcomes)
 
   # Remove if a conjoint table is empty -------------------------------------

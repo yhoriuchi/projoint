@@ -14,6 +14,33 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+While our primary recommendation is that researchers conducting a conjoint survey with $n$ tasks include a task $n+1$ that duplicates their first task in order to measure intra-respondent reliability $\tau$, researchers who wish to re-analyze their results from a survey without a repeated task may choose to assume our empirically-estimated $\tau$ instead.
+
+First read the data and inspect it:
+
 ```{r setup}
 library(projoint)
+
+data("exampleData2")
+head(exampleData2)
+
+```
+
+This data frame is the result of a raw data set processed with the \texttt{read_Qualtrics} function. Next we reshape it by specifying the variable indicating respondent IDs and the variables containing outcomes. The \texttt{.alphabet} argument specifies the letter indicating attributes and levels, which defaults to \texttt{F} if using Anton Strezhnev's tool for designing conjoint surveys in Qualtrics. 
+
+```{r reshape}
+reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
+                                 .outcomes = c("Q4.1", "Q5.1", "Q6.1", "Q7.1", "Q8.1", 
+                                               "Q9.1"),
+                                 .alphabet ="A")
+
+```
+
+Next we use this reshaped data set to estimate marginal means (MMs):
+
+```{r estimate}
+results = pj(reshaped_data, .tau = 0.75)
+
+
 ```
