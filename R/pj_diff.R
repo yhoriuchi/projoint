@@ -2,12 +2,13 @@
 #'
 #' @param .data A conjoint data set.
 #' @param .diff A dichotomous variable to calculate difference IRR, AMCEs, and MMs across.
+#' @param .tau An optional numeric argument allowing the researcher to specify their own value of \texttt{tau}
 #' @return A summarized data set describing the results of a conjoint analysis subgroup comparison, corrected for IRR measurement error.
 
 
 
 # In the current version, .group_by must be a dichotomous variable with {1, 2}
-pj_diff <- function(.data, .diff){
+pj_diff <- function(.data, .diff, .tau = NULL){
   
   data <- .data %>% 
     rename("group_by_var" = !!rlang::sym(.diff)) 
@@ -15,8 +16,20 @@ pj_diff <- function(.data, .diff){
   group1 <- data %>% filter(group_by_var == 1 & !is.na(group_by_var))
   group2 <- data %>% filter(group_by_var == 2 & !is.na(group_by_var))
   
-  out1 <- pj(group1)
-  out2 <- pj(group2)
+
+  if(is.NULL(.tau)){
+    out1 <- pj(group1)
+    out2 <- pj(group2)
+  }else if(is.numeric(.tau)){
+    if(.tau < 1 | .tau > .5){
+      out1 <- pj(group1, .tau = .tau)
+      out2 <- pj(group2, .tau = .tau))
+    }else{
+      stop("tau must be between 0.5 and 1, not inclusive")
+    }
+  }else{
+    stop("tau must be numeric between 0.5 and 1, not inclusive")
+  }
   
   names(out1) <- str_c("group1:", names(out1))
   names(out2) <- str_c("group2:", names(out2))

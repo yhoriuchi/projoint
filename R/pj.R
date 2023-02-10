@@ -14,7 +14,7 @@ pj <- function(.data, .tau = NULL){
     .tau <- calculate_tau(.data)
   }else if(!is.NULL(.tau)){
     if(.tau >= 1 | .tau <= .5){
-      stop(".tau must be between 0.5 and 1")
+      stop(".tau must be between 0.5 and 1, not inclusive")
     }
   }
 
