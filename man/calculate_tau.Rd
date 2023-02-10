@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_tau.R
 \name{calculate_tau}
 \alias{calculate_tau}
-\title{Calculate intra-respondent reliability (IRR) from a conjoint data set}
+\title{Calculate intra-respondent reliability (IRR) from a conjoint data set. This is an internal function.}
 \usage{
 calculate_tau(.data)
 }
@@ -13,5 +13,5 @@ calculate_tau(.data)
 A scalar indicating IRR.
 }
 \description{
-Calculate intra-respondent reliability (IRR) from a conjoint data set
+Calculate intra-respondent reliability (IRR) from a conjoint data set. This is an internal function.
 }

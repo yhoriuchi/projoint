@@ -4,16 +4,29 @@
 \alias{pj_diff}
 \title{Calculates the intra-respondent reliability (IRR), average marginal component effect (AMCE), marginal mean (MM), and correcte AMCEs and MMs for a given conjoint data set specified across a given subgroup.}
 \usage{
-pj_diff(.data, .diff)
+pj_diff(.data, .diff, .tau = NULL)
 }
 \arguments{
 \item{.data}{A conjoint data set.}
 
 \item{.diff}{A dichotomous variable to calculate difference IRR, AMCEs, and MMs across.}
+
+\item{.tau}{An optional numeric argument allowing the researcher to specify their own value of \texttt{tau}}
 }
 \value{
 A summarized data set describing the results of a conjoint analysis subgroup comparison, corrected for IRR measurement error.
 }
 \description{
 Calculates the intra-respondent reliability (IRR), average marginal component effect (AMCE), marginal mean (MM), and correcte AMCEs and MMs for a given conjoint data set specified across a given subgroup.
+}
+\examples{
+library(projoint)
+
+data("exampleData1")
+head(exampleData1)
+reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
+                                 .outcomes = c("Q4.1", "Q5.1", "Q6.1", "Q7.1", "Q8.1","Q9.1"),
+                                 .alphabet ="A")
+reshaped_data$age2 = cut(reshaped_data$age, 2) # Dichotomize age
+results = pj_diff(reshaped_data, .diff = "age2")
 }

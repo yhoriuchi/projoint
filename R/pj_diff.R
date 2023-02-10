@@ -34,7 +34,7 @@ pj_diff <- function(.data, .diff, .tau = NULL){
   }else if(is.numeric(.tau)){
     if(.tau < 1 | .tau > .5){
       out1 <- pj(group1, .tau = .tau)
-      out2 <- pj(group2, .tau = .tau))
+      out2 <- pj(group2, .tau = .tau)
     }else{
       stop("tau must be between 0.5 and 1, not inclusive")
     }

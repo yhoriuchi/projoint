@@ -23,3 +23,12 @@ A conjoint task-level data frame (in other words, in long format) ready for conj
 \description{
 This function takes a data frame, preferably from \dQuote{read_Qualtrics()}, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
 }
+\examples{
+library(projoint)
+
+data("exampleData1")
+head(exampleData1)
+reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
+                                 .outcomes = c("Q4.1", "Q5.1", "Q6.1", "Q7.1", "Q8.1","Q9.1"),
+                                 .alphabet ="A")
+}
