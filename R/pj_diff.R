@@ -4,6 +4,17 @@
 #' @param .diff A dichotomous variable to calculate difference IRR, AMCEs, and MMs across.
 #' @param .tau An optional numeric argument allowing the researcher to specify their own value of \texttt{tau}
 #' @return A summarized data set describing the results of a conjoint analysis subgroup comparison, corrected for IRR measurement error.
+#' @export
+#' @examples
+#' library(projoint)
+#' 
+#' data("exampleData1")
+#' head(exampleData1)
+#' reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
+#'                                  .outcomes = c("Q4.1", "Q5.1", "Q6.1", "Q7.1", "Q8.1","Q9.1"),
+#'                                  .alphabet ="A")
+#' reshaped_data$age2 = cut(reshaped_data$age, 2) # Dichotomize age
+#' results = pj_diff(reshaped_data, .diff = "age2")
 
 
 

@@ -1,11 +1,11 @@
 To-Do List for projoint R library
 
 Necessary for First Release
-1) Add input argument to allow tau to be either specified or estimated
+1) Add input argument to allow tau to be either specified or estimated (DONE)
 	a) When a specific tau is given, add noise via the SD of the binomial dist (more conservative SEs)
 2) Vignette
-	a) A data set with a repeated task
-	b) A data set that is a Qualtrics csv that has NO repeated task (to show how to specify tau)
+	a) A data set with a repeated task (DONE)
+	b) A data set that is a Qualtrics csv that has NO repeated task (to show how to specify tau) (DONE)
 3) Documentation
 	a) Expand upon the roxygen descriptions with the above vignettes
 	b) Note that weights, interactions, hettx coming soon

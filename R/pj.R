@@ -3,6 +3,25 @@
 #' @param .data A conjoint data set.
 #' @param .tau An optional numeric argument allowing the researcher to specify their own value of \texttt{tau}
 #' @return A summarized data set describing the results of a conjoint analysis, corrected for IRR measurement error.
+#' @export
+#' @examples
+#' library(projoint)
+#' 
+#' data("exampleData1")
+#' head(exampleData1)
+#' reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
+#'                                  .outcomes = c("Q4.1", "Q5.1", "Q6.1", "Q7.1", "Q8.1","Q9.1"),
+#'                                  .alphabet ="A")
+#' results = pj(reshaped_data)
+#'
+#' library(projoint)
+#' 
+#' data("exampleData2")
+#' head(exampleData2)
+#' reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
+#'                                  .outcomes = c("Q4.1", "Q5.1", "Q6.1", "Q7.1", "Q8.1","Q9.1"),
+#'                                  .alphabet ="A")
+#' results = pj(reshaped_data, .tau = 0.75)
 
 
 

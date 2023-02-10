@@ -1,4 +1,4 @@
-#' Calculate intra-respondent reliability (IRR) from a conjoint data set
+#' Calculate intra-respondent reliability (IRR) from a conjoint data set. This is an internal function.
 #'
 #' @param .data A conjoint data set.
 #' @return A scalar indicating IRR.

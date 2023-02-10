@@ -1,7 +1,8 @@
 #' Reads and reformats a Qualtrics csv.
 #'
 #' @param .file A filename corresponding to a csv downloaded from Qualtrics.
-#' @return A data frame
+#' @return A data frame suitable for \texttt{reshape_conjoint}
+#' @export
 
 
 
