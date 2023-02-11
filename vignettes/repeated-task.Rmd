@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 Consider a conjoint survey with $n$ tasks. We recommend that researchers include a task $n+1$ that duplicates their first task, but with the order of profiles reversed, in order to measure intra-respondent reliability $\tau$. Our project website specifies how to set up this repeated task in Qualtrics, but this script discusses how to analyze data from such a conjoint study.
 
 First read the data and inspect it:
+
 ```{r setup}
 library(projoint)
 
@@ -32,7 +33,7 @@ reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
                                                "Q9.1"),
                                  .alphabet ="A")
 
-``` 
+```
 
 To estimate marginal means (MMs) from this data set, we use the \texttt{pj} function:
 
