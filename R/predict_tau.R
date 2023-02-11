@@ -1,7 +1,7 @@
 #' Predicts \texttt{tau} from a conjoint data set by extrapolation from similar but non-identical tasks.
 #'
 #' @param .data A conjoint data set.
-#' @return An estimated \texttt{tau} with confidence interval.
+#' @return An tibble with estimated \texttt{tau} with confidence interval.
 #' @export
 #' @examples
 #' library(projoint)
@@ -15,12 +15,13 @@
 #' tau_est = predict_tau(reshaped_data)
 
 
-
 predict_tau <- function(.data){
+  
+  library(tidyverse)
   
   id <- NULL
   task <- profile <- NULL
-  selected <- selecteNULL
+  selected <- selected_repeated <- NULL
   
   # The number of attributes
   
@@ -107,9 +108,17 @@ predict_tau <- function(.data){
   out <- y %>% 
     left_join(x, by = c("id", "t1", "t2"))
   
-  out %>% 
+  # Calculate the percentage agreement by the number of attributes with levels that differ between two tasks
+  pct_agreement <- out %>% 
     group_by(x) %>% 
-    summarise(tidy(lm_robust(y_same ~ 1, data = cur_data(), clusters = id)), .groups = "drop") %>% 
+    summarise(tidy(estimatr::lm_robust(y_same ~ 1, data = cur_data(), clusters = id)), .groups = "drop") %>% 
     mutate(n_attributes = n_attributes)
   
+  # Finally, predict tau
+  pct_agreement %>% 
+    filter(!(estimate %in% c(0, 1))) %>% 
+    summarise(tidy(estimatr::lm_robust(estimate ~ x, data = ., weights = 1/std.error^2), se_type = "classical")) %>% 
+    filter(term == "(Intercept)") %>% 
+    select(estimate, conf.low, conf.high) 
+​
 }
