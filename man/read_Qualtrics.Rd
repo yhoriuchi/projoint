@@ -10,7 +10,7 @@ read_Qualtrics(.file)
 \item{.file}{A file name corresponding to a csv downloaded from Qualtrics.}
 }
 \value{
-A data frame suitable for \texttt{reshape_conjoint}
+A data frame suitable for reshape_conjoint()
 }
 \description{
 Read and re-format a Qualtrics csv (choice text)

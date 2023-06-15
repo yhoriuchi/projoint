@@ -12,7 +12,8 @@ Imports:
     readr,
     rlang,
     tidyr,
-    stringr
+    stringr,
+    tidyselect
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.3

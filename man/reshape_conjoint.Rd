@@ -5,7 +5,7 @@
 \title{Reshapes survey response data for conjoint analysis}
 \usage{
 reshape_conjoint(
-  .data,
+  .dataframe,
   .idvar,
   .outcomes,
   .outcomes_ids = c("1", "2"),
@@ -15,7 +15,7 @@ reshape_conjoint(
 )
 }
 \arguments{
-\item{.data}{A data frame, preferably from \dQuote{read_Qualtrics()}}
+\item{.dataframe}{A data frame, preferably from \dQuote{read_Qualtrics()}}
 
 \item{.idvar}{A character identifying the column name containing respondent IDs}
 
