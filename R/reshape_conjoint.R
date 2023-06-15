@@ -9,128 +9,190 @@
 #' @param .data A data frame, preferably from \dQuote{read_Qualtrics()}
 #' @param .idvar A character identifying the column name containing respondent IDs
 #' @param .outcomes A character vector identifying the column names that contain outcomes
+#' @param .outcomes_ids A vector identifying the profiles of the outcomes -- e.g., c("A", "B")
 #' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".
+#' @param .repeated TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.
 #' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
-#' @return A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis. See \dQuote{pj}.
+#' @return A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis.
 #' @export
 #' @examples
 #' library(projoint)
 #' 
 #' data("exampleData1")
-#' head(exampleData1)
-#' reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
-#'                                  .outcomes = c("Q4.1", "Q5.1", "Q6.1", "Q7.1", "Q8.1","Q9.1"),
-#'                                  .alphabet ="A")
+#' head(df1)
+#'
+#' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+#' outcomes <- c(outcomes, "choice1_repeated_flipped")
+#' reshaped_data = reshaped_data <- reshape_conjoint(
+#'   .data = d1, 
+#'   .idvar = "ResponseId", 
+#'   .outcomes = outcomes,
+#'   .outcomes_ids = c("1", "2"),
+#'   .alphabet = "K", 
+#'   .repeated = TRUE,
+#'   .flipped = TRUE)
 
-reshape_conjoint <- function(.data, .idvar, .outcomes, .alphabet = "F", .flipped = TRUE)
-{
-
-  . <- code <- x <- name <- attribute <- attribute_name <- NULL
-  level_name <- task <- outcome_qnum <- outcomes <- NULL
-  profile <- response <- selected <- selected_repeated <-  NULL
-
-  idvar_quo <- rlang::enquo(.idvar)
-  n_tasks <- length(.outcomes)
-
-  # Remove if a conjoint table is empty -------------------------------------
-
-  alphabet11 <- paste0(.alphabet, "-1-1") %>% rlang::sym()
-
+reshape_conjoint <- function(
+    .data, 
+    .idvar, 
+    .outcomes, # This should include the repeated task if .repeated == TRUE
+    .outcomes_ids = c("1", "2"),
+    .alphabet = "F", 
+    .repeated = FALSE,
+    .flipped = NULL
+){
+  
+  # . <- code <- x <- name <- attribute <- attribute_name <- NULL
+  # level_name <- task <- outcome_qnum <- outcomes <- NULL
+  # profile <- response <- selected <- selected_repeated <-  NULL
+  
+  # Number of tasks (including the repeated task)
+  n_tasks_all <- length(.outcomes)
+  
+  # Number of tasks (excluding the repeated task)
+  if (.repeated == FALSE){
+    n_tasks <- n_tasks_all
+  } else if (.repeated == TRUE){
+    n_tasks <- n_tasks_all - 1
+  } else{
+    print("Error: .repeated must be logical.")
+  }
+  
+  # Check the consistency between .repeated and .flipped
+  if (.repeated == FALSE & !is.null(.flipped)){
+    stop("Error: .flipped should be NULL if .repeated is FALSE.")
+  } 
+  if (.repeated == TRUE & !is.logical(.flipped)){
+    stop("Error: .flipped should be logical if .repeated is TRUE.")
+  }
+  
+  # Initial data cleaning
   df <- .data %>%
-    mutate(id = !!idvar_quo) %>%
-    filter(!is.na(!!alphabet11))
-
-  temp1 <- df %>%
-    select(id, contains(paste0(.alphabet, "-"))) %>%
-    pivot_longer(names_to = "code", values_to = "name", cols = 2:ncol(.)) %>%
-    filter(str_detect(code, paste0(.alphabet, "-\\d+-\\d+$"))) %>%
-    separate(code, into = c("x", "task", "attribute"), sep = "\\-") %>%
-    select(-x) %>%
-    rename(attribute_name = name)
-
-  temp2 <- df %>%
-    select(id, contains(paste0(.alphabet, "-"))) %>%
-    pivot_longer(names_to = "code", values_to = "name", cols = 2:ncol(.)) %>%
-    filter(str_detect(code, paste0(.alphabet, "-\\d+-\\d+-\\d+"))) %>%
-    separate(code, into = c("x", "task", "profile", "attribute"), sep = "\\-") %>%
-    select(-x) %>%
-    rename(level_name = name)
-
+    # Rename the respondent identifier "id"
+    dplyr::rename("id" = all_of(.idvar)) %>%
+    # Sometimes empty conjoint tables are generated due to server problems. 
+    # The following line removes tasks with no information (using "-1-1") 
+    # assuming that all contents are empty if "-1-1" is NA.
+    dplyr::filter(!is.na(!!rlang::sym(paste0(.alphabet, "-1-1"))))
+  
+  # Data frame that only includes ID and conjoint-related variables
+  temp0 <- df %>% 
+    dplyr::select(id, tidyselect::contains(paste0(.alphabet, "-")))
+  
+  # Number of columns in temp0
+  n_col <- ncol(temp0)
+  
+  # c("id", "task", "attribute", "attribute_name")
+  temp1 <- temp0 %>%
+    tidyr::pivot_longer(names_to = "code", values_to = "name", cols = all_of(2:n_col)) %>%
+    dplyr::filter(stringr::str_detect(code, paste0(.alphabet, "-\\d+-\\d+$"))) %>%
+    tidyr::separate(code, into = c("x", "task", "attribute"), sep = "\\-") %>%
+    dplyr::select(-x) %>%
+    rlang::set_names(c("id", "task", "attribute", "attribute_name"))
+  
+  # c("id", "task", "profile", "attribute", "level_name")
+  temp2 <- temp0 %>%
+    tidyr::pivot_longer(names_to = "code", values_to = "name", cols = all_of(2:n_col)) %>%
+    dplyr::filter(stringr::str_detect(code, paste0(.alphabet, "-\\d+-\\d+-\\d+"))) %>%
+    tidyr::separate(code, into = c("x", "task", "profile", "attribute"), sep = "\\-") %>%
+    dplyr::select(-all_of("x")) %>%
+    rlang::set_names(c("id", "task", "profile", "attribute", "level_name"))
+  
+  # Merge temp1 and temp2 and do further wrangling
   attribute_levels_long <- left_join(temp1, temp2,
                                      by = c("id", "task", "attribute")) %>%
-    select(-attribute) %>%
-    mutate_at(c("task", "profile"), .funs = as.numeric) %>%
-    rename(attribute = attribute_name,
-           level = level_name) %>%
-    filter(task <= n_tasks)
-
+    dplyr::select(-all_of("attribute")) %>%
+    dplyr::mutate_at(c("task", "profile"), .funs = as.numeric) %>%
+    dplyr::rename(attribute = attribute_name,
+                  level = level_name) %>%
+    dplyr::filter(task <= n_tasks)
+  
   # Make a list of attributes and levels, as well as their IDs
   labels <- attribute_levels_long %>%
-    arrange(attribute, level) %>%
-    select(attribute, level) %>%
-    distinct() %>%
-    group_by(attribute) %>%
-    mutate(attribute_id = cur_group_id(),
-           level_id = row_number()) %>%
-    ungroup() %>%
-    mutate(attribute_id = str_c("att", attribute_id),
-           level_id = str_c(attribute_id, ":level", level_id))
-
+    dplyr::arrange(attribute, level) %>%
+    dplyr::select(attribute, level) %>%
+    dplyr::distinct() %>%
+    dplyr::group_by(attribute) %>%
+    dplyr::mutate(attribute_id = dplyr::cur_group_id(),
+                  level_id = dplyr::row_number()) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(attribute_id = stringr::str_c("att", attribute_id),
+                  level_id = stringr::str_c(attribute_id, ":level", level_id))
+  
+  # Make a wide-form data frae with the attribute and level IDs
   attribute_levels_wide <- attribute_levels_long %>%
-    left_join(labels) %>%
-    select(-attribute, -level) %>%
-    rename(attribute = attribute_id,
-           level = level_id) %>%
-    group_by(id, task) %>%
-    pivot_wider(names_from = "attribute", values_from = "level") %>%
-    ungroup()
-
+    dplyr::left_join(labels, by = c("attribute", "level")) %>%
+    dplyr::select(-attribute, -level) %>%
+    dplyr::rename("attribute" = attribute_id,
+                  "level" = level_id) %>%
+    dplyr::group_by(id, task) %>%
+    tidyr::pivot_wider(names_from = "attribute", values_from = "level") %>%
+    dplyr::ungroup()
+  
+  # Keep the first task, which is used in the repeated task
   attribute_levels_repeated <- attribute_levels_wide %>%
-    filter(task == 1)
-
-  # Response variable
+    dplyr::filter(task == 1)
+  
+  # Wrangle the response variables
   responses <- df %>%
-    select(id, all_of(.outcomes)) %>%
-    pivot_longer(names_to = "outcome_qnum", values_to = "response", cols = 2:ncol(.)) %>%
-    mutate(task = NA)
-
-  for (i in 1:n_tasks) {
+    dplyr::select(id, all_of(.outcomes)) %>%
+    tidyr::pivot_longer(names_to = "outcome_qnum", values_to = "response", cols = 2:(n_tasks_all + 1)) %>%
+    dplyr::mutate(task = NA)
+  
+  # Assign the response numbers
+  for (i in 1:n_tasks_all) {
     responses <- responses %>%
-      mutate(task = ifelse(outcome_qnum == .outcomes[i], i, task))
+      dplyr::mutate(task = ifelse(outcome_qnum == .outcomes[i], i, task))
   }
-
+  
+  # Further cleaning of the response data frame
   response_cleaned <- responses %>%
-    mutate(selected = str_extract(response, ".$"),
-           selected = case_when(selected %in% c("1", "A") ~ 1,
-                                selected %in% c("2", "B") ~ 2)) %>%
-    select(-response, -outcome_qnum)
-
-  # Tasks to estimate AMCEs/MMs
+    dplyr::mutate(selected = str_extract(response, ".$"),
+                  selected = dplyr::case_when(selected == .outcomes_ids[1] ~ 1,
+                                              selected == .outcomes_ids[2] ~ 2)) %>%
+    dplyr::select(-response, -outcome_qnum)
+  
+  # Data frame excluding the repeated task
   out1 <- attribute_levels_wide %>%
     left_join(response_cleaned %>%
-                filter(task != n_tasks),
+                dplyr::filter(task <= n_tasks),
               by = c("id", "task")) %>%
-    mutate(selected = ifelse(profile == selected, 1, 0))
-
-  # Tasks to estimate ICR
-  out2 <- attribute_levels_repeated %>%
-    left_join(response_cleaned %>%
-                filter(task == n_tasks) %>%
-                mutate(task = 1),
-              by = c("id", "task")) %>%
-    mutate(selected = case_when(profile == selected & .flipped == FALSE ~ 1,
-                                profile == selected & .flipped == TRUE  ~ 0,
-                                profile != selected & .flipped == FALSE ~ 0,
-                                profile != selected & .flipped == TRUE  ~ 1)) %>%
-    rename(selected_repeated = selected)
-
-  # Merge
-  out_final <- left_join(out1, out2) %>%
-    mutate_if(is.character, as.factor) %>%
-    mutate(id = as.character(id)) %>%
+    dplyr::mutate(selected = ifelse(profile == selected, 1, 0))
+  
+  
+  # Add the repeated task (if any)
+  if (.repeated == TRUE){
+    
+    # Tasks to estimate ICR
+    out2 <- attribute_levels_repeated %>%
+      left_join(response_cleaned %>%
+                  dplyr::filter(task == n_tasks_all) %>%
+                  dplyr::mutate(task = 1),
+                by = c("id", "task")) %>%
+      dplyr::mutate(selected = dplyr::case_when(profile == selected & .flipped == FALSE ~ 1,
+                                                profile == selected & .flipped == TRUE  ~ 0,
+                                                profile != selected & .flipped == FALSE ~ 0,
+                                                profile != selected & .flipped == TRUE  ~ 1)) %>%
+      rename(selected_repeated = selected)
+    
+    # Merge
+    suppressMessages(
+      out_final <- left_join(out1, out2)
+    )
+    
+  } else if (.repeated == FALSE){
+    
+    out_final <- out1
+    
+  }
+  
+  # Final data frame
+  out <- out_final %>%
+    dplyr::mutate_if(is.character, as.factor) %>%
+    dplyr::mutate(id = as.character(id)) %>%
     as.data.frame()
-
-  # Return
-  list(labels, out_final)
-
+  
+  # Return the data frame and the variable labels as a list
+  list(labels, out)
+  
 }
