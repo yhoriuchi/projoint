@@ -4,7 +4,15 @@
 \alias{reshape_conjoint}
 \title{Reshapes survey response data for conjoint analysis}
 \usage{
-reshape_conjoint(.data, .idvar, .outcomes, .alphabet = "F", .flipped = TRUE)
+reshape_conjoint(
+  .data,
+  .idvar,
+  .outcomes,
+  .outcomes_ids = c("1", "2"),
+  .alphabet = "F",
+  .repeated = FALSE,
+  .flipped = NULL
+)
 }
 \arguments{
 \item{.data}{A data frame, preferably from \dQuote{read_Qualtrics()}}
@@ -13,12 +21,16 @@ reshape_conjoint(.data, .idvar, .outcomes, .alphabet = "F", .flipped = TRUE)
 
 \item{.outcomes}{A character vector identifying the column names that contain outcomes}
 
+\item{.outcomes_ids}{A vector identifying the profiles of the outcomes -- e.g., c("A", "B")}
+
 \item{.alphabet}{The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".}
+
+\item{.repeated}{TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.}
 
 \item{.flipped}{TRUE if the profiles of the repeated task are flipped (recommended)}
 }
 \value{
-A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis. See \dQuote{pj}.
+A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis.
 }
 \description{
 This function takes a data frame, preferably from \dQuote{read_Qualtrics()}, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
@@ -27,8 +39,16 @@ This function takes a data frame, preferably from \dQuote{read_Qualtrics()}, and
 library(projoint)
 
 data("exampleData1")
-head(exampleData1)
-reshaped_data = reshape_conjoint(exampleData1, .idvar = "ResponseId",
-                                 .outcomes = c("Q4.1", "Q5.1", "Q6.1", "Q7.1", "Q8.1","Q9.1"),
-                                 .alphabet ="A")
+head(df1)
+
+outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- c(outcomes, "choice1_repeated_flipped")
+reshaped_data = reshaped_data <- reshape_conjoint(
+  .data = d1, 
+  .idvar = "ResponseId", 
+  .outcomes = outcomes,
+  .outcomes_ids = c("1", "2"),
+  .alphabet = "K", 
+  .repeated = TRUE,
+  .flipped = TRUE)
 }

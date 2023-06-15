@@ -2,16 +2,16 @@
 % Please edit documentation in R/read_Qualtrics.R
 \name{read_Qualtrics}
 \alias{read_Qualtrics}
-\title{Reads and reformats a Qualtrics csv.}
+\title{Read and re-format a Qualtrics csv (choice text)}
 \usage{
 read_Qualtrics(.file)
 }
 \arguments{
-\item{.file}{A filename corresponding to a csv downloaded from Qualtrics.}
+\item{.file}{A file name corresponding to a csv downloaded from Qualtrics.}
 }
 \value{
 A data frame suitable for \texttt{reshape_conjoint}
 }
 \description{
-Reads and reformats a Qualtrics csv.
+Read and re-format a Qualtrics csv (choice text)
 }
