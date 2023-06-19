@@ -21,13 +21,6 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/repeated-task.html">repeated-task</a>
-    <a class="dropdown-item" href="../articles/specified-tau.html">specified-tau</a>
-  </div>
-</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -49,12 +42,20 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reshape_conjoint</span><span class="op">(</span><span class="va">.data</span>, <span class="va">.idvar</span>, <span class="va">.outcomes</span>, .alphabet <span class="op">=</span> <span class="st">"F"</span>, .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reshape_conjoint</span><span class="op">(</span></span>
+<span>  <span class="va">.dataframe</span>,</span>
+<span>  <span class="va">.idvar</span>,</span>
+<span>  <span class="va">.outcomes</span>,</span>
+<span>  .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span><span class="op">)</span>,</span>
+<span>  .alphabet <span class="op">=</span> <span class="st">"F"</span>,</span>
+<span>  .repeated <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .flipped <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>.data</dt>
+    <dl><dt>.dataframe</dt>
 <dd><p>A data frame, preferably from “read_Qualtrics()”</p></dd>
 
 
@@ -66,8 +67,16 @@
 <dd><p>A character vector identifying the column names that contain outcomes</p></dd>
 
 
+<dt>.outcomes_ids</dt>
+<dd><p>A vector identifying the profiles of the outcomes -- e.g., c("A", "B")</p></dd>
+
+
 <dt>.alphabet</dt>
 <dd><p>The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".</p></dd>
+
+
+<dt>.repeated</dt>
+<dd><p>TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.</p></dd>
 
 
 <dt>.flipped</dt>
@@ -78,9 +87,45 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis. See “pj”.</p>
+<p>A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"exampleData1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">exampleData1</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 132</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ResponseId        gender age   choice1 choice2 choice3 choice4 choice5 choice6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> R_2rDFvqinv6QUDGV Man    35-44 Buildi… Buildi… Buildi… Buildi… Buildi… Buildi…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> R_1f7qIOp1EvY5Vxp Man    35-44 Buildi… Buildi… Buildi… Buildi… Buildi… Buildi…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> R_1FPTqsO9bnMDmCk Man    35-44 Buildi… Buildi… Buildi… Buildi… Buildi… Buildi…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> R_246oiND6vlMm4tV Woman  25-34 Buildi… Buildi… Buildi… Buildi… Buildi… Buildi…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> R_1MR7ngNUX6dmJvU Man    35-44 Buildi… Buildi… Buildi… Buildi… Buildi… Buildi…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> R_3maGfEeqmLxE4s4 Man    25-34 Buildi… Buildi… Buildi… Buildi… Buildi… Buildi…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 123 more variables: choice7 &lt;chr&gt;, choice8 &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   choice1_repeated_flipped &lt;chr&gt;, `K-1-1` &lt;chr&gt;, `K-1-1-1` &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-2` &lt;chr&gt;, `K-1-1-2` &lt;chr&gt;, `K-1-3` &lt;chr&gt;, `K-1-1-3` &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-4` &lt;chr&gt;, `K-1-1-4` &lt;chr&gt;, `K-1-2-1` &lt;chr&gt;, `K-1-2-2` &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-2-3` &lt;chr&gt;, `K-1-2-4` &lt;chr&gt;, `K-2-1` &lt;chr&gt;, `K-2-1-1` &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-2-2` &lt;chr&gt;, `K-2-1-2` &lt;chr&gt;, `K-2-3` &lt;chr&gt;, `K-2-1-3` &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-2-4` &lt;chr&gt;, `K-2-1-4` &lt;chr&gt;, `K-2-2-1` &lt;chr&gt;, `K-2-2-2` &lt;chr&gt;, …</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html" class="external-link">str_c</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">reshaped_data</span> <span class="op">=</span> <span class="va">reshaped_data</span> <span class="op">&lt;-</span> <span class="fu">reshape_conjoint</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  .data <span class="op">=</span> <span class="va">exampleData1</span>, </span></span>
+<span class="r-in"><span>  .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span></span>
+<span class="r-in"><span>  .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span></span>
+<span class="r-in"><span>  .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span></span>
+<span class="r-in"><span>  .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

@@ -38,13 +38,6 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/repeated-task.html">repeated-task</a>
-    <a class="dropdown-item" href="articles/specified-tau.html">specified-tau</a>
-  </div>
-</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -65,13 +58,46 @@
 <div class="section level1">
 <h1 id="projoint">projoint<a class="anchor" aria-label="anchor" href="#projoint"></a>
 </h1>
-<p>Correcting Measurement Error Bias in Conjoint Survey Experiments</p>
 <div class="section level3">
-<h3 id="notes">Notes:<a class="anchor" aria-label="anchor" href="#notes"></a>
+<h3 id="correcting-measurement-error-bias-in-conjoint-survey-experiments">Correcting Measurement Error Bias in Conjoint Survey Experiments<a class="anchor" aria-label="anchor" href="#correcting-measurement-error-bias-in-conjoint-survey-experiments"></a>
 </h3>
+<hr>
+<p><strong>projoint</strong> is a package to estimate Average Marginal Component Effects (AMCEs) or Marginal Means (MMs) based on a conjoint survey experiment. Unlike other packages for conjoint analysis, <strong>projoint</strong> produces the more reliable estimates after correcting measurement error bias.</p>
+<p>Some notes:</p>
 <ul>
-<li>The binary profile names should be {“Something 1”, “Something 2”} or ({Something A”, “Something B”}.</li>
+<li><p>The current version assumes that the outcome variable is a binary forced choice.</p></li>
+<li><p>The outcome variables in the CSV file can be either a numerical variable (1 or 2) or a character variable, such as {“Candidate 1”, “Candidate 2”} or {“Plan A”, “Plan B”}.</p></li>
 </ul>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the development version of <strong>projoint</strong> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"yhoriuchi/projoint"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<div class="section level3">
+<h3 id="case-1-without-a-repeated-task">Case 1: Without a repeated task<a class="anchor" aria-label="anchor" href="#case-1-without-a-repeated-task"></a>
+</h3>
+<p>The original data set is from <em>Campus Diversity: The Hidden Consensus</em> by John Carey, Katie Clayton, and Yusaku Horiuchi (Cambridge University Press, 2020). The complete replication package is available at <a href="https://doi.org/10.7910/DVN/KMS5ZY" class="external-link uri">https://doi.org/10.7910/DVN/KMS5ZY</a>. For more information about the book, see: <a href="https://horiuchi.org/diversity/" class="external-link uri">https://horiuchi.org/diversity/</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
+<span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Q2."</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">4</span>, to <span class="op">=</span> <span class="fl">31</span>, by <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">cjdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/reshape_conjoint.html">reshape_conjoint</a></span><span class="op">(</span><span class="va">exampleData1</span>, <span class="va">V1</span>, <span class="va">outcomes</span><span class="op">)</span></span></code></pre></div>
+<p>To read the original Qualtrics data (with two rows being used for information about each column), use another function in this package, <code><a href="reference/read_Qualtrics.html">read_Qualtrics()</a></code>. For example,</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cjdata)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_Qualtrics</span>(<span class="st">"Qualtrics_data_without_a_repeated_task.csv"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>cjdata <span class="ot">&lt;-</span> <span class="fu">reshape_conjoint</span>(data, V1, <span class="fu">paste0</span>(<span class="st">"Q2."</span>, <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">4</span>, <span class="at">to =</span> <span class="dv">31</span>, <span class="at">by =</span> <span class="dv">3</span>))</span></code></pre></div>
+<p>Note: “Qualtrics_data_without_a_repeated_task.csv” is downloadable from the “data-raw” folder of this GitHub repository.</p>
+</div>
+<div class="section level3">
+<h3 id="case-2-with-a-repeated-task">Case 2: With a repeated task<a class="anchor" aria-label="anchor" href="#case-2-with-a-repeated-task"></a>
+</h3>
+</div>
 </div>
 </div>
 
