@@ -45,7 +45,7 @@ head(exampleData1)
 outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
 outcomes <- c(outcomes, "choice1_repeated_flipped")
 reshaped_data = reshaped_data <- reshape_conjoint(
-  .data = exampleData1, 
+  .dataframe = exampleData1, 
   .idvar = "ResponseId", 
   .outcomes = outcomes,
   .outcomes_ids = c("1", "2"),
