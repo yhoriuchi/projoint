@@ -37,14 +37,15 @@ This function takes a data frame, preferably from \dQuote{read_Qualtrics()}, and
 }
 \examples{
 library(projoint)
+library(stringr)
 
 data("exampleData1")
-head(df1)
+head(exampleData1)
 
 outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
 outcomes <- c(outcomes, "choice1_repeated_flipped")
 reshaped_data = reshaped_data <- reshape_conjoint(
-  .data = d1, 
+  .data = exampleData1, 
   .idvar = "ResponseId", 
   .outcomes = outcomes,
   .outcomes_ids = c("1", "2"),

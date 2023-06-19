@@ -6,7 +6,7 @@ library(tidyverse)
 
 source("R/read_Qualtrics.R")
 
-d <- read_Qualtrics("data-raw/CHKKK Housing developments W1 (Prolific - June 2021)_June 15, 2023_11.20.csv") %>% 
+d <- read_Qualtrics("data-raw/qualtrics_housing_june2021.csv") %>% 
   filter(Finished == TRUE, 
          Q1.2 == "Yes",
          Q2.4_1 == "Every day") %>% 
@@ -19,8 +19,8 @@ d <- read_Qualtrics("data-raw/CHKKK Housing developments W1 (Prolific - June 202
          choice7 = ifelse(!is.na(Q16.1), Q16.1, Q17.1),
          choice8 = ifelse(!is.na(Q18.1), Q18.1, Q19.1)) %>% 
   select(ResponseId, 
-         "gender" = Q1.2,
-         "age" = Q2.2,
+         "gender" = Q2.2,
+         "age" = Q2.3,
          choice1:choice8,
          "choice1_repeated_notflipped" = Q20.1,
          "choice1_repeated_flipped" = Q21.1, 
