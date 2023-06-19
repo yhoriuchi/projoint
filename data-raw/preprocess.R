@@ -9,7 +9,7 @@ source("R/read_Qualtrics.R")
 d <- read_Qualtrics("data-raw/qualtrics_housing_june2021.csv") %>% 
   filter(Finished == TRUE, 
          Q1.2 == "Yes",
-         Q2.4_1 == "Every day") %>% 
+         is.na(attention_check)) %>% 
   mutate(choice1 = ifelse(!is.na(Q4.1), Q4.1, Q5.1),
          choice2 = ifelse(!is.na(Q6.1), Q6.1, Q7.1),
          choice3 = ifelse(!is.na(Q8.1), Q8.1, Q9.1),
