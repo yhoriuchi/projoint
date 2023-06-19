@@ -6,3 +6,6 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^TODO\.txt$
+^data-raw$
+^desktop\.ini$
