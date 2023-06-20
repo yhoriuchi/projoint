@@ -15,3 +15,10 @@ A data frame suitable for reshape_conjoint()
 \description{
 Read and re-format a Qualtrics csv (choice text)
 }
+\examples{
+library(projoint)
+
+# Not run:
+# dat <- read_Qualtrics("mummolo_nall_replication.csv")
+# head(dat)
+}

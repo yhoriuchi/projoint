@@ -3,6 +3,12 @@
 #' @param .file A file name corresponding to a csv downloaded from Qualtrics.
 #' @return A data frame suitable for reshape_conjoint()
 #' @export
+#' @examples
+#' library(projoint)
+#' 
+#' # Not run:
+#' # dat <- read_Qualtrics("mummolo_nall_replication.csv")
+#' # head(dat)
 
 read_Qualtrics <- function(
     .file
