@@ -29,6 +29,7 @@ organize_data <- function(
   id <- NULL
   selected <- NULL
   selected_repeated <- NULL
+  selected_2 <- NULL
   att <- NULL
   task <- NULL
   ties <- NULL
@@ -75,7 +76,7 @@ organize_data <- function(
   # keep relevant rows only
   out <- out %>% 
     dplyr::rename(att = !!rlang::sym(.attribute)) %>% 
-    dplyr::filter(att %in% str_c(.attribute, ":", .level))
+    dplyr::filter(att %in% att_levels)
   
   if (structure == "profile_level"){
     
@@ -100,13 +101,10 @@ organize_data <- function(
                          values_from = c(att, selected)) %>% 
       
       # keep relevant rows only
-      dplyr::filter(att_1 == att_levels[1] & att_2 == att_levels[2] |
-                      att_1 == att_levels[2] & att_2 == att_levels[1]) %>% 
+      dplyr::filter(att_1 == att_levels[1] & att_2 == att_levels[2]) %>% 
       
       # make "selected"
-      dplyr::mutate(selected = case_when(att_1 == att_levels[2] & selected_1 == 1 ~ 1,
-                                         att_2 == att_levels[2] & selected_2 == 1 ~ 1,
-                                         TRUE ~ 0)) %>% 
+      dplyr::mutate(selected = selected_2) %>% 
       
       # add a column to record the levels of interest
       dplyr::mutate(att = str_c(att_levels, collapse = ", "))
