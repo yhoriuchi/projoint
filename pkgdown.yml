@@ -2,7 +2,7 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles: {}
-last_built: 2023-07-14T18:44Z
+last_built: 2023-07-14T19:56Z
 urls:
   reference: https://yhoriuchi.github.io/projoint/reference
   article: https://yhoriuchi.github.io/projoint/articles
