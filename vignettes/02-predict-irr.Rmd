@@ -6,5 +6,35 @@ description: >
 vignette: >
   %\VignetteIndexEntry{Step 02: Predict IRR}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
 ---
+
+Read, ...
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+library(projoint)
+```
+
+```{r}
+outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+out3 <- reshape_conjoint(.data = exampleData3, 
+                         .idvar = "ResponseId", 
+                         .outcomes = outcomes,
+                         .outcomes_ids = c("A", "B"),
+                         .alphabet = "K", 
+                         .repeated = FALSE,
+                         .flipped = NULL)
+```
+
+Then, ...
+
+```{r}
+predicted_irr <- predict_tau(out3$data)
+
+predicted_irr$predicted
+predicted_irr$figure
+```
