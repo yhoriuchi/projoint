@@ -12,12 +12,11 @@ vignette: >
 Read, ...
 
 ```{r}
-library(tidyverse)
 library(projoint)
 ```
 
 ```{r}
-outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 out3 <- reshape_conjoint(.data = exampleData3, 
                          .idvar = "ResponseId", 
                          .outcomes = outcomes,
