@@ -117,7 +117,7 @@ organize_data <- function(
   # data frame to estimate IRR
   data1 <- out1 %>% 
     dplyr::select(id, disagree) %>% 
-    dplyr::distinct()
+    dplyr::filter(!is.na(disagree))
   
   # data frame to estimate MM or AMCE
   data2 <- out2 %>% 
