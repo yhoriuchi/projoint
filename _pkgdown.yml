@@ -2,3 +2,17 @@ url: https://yhoriuchi.github.io/projoint/
 template:
   bootstrap: 5
   
+tutorials:
+- name: 01-setup
+  title: How to read and reshape data for conjoint analysis
+  url: https://yhoriuchi.github.io/projoint//learnr-tutorial-01-setup/
+- name: 02-predict-IRR
+  title: How to predict IRR without a repeated task
+  url: https://yhoriuchi.github.io/projoint//learnr-tutorial-02-predict-irr/
+- name: 03-estimate-MM
+  title: How to estimate MMs and correct measurement error bias
+  url: https://yhoriuchi.github.io/projoint//learnr-tutorial-03-estimate-mm/
+- name: 04-estimate-AMCE
+  title: How to estimate AMCEs and correct measurement error bias
+  url: https://yhoriuchi.github.io/projoint//learnr-tutorial-03-estimate-amce/
+  
