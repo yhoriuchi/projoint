@@ -6,17 +6,15 @@ description: >
 vignette: >
   %\VignetteIndexEntry{Step 03: Estimate and correct MMs}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
 ```{r}
 library(tidyverse)
-```
-
-```{r}
 library(projoint)
 ```
+
 
 ```{r}
 outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))

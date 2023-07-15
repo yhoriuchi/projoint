@@ -6,7 +6,7 @@ description: >
 vignette: >
   %\VignetteIndexEntry{Step 01: Read and wrangle data}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## Test

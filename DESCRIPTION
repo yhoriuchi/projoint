@@ -29,3 +29,4 @@ URL: https://yhoriuchi.github.io/projoint/
 Depends: 
     R (>= 2.10)
 LazyData: true
+VignetteBuilder: knitr 
