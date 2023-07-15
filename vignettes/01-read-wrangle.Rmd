@@ -32,7 +32,7 @@ out1 <- reshape_conjoint(.data = exampleData1,
 # Data with the not-flipped repeated tasks
 
 ```{r}
-outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 outcomes <- c(outcomes, "choice1_repeated_notflipped")
 out2 <- reshape_conjoint(.data = exampleData2, 
                          .idvar = "ResponseId", 
@@ -46,7 +46,7 @@ out2 <- reshape_conjoint(.data = exampleData2,
 # Data without the repeated tasks
 
 ```{r}
-outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 out3 <- reshape_conjoint(.data = exampleData3, 
                          .idvar = "ResponseId", 
                          .outcomes = outcomes,
