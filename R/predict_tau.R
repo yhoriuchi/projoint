@@ -79,7 +79,7 @@ predict_tau <- function(
     .title = NULL
 ){
   
-  # Bind variables locally to the function
+  # bind variables locally to the function
   
   id <- NULL
   task1 <- NULL
@@ -107,11 +107,11 @@ predict_tau <- function(
   conf.high <- NULL
   . <- NULL
   
-  # The number of attributes
+  # the number of attributes
   
   n_attributes <- names(.dataframe) %>% str_detect(., "att") %>% sum()
   
-  # All combinations of tasks (within respondents)
+  # all combinations of tasks (within respondents)
   # There are MANY combinations of tasks for each respondent.
   
   task_combinations <- .dataframe %>% 
@@ -120,15 +120,15 @@ predict_tau <- function(
     dplyr::group_by(id) %>% 
     tidyr::complete(task1, task2) %>% 
     dplyr::ungroup() %>% 
-    # Remove the same tasks
+    # remove the same tasks
     dplyr::filter(task1 != task2) %>% 
-    # Make unique pairs of tasks
+    # make unique pairs of tasks
     dplyr::mutate(t1 = ifelse(task1 < task2, task2, task1),
                   t2 = ifelse(task1 > task2, task2, task1)) %>% 
     dplyr::select(-task1, -task2) %>% 
     dplyr::distinct()
   
-  # Initial cleaning: add y (a profile chosen)
+  # initial cleaning: add y (a profile chosen)
   
   d <- .dataframe %>% 
     dplyr::mutate(y = dplyr::case_when(selected == 1 & profile == 1 ~ 1,
@@ -137,7 +137,7 @@ predict_tau <- function(
                                        selected == 0 & profile == 2 ~ 1)) %>% 
     dplyr::select(-selected)
   
-  # Cleaning for each attribute
+  # cleaning for each attribute
   
   d2 <- d %>% 
     dplyr::select(id, task, y) %>% 
@@ -163,12 +163,12 @@ predict_tau <- function(
     
   }
   
-  # Rename attributes for each task
+  # rename attributes for each task
   
   task1 <- d2 %>% setNames(str_c("task1_", names(d2)))
   task2 <- d2 %>% setNames(str_c("task2_", names(d2)))
   
-  # All combinations of tasks within respondents after cleaning the variable names
+  # all combinations of tasks within respondents after cleaning the variable names
   
   d3 <- task_combinations %>% 
     dplyr::left_join(task1, by = c("id" = "task1_id", "t1" = "task1_task")) %>% 
@@ -186,13 +186,13 @@ predict_tau <- function(
     
   }
   
-  # Dependent variable: the same profile was selected for the same set of tasks
+  # dependent variable: the same profile was selected for the same set of tasks
   
   y <- d3 %>% 
     dplyr::select(id, t1, t2, y_same) %>% 
     dplyr::distinct()
   
-  # Independent variables: the number of same attributes within task combinations
+  # independent variables: the number of same attributes within task combinations
   
   x <- d3 %>% 
     dplyr::select(id, t1, t2, tidyselect::contains("comb_same")) %>% 
@@ -200,7 +200,7 @@ predict_tau <- function(
     dplyr::group_by(id, t1, t2) %>% 
     dplyr::summarise(x = sum(value), .groups = "drop")
   
-  # Merge y and x and run regression to estimate tau for each x (the number of same attributes)
+  # merge y and x and run regression to estimate tau for each x (the number of same attributes)
   
   out1 <- y %>% 
     dplyr::left_join(x, by = c("id", "t1", "t2")) %>% 
@@ -209,25 +209,25 @@ predict_tau <- function(
                                                       data = dplyr::pick(everything()), 
                                                       clusters = id))) %>% 
     
-    # Remove if estimated tau is 0 or 1
+    # remove if estimated tau is 0 or 1
     dplyr::filter(!(estimate %in% c(0, 1))) %>% 
     
-    # Remove if all attributes are the same within task combinations
+    # remove if all attributes are the same within task combinations
     dplyr::filter(x != 0) 
   
-  # Then run a weighted least square regression
+  # then run a weighted least square regression
   
   out_reg <-  estimatr::lm_robust(estimate ~ x, data = out1, weights = 1/std.error^2, se_type = "classical") 
   
-  # Data frame to add predicted values
+  # data frame to add predicted values
   
   newdata <- data.frame(x = 0:n_attributes)
   
-  # A vector of predicted values
+  # a vector of predicted values
   predicted <- newdata %>% 
     mutate(predicted = predict(out_reg, newdata))
   
-  # Prediction of x == 0
+  # prediction of x == 0
   
   prediction <- predicted %>% 
     dplyr::filter(x == 0) %>% 
@@ -260,8 +260,9 @@ predict_tau <- function(
                   title = stringr::str_c(.title, "Prediction = ", format(round(prediction, digits = 2), nsmall = 2)))
   
   
-  # Return
+  # return
   
-  list(predicted, g)
+  list("predicted" = predicted, 
+       "figure" = g)
   
 }
