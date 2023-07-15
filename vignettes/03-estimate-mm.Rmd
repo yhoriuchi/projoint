@@ -10,7 +10,7 @@ vignette: >
 ---
 
 
-```{r}
+```{r, message=FALSE}
 library(projoint)
 library(dplyr)
 ```

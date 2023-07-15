@@ -8,3 +8,88 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{r, message=FALSE}
+library(projoint)
+library(dplyr)
+```
+
+
+```{r}
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- c(outcomes, "choice1_repeated_flipped")
+out1 <- reshape_conjoint(.data = exampleData1, 
+                         .idvar = "ResponseId", 
+                         .outcomes = outcomes,
+                         .outcomes_ids = c("A", "B"),
+                         .alphabet = "K", 
+                         .repeated = TRUE,
+                         .flipped = TRUE)
+```
+
+
+# Test 4 (Profile-level AMCE)
+
+```{r}
+temp1 <- organize_data(d, "att1", "level1", "profile_level")
+temp2 <- organize_data(d, "att1", "level3", "profile_level")
+
+data_for_irr <- bind_rows(
+  temp1$data_for_irr,
+  temp2$data_for_irr
+) %>% 
+  distinct()
+
+data_for_estimand <- bind_rows(
+  temp1$data_for_estimand %>% mutate(x = 0),
+  temp2$data_for_estimand %>% mutate(x = 1)
+)
+
+d_amce1 <- list(
+  "data_for_irr" = data_for_irr,
+  "data_for_estimand" = data_for_estimand
+)
+
+pj_estimate(d_amce1, "amce", "analytical")
+pj_estimate(d_amce1, "amce", "simulation")
+pj_estimate(d_amce1, "amce", "bootstrap")
+
+pj_estimate(d_amce1, "amce", "analytical", .irr = 0.75)
+pj_estimate(d_amce1, "amce", "simulation", .irr = 0.75)
+pj_estimate(d_amce1, "amce", "bootstrap", .irr = 0.75)
+```
+
+# Test 5 (Choice-level AMCE)
+
+```{r}
+temp1 <- organize_data(d, "att1", c("level1", "level1"), "choice_level")
+temp2 <- organize_data(d, "att1", c("level1", "level3"), "choice_level")
+
+data_for_irr <- bind_rows(
+  temp1$data_for_irr,
+  temp2$data_for_irr
+) %>% 
+  distinct()
+
+data_for_estimand <- bind_rows(
+  temp1$data_for_estimand %>% mutate(x = 0),
+  temp2$data_for_estimand %>% mutate(x = 1)
+)
+
+d_amce1 <- list(
+  "data_for_irr" = data_for_irr,
+  "data_for_estimand" = data_for_estimand
+)
+
+pj_estimate(d_amce1, "amce", "analytical")
+pj_estimate(d_amce1, "amce", "simulation")
+pj_estimate(d_amce1, "amce", "bootstrap")
+
+pj_estimate(d_amce1, "amce", "analytical", .irr = 0.75)
+pj_estimate(d_amce1, "amce", "simulation", .irr = 0.75)
+pj_estimate(d_amce1, "amce", "bootstrap", .irr = 0.75)
+```
+
+
+
+
