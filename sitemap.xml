@@ -39,4 +39,19 @@
   <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/reshape_conjoint.html</loc>
   </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/01-setup.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/02-predict-IRR.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/03-estimate-MM.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/04-estimate-AMCE.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/index.html</loc>
+  </url>
 </urlset>
