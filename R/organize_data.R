@@ -116,7 +116,7 @@ organize_data <- function(
   
   # data frame to estimate IRR
   data1 <- out1 %>% 
-    dplyr::select(id, task, disagree) %>% 
+    dplyr::select(id, disagree) %>% 
     dplyr::distinct()
   
   # data frame to estimate MM or AMCE
