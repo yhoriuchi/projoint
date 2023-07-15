@@ -62,19 +62,19 @@ organize_data <- function(
   
   if (.repeated_task == TRUE){
     
-    out <- .dataframe %>% 
+    out1 <- .dataframe %>% 
       dplyr::mutate(disagree = ifelse(selected != selected_repeated, 1, 0))
     
   } else{
     
-    out <- .dataframe %>% 
+    out1 <- .dataframe %>% 
       dplyr::mutate(disagree = NA) 
   }
   
   # organize the data frame -------------------------------------------------
   
   # keep relevant rows only
-  out <- out %>% 
+  out2 <- out1 %>% 
     dplyr::rename(att = !!rlang::sym(.attribute)) %>% 
     dplyr::filter(att %in% att_levels)
   
@@ -82,7 +82,7 @@ organize_data <- function(
     
     if (.remove_ties == TRUE){
       
-      out <- out %>% 
+      out2 <- out2 %>% 
         dplyr::group_by(id, task) %>% 
         dplyr::mutate(ties = n() - 1) %>% 
         dplyr::ungroup() %>% 
@@ -93,7 +93,7 @@ organize_data <- function(
     
   } else if (structure == "choice_level"){
     
-    out <- out %>% 
+    out2 <- out2 %>% 
       
       # pivot the data frame
       tidyr::pivot_wider(id_cols = c(id, task, disagree), 
@@ -114,7 +114,15 @@ organize_data <- function(
   
   # Keep necessary variables only and return --------------------------------
   
-  out %>% 
+  # data frame to estimate IRR
+  data1 <- out1 %>% 
+    dplyr::selected(id, task, disagree) %>% 
+    distinct()
+  
+  # data frame to estimate MM or AMCE
+  data2 <- out2 %>% 
     dplyr::select(id, task, att, selected, disagree)
+  
+  return(list(data1, data2))
   
 }
