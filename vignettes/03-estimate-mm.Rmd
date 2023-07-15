@@ -1,0 +1,10 @@
+---
+title: "Step 03: Estimate and correct MMs"
+output: rmarkdown::html_vignette
+description: >
+  How to estimate and correct marginal means
+vignette: >
+  %\VignetteIndexEntry{"Step 03: Estimate and correct MMs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---

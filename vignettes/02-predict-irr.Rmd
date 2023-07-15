@@ -1,0 +1,10 @@
+---
+title: "Step 02: Predict IRR"
+output: rmarkdown::html_vignette
+description: >
+  How to predict intra-respondent reliability without a repeated task
+vignette: >
+  %\VignetteIndexEntry{Step 02: Predict IRR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
