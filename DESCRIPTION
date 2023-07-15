@@ -1,6 +1,6 @@
 Package: projoint
 Type: Package
-Title: Measure and Fix the Measurement Error Bias in Conjoint Analysis
+Title: A More General, More Straightforward, and More Creative Framework for Conjoint Analysis
 Version: 0.2.0
 Author: Yusaku Horiuchi and Aaron Kaufman
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
@@ -15,7 +15,8 @@ Imports:
     estimatr,
     ggthemes,
     ggplot2,
-    stats
+    stats,
+    MASS
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.3
