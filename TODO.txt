@@ -1,5 +1,21 @@
 To-Do List for projoint R library
 
+Yusaku plans to do the following (ideally before the first release)
+a) Make a function to estimate all MMs (all levels for all attributes). 
+b) Make a function to estimate all AMCEs (all levels for all attributes, given baseline attributes).
+c) Make a function to visualize all MMs (like Leeper et al's figure)
+d) Make a function to visualize the difference in all MMs by two subgroups of respondents (like Leeper et al.'s figure)
+e) Make a function to visualize all AMCEs (like HHY's figure)
+f) Make a function to visualize specific (choice-level) MMs. 
+g) Make a function to visualize specific (choice-level) AMCEs.
+f) Write an article explaining how to make subgroup comparisons of choice-level MMs
+g) Leeper et al.'s package does now allow researchers to use the same levels for more than one attribute (e.g., Teaching quality = {High, Low}, Research quality = {High, Low)). This is a major problem in their package. Since we separate the reshaped data frame and the data frame that includes a list of attributes and levels, we can avoid this problem. We should say that (and discourage researchers from using their package).
+h) We should also have a page (perhaps in Getting Started page) explaining why choice-level anaysis is much more useful and interesting.
+
+
+
+
+
 Necessary for First Release
 1) Add input argument to allow tau to be either specified or estimated (DONE)
 	a) When a specific tau is given, add noise via the SD of the binomial dist (more conservative SEs)
