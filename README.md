@@ -6,7 +6,7 @@
 
 ---
 
-**projoint** is a package for a more general, more straightforward, and more creative conjoint analysis. It estimates Average Marginal Component Effects (AMCEs) or Marginal Means (MMs) based on a conjoint survey experiment. It produces more reliable estimates after correcting measurement error bias. Furthermore, it presents a more general framework so that researchers can answer a range of substantively important questions more straightforwardly.
+**projoint** is a package for more general, more straightforward, and more creative conjoint analysis. It estimates Average Marginal Component Effects (AMCEs) and Marginal Means (MMs) based on a conjoint survey experiment. It produces more reliable estimates after correcting measurement error bias and other problems known in the literature (e.g., having the same levels for the attribute of interest). Furthermore, it presents a more general framework so that researchers can answer a range of substantively important questions more straightforwardly.
 
 Some notes:
 
