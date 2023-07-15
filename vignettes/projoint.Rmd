@@ -1,0 +1,14 @@
+---
+title: "Introduction to projoint"
+description: >
+  Learn how to get started with the basics of projoint
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to pkgdown}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The goal of projoint is to ... 
+
+You can get a basic website up and running in just a couple of minutes:

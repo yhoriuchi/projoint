@@ -1,7 +1,7 @@
 url: https://yhoriuchi.github.io/projoint/
 template:
   bootstrap: 5
-  
+
 tutorials:
 - name: 01-setup
   title: How to read and reshape data for conjoint analysis
