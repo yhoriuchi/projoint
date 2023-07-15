@@ -7,6 +7,18 @@
     <loc>https://yhoriuchi.github.io/projoint/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>https://yhoriuchi.github.io/projoint/articles/01-read-wrangle.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/articles/02-predict-irr.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/articles/03-estimate-mm.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/articles/04-estimate-amce.html</loc>
+  </url>
+  <url>
     <loc>https://yhoriuchi.github.io/projoint/articles/index.html</loc>
   </url>
   <url>
@@ -47,20 +59,5 @@
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/reshape_conjoint.html</loc>
-  </url>
-  <url>
-    <loc>https://yhoriuchi.github.io/projoint/tutorials/01-setup.html</loc>
-  </url>
-  <url>
-    <loc>https://yhoriuchi.github.io/projoint/tutorials/02-predict-IRR.html</loc>
-  </url>
-  <url>
-    <loc>https://yhoriuchi.github.io/projoint/tutorials/03-estimate-MM.html</loc>
-  </url>
-  <url>
-    <loc>https://yhoriuchi.github.io/projoint/tutorials/04-estimate-AMCE.html</loc>
-  </url>
-  <url>
-    <loc>https://yhoriuchi.github.io/projoint/tutorials/index.html</loc>
   </url>
 </urlset>
