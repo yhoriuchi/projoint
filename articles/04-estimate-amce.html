@@ -81,8 +81,129 @@
 
     
     
-
-  </main>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
+<span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_conjoint.html">reshape_conjoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">exampleData1</span>, </span>
+<span>                         .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
+<span>                         .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span>
+<span>                         .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
+<span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">out1</span><span class="op">$</span><span class="va">data</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="test-4-profile-level-amce">Test 4 (Profile-level AMCE)<a class="anchor" aria-label="anchor" href="#test-4-profile-level-amce"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">temp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/organize_data.html">organize_data</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"att1"</span>, <span class="st">"level1"</span>, <span class="st">"profile_level"</span><span class="op">)</span></span>
+<span><span class="va">temp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/organize_data.html">organize_data</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"att1"</span>, <span class="st">"level3"</span>, <span class="st">"profile_level"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_for_irr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
+<span>  <span class="va">temp1</span><span class="op">$</span><span class="va">data_for_irr</span>,</span>
+<span>  <span class="va">temp2</span><span class="op">$</span><span class="va">data_for_irr</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_for_estimand</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
+<span>  <span class="va">temp1</span><span class="op">$</span><span class="va">data_for_estimand</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  <span class="va">temp2</span><span class="op">$</span><span class="va">data_for_estimand</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">d_amce1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="st">"data_for_irr"</span> <span class="op">=</span> <span class="va">data_for_irr</span>,</span>
+<span>  <span class="st">"data_for_estimand"</span> <span class="op">=</span> <span class="va">data_for_estimand</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"analytical"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand   estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.1298845 0.01878044</span></span>
+<span><span class="co">## 2   amce_corrected -0.3020569 0.05106432</span></span></code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"simulation"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand   estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.1298845 0.01878044</span></span>
+<span><span class="co">## 2   amce_corrected -0.3052620 0.05224663</span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"bootstrap"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand   estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.1308638 0.02490057</span></span>
+<span><span class="co">## 2   amce_corrected -0.3076316 0.06741069</span></span></code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"analytical"</span>, .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand   estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.1298845 0.01878044</span></span>
+<span><span class="co">## 2   amce_corrected -0.2597689 0.03756088</span></span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"simulation"</span>, .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand   estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.1298845 0.01878044</span></span>
+<span><span class="co">## 2   amce_corrected -0.2596229 0.03743951</span></span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"bootstrap"</span>, .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand   estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.1308638 0.02490057</span></span>
+<span><span class="co">## 2   amce_corrected -0.2617275 0.04980114</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="test-5-choice-level-amce">Test 5 (Choice-level AMCE)<a class="anchor" aria-label="anchor" href="#test-5-choice-level-amce"></a>
+</h2>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">temp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/organize_data.html">organize_data</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"att1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level1"</span>, <span class="st">"level1"</span><span class="op">)</span>, <span class="st">"choice_level"</span><span class="op">)</span></span>
+<span><span class="va">temp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/organize_data.html">organize_data</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"att1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level1"</span>, <span class="st">"level3"</span><span class="op">)</span>, <span class="st">"choice_level"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_for_irr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
+<span>  <span class="va">temp1</span><span class="op">$</span><span class="va">data_for_irr</span>,</span>
+<span>  <span class="va">temp2</span><span class="op">$</span><span class="va">data_for_irr</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_for_estimand</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
+<span>  <span class="va">temp1</span><span class="op">$</span><span class="va">data_for_estimand</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  <span class="va">temp2</span><span class="op">$</span><span class="va">data_for_estimand</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">d_amce1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="st">"data_for_irr"</span> <span class="op">=</span> <span class="va">data_for_irr</span>,</span>
+<span>  <span class="st">"data_for_estimand"</span> <span class="op">=</span> <span class="va">data_for_estimand</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"analytical"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand    estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.09383836 0.03642298</span></span>
+<span><span class="co">## 2   amce_corrected -0.21822874 0.09129605</span></span></code></pre>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"simulation"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand    estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.09383836 0.03642298</span></span>
+<span><span class="co">## 2   amce_corrected -0.22211635 0.09295829</span></span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"bootstrap"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand    estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.09229628 0.03704922</span></span>
+<span><span class="co">## 2   amce_corrected -0.21710140 0.09077944</span></span></code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"analytical"</span>, .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand    estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.09383836 0.03642298</span></span>
+<span><span class="co">## 2   amce_corrected -0.18767672 0.07284596</span></span></code></pre>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"simulation"</span>, .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand    estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.09383836 0.03642298</span></span>
+<span><span class="co">## 2   amce_corrected -0.18740157 0.07262146</span></span></code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pj_estimate.html">pj_estimate</a></span><span class="op">(</span><span class="va">d_amce1</span>, <span class="st">"amce"</span>, <span class="st">"bootstrap"</span>, .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           estimand    estimate         se</span></span>
+<span><span class="co">## 1 amce_uncorrected -0.09229628 0.03704922</span></span>
+<span><span class="co">## 2   amce_corrected -0.18459256 0.07409843</span></span></code></pre>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
