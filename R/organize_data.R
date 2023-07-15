@@ -14,6 +14,7 @@
 #' @param .remove_ties TRUE if you want to remove ties for the attribute of interest (in profile-level analysis)
 #' @param .repeated_task TRUE if a repeated task is used to calculate IRR (recommended)
 #' @return A data frame
+#' @export
 
 organize_data <- function(
     .dataframe,

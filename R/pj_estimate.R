@@ -12,6 +12,7 @@
 #' @param .n_boot The number of bootstrapped samples
 #' @param .n_sims The number of simulations
 #' @return A data frame
+#' @export
 
 pj_estimate <- function(
     .list, 

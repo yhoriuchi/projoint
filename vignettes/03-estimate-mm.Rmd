@@ -12,6 +12,7 @@ vignette: >
 
 ```{r}
 library(projoint)
+library(dplyr)
 ```
 
 
@@ -31,5 +32,72 @@ out1 <- reshape_conjoint(.data = exampleData1,
 ```{r}
 d <- out1$data
 ```
+
+# Test 1 (Profile-level MM)
+
+```{r}
+d_mm1 <- organize_data(d, "att1", c("level1"), "profile_level")
+
+pj_estimate(d_mm1, "mm", "analytical")
+pj_estimate(d_mm1, "mm", "simulation")
+pj_estimate(d_mm1, "mm", "bootstrap")
+
+pj_estimate(d_mm1, "mm", "analytical", .irr = 0.75)
+pj_estimate(d_mm1, "mm", "simulation", .irr = 0.75)
+pj_estimate(d_mm1, "mm", "bootstrap",  .irr = 0.75)
+```
+
+
+# Test 2 (Choice-level MM) 
+
+NOT ignoring the left vs. right position
+
+```{r}
+d_mm2 <- organize_data(d, "att1", c("level1", "level3"), "choice_level")
+
+pj_estimate(d_mm2, "mm", "analytical")
+pj_estimate(d_mm2, "mm", "simulation")
+pj_estimate(d_mm2, "mm", "bootstrap")
+
+pj_estimate(d_mm2, "mm", "analytical", .irr = 0.75)
+pj_estimate(d_mm2, "mm", "simulation", .irr = 0.75)
+pj_estimate(d_mm2, "mm", "bootstrap",  .irr = 0.75)
+```
+
+
+# Test 3 Choice-level MM
+
+Ignoring the left vs. right position
+
+```{r}
+temp1 <- organize_data(d, "att1", c("level1", "level3"), "choice_level")
+temp2 <- organize_data(d, "att1", c("level3", "level1"), "choice_level")
+
+data_for_irr <- bind_rows(
+  temp1$data_for_irr,
+  temp2$data_for_irr
+) %>% 
+  distinct()
+
+data_for_estimand <- bind_rows(
+  temp1$data_for_estimand,
+  temp2$data_for_estimand %>% mutate(selected = 1 - selected)
+)
+
+d_mm3 <- list(
+  "data_for_irr" = data_for_irr,
+  "data_for_estimand" = data_for_estimand
+)
+
+pj_estimate(d_mm3, "mm", "analytical")
+pj_estimate(d_mm3, "mm", "simulation")
+pj_estimate(d_mm3, "mm", "bootstrap")
+
+pj_estimate(d_mm3, "mm", "analytical", .irr = 0.75)
+pj_estimate(d_mm3, "mm", "simulation", .irr = 0.75)
+pj_estimate(d_mm3, "mm", "bootstrap",  .irr = 0.75)
+
+```
+
 
 
