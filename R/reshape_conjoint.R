@@ -207,6 +207,8 @@ reshape_conjoint <- function(
     as.data.frame()
   
   # Return the data frame and the variable labels as a list
-  list(labels, out)
+  list("labels" = labels, 
+       "data" = out) %>% 
+    return()
   
 }
