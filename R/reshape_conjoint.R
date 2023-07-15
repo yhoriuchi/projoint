@@ -44,7 +44,7 @@ reshape_conjoint <- function(
     .flipped = NULL
 ){
   
-  # Bind variables locally to the function
+  # bind variables locally to the function
   
   attribute_name <- NULL
   level_name <- NULL
@@ -60,10 +60,10 @@ reshape_conjoint <- function(
   profile <- NULL
   
   
-  # Number of tasks (including the repeated task)
+  # number of tasks (including the repeated task)
   n_tasks_all <- length(.outcomes)
   
-  # Number of tasks (excluding the repeated task)
+  # number of tasks (excluding the repeated task)
   if (.repeated == FALSE){
     n_tasks <- n_tasks_all
   } else if (.repeated == TRUE){
@@ -72,7 +72,7 @@ reshape_conjoint <- function(
     print("Error: .repeated must be logical.")
   }
   
-  # Check the consistency between .repeated and .flipped
+  # check the consistency between .repeated and .flipped
   if (.repeated == FALSE & !is.null(.flipped)){
     stop("Error: .flipped should be NULL if .repeated is FALSE.")
   } 
@@ -80,7 +80,7 @@ reshape_conjoint <- function(
     stop("Error: .flipped should be logical if .repeated is TRUE.")
   }
   
-  # Initial data cleaning
+  # initial data cleaning
   df <- .dataframe %>%
     # Rename the respondent identifier "id"
     dplyr::rename("id" = all_of(.idvar)) %>%
@@ -89,11 +89,11 @@ reshape_conjoint <- function(
     # assuming that all contents are empty if "-1-1" is NA.
     dplyr::filter(!is.na(!!rlang::sym(paste0(.alphabet, "-1-1"))))
   
-  # Data frame that only includes ID and conjoint-related variables
+  # data frame that only includes ID and conjoint-related variables
   temp0 <- df %>% 
     dplyr::select(id, tidyselect::contains(paste0(.alphabet, "-")))
   
-  # Number of columns in temp0
+  # number of columns in temp0
   n_col <- ncol(temp0)
   
   # c("id", "task", "attribute", "attribute_name")
@@ -112,7 +112,7 @@ reshape_conjoint <- function(
     dplyr::select(-all_of("x")) %>%
     rlang::set_names(c("id", "task", "profile", "attribute", "level_name"))
   
-  # Merge temp1 and temp2 and do further wrangling
+  # merge temp1 and temp2 and do further wrangling
   attribute_levels_long <- left_join(temp1, temp2,
                                      by = c("id", "task", "attribute")) %>%
     dplyr::select(-all_of("attribute")) %>%
@@ -121,7 +121,7 @@ reshape_conjoint <- function(
                   "level" = level_name) %>%
     dplyr::filter(task <= n_tasks)
   
-  # Make a list of attributes and levels, as well as their IDs
+  # make a list of attributes and levels, as well as their IDs
   labels <- attribute_levels_long %>%
     dplyr::arrange(attribute, level) %>%
     dplyr::select(attribute, level) %>%
@@ -133,7 +133,7 @@ reshape_conjoint <- function(
     dplyr::mutate(attribute_id = stringr::str_c("att", attribute_id),
                   level_id = stringr::str_c(attribute_id, ":level", level_id))
   
-  # Make a wide-form data frae with the attribute and level IDs
+  # make a wide-form data frae with the attribute and level IDs
   attribute_levels_wide <- attribute_levels_long %>%
     dplyr::left_join(labels, by = c("attribute", "level")) %>%
     dplyr::select(-attribute, -level) %>%
@@ -143,30 +143,30 @@ reshape_conjoint <- function(
     tidyr::pivot_wider(names_from = "attribute", values_from = "level") %>%
     dplyr::ungroup()
   
-  # Keep the first task, which is used in the repeated task
+  # keep the first task, which is used in the repeated task
   attribute_levels_repeated <- attribute_levels_wide %>%
     dplyr::filter(task == 1)
   
-  # Wrangle the response variables
+  # wrangle the response variables
   responses <- df %>%
     dplyr::select(id, all_of(.outcomes)) %>%
     tidyr::pivot_longer(names_to = "outcome_qnum", values_to = "response", cols = 2:(n_tasks_all + 1)) %>%
     dplyr::mutate(task = NA)
   
-  # Assign the response numbers
+  # assign the response numbers
   for (i in 1:n_tasks_all) {
     responses <- responses %>%
       dplyr::mutate(task = ifelse(outcome_qnum == .outcomes[i], i, task))
   }
   
-  # Further cleaning of the response data frame
+  # further cleaning of the response data frame
   response_cleaned <- responses %>%
     dplyr::mutate(selected = str_extract(response, ".$"),
                   selected = dplyr::case_when(selected == .outcomes_ids[1] ~ 1,
                                               selected == .outcomes_ids[2] ~ 2)) %>%
     dplyr::select(-response, -outcome_qnum)
   
-  # Data frame excluding the repeated task
+  # data frame excluding the repeated task
   out1 <- attribute_levels_wide %>%
     left_join(response_cleaned %>%
                 dplyr::filter(task <= n_tasks),
@@ -174,10 +174,10 @@ reshape_conjoint <- function(
     dplyr::mutate(selected = ifelse(profile == selected, 1, 0))
   
   
-  # Add the repeated task (if any)
+  # add the repeated task (if any)
   if (.repeated == TRUE){
     
-    # Tasks to estimate ICR
+    # tasks to estimate ICR
     out2 <- attribute_levels_repeated %>%
       left_join(response_cleaned %>%
                   dplyr::filter(task == n_tasks_all) %>%
@@ -189,7 +189,7 @@ reshape_conjoint <- function(
                                                 profile != selected & .flipped == TRUE  ~ 1)) %>%
       rename("selected_repeated" = selected)
     
-    # Merge
+    # merge
     suppressMessages(
       out_final <- left_join(out1, out2)
     )
@@ -200,13 +200,13 @@ reshape_conjoint <- function(
     
   }
   
-  # Final data frame
+  # final data frame
   out <- out_final %>%
     dplyr::mutate_if(is.character, as.factor) %>%
     dplyr::mutate(id = as.character(id)) %>%
     as.data.frame()
   
-  # Return the data frame and the variable labels as a list
+  # return the data frame and the variable labels as a list
   list("labels" = labels, 
        "data" = out) %>% 
     return()
