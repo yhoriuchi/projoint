@@ -28,6 +28,10 @@ out1 <- reshape_conjoint(.data = exampleData1,
 ```
 
 
+```{r}
+d <- out1$data
+```
+
 # Test 4 (Profile-level AMCE)
 
 ```{r}
