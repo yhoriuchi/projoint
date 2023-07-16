@@ -2,7 +2,7 @@
 
 # projoint
 
-### The One Stop Conjoint Shop
+### The One-Stop Conjoint Shop
 
 ---
 

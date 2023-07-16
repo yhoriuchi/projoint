@@ -9,6 +9,4 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The goal of projoint is to ... 
-
-You can get a basic website up and running in just a couple of minutes:
+Projoint is a package designed to be a complete pipeline for conjoint survey design, implementation, analysis, and visualization.
