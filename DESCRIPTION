@@ -1,6 +1,6 @@
 Package: projoint
 Type: Package
-Title: A More General, More Straightforward, and More Creative Framework for Conjoint Analysis
+Title: The One Stop Conjoint Shop
 Version: 0.2.0
 Author: Yusaku Horiuchi and Aaron Kaufman
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>

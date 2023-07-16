@@ -2,7 +2,7 @@
 
 # projoint
 
-### A More General, More Straightforward, and More Creative Framework for Conjoint Analysis
+### The One Stop Conjoint Shop
 
 ---
 
