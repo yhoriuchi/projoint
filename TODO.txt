@@ -11,7 +11,7 @@ g) Make a function to visualize specific (choice-level) AMCEs.
 f) Write an article explaining how to make subgroup comparisons of choice-level MMs
 g) Leeper et al.'s package does now allow researchers to use the same levels for more than one attribute (e.g., Teaching quality = {High, Low}, Research quality = {High, Low)). This is a major problem in their package. Since we separate the reshaped data frame and the data frame that includes a list of attributes and levels, we can avoid this problem. We should say that (and discourage researchers from using their package).
 h) We should also have a page (perhaps in Getting Started page) explaining why choice-level anaysis is much more useful and interesting.
-
+i) We should perhpas move the current articles to "Tutorials" and add real articles in the Article section
 
 
 
