@@ -1,3 +1,12 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# History files
+.Rhistory
+.Rapp.history
+
 library/
 local/
 cellar/
@@ -9,4 +18,3 @@ staging/
 .RData
 .Ruserdata
 docs
-.DS_Store
