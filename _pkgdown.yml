@@ -1,4 +1,19 @@
 url: https://yhoriuchi.github.io/projoint/
 template:
   bootstrap: 5
-
+tutorials:
+- name: 01-setup.Rmd
+  title: 01. Setting up your Qualtrics survey
+  url: https://yhoriuchi.github.io/projoint//learnr-tutorial01-setup/
+- name: 02-wrangle.Rmd
+  title: 02. Read and wrangle your data for conjoint analysis
+  url: https://yhoriuchi.github.io/projoint//learnr-tutorial02-wrangle/
+- name: 03-predict.Rmd
+  title: 03. Predict the intra-respondent reliability (IRR)
+  url: https://yhoriuchi.github.io/projoint//learnr-tutorial03-predict/
+- name: 04-estimate-mm.Rmd
+  title: 04. Estimate and correct marginal means (MMs)
+  url: https://yhoriuchi.github.io/projoint//learnr-tutorial04-estimate-mm/
+- name: 05-estimate-amce.Rmd
+  title: 05. Estimate and correct average marginal component effects (AMCEs)
+  url: https://yhoriuchi.github.io/projoint//learnr-tutorial05-estimate-amce/

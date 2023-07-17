@@ -1,10 +1,10 @@
 ---
-title: "Step 02: Predict IRR"
+title: "03. Predict the intra-respondent reliability (IRR)"
 output: rmarkdown::html_vignette
 description: >
   How to predict intra-respondent reliability without a repeated task
 vignette: >
-  %\VignetteIndexEntry{Step 02: Predict IRR}
+  %\VignetteIndexEntry{03. Predict the intra-respondent reliability (IRR)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

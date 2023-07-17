@@ -1,9 +1,7 @@
 #' Organize data before estimation
 #'
-#' This function converts a full conjoint data set to a data set structured
-#' for analyzing a specific attribute of interest and specific level(s) of interest.
+#' This function converts a full conjoint data set to a data set structured for analyzing a specific attribute of interest and specific level(s) of interest.
 #' This function receives input from reshape_data() and its output feeds into pj_estimate().
-#'
 #' @import dplyr
 #' @import tidyr
 #' @import stringr
@@ -15,66 +13,18 @@
 #' @param .structure either "choice_level" or "profile_level"
 #' @param .remove_ties TRUE if you want to remove ties for the attribute of interest (in profile-level analysis)
 #' @param .repeated_task TRUE if a repeated task is used to calculate IRR (recommended)
-#' @return A data frame suitable for analysis using pj_estimate()
-#' @export
-#' #' @examples
-#' library(projoint)
-#' library(stringr)
-#' 
-#' data("exampleData1")
-#' head(exampleData1)
-#'
-#' # Write outcome column names
-#' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
-#' outcomes <- c(outcomes, "choice1_repeated_flipped")
-#' 
-#' # Reshape the data into the profile-level format
-#' reshaped_data <- reshaped_data <- reshape_conjoint(
-#'   .dataframe = exampleData1, 
-#'   .idvar = "ResponseId", 
-#'   .outcomes = outcomes,
-#'   .outcomes_ids = c("A", "B"),
-#'   .alphabet = "K", 
-#'   .repeated = TRUE,
-#'   .flipped = TRUE)
-#'   
-#'  # Reorganize at the choice level
-#' organized_data <- organize_data(reshaped_data$data,
-#'    .attribute = "att6",
-#'    .level = c("level1", "level2"),
-#'    .structure = "choice_level")
-#'    
-#' head(organized_data$data_for_irr)
-#' head(organized_data$data_for_estimand)
-
-
-# Reshape the data into the profile-level format
- reshaped_data <- reshaped_data <- reshape_conjoint(
-   .dataframe = exampleData1, 
-   .idvar = "ResponseId", 
-   .outcomes = outcomes,
-   .outcomes_ids = c("A", "B"),
-   .alphabet = "K", 
-   .repeated = TRUE,
-   .flipped = TRUE)
- 
- organized_data <- organize_data(reshaped_data$data,
-    .attribute = "att6",
-    .level = c("level1", "level2"),
-    .structure = "choice_level",
-    .repeated_task = TRUE)
-
+#' @keywords internal
 
 organize_data <- function(
     .dataframe,
     .attribute,
     .level,
-    .structure = "choice_level",
-    .remove_ties = TRUE,
-    .repeated_task = TRUE
+    .structure,
+    .remove_ties,
+    .repeated_task
 ){
   
-  # bind variables locally to the function
+  # bind variables locally to the function ----------------------------------
   
   id <- NULL
   selected <- NULL
@@ -88,13 +38,9 @@ organize_data <- function(
   att_1 <- NULL
   att_2 <- NULL
   
-  # check
+  # check various settings --------------------------------------------------
+  
   structure  <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
-  
-  # attributes and levels of interest
-  att_levels <- stringr::str_c(.attribute, ":", .level)
-  
-  # check the number of levels that can be specified ------------------------
   
   n_levels <- length(att_levels)
   
@@ -107,6 +53,10 @@ organize_data <- function(
     stop("Specify 2 levels for choice-level analysis")
     
   }
+
+  # specify the attributes and levels of interest ---------------------------
+  
+  att_levels <- stringr::str_c(.attribute, ":", .level)
   
   # add a variable indicating disagreement ----------------------------------
   
@@ -161,13 +111,14 @@ organize_data <- function(
     
   }
   
-  
   # Keep necessary variables only and return --------------------------------
   
   # data frame to estimate IRR
   data1 <- out1 %>% 
     dplyr::select(id, disagree) %>% 
-    dplyr::filter(!is.na(disagree))
+    dplyr::filter(!is.na(disagree)) %>% 
+    dplyr::distinct() %>% 
+    tibble::as_tibble()
   
   # data frame to estimate MM or AMCE
   data2 <- out2 %>% 

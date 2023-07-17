@@ -1,0 +1,10 @@
+---
+title: "02. What are the quantities of interest?"
+description: >
+  xxx
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{02. What are the quantities of interest?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---

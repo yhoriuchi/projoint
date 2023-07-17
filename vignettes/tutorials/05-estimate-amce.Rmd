@@ -1,10 +1,10 @@
 ---
-title: "Step 04: Estimate and correct AMCEs"
+title: "05. Estimate and correct average marginal component effects (AMCEs)"
 output: rmarkdown::html_vignette
 description: >
   How to estimate and correct average marginal component effects
 vignette: >
-  %\VignetteIndexEntry{Step 04: Estimate and correct AMCEs}
+  %\VignetteIndexEntry{05. Estimate and correct average marginal component effects (AMCEs)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

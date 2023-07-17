@@ -42,13 +42,16 @@ library(stringr)
 data("exampleData1")
 head(exampleData1)
 
+# Write outcome column names
 outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
 outcomes <- c(outcomes, "choice1_repeated_flipped")
-reshaped_data = reshaped_data <- reshape_conjoint(
+
+# Reshape the data
+reshaped_data <- reshaped_data <- reshape_conjoint(
   .dataframe = exampleData1, 
   .idvar = "ResponseId", 
   .outcomes = outcomes,
-  .outcomes_ids = c("1", "2"),
+  .outcomes_ids = c("A", "B"),
   .alphabet = "K", 
   .repeated = TRUE,
   .flipped = TRUE)

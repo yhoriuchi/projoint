@@ -21,7 +21,7 @@ As well, there are arguments allowing users to step through these analysis decis
 
 To start, let's use `read_Qualtrics()` to load in a data set. We'll use an example data set that replicates a study by Mummolo & Nall (Journal of Politics, 2017) examining residential segregation in the United States. We replicate this study exactly, except for adding in an extra question we can use to estimate measurement error. You can find this data set on GitHub: \url{https://github.com/yhoriuchi/projoint/blob/master/data-raw/mummolo_nall_replication.csv}.
 
-```{r}
+```{r, eval=FALSE}
 library(projoint)
 dat <- read_Qualtrics("mummolo_nall_replication.csv")
 head(dat)
