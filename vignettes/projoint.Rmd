@@ -19,11 +19,11 @@ The `projoint()` function takes a number of inputs:
  
 As well, there are arguments allowing users to step through these analysis decisions more slowly. We include a function to read the results of a conjoint survey from a Qualtrics csv, a function to estimate measurement error, functions to restructure conjoint data according to specific quantities of interest, and several visualization functions to produce publication-ready plots.
 
-To start, let's use `read_Qualtrics()` to load in a data set. We'll use an example data set that replicates a study by Mummolo & Nall (Journal of Politics, 2017) examining residential segregation in the United States. We replicate this study exactly, except for adding in an extra question we can use to estimate measurement error. You can find this data set on GitHub: \url{https://github.com/yhoriuchi/projoint/blob/master/data-raw/mummolo_nall_replication.csv}.
+To start, let's use `read_Qualtrics()` to load in a data set. We'll use an example data set that replicates a study by Mummolo & Nall (Journal of Politics, 2017) examining residential segregation in the United States. We replicate this study exactly, except for adding in an extra question we can use to estimate measurement error. You can find this data set on GitHub: \url{https://github.com/yhoriuchi/projoint/blob/master/data-raw/mummolo_nall_replication_cleaned.csv}.
 
 ```{r, eval=FALSE}
 library(projoint)
-dat <- read_Qualtrics("mummolo_nall_replication.csv")
+dat <- read_Qualtrics("data-raw/mummolo_nall_replication_cleaned.csv")
 head(dat)
 ```
 
@@ -34,7 +34,7 @@ Next, we will use `reshape_projoint()` to prepare the data set for the main func
  reshaped_data <-  reshape_projoint(
    .dataframe = dat, 
    .idvar = "ResponseId", 
-   .outcomes = c("Q4.1", "Q4.2", "Q4.3", "Q4.4", "Q4.5", "Q4.6", "Q4.7", "Q4.8", "Q4.9", "Q5.1"),
+   .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
    .outcomes_ids = c("Community A", "Community B"),
    .alphabet = "K", 
    .repeated = TRUE,

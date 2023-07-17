@@ -51,6 +51,9 @@ exampleData1 <- d2 %>%
   filter(!is.na(choice1_repeated_flipped)) %>% 
   select(-choice1_repeated_notflipped)
 
+write.csv(exampleData1, file = "data-raw/mummolo_nall_replication_cleaned.csv",
+          row.names = FALSE)
+
 # data with the non-flipped repeated tasks
 exampleData2 <- d2 %>% 
   filter(!is.na(choice1_repeated_notflipped)) %>% 
