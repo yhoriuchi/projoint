@@ -7,14 +7,21 @@
 .Rhistory
 .Rapp.history
 
+# RStudio files
+.Rproj.user/
+
+# User-specific files
+.Ruserdata
+
+# Session Data files
+*.RData
+*.RDS
+
+# Folders
 library/
 local/
 cellar/
 lock/
 python/
 staging/
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-docs
+docs/
