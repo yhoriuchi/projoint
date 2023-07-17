@@ -7,16 +7,13 @@
     <loc>https://yhoriuchi.github.io/projoint/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/articles/01-read-wrangle.html</loc>
+    <loc>https://yhoriuchi.github.io/projoint/articles/01_conjoint_analysis.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/articles/02-predict-irr.html</loc>
+    <loc>https://yhoriuchi.github.io/projoint/articles/02_quantities_of_interest.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/articles/03-estimate-mm.html</loc>
-  </url>
-  <url>
-    <loc>https://yhoriuchi.github.io/projoint/articles/04-estimate-amce.html</loc>
+    <loc>https://yhoriuchi.github.io/projoint/articles/03_measurement_error.html</loc>
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/articles/index.html</loc>
@@ -59,5 +56,23 @@
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/reshape_conjoint.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/01-setup.Rmd.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/02-wrangle.Rmd.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/03-predict.Rmd.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/04-estimate-mm.Rmd.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/05-estimate-amce.Rmd.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/tutorials/index.html</loc>
   </url>
 </urlset>
