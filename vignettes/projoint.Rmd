@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Projoint is a complete pipeline for conjoint survey design, implementation, analysis, and visualization. This R library conducts the data wrangling, measurement error correction, and statistical analysis components. Most users will only encounter a single main function -- `projoint()` -- while more advanced users will have a high degree of control over the mechanics of their estimation.
+Projoint is a complete pipeline for conjoint survey design, implementation, analysis, and visualization. This R library conducts the data wrangling, measurement error correction, and statistical analysis components. Most users will only encounter two main functions -- `reshape_projoint()` and `projoint()` -- while more advanced users will have a high degree of control over the mechanics of their estimation.
 
 The `projoint()` function takes a number of inputs: 
  1. an argument specifying the data
@@ -27,6 +27,23 @@ dat <- read_Qualtrics("mummolo_nall_replication.csv")
 head(dat)
 ```
 
+Next, we will use `reshape_projoint()` to prepare the data set for the main function. This involves stripping unnecessary columns, indicating which column (if any) is a repeated task, and specifying the respondent identifier.
+
+```{r}
+
+ reshaped_data <-  reshape_projoint(
+   .dataframe = dat, 
+   .idvar = "ResponseId", 
+   .outcomes = c("Q4.1", "Q4.2", "Q4.3", "Q4.4", "Q4.5", "Q4.6", "Q4.7", "Q4.8", "Q4.9", "Q5.1"),
+   .outcomes_ids = c("Community A", "Community B"),
+   .alphabet = "K", 
+   .repeated = TRUE,
+   .flipped = TRUE)
+
+```
+
+Let's walk through the arguments we have specified. `dat` comes from the `read_Qualtrics()` call earlier, but the other arguments may appear to be more complicated -- rest assured, they are straightforward. The `.idvar` argument, a character, indicates that in `dat`, the column `ResponseId` indicates unique survey respondents. The `.outcomes` variable lists all the columns that are outcomes; the last element in this vector is the repeated task if it was conducted. `.outcomes_ids` indicates the possible options for an outcome -- A or B, Candidate 1 or Candidate 2, etc. `.alphabet` defaults to "K" if the conjoint survey was conducted using either our tool or Strezhnev's. The final two arguments, `.repeated` and `.flipped`, again relate to the repeated task. If the `.repeated` is set to `TRUE`, then the last element of the `.outcomes` vector is taken to be a repetition of the first task; `.flipped` indicates whether the profiles are in the reversed order.
+
 We can pass this data set directly into `projoint()` as follows:
 
 ```{r}
@@ -34,4 +51,3 @@ We can pass this data set directly into `projoint()` as follows:
 
 ```
 
-Let's walk through the arguments we have specified. `dat` comes from the `read_Qualtrics()` call earlier, but the other arguments may appear to be more complicated -- rest assured, they are straightforward.

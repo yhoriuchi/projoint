@@ -1,20 +1,20 @@
 #' Reshapes survey response data for conjoint analysis
 #'
-#' This function takes a data frame, preferably from \dQuote{read_Qualtrics()}, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
+#' This function takes a data frame, preferably from`read_Qualtrics()`, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
 #'
 #' @import dplyr
 #' @import tidyr
 #' @import stringr
 #' @import rlang
 #' @import tidyselect
-#' @param .dataframe A data frame, preferably from \dQuote{read_Qualtrics()}
+#' @param .dataframe A data frame, preferably from `read_Qualtrics()`
 #' @param .idvar A character identifying the column name containing respondent IDs
-#' @param .outcomes A character vector identifying the column names that contain outcomes
-#' @param .outcomes_ids A vector identifying the profiles of the outcomes -- e.g., c("A", "B")
+#' @param .outcomes A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.
+#' @param .outcomes_ids A vector identifying the profiles of the outcomes -- e.g., `c("A", "B")`
 #' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".
 #' @param .repeated TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.
 #' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
-#' @return A conjoint task-level data frame (in other words, in long format) ready for conjoint analysis.
+#' @return A projoint data frame of class `projoint.data` at the choice-level (in other words, in long format) ready for conjoint analysis.
 #' @export
 #' @examples
 #' library(projoint)
@@ -28,7 +28,7 @@
 #' outcomes <- c(outcomes, "choice1_repeated_flipped")
 #' 
 #' # Reshape the data
-#' reshaped_data <- reshaped_data <- reshape_conjoint(
+#' reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData1, 
 #'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
@@ -210,8 +210,9 @@ reshape_conjoint <- function(
     as.data.frame()
   
   # return the data frame and the variable labels as a list
-  list("labels" = labels, 
-       "data" = out) %>% 
-    return()
+  out2 <- list("labels" = labels, 
+       "data" = out)
+  class(out2) <- "projoint.data"
+  return(out2)
   
 }
