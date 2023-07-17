@@ -2,7 +2,6 @@
 
 export(pj_estimate)
 export(predict_tau)
-export(projoint)
 export(read_Qualtrics)
 export(reshape_projoint)
 import(dplyr)

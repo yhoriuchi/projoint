@@ -29,7 +29,7 @@ head(dat)
 
 Next, we will use `reshape_projoint()` to prepare the data set for the main function. This involves stripping unnecessary columns, indicating which column (if any) is a repeated task, and specifying the respondent identifier.
 
-```{r}
+```{r, eval=FALSE}
 
  reshaped_data <-  reshape_projoint(
    .dataframe = dat, 

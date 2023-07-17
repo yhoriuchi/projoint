@@ -212,7 +212,7 @@ reshape_projoint <- function(
   
   # return the data frame and the variable labels as a list
   out2 <- projoint.data("labels" = labels, 
-       "data" = out)
+                        "data" = out)
   return(out2)
   
 }
