@@ -9,4 +9,29 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Projoint is a package designed to be a complete pipeline for conjoint survey design, implementation, analysis, and visualization.
+Projoint is a complete pipeline for conjoint survey design, implementation, analysis, and visualization. This R library conducts the data wrangling, measurement error correction, and statistical analysis components. Most users will only encounter a single main function -- `projoint()` -- while more advanced users will have a high degree of control over the mechanics of their estimation.
+
+The `projoint()` function takes a number of inputs: 
+ 1. an argument specifying the data
+ 2. an argument set specifying the measurement error correction method
+ 3. an argument indicating the standard error estimation method
+ 4. optional arguments specifying the structure of the analysis and quantities of interest
+ 
+As well, there are arguments allowing users to step through these analysis decisions more slowly. We include a function to read the results of a conjoint survey from a Qualtrics csv, a function to estimate measurement error, functions to restructure conjoint data according to specific quantities of interest, and several visualization functions to produce publication-ready plots.
+
+To start, let's use `read_Qualtrics()` to load in a data set. We'll use an example data set that replicates a study by Mummolo & Nall (Journal of Politics, 2017) examining residential segregation in the United States. We replicate this study exactly, except for adding in an extra question we can use to estimate measurement error. You can find this data set on GitHub: \url{https://github.com/yhoriuchi/projoint/blob/master/data-raw/mummolo_nall_replication.csv}.
+
+```{r}
+library(projoint)
+dat <- read_Qualtrics("mummolo_nall_replication.csv")
+head(dat)
+```
+
+We can pass this data set directly into `projoint()` as follows:
+
+```{r}
+
+
+```
+
+Let's walk through the arguments we have specified. `dat` comes from the `read_Qualtrics()` call earlier, but the other arguments may appear to be more complicated -- rest assured, they are straightforward.
