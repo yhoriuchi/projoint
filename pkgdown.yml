@@ -2,11 +2,13 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  01_conjoint_analysis: 01_conjoint_analysis.html
-  02_quantities_of_interest: 02_quantities_of_interest.html
-  03_measurement_error: 03_measurement_error.html
+  01-setup: 01-setup.html
+  02-wrangle: 02-wrangle.html
+  03-predict: 03-predict.html
+  04-estimate-mm: 04-estimate-mm.html
+  05-estimate-amce: 05-estimate-amce.html
   projoint: projoint.html
-last_built: 2023-07-17T18:49Z
+last_built: 2023-07-17T19:12Z
 urls:
   reference: https://yhoriuchi.github.io/projoint/reference
   article: https://yhoriuchi.github.io/projoint/articles
