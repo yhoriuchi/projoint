@@ -2,8 +2,9 @@
 
 export(pj_estimate)
 export(predict_tau)
+export(projoint)
 export(read_Qualtrics)
-export(reshape_conjoint)
+export(reshape_projoint)
 import(dplyr)
 import(estimatr)
 import(ggplot2)

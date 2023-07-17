@@ -17,10 +17,6 @@
 *.RData
 *.RDS
 
-# Produced vignettes
-vignettes/*.html
-vignettes/*.pdf
-
 # Other folders
 library/
 local/
@@ -29,3 +25,4 @@ lock/
 python/
 staging/
 docs/
+vignettes/

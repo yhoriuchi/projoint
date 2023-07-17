@@ -17,7 +17,7 @@
 #' 
 #' 
 
-pj_estimate <- function(
+projoint <- function(
     .data,
     .structure,
     .irr,
@@ -34,7 +34,7 @@ pj_estimate <- function(
   if(class(.structure) != "projoint.structure"){
     stop("The .structure argument must be of class `projoint.structure` from the `set_qoi` function.")
   }
-  if(!is.null(.irr) & (!is.numeric(.irr) & length(.irr)==1){
+  if(!is.null(.irr) & !is.numeric(.irr) & length(.irr) == 1){
     stop("The .irr argument must be either a numeric scalar or NULL.")
   }
   if(!.se_method %in% c("analytic", "bootstrap", "simulation")){
@@ -43,10 +43,10 @@ pj_estimate <- function(
   if(!is.logical(.igore_position)){
     stop("The .ignore_position argument must be either TRUE or FALSE.")
   }
-  if(!is.null(.n_sims) & (!is.numeric(.n_sims) & length(.n_sims)==1){
+  if(!is.null(.n_sims) & !is.numeric(.n_sims) & length(.n_sims)==1){
     stop("The .n_sims argument must be either a numeric scalar or NULL.")
   }
-  if(!is.null(.n_boot) & (!is.numeric(.n_boot) & length(.n_boot)==1){
+  if(!is.null(.n_boot) & !is.numeric(.n_boot) & length(.n_boot)==1){
     stop("The .n_boot argument must be either a numeric scalar or NULL.")
   }
   
