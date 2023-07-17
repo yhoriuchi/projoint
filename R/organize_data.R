@@ -1,6 +1,8 @@
 #' Organize data before estimation
 #'
-#' This function ...
+#' This function converts a full conjoint data set to a data set structured
+#' for analyzing a specific attribute of interest and specific level(s) of interest.
+#' This function receives input from reshape_data() and its output feeds into pj_estimate().
 #'
 #' @import dplyr
 #' @import tidyr
@@ -17,10 +19,51 @@
 #' @export
 #' #' @examples
 #' library(projoint)
+#' library(stringr)
 #' 
-#' # Not run:
-#' # dat <- read_Qualtrics("mummolo_nall_replication.csv")
-#' # head(dat)
+#' data("exampleData1")
+#' head(exampleData1)
+#'
+#' # Write outcome column names
+#' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+#' outcomes <- c(outcomes, "choice1_repeated_flipped")
+#' 
+#' # Reshape the data into the profile-level format
+#' reshaped_data <- reshaped_data <- reshape_conjoint(
+#'   .dataframe = exampleData1, 
+#'   .idvar = "ResponseId", 
+#'   .outcomes = outcomes,
+#'   .outcomes_ids = c("A", "B"),
+#'   .alphabet = "K", 
+#'   .repeated = TRUE,
+#'   .flipped = TRUE)
+#'   
+#'  # Reorganize at the choice level
+#' organized_data <- organize_data(reshaped_data$data,
+#'    .attribute = "att6",
+#'    .level = c("level1", "level2"),
+#'    .structure = "choice_level")
+#'    
+#' head(organized_data$data_for_irr)
+#' head(organized_data$data_for_estimand)
+
+
+# Reshape the data into the profile-level format
+ reshaped_data <- reshaped_data <- reshape_conjoint(
+   .dataframe = exampleData1, 
+   .idvar = "ResponseId", 
+   .outcomes = outcomes,
+   .outcomes_ids = c("A", "B"),
+   .alphabet = "K", 
+   .repeated = TRUE,
+   .flipped = TRUE)
+ 
+ organized_data <- organize_data(reshaped_data$data,
+    .attribute = "att6",
+    .level = c("level1", "level2"),
+    .structure = "choice_level",
+    .repeated_task = TRUE)
+
 
 organize_data <- function(
     .dataframe,
