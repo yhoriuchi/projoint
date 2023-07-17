@@ -42,6 +42,9 @@ organize_data <- function(
   
   structure  <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
   
+  # specify the attributes and levels of interest
+  att_levels <- stringr::str_c(.attribute, ":", .level)
+  
   n_levels <- length(att_levels)
   
   if (structure == "profile_level" & n_levels == 2){
@@ -53,10 +56,7 @@ organize_data <- function(
     stop("Specify 2 levels for choice-level analysis")
     
   }
-
-  # specify the attributes and levels of interest ---------------------------
   
-  att_levels <- stringr::str_c(.attribute, ":", .level)
   
   # add a variable indicating disagreement ----------------------------------
   
