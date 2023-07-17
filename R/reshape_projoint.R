@@ -10,11 +10,11 @@
 #' @param .dataframe A data frame, preferably from `read_Qualtrics()`
 #' @param .idvar A character identifying the column name containing respondent IDs
 #' @param .outcomes A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.
-#' @param .outcomes_ids A vector identifying the profiles of the outcomes -- e.g., `c("A", "B")`
+#' @param .outcomes_ids A vector identifying the possibilities for the outcome variables -- e.g., `c("Candidate A", "Candidate B")`
 #' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".
 #' @param .repeated TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.
 #' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
-#' @return A projoint data frame of class `projoint.data` at the choice-level (in other words, in long format) ready for conjoint analysis.
+#' @return A projoint object of class `projoint.data` ready to pass to `projoint()`.
 #' @export
 #' @examples
 #' library(projoint)
@@ -37,7 +37,7 @@
 #'   .repeated = TRUE,
 #'   .flipped = TRUE)
 
-reshape_conjoint <- function(
+reshape_projoint <- function(
     .dataframe, 
     .idvar, 
     .outcomes, # This should include the repeated task if .repeated == TRUE
@@ -210,9 +210,8 @@ reshape_conjoint <- function(
     as.data.frame()
   
   # return the data frame and the variable labels as a list
-  out2 <- list("labels" = labels, 
+  out2 <- projoint.data("labels" = labels, 
        "data" = out)
-  class(out2) <- "projoint.data"
   return(out2)
   
 }
