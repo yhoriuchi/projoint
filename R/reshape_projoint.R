@@ -117,7 +117,8 @@ reshape_projoint <- function(
   
   # merge temp1 and temp2 and do further wrangling
   attribute_levels_long <- left_join(temp1, temp2,
-                                     by = c("id", "task", "attribute")) %>%
+                                     by = c("id", "task", "attribute"),
+                                     multiple = "all") %>%
     dplyr::select(-all_of("attribute")) %>%
     dplyr::mutate_at(c("task", "profile"), .funs = as.numeric) %>%
     dplyr::rename("attribute" = attribute_name,
