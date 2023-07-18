@@ -6,19 +6,21 @@ library(tidyverse)
 
 # Load functions ----------------------------------------------------------
 
-load("../projoint/projoint/data/exampleData1.rda")
-load("../projoint/projoint/data/exampleData2.rda")
-load("../projoint/projoint/data/exampleData3.rda")
+load("data/exampleData1.rda")
+load("data/exampleData2.rda")
+load("data/exampleData3.rda")
 
-source("../projoint/projoint/R/projoint_data.R")
-source("../projoint/projoint/R/projoint_qoi.R")
-source("../projoint/projoint/R/projoint_results.R")
+source("R/projoint_data.R")
+source("R/projoint_qoi.R")
+source("R/projoint_irr.R")
+source("R/projoint_results.R")
 
-source("../projoint/projoint/R/reshape_projoint.R")
-source("../projoint/projoint/R/predict_tau.R")
-source("../projoint/projoint/R/organize_data.R")
-source("../projoint/projoint/R/pj_estimate.R")
-source("../projoint/projoint/R/set_qoi.R")
+source("R/reshape_projoint.R")
+source("R/predict_tau.R")
+source("R/organize_data.R")
+source("R/pj_estimate.R")
+source("R/set_qoi.R")
+source("R/projoint.R")
 
 # Various ways to load data -----------------------------------------------
 
@@ -60,8 +62,8 @@ out3 <- reshape_projoint(.data = exampleData3,
 # Predict irr -------------------------------------------------------------
 
 predicted_irr <- predict_tau(out3)
-predicted_irr$predicted
-predicted_irr$figure
+predicted_irr@irr
+predicted_irr@figure
 
 # pj_estimate() -----------------------------------------------------------
 # Test 1: Profile-level MM
@@ -111,8 +113,9 @@ qoi_2 <- set_qoi(.structure = "choice_level",
                  .level = c("level1", "level3"))
 
 # Estimate MMs ------------------------------------------------------------
+source("R/projoint.R")
 
-projoint(.data = out1,
+pj1 = projoint(.data = out1,
          .qoi = NULL,
          .structure = "profile_level",
          .remove_ties = TRUE,
@@ -124,7 +127,7 @@ projoint(.data = out1,
          .n_sims = NULL,
          .n_boot = NULL)
 
-projoint(.data = out1,
+pj2 = projoint(.data = out1,
          .qoi = qoi_1,
          .structure = "profile_level",
          .remove_ties = TRUE,
@@ -136,7 +139,7 @@ projoint(.data = out1,
          .n_sims = NULL,
          .n_boot = NULL)
 
-projoint(.data = out1,
+pj3 = projoint(.data = out1,
          .qoi = qoi_2,
          .structure = "choice_level",
          .remove_ties = TRUE,

@@ -104,13 +104,21 @@ projoint <- function(
   tau <- unique(out$tau)
   estimates <- out %>% dplyr::select(-tau)
   
-  # slots inherited from projoint_data and projoint_qoi are NULL. Why?
-  projoint_results(projoint_data = .data,
-                   projoint_irr = projoint_irr(irr = tau, figure = NULL),
-                   projoint_qoi = .qoi,
-                   "estimate" = estimates) %>% 
-    return()
   
+  if(is.null(.qoi)){
+  # slots inherited from projoint_data and projoint_qoi are NULL. Why?
+    projoint_results("estimate" = estimates, # the slot specific to projoint_results
+                     labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
+                     irr = tau, figure = NULL) %>% 
+      return()
+  } else {
+    projoint_results("estimate" = estimates, # the slot specific to projoint_results
+                     labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
+                     irr = tau, figure = NULL, # slots inherited from projoint_irr
+                     attribute_of_interest = .qoi@attribute_of_interest,
+                     levels_of_interest = .qoi@levels_of_interest) %>% 
+      return()
+  }
   
   
 }
