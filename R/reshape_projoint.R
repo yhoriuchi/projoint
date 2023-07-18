@@ -14,7 +14,7 @@
 #' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".
 #' @param .repeated TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.
 #' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
-#' @return A projoint object of class `projoint.data` ready to pass to `projoint()`.
+#' @return A projoint object of class `projoint_data` ready to pass to `projoint()`.
 #' @export
 #' @examples
 #' library(projoint)
@@ -211,7 +211,7 @@ reshape_projoint <- function(
     as.data.frame()
   
   # return the data frame and the variable labels as a list
-  out2 <- projoint.data("labels" = labels, 
+  out2 <- projoint_data("labels" = labels, 
                         "data" = out)
   return(out2)
   

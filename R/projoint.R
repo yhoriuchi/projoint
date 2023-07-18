@@ -6,7 +6,7 @@
 #' @import rlang
 #' @importFrom MASS mvrnorm
 #' @param .data A `projoint_data` object
-#' @param .structure A `projoint_structure` object. If missing, defaults to producing all MMs and all AMCEs.
+#' @param .qoi A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.
 #' @param .irr NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
 #' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right. Relevant only if analyzed at the choice level
 #' @param .se_method c("analytic", "simulation", "bootstrap") description
@@ -19,48 +19,97 @@
 
 projoint <- function(
     .data,
-    .structure,
-    .irr,
-    .se_method = "analytic",
-    .ignore_position = TRUE,
+    .qoi = NULL,
+    .structure = "profile_level",
+    .estimand = "mm",
+    .se_method = "analytical",
+    .irr = NULL,
+    .remove_ties = TRUE,
+    .repeated_task = TRUE,
+    .ignore_position = NULL,
     .n_sims = NULL,
     .n_boot = NULL
 ){
   
-  # Type check the inputs
+  # bind variables locally to the function ----------------------------------
+  
+  # To be added
+  
+  # check various settings --------------------------------------------------
+  # also see: many checks in pj_estimate()
+  
   if(class(.data) != "projoint_data"){
     stop("The .data argument must be of class `projoint_data` from the `reshape_projoint` function.")
   }
-  if(class(.structure) != "projoint_structure"){
-    stop("The .structure argument must be of class `projoint_structure` from the `set_qoi` function.")
-  }
-  if(!is.null(.irr) & !is.numeric(.irr) & length(.irr) == 1){
-    stop("The .irr argument must be either a numeric scalar or NULL.")
-  }
-  if(!.se_method %in% c("analytic", "bootstrap", "simulation")){
-    stop("The .se_method argument must be one of: analytic, bootstrap, simulation.")
-  }
-  if(!is.logical(.igore_position)){
-    stop("The .ignore_position argument must be either TRUE or FALSE.")
-  }
-  if(!is.null(.n_sims) & !is.numeric(.n_sims) & length(.n_sims)==1){
-    stop("The .n_sims argument must be either a numeric scalar or NULL.")
-  }
-  if(!is.null(.n_boot) & !is.numeric(.n_boot) & length(.n_boot)==1){
-    stop("The .n_boot argument must be either a numeric scalar or NULL.")
+  
+  if(!is.null(.qoi) & class(.qoi) != "projoint_qoi"){
+    stop("The .qoi argument must be of class `projoint_qoi` from the `set_qoi` function.")
   }
   
-  # do some work ------------------------------------------------------------
+  # estimate all MMs or AMCEs -----------------------------------------------
   
-  # return the output -------------------------------------------------------
+  if (is.null(.qoi)){
+    
+    attribute_levels <- .data@labels$level_id
+    
+    out <- NULL
+    
+    for (i in seq_along(attribute_levels)){
+      
+      attribute <- str_extract(attribute_levels[i], "^.+(?=:)")
+      level     <- str_extract(attribute_levels[i], "(?<=:).+$")
+      
+      temp <- pj_estimate(.data,
+                          attribute, # note: this is NOT .attribute
+                          level, # note: this is NOT .level
+                          .structure,
+                          .estimand,
+                          .se_method,
+                          .irr,
+                          .remove_ties,
+                          .repeated_task,
+                          .ignore_position,
+                          .n_sims,
+                          .n_boot) %>% 
+        mutate(attribute = attribute, 
+               level = level)
+      
+      out <- bind_rows(out, temp)
+      
+    }
+    
+  } else{
+    
+    attribute <- .qoi@attribute_of_interest
+    level <- .qoi@levels_of_interest
+    
+    out <- pj_estimate(.data,
+                       attribute, # note: this is NOT .attribute
+                       level, # note: this is NOT .level
+                       .structure,
+                       .estimand,
+                       .se_method,
+                       .irr,
+                       .remove_ties,
+                       .repeated_task,
+                       .ignore_position,
+                       .n_sims,
+                       .n_boot) %>% 
+      mutate(attribute = attribute, 
+             level = level)
+    
+  }
   
-  output <- projoint_results(projoint_data = .data,
-                             projoint_structure = .structure,
-                             irr = irr,
-                             mm = mm,
-                             amce = amce)
+  # return(out)
+  tau <- unique(out$tau)
+  estimates <- out %>% dplyr::select(-tau)
   
-  return(output)
+  # slots inherited from projoint_data and projoint_qoi are NULL. Why?
+  projoint_results("tau" = tau,
+                   "estimate" = estimates) %>% 
+    return()
   
-} 
+  
+  
+}
 

@@ -3,8 +3,7 @@
 #' @param contains Inherits slots from `projoint_data` and, optionally, `projoint_structure`
 
 projoint_results <- setClass("projoint_results",
-                             slots = c("irr", 
-                                       "mm", 
-                                       "amce"),
+                             slots = c("tau", 
+                                       "estimate"),
                              contains = c("projoint_data", 
-                                          "projoint_structure"))
+                                          "projoint_qoi"))
