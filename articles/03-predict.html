@@ -49,8 +49,6 @@
     <a class="dropdown-item" href="../articles/01-setup.html">01. Setting up your Qualtrics survey</a>
     <a class="dropdown-item" href="../articles/02-wrangle.html">02. Read and wrangle your data for conjoint analysis</a>
     <a class="dropdown-item" href="../articles/03-predict.html">03. Predict the intra-respondent reliability (IRR)</a>
-    <a class="dropdown-item" href="../articles/04-estimate-mm.html">04. Estimate and correct marginal means (MMs)</a>
-    <a class="dropdown-item" href="../articles/05-estimate-amce.html">05. Estimate and correct average marginal component effects (AMCEs)</a>
   </div>
 </li>
 <li class="nav-item">
@@ -87,7 +85,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">out3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_conjoint.html">reshape_conjoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">exampleData3</span>, </span>
+<span><span class="va">out3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData3</span>, </span>
 <span>                         .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
 <span>                         .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span>
 <span>                         .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
@@ -96,20 +94,21 @@
 <span>                         .flipped <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p>Then, …</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">predicted_irr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predict_tau.html">predict_tau</a></span><span class="op">(</span><span class="va">out3</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">predicted_irr</span><span class="op">$</span><span class="va">predicted</span></span></code></pre></div>
-<pre><code><span><span class="co">##   x predicted</span></span>
-<span><span class="co">## 1 0 0.7434289</span></span>
-<span><span class="co">## 2 1 0.7090729</span></span>
-<span><span class="co">## 3 2 0.6747168</span></span>
-<span><span class="co">## 4 3 0.6403607</span></span>
-<span><span class="co">## 5 4 0.6060047</span></span>
-<span><span class="co">## 6 5 0.5716486</span></span>
-<span><span class="co">## 7 6 0.5372926</span></span>
-<span><span class="co">## 8 7 0.5029365</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">predicted_irr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predict_tau.html">predict_tau</a></span><span class="op">(</span><span class="va">out3</span><span class="op">)</span></span>
+<span><span class="va">predicted_irr</span><span class="op">@</span><span class="va">irr</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
+<span><span class="co">##       x predicted</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>     0     0.743</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>     1     0.709</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>     2     0.675</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>     3     0.640</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>     4     0.606</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span>     5     0.572</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">7</span>     6     0.537</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">8</span>     7     0.503</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">predicted_irr</span><span class="op">$</span><span class="va">figure</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">predicted_irr</span><span class="op">@</span><span class="va">figure</span></span></code></pre></div>
 <p><img src="03-predict_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
   </main>
 </div>

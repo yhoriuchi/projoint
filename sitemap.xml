@@ -16,12 +16,6 @@
     <loc>https://yhoriuchi.github.io/projoint/articles/03-predict.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/articles/04-estimate-mm.html</loc>
-  </url>
-  <url>
-    <loc>https://yhoriuchi.github.io/projoint/articles/05-estimate-amce.html</loc>
-  </url>
-  <url>
     <loc>https://yhoriuchi.github.io/projoint/articles/index.html</loc>
   </url>
   <url>
@@ -58,9 +52,27 @@
     <loc>https://yhoriuchi.github.io/projoint/reference/predict_tau.html</loc>
   </url>
   <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_data-class.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_irr-class.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_qoi-class.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_results-class.html</loc>
+  </url>
+  <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/read_Qualtrics.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/reference/reshape_conjoint.html</loc>
+    <loc>https://yhoriuchi.github.io/projoint/reference/reshape_projoint.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/set_qoi.html</loc>
   </url>
 </urlset>

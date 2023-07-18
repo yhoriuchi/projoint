@@ -49,8 +49,6 @@
     <a class="dropdown-item" href="../articles/01-setup.html">01. Setting up your Qualtrics survey</a>
     <a class="dropdown-item" href="../articles/02-wrangle.html">02. Read and wrangle your data for conjoint analysis</a>
     <a class="dropdown-item" href="../articles/03-predict.html">03. Predict the intra-respondent reliability (IRR)</a>
-    <a class="dropdown-item" href="../articles/04-estimate-mm.html">04. Estimate and correct marginal means (MMs)</a>
-    <a class="dropdown-item" href="../articles/05-estimate-amce.html">05. Estimate and correct average marginal component effects (AMCEs)</a>
   </div>
 </li>
 <li class="nav-item">
@@ -85,10 +83,11 @@
 <p>Projoint is a complete pipeline for conjoint survey design,
 implementation, analysis, and visualization. This R library conducts the
 data wrangling, measurement error correction, and statistical analysis
-components. Most users will only encounter a single main function –
-<code>projoint()</code> – while more advanced users will have a high
-degree of control over the mechanics of their estimation.</p>
-<p>The <code>projoint()</code> function takes a number of inputs: 1. an
+components. Most users will only encounter two main functions –
+<code><a href="../reference/reshape_projoint.html">reshape_projoint()</a></code> and <code><a href="../reference/projoint.html">projoint()</a></code> – while more
+advanced users will have a high degree of control over the mechanics of
+their estimation.</p>
+<p>The <code><a href="../reference/projoint.html">projoint()</a></code> function takes a number of inputs: 1. an
 argument specifying the data 2. an argument set specifying the
 measurement error correction method 3. an argument indicating the
 standard error estimation method 4. optional arguments specifying the
@@ -107,14 +106,40 @@ in an extra question we can use to estimate measurement error. You can
 find this data set on GitHub: .</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
-<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_Qualtrics.html">read_Qualtrics</a></span><span class="op">(</span><span class="st">"mummolo_nall_replication.csv"</span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_Qualtrics.html">read_Qualtrics</a></span><span class="op">(</span><span class="st">"data-raw/mummolo_nall_replication_cleaned.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<p>We can pass this data set directly into <code>projoint()</code> as
-follows:</p>
+<p>Next, we will use <code><a href="../reference/reshape_projoint.html">reshape_projoint()</a></code> to prepare the data
+set for the main function. This involves stripping unnecessary columns,
+indicating which column (if any) is a repeated task, and specifying the
+respondent identifier.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span> <span class="va">reshaped_data</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
+<span>   .dataframe <span class="op">=</span> <span class="va">dat</span>, </span>
+<span>   .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
+<span>   .outcomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span>,</span>
+<span>   .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Community A"</span>, <span class="st">"Community B"</span><span class="op">)</span>,</span>
+<span>   .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
+<span>   .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>   .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Let’s walk through the arguments we have specified. <code>dat</code>
 comes from the <code><a href="../reference/read_Qualtrics.html">read_Qualtrics()</a></code> call earlier, but the other
 arguments may appear to be more complicated – rest assured, they are
-straightforward.</p>
+straightforward. The <code>.idvar</code> argument, a character,
+indicates that in <code>dat</code>, the column <code>ResponseId</code>
+indicates unique survey respondents. The <code>.outcomes</code> variable
+lists all the columns that are outcomes; the last element in this vector
+is the repeated task (if it was conducted). <code>.outcomes_ids</code>
+indicates the possible options for an outcome – A or B, Candidate 1 or
+Candidate 2, etc. <code>.alphabet</code> defaults to “K” if the conjoint
+survey was conducted using either our tool or Strezhnev’s. The final two
+arguments, <code>.repeated</code> and <code>.flipped</code>, again
+relate to the repeated task. If the <code>.repeated</code> is set to
+<code>TRUE</code>, then the last element of the <code>.outcomes</code>
+vector is taken to be a repetition of the first task;
+<code>.flipped</code> indicates whether the profiles are in the reversed
+order.</p>
+<p>We can pass this data set directly into <code><a href="../reference/projoint.html">projoint()</a></code> as
+follows:</p>
   </main>
 </div>
 
