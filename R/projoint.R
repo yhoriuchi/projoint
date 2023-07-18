@@ -105,7 +105,9 @@ projoint <- function(
   estimates <- out %>% dplyr::select(-tau)
   
   # slots inherited from projoint_data and projoint_qoi are NULL. Why?
-  projoint_results("tau" = tau,
+  projoint_results(projoint_data = .data,
+                   projoint_irr = projoint_irr(irr = tau, figure = NULL),
+                   projoint_qoi = .qoi,
                    "estimate" = estimates) %>% 
     return()
   

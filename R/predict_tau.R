@@ -265,8 +265,7 @@ predict_tau <- function(
   
   
   # return
-  
-  list("predicted" = predicted, 
-       "figure" = g)
+  out = projoint_irr(predicted = predicted, figure = g)
+  return(out)
   
 }

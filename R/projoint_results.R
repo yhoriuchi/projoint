@@ -1,9 +1,9 @@
 #' Class generator for `projoint_results`
-#' @param slots Takes three slots: `irr`, `mm`, and `amce`. `irr` is a scalar, `mm` and `amce` are data frames.
-#' @param contains Inherits slots from `projoint_data` and, optionally, `projoint_structure`
+#' @param slots Takes one slot: `estimate`, a data frame.
+#' @param contains Inherits slots from `projoint_data`, `projoint_irr`, and, optionally, `projoint_structure`
 
 projoint_results <- setClass("projoint_results",
-                             slots = c("tau", 
-                                       "estimate"),
+                             slots = c("estimate"),
                              contains = c("projoint_data", 
-                                          "projoint_qoi"))
+                                          "projoint_qoi",
+                                          "projoint_irr"))

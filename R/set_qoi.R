@@ -1,12 +1,12 @@
 #' Set the quantities of interest
 #'
-#' This function ...
+#' This function allows users to specify more fine-tuned details of their conjoint analysis. In particular, users can set very specific quantities of interest aside from simple AMCEs or MMs.
 #'
 #' @import rlang
 #' @import stringr
-#' @param .structure either "choice_level" or "profile_level
-#' @param .attribute The attribute of interest
-#' @param .level The level/s of interest: either a character or a character vector with the length of 2
+#' @param .structure Either "choice_level" or "profile_level
+#' @param .attribute A character scalar indicating the attribute of interest
+#' @param .level The level(s) of interest: either a character or a character vector of length 2
 #' @return A `projoint_structure` object
 #' @export
 #' 
