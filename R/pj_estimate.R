@@ -82,6 +82,15 @@ pj_estimate <- function(
     stop("The .n_boot argument must be either a numeric scalar or NULL.")
   }
   
+  if(.se_method == "simulation" & is.null(.n_sims)){
+    stop("Specify the .n_sims arguement for simulation")
+  }
+
+  if(.se_method == "bootstrap" & is.null(.n_boot)){
+    stop("Specify the .n_boot arguement for bootstrapping")
+  }
+  
+  
   # Organize data -----------------------------------------------------------
   
   if (.structure == "choice_level" & !is.null(.ignore_position) & !isTRUE(.ignore_position)){

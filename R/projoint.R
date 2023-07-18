@@ -78,7 +78,7 @@ projoint <- function(
                           .n_sims,
                           .n_boot) %>% 
         mutate(attribute = attribute, 
-               level = level)
+               level = paste0(level, collapse = ", "))
       
       out <- bind_rows(out, temp)
       
@@ -102,7 +102,7 @@ projoint <- function(
                        .n_sims,
                        .n_boot) %>% 
       mutate(attribute = attribute, 
-             level = level)
+             level = paste0(level, collapse = ", "))
     
   }
   
