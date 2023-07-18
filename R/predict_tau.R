@@ -11,6 +11,7 @@
 #' @import ggplot2
 #' @import ggthemes
 #' @importFrom stats setNames
+#' @importFrom methods new
 #' @param .data A `projoint_data` object
 #' @param .idvar A character identifying the column name containing respondent IDs
 #' @param .title The title of a figure
@@ -26,7 +27,7 @@
 #'
 #' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
 #' outcomes <- c(outcomes, "choice1_repeated_flipped")
-#' reshaped_data = reshaped_data <- reshape_conjoint(
+#' reshaped_data = reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData1, 
 #'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
@@ -44,7 +45,7 @@
 #'
 #' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
 #' outcomes <- c(outcomes, "choice1_repeated_notflipped")
-#' reshaped_data = reshaped_data <- reshape_conjoint(
+#' reshaped_data = reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData2, 
 #'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
@@ -62,7 +63,7 @@
 #'
 #' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
 #' outcomes <- c(outcomes)
-#' reshaped_data = reshaped_data <- reshape_conjoint(
+#' reshaped_data = reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData3, 
 #'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,

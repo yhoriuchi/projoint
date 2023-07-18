@@ -5,8 +5,14 @@
 #' @import dplyr
 #' @import rlang
 #' @importFrom MASS mvrnorm
+#' @importFrom methods is
+#' @importFrom methods new
 #' @param .data A `projoint_data` object
 #' @param .qoi A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.
+#' @param .structure Either "profile_level" or "choice_level"
+#' @param .estimand Either "mm" for marginal mean or "amce" for average marginal component effect
+#' @param .remove_ties Logical: should ties be removed before estimation? Defaults to TRUE.
+#' @param .repeated_task Logical: is there a repeated task with which to estimate IRR?
 #' @param .irr NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
 #' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right. Relevant only if analyzed at the choice level
 #' @param .se_method c("analytic", "simulation", "bootstrap") description
@@ -38,11 +44,11 @@ projoint <- function(
   # check various settings --------------------------------------------------
   # also see: many checks in pj_estimate()
   
-  if(class(.data) != "projoint_data"){
+  if(is(.data, "projoint_data")){
     stop("The .data argument must be of class `projoint_data` from the `reshape_projoint` function.")
   }
   
-  if(!is.null(.qoi) & class(.qoi) != "projoint_qoi"){
+  if(!is.null(.qoi) & is(.qoi,"projoint_qoi")){
     stop("The .qoi argument must be of class `projoint_qoi` from the `set_qoi` function.")
   }
   

@@ -17,6 +17,7 @@ Imports:
     ggplot2,
     stats,
     tibble,
+    methods,
     MASS
 License: MIT + file LICENSE
 Encoding: UTF-8

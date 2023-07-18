@@ -30,7 +30,7 @@ reshape_projoint(
 \item{.flipped}{TRUE if the profiles of the repeated task are flipped (recommended)}
 }
 \value{
-A projoint object of class `projoint.data` ready to pass to `projoint()`.
+A projoint object of class `projoint_data` ready to pass to `projoint()`.
 }
 \description{
 This function takes a data frame, preferably from`read_Qualtrics()`, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
