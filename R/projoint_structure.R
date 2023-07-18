@@ -1,7 +1,7 @@
 #' Class generator for `data`
 #' @param slots Takes ?? slots. `unit` can be either "choice" or "profile". 
 
-projoint.structure <- setClass("projoint.structure",
+projoint_structure <- setClass("projoint_structure",
                                slots = c("unit",
                                          "attribute_of_interest",
                                          "levels_of_interest",

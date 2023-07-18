@@ -5,14 +5,14 @@
 #' @import dplyr
 #' @import rlang
 #' @importFrom MASS mvrnorm
-#' @param .data A `projoint.data` object
-#' @param .structure A `projoint.structure` object. If missing, defaults to producing all MMs and all AMCEs.
+#' @param .data A `projoint_data` object
+#' @param .structure A `projoint_structure` object. If missing, defaults to producing all MMs and all AMCEs.
 #' @param .irr NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
 #' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right. Relevant only if analyzed at the choice level
 #' @param .se_method c("analytic", "simulation", "bootstrap") description
 #' @param .n_sims The number of simulations. Relevant only if .se_method == "simulation" 
 #' @param .n_boot The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"
-#' @return A `projoint.results` object
+#' @return A `projoint_results` object
 #' @export
 #' 
 #' 
@@ -28,11 +28,11 @@ projoint <- function(
 ){
   
   # Type check the inputs
-  if(class(.data) != "projoint.data"){
-    stop("The .data argument must be of class `projoint.data` from the `reshape_projoint` function.")
+  if(class(.data) != "projoint_data"){
+    stop("The .data argument must be of class `projoint_data` from the `reshape_projoint` function.")
   }
-  if(class(.structure) != "projoint.structure"){
-    stop("The .structure argument must be of class `projoint.structure` from the `set_qoi` function.")
+  if(class(.structure) != "projoint_structure"){
+    stop("The .structure argument must be of class `projoint_structure` from the `set_qoi` function.")
   }
   if(!is.null(.irr) & !is.numeric(.irr) & length(.irr) == 1){
     stop("The .irr argument must be either a numeric scalar or NULL.")
@@ -54,8 +54,8 @@ projoint <- function(
   
   # return the output -------------------------------------------------------
   
-  output <- projoint.results(projoint.data = .data,
-                             projoint.structure = .structure,
+  output <- projoint_results(projoint_data = .data,
+                             projoint_structure = .structure,
                              irr = irr,
                              mm = mm,
                              amce = amce)
