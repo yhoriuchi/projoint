@@ -59,6 +59,14 @@ projoint <- function(
   if(!is.null(.irr) & .repeated_task == TRUE){
     stop("If there is a repeated task, .irr should be NULL so projoint can estimate IRR instead of pre-specifying it.")
   }
+
+  if(.se_method == "simulation" & is.null(.n_sims)){
+    stop("If SEs are calculated by simulation, .n_sims must be specified (not NULL).")
+  }
+  
+  if(.se_method == "bootstrap" & is.null(.n_boot)){
+    stop("If SEs are calculated by bootstrap, .n_boot must be specified (not NULL).")
+  }
   
   # estimate all MMs or AMCEs -----------------------------------------------
   
