@@ -51,6 +51,14 @@ projoint <- function(
   if(!is.null(.qoi) & !is(.qoi, "projoint_qoi")){
     stop("The .qoi argument must be of class `projoint_qoi` from the `set_qoi` function.")
   }
+
+  if(!.repeated_task){
+    warning("We strongly encourage researchers to use the repeated task method of estimating IRR.")
+  }
+
+  if(!is.null(.irr) & .repeated_task == TRUE){
+    stop("If there is a repeated task, .irr should be NULL so projoint can estimate IRR instead of pre-specifying it.")
+  }
   
   # estimate all MMs or AMCEs -----------------------------------------------
   
