@@ -230,13 +230,14 @@ predict_tau <- function(
   
   # a vector of predicted values
   predicted <- newdata %>% 
-    mutate(predicted = predict(out_reg, newdata))
+    mutate(predicted = predict(out_reg, newdata)) %>% 
+    as_tibble()
   
   # prediction of x == 0
   
   prediction <- predicted %>% 
     dplyr::filter(x == 0) %>% 
-    dplyr::pull(predicted)
+    dplyr::pull(predicted) 
   
   g <- ggplot2::ggplot() +
     ggplot2::geom_hline(yintercept = 0.5, linetype = "dashed", color = "gray") +

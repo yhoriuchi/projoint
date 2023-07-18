@@ -17,7 +17,7 @@ library(projoint)
 
 ```{r}
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-out3 <- reshape_projoint(.data = exampleData3, 
+out3 <- reshape_projoint(.dataframe = exampleData3, 
                          .idvar = "ResponseId", 
                          .outcomes = outcomes,
                          .outcomes_ids = c("A", "B"),
@@ -29,8 +29,7 @@ out3 <- reshape_projoint(.data = exampleData3,
 Then, ...
 
 ```{r}
-predicted_irr <- predict_tau(out3$data)
-
+predicted_irr <- predict_tau(out3)
 predicted_irr@irr
 predicted_irr@figure
 ```

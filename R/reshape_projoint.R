@@ -208,7 +208,7 @@ reshape_projoint <- function(
   out <- out_final %>%
     dplyr::mutate_if(is.character, as.factor) %>%
     dplyr::mutate(id = as.character(id)) %>%
-    as.data.frame()
+    as_tibble()
   
   # return the data frame and the variable labels as a list
   out2 <- projoint_data("labels" = labels, 

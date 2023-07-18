@@ -44,11 +44,11 @@ projoint <- function(
   # check various settings --------------------------------------------------
   # also see: many checks in pj_estimate()
   
-  if(is(.data, "projoint_data")){
+  if(!is(.data, "projoint_data")){
     stop("The .data argument must be of class `projoint_data` from the `reshape_projoint` function.")
   }
   
-  if(!is.null(.qoi) & is(.qoi,"projoint_qoi")){
+  if(!is.null(.qoi) & !is(.qoi, "projoint_qoi")){
     stop("The .qoi argument must be of class `projoint_qoi` from the `set_qoi` function.")
   }
   
@@ -108,17 +108,19 @@ projoint <- function(
   
   # return(out)
   tau <- unique(out$tau)
-  estimates <- out %>% dplyr::select(-tau)
+  estimates <- out %>% 
+    dplyr::select(-tau) %>% 
+    as_tibble()
   
   
   if(is.null(.qoi)){
   # slots inherited from projoint_data and projoint_qoi are NULL. Why?
-    projoint_results("estimate" = estimates, # the slot specific to projoint_results
+    projoint_results("estimates" = estimates, # the slot specific to projoint_results
                      labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
                      irr = tau, figure = NULL) %>% 
       return()
   } else {
-    projoint_results("estimate" = estimates, # the slot specific to projoint_results
+    projoint_results("estimates" = estimates, # the slot specific to projoint_results
                      labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
                      irr = tau, figure = NULL, # slots inherited from projoint_irr
                      attribute_of_interest = .qoi@attribute_of_interest,
