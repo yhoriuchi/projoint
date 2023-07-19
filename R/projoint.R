@@ -12,7 +12,6 @@
 #' @param .structure Either "profile_level" or "choice_level"
 #' @param .estimand Either "mm" for marginal mean or "amce" for average marginal component effect
 #' @param .remove_ties Logical: should ties be removed before estimation? Defaults to TRUE.
-#' @param .repeated_task Logical: is there a repeated task with which to estimate IRR?
 #' @param .irr NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
 #' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right. Relevant only if analyzed at the choice level
 #' @param .se_method c("analytic", "simulation", "bootstrap") description
@@ -31,7 +30,6 @@ projoint <- function(
     .se_method = "analytical",
     .irr = NULL,
     .remove_ties = TRUE,
-    .repeated_task = TRUE,
     .ignore_position = NULL,
     .n_sims = NULL,
     .n_boot = NULL
@@ -50,14 +48,6 @@ projoint <- function(
   
   if(!is.null(.qoi) & !is(.qoi, "projoint_qoi")){
     stop("The .qoi argument must be of class `projoint_qoi` from the `set_qoi` function.")
-  }
-
-  if(!.repeated_task){
-    warning("We strongly encourage researchers to use the repeated task method of estimating IRR.")
-  }
-
-  if(!is.null(.irr) & .repeated_task == TRUE){
-    stop("If there is a repeated task, .irr should be NULL so projoint can estimate IRR instead of pre-specifying it.")
   }
 
   if(.se_method == "simulation" & is.null(.n_sims)){
@@ -89,7 +79,6 @@ projoint <- function(
                           .se_method,
                           .irr,
                           .remove_ties,
-                          .repeated_task,
                           .ignore_position,
                           .n_sims,
                           .n_boot) %>% 
@@ -113,7 +102,6 @@ projoint <- function(
                        .se_method,
                        .irr,
                        .remove_ties,
-                       .repeated_task,
                        .ignore_position,
                        .n_sims,
                        .n_boot) %>% 

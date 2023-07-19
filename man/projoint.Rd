@@ -12,7 +12,6 @@ projoint(
   .se_method = "analytical",
   .irr = NULL,
   .remove_ties = TRUE,
-  .repeated_task = TRUE,
   .ignore_position = NULL,
   .n_sims = NULL,
   .n_boot = NULL
@@ -32,8 +31,6 @@ projoint(
 \item{.irr}{NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value}
 
 \item{.remove_ties}{Logical: should ties be removed before estimation? Defaults to TRUE.}
-
-\item{.repeated_task}{Logical: is there a repeated task with which to estimate IRR?}
 
 \item{.ignore_position}{TRUE (default) if you ignore the location of profile (left or right. Relevant only if analyzed at the choice level}
 

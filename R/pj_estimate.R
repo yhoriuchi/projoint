@@ -13,7 +13,6 @@
 #' @param .se_method  A character identifying the method of correcting measurement error bias: "analytical" (default), "simulation", or "bootstrap" (not recommended)
 #' @param .irr NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value
 #' @param .remove_ties TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)
-#' @param .repeated_task TRUE (default) if a repeated task is used to calculate IRR (recommended)
 #' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right. Relevant only if .structure == "choice_level"
 #' @param .n_sims The number of simulations (default = 10000). Relevant only if .method == "simulation" 
 #' @param .n_boot The number of bootstrapped samples (default = 1000). Relevant only if .method == "bootstrap"
@@ -29,7 +28,6 @@ pj_estimate <- function(
     .se_method = "analytical",
     .irr = NULL,
     .remove_ties = TRUE,
-    .repeated_task = TRUE,
     .ignore_position = NULL,
     .n_sims = NULL,
     .n_boot = NULL
@@ -60,10 +58,6 @@ pj_estimate <- function(
   
   if(!is.logical(.remove_ties)){
     stop("The .remove_ties argument must be either TRUE or FALSE.")
-  }
-  
-  if(!is.logical(.repeated_task)){
-    stop("The .repeated_task argument must be either TRUE or FALSE.")
   }
   
   if (.structure == "profile_level" & !is.null(.ignore_position)){
@@ -99,14 +93,12 @@ pj_estimate <- function(
                            .attribute,
                            .level,
                            .structure,
-                           .remove_ties,
-                           .repeated_task)
+                           .remove_ties)
     temp2 <- organize_data(.dataframe,
                            .attribute,
                            rev(.level), # the order is reversed
                            .structure,
-                           .remove_ties,
-                           .repeated_task)
+                           .remove_ties)
     
     # merge data to estimate irr
     data_for_irr <- bind_rows(
@@ -127,8 +119,7 @@ pj_estimate <- function(
                            .attribute,
                            .level,
                            .structure,
-                           .remove_ties,
-                           .repeated_task)
+                           .remove_ties)
     
     # save two data frames
     

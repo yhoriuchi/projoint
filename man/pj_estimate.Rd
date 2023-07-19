@@ -13,7 +13,6 @@ pj_estimate(
   .se_method = "analytical",
   .irr = NULL,
   .remove_ties = TRUE,
-  .repeated_task = TRUE,
   .ignore_position = NULL,
   .n_sims = NULL,
   .n_boot = NULL
@@ -35,8 +34,6 @@ pj_estimate(
 \item{.irr}{NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value}
 
 \item{.remove_ties}{TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)}
-
-\item{.repeated_task}{TRUE (default) if a repeated task is used to calculate IRR (recommended)}
 
 \item{.ignore_position}{TRUE (default) if you ignore the location of profile (left or right. Relevant only if .structure == "choice_level"}
 

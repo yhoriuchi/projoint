@@ -58,6 +58,7 @@ reshape_projoint <- function(
   response <- NULL
   outcome_qnum <- NULL
   selected <- NULL
+  selected_repeated <- NULL
   code <- NULL
   task <- NULL
   profile <- NULL
@@ -74,15 +75,20 @@ reshape_projoint <- function(
   } else{
     print("Error: .repeated must be logical.")
   }
+
+  # repeated_task recommended
+  if(!is.logical(.repeated)){
+    stop("The .repeated_task argument must be either TRUE or FALSE.")
+  }
   
   # check the consistency between .repeated and .flipped
   if (.repeated == FALSE & !is.null(.flipped)){
-    stop("Error: .flipped should be NULL if .repeated is FALSE.")
+    stop("Error: The .flipped argument should be NULL if the .repeated argument is FALSE.")
   } 
   if (.repeated == TRUE & !is.logical(.flipped)){
-    stop("Error: .flipped should be logical if .repeated is TRUE.")
+    stop("Error: The .flipped argument should be logical if the .repeated argument is TRUE.")
   }
-  
+
   # initial data cleaning
   df <- .dataframe %>%
     # Rename the respondent identifier "id"
@@ -191,18 +197,22 @@ reshape_projoint <- function(
                                                 profile == selected & .flipped == TRUE  ~ 0,
                                                 profile != selected & .flipped == FALSE ~ 0,
                                                 profile != selected & .flipped == TRUE  ~ 1)) %>%
-      rename("selected_repeated" = selected)
+      dplyr::rename("selected_repeated" = selected) 
     
     # merge
     suppressMessages(
-      out_final <- left_join(out1, out2)
+      out_final <- left_join(out1, out2) %>% 
+        dplyr::mutate(agree = ifelse(selected == selected_repeated, 1, 0)) 
     )
     
   } else if (.repeated == FALSE){
     
-    out_final <- out1
+    out_final <- out1 %>% 
+      dplyr::mutate(agree = NA) 
     
   }
+  
+  # add a variable indicating disagreement ----------------------------------
   
   # final data frame
   out <- out_final %>%

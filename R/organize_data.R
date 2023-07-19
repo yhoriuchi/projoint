@@ -12,7 +12,6 @@
 #' @param .level  A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
 #' @param .structure either "choice_level" or "profile_level"
 #' @param .remove_ties TRUE if you want to remove ties for the attribute of interest (in profile-level analysis)
-#' @param .repeated_task TRUE if a repeated task is used to calculate IRR (recommended)
 #' @keywords internal
 
 organize_data <- function(
@@ -20,8 +19,7 @@ organize_data <- function(
     .attribute,
     .level,
     .structure,
-    .remove_ties,
-    .repeated_task
+    .remove_ties
 ){
   
   # bind variables locally to the function ----------------------------------
@@ -56,25 +54,11 @@ organize_data <- function(
     stop("Specify 2 levels for choice-level analysis")
     
   }
-  
-  
-  # add a variable indicating disagreement ----------------------------------
-  
-  if (.repeated_task == TRUE){
-    
-    out1 <- .dataframe %>% 
-      dplyr::mutate(disagree = ifelse(selected != selected_repeated, 1, 0))
-    
-  } else{
-    
-    out1 <- .dataframe %>% 
-      dplyr::mutate(disagree = NA) 
-  }
-  
+
   # organize the data frame -------------------------------------------------
   
   # keep relevant rows only
-  out2 <- out1 %>% 
+  out2 <- .dataframe %>% 
     dplyr::rename(att = !!rlang::sym(.attribute)) %>% 
     dplyr::filter(att %in% att_levels)
   
@@ -114,7 +98,7 @@ organize_data <- function(
   # Keep necessary variables only and return --------------------------------
   
   # data frame to estimate IRR
-  data1 <- out1 %>% 
+  data1 <- .dataframe %>% 
     dplyr::select(id, disagree) %>% 
     dplyr::filter(!is.na(disagree)) %>% 
     dplyr::distinct() %>% 
