@@ -12,7 +12,7 @@ pj_estimate(
   .estimand = "mm",
   .se_method = "analytical",
   .irr = NULL,
-  .baseline,
+  .baseline = NULL,
   .remove_ties = TRUE,
   .ignore_position = NULL,
   .n_sims = NULL,
