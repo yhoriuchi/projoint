@@ -212,9 +212,7 @@ projoint <- function(
     }
     
     
-  }
-  
-  if (.estimand == "amce"){
+  } else if (.estimand == "amce"){
     
     if(is.null(.qoi)){
       # slots inherited from projoint_data and projoint_qoi are NULL. Why?
@@ -232,6 +230,8 @@ projoint <- function(
     }
     
     
+  } else{
+    stop("Estimand must be either 'mm' or 'amce'")
   }
   
 }
