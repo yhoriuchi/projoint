@@ -60,15 +60,15 @@
 <span>  <span class="va">.data</span>,</span>
 <span>  <span class="va">.attribute</span>,</span>
 <span>  <span class="va">.level</span>,</span>
-<span>  <span class="va">.structure</span>,</span>
-<span>  <span class="va">.estimand</span>,</span>
-<span>  <span class="va">.se_method</span>,</span>
-<span>  <span class="va">.irr</span>,</span>
+<span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
+<span>  .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
+<span>  .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
+<span>  .irr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">.baseline</span>,</span>
-<span>  <span class="va">.remove_ties</span>,</span>
-<span>  <span class="va">.ignore_position</span>,</span>
-<span>  <span class="va">.n_sims</span>,</span>
-<span>  <span class="va">.n_boot</span></span>
+<span>  .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .ignore_position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .n_sims <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .n_boot <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -111,15 +111,15 @@
 
 
 <dt>.ignore_position</dt>
-<dd><p>TRUE (default) if you ignore the location of profile (left or right. Relevant only if .structure == "choice_level"</p></dd>
+<dd><p>TRUE if you ignore the location of profile (left or right). Relevant only if .structure == "choice_level". Defaults to NULL.</p></dd>
 
 
 <dt>.n_sims</dt>
-<dd><p>The number of simulations (default = 10000). Relevant only if .method == "simulation"</p></dd>
+<dd><p>The number of simulations. Relevant only if .method == "simulation"</p></dd>
 
 
 <dt>.n_boot</dt>
-<dd><p>The number of bootstrapped samples (default = 1000). Relevant only if .method == "bootstrap"</p></dd>
+<dd><p>The number of bootstrapped samples. Relevant only if .method == "bootstrap"</p></dd>
 
 </dl></div>
     <div class="section level2">
