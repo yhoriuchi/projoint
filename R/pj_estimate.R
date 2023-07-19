@@ -14,9 +14,9 @@
 #' @param .irr NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value
 #' @param .baseline  A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
 #' @param .remove_ties TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)
-#' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right. Relevant only if .structure == "choice_level"
-#' @param .n_sims The number of simulations (default = 10000). Relevant only if .method == "simulation" 
-#' @param .n_boot The number of bootstrapped samples (default = 1000). Relevant only if .method == "bootstrap"
+#' @param .ignore_position TRUE if you ignore the location of profile (left or right). Relevant only if .structure == "choice_level". Defaults to NULL.
+#' @param .n_sims The number of simulations. Relevant only if .method == "simulation" 
+#' @param .n_boot The number of bootstrapped samples. Relevant only if .method == "bootstrap"
 #' @return A data frame
 #' @export
 
@@ -38,15 +38,15 @@ pj_estimate <- function(
     .data,
     .attribute,
     .level,
-    .structure,
-    .estimand,
-    .se_method,
-    .irr,
+    .structure = "choice_level",
+    .estimand = "mm",
+    .se_method = "analytical",
+    .irr = NULL,
     .baseline,
-    .remove_ties,
-    .ignore_position,
-    .n_sims,
-    .n_boot
+    .remove_ties = TRUE,
+    .ignore_position = NULL,
+    .n_sims = NULL,
+    .n_boot = NULL
 ){
   
   .dataframe <- .data@data
