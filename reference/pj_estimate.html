@@ -60,15 +60,15 @@
 <span>  <span class="va">.data</span>,</span>
 <span>  <span class="va">.attribute</span>,</span>
 <span>  <span class="va">.level</span>,</span>
-<span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
-<span>  .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
-<span>  .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
-<span>  .irr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  .repeated_task <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  .ignore_position <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .n_sims <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .n_boot <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="va">.structure</span>,</span>
+<span>  <span class="va">.estimand</span>,</span>
+<span>  <span class="va">.se_method</span>,</span>
+<span>  <span class="va">.irr</span>,</span>
+<span>  <span class="va">.baseline</span>,</span>
+<span>  <span class="va">.remove_ties</span>,</span>
+<span>  <span class="va">.ignore_position</span>,</span>
+<span>  <span class="va">.n_sims</span>,</span>
+<span>  <span class="va">.n_boot</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -102,12 +102,12 @@
 <dd><p>NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value</p></dd>
 
 
+<dt>.baseline</dt>
+<dd><p>A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis</p></dd>
+
+
 <dt>.remove_ties</dt>
 <dd><p>TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)</p></dd>
-
-
-<dt>.repeated_task</dt>
-<dd><p>TRUE (default) if a repeated task is used to calculate IRR (recommended)</p></dd>
 
 
 <dt>.ignore_position</dt>

@@ -59,14 +59,7 @@ This function receives input from reshape_data() and its output feeds into pj_es
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">organize_data</span><span class="op">(</span></span>
-<span>  <span class="va">.dataframe</span>,</span>
-<span>  <span class="va">.attribute</span>,</span>
-<span>  <span class="va">.level</span>,</span>
-<span>  <span class="va">.structure</span>,</span>
-<span>  <span class="va">.remove_ties</span>,</span>
-<span>  <span class="va">.repeated_task</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">organize_data</span><span class="op">(</span><span class="va">.dataframe</span>, <span class="va">.attribute</span>, <span class="va">.level</span>, <span class="va">.structure</span>, <span class="va">.remove_ties</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -91,8 +84,8 @@ This function receives input from reshape_data() and its output feeds into pj_es
 <dd><p>TRUE if you want to remove ties for the attribute of interest (in profile-level analysis)</p></dd>
 
 
-<dt>.repeated_task</dt>
-<dd><p>TRUE if a repeated task is used to calculate IRR (recommended)</p></dd>
+<dt>.baseline</dt>
+<dd><p>A character vector identifying the baseline level for AMCE. Its length should be 1 for profile-level analysis and 2 for choice-level analysis</p></dd>
 
 </dl></div>
 
