@@ -9,13 +9,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Test
+# Load the *projoint* package
 
 ```{r}
 library(projoint)
 ```
 
-# Data with the flipped repeated tasks
+# Read and wrangle data with the flipped repeated tasks
 
 ```{r}
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
@@ -29,7 +29,7 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .flipped = TRUE)
 ```
 
-# Data with the not-flipped repeated tasks
+# Read and wrangle data with the not-flipped repeated tasks
 
 ```{r}
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
@@ -43,7 +43,7 @@ out2 <- reshape_projoint(.dataframe = exampleData2,
                          .flipped = FALSE)
 ```
 
-# Data without the repeated tasks
+# Read and wrangle data without the repeated tasks
 
 ```{r}
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))

@@ -8,15 +8,15 @@ pj_estimate(
   .data,
   .attribute,
   .level,
-  .structure,
-  .estimand,
-  .se_method,
-  .irr,
+  .structure = "choice_level",
+  .estimand = "mm",
+  .se_method = "analytical",
+  .irr = NULL,
   .baseline,
-  .remove_ties,
-  .ignore_position,
-  .n_sims,
-  .n_boot
+  .remove_ties = TRUE,
+  .ignore_position = NULL,
+  .n_sims = NULL,
+  .n_boot = NULL
 )
 }
 \arguments{
@@ -38,11 +38,11 @@ pj_estimate(
 
 \item{.remove_ties}{TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)}
 
-\item{.ignore_position}{TRUE (default) if you ignore the location of profile (left or right. Relevant only if .structure == "choice_level"}
+\item{.ignore_position}{TRUE if you ignore the location of profile (left or right). Relevant only if .structure == "choice_level". Defaults to NULL.}
 
-\item{.n_sims}{The number of simulations (default = 10000). Relevant only if .method == "simulation"}
+\item{.n_sims}{The number of simulations. Relevant only if .method == "simulation"}
 
-\item{.n_boot}{The number of bootstrapped samples (default = 1000). Relevant only if .method == "bootstrap"}
+\item{.n_boot}{The number of bootstrapped samples. Relevant only if .method == "bootstrap"}
 }
 \value{
 A data frame
