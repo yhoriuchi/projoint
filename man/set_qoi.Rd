@@ -4,17 +4,27 @@
 \alias{set_qoi}
 \title{Set the quantities of interest}
 \usage{
-set_qoi(.structure = "choice_level", .attribute, .level)
+set_qoi(
+  .structure = "choice_level",
+  .estimand = "mm",
+  .attribute,
+  .level,
+  .baseline = NULL
+)
 }
 \arguments{
-\item{.structure}{Either "choice_level" or "profile_level}
+\item{.structure}{Either "profile_level" or "choice_level"}
 
-\item{.attribute}{A character scalar indicating the attribute of interest}
+\item{.estimand}{Either "mm" for marginal mean or "amce" for average marginal component effect}
 
-\item{.level}{The level(s) of interest: either a character or a character vector of length 2}
+\item{.attribute}{A character column name identifying the attribute of interest}
+
+\item{.level}{A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis}
+
+\item{.baseline}{A character vector identifying the baseline level for AMCE. Its length should be 1 for profile-level analysis and 2 for choice-level analysis}
 }
 \value{
-A `projoint_structure` object
+A `projoint_qoi` object
 }
 \description{
 This function allows users to specify more fine-tuned details of their conjoint analysis. In particular, users can set very specific quantities of interest aside from simple AMCEs or MMs.

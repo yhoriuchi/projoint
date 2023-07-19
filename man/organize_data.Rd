@@ -16,6 +16,8 @@ organize_data(.dataframe, .attribute, .level, .structure, .remove_ties)
 \item{.structure}{either "choice_level" or "profile_level"}
 
 \item{.remove_ties}{TRUE if you want to remove ties for the attribute of interest (in profile-level analysis)}
+
+\item{.baseline}{A character vector identifying the baseline level for AMCE. Its length should be 1 for profile-level analysis and 2 for choice-level analysis}
 }
 \description{
 This function converts a full conjoint data set to a data set structured for analyzing a specific attribute of interest and specific level(s) of interest.

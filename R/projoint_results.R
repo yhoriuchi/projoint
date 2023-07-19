@@ -2,10 +2,16 @@
 #' @importFrom methods is
 #' @importFrom methods new
 #' @param slots Takes one slot: `estimate`, a data frame.
-#' @param contains Inherits slots from `projoint_data`, `projoint_irr`, and, optionally, `projoint_structure`
+#' @param contains Inherits slots from `projoint_data`, `projoint_irr`, and, optionally `projoint_qoi_mm` or `projoint_qoi_amce`
 
-projoint_results <- setClass("projoint_results",
-                             slots = c("estimates"),
-                             contains = c("projoint_data", 
-                                          "projoint_qoi",
-                                          "projoint_irr"))
+projoint_results_mm <- setClass("projoint_results_mm",
+                                slots = c("estimates"),
+                                contains = c("projoint_data", 
+                                             "projoint_qoi_mm",
+                                             "projoint_irr"))
+
+projoint_results_amce <- setClass("projoint_results_amce",
+                                  slots = c("estimates"),
+                                  contains = c("projoint_data", 
+                                               "projoint_qoi_amce",
+                                               "projoint_irr"))

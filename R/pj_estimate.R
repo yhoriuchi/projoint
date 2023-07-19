@@ -12,6 +12,7 @@
 #' @param .estimand A character identifying the estimand: "mm" (default) or "amce"
 #' @param .se_method  A character identifying the method of correcting measurement error bias: "analytical" (default), "simulation", or "bootstrap" (not recommended)
 #' @param .irr NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value
+#' @param .baseline  A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
 #' @param .remove_ties TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)
 #' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right. Relevant only if .structure == "choice_level"
 #' @param .n_sims The number of simulations (default = 10000). Relevant only if .method == "simulation" 
@@ -19,18 +20,33 @@
 #' @return A data frame
 #' @export
 
+
+# .data = out1
+# .attribute = "att1"
+# .level = "level1"
+# .structure = "profile_level"
+# .estimand = "mm"
+# .se_method = "analytical"
+# .irr = NULL
+# .baseline = NULL
+# .remove_ties = TRUE
+# .ignore_position = NULL
+# .n_sims = NULL
+# .n_boot = NULL
+
 pj_estimate <- function(
     .data,
     .attribute,
     .level,
-    .structure = "profile_level",
-    .estimand = "mm",
-    .se_method = "analytical",
-    .irr = NULL,
-    .remove_ties = TRUE,
-    .ignore_position = NULL,
-    .n_sims = NULL,
-    .n_boot = NULL
+    .structure,
+    .estimand,
+    .se_method,
+    .irr,
+    .baseline,
+    .remove_ties,
+    .ignore_position,
+    .n_sims,
+    .n_boot
 ){
   
   .dataframe <- .data@data
@@ -65,8 +81,12 @@ pj_estimate <- function(
   if (.structure == "profile_level" & !is.null(.ignore_position)){
     stop("The .ignore_position argument can be specified only when the .structure argument is choice_level.")
   }
+
+  if (.structure == "choice_level" & is.null(.ignore_position)){
+    stop("Specify the .ignore_position argument.")
+  }
   
-  if (.structure == "choice_level" & !is.logical(.ignore_position)){
+  if (.structure == "choice_level" & !is.null(.ignore_position) & !is.logical(.ignore_position)){
     stop("The .ignore_position argument must be either TRUE or FALSE.")
   }
   
@@ -81,55 +101,146 @@ pj_estimate <- function(
   if(.se_method == "simulation" & is.null(.n_sims)){
     stop("Specify the .n_sims arguement for simulation")
   }
-  
+
+  if(.se_method != "simulation" & !is.null(.n_sims)){
+    stop("You cannot specify the .n_sims arguement for analytical derivation or bootstrapping")
+  }
+
   if(.se_method == "bootstrap" & is.null(.n_boot)){
     stop("Specify the .n_boot arguement for bootstrapping")
+  }
+
+  if(.se_method != "bootstrap" & !is.null(.n_boot)){
+    stop("You cannot specify the .n_boot arguement for analytical derivation or simulation")
+  }
+  
+    
+  if (.structure == "choice_level" & .estimand == "mm" & .remove_ties == FALSE){
+    stop("The .remove_ties argument should be TRUE to estimate choice-level MMs.")
+  }
+  
+  if (.estimand == "mm" & !is.null(.baseline)){
+    stop("The .baseline argument can be specified only when the .estimand argument is amce.")
+  }
+  
+  if (.estimand == "amce" & is.null(.baseline)){
+    stop("Specify .baseline argument for the estimation of AMCEs.")
   }
   
   
   # Organize data -----------------------------------------------------------
   
-  if (.structure == "choice_level" & !is.null(.ignore_position) & !isTRUE(.ignore_position)){
+  if (.estimand == "mm"){
     
-    temp1 <- organize_data(.dataframe,
-                           .attribute,
-                           .level,
-                           .structure,
-                           .remove_ties)
-    temp2 <- organize_data(.dataframe,
-                           .attribute,
-                           rev(.level), # the order is reversed
-                           .structure,
-                           .remove_ties)
-    
-    # merge data to estimate irr
-    data_for_irr <- bind_rows(
-      temp1$data_for_irr,
-      temp2$data_for_irr
-    ) %>% 
-      distinct()
-    
-    # merge data to estimate mm or amce
-    data_for_estimand <- bind_rows(
-      temp1$data_for_estimand,
-      temp2$data_for_estimand %>% mutate(selected = 1 - selected)
-    )
-    
-  } else {
-    
-    .list <- organize_data(.dataframe,
-                           .attribute,
-                           .level,
-                           .structure,
-                           .remove_ties)
-    
-    # save two data frames
-    
-    data_for_irr      <- .list$data_for_irr
-    data_for_estimand <- .list$data_for_estimand
-    
+    if (.structure == "choice_level" & !is.null(.ignore_position) & isTRUE(.ignore_position)){
+      
+      temp1 <- organize_data(.dataframe,
+                             .attribute,
+                             .level,
+                             .structure)
+      temp2 <- organize_data(.dataframe,
+                             .attribute,
+                             rev(.level), # the order is reversed
+                             .structure)
+      
+      # merge data to estimate irr
+      data_for_irr <- bind_rows(
+        temp1$data_for_irr,
+        temp2$data_for_irr
+      ) %>% 
+        distinct()
+      
+      # merge data to estimate mm or amce
+      data_for_estimand <- bind_rows(
+        temp1$data_for_estimand,
+        temp2$data_for_estimand %>% mutate(selected = 1 - selected)
+      )
+      
+    } else {
+      
+      .list <- organize_data(.dataframe,
+                             .attribute,
+                             .level,
+                             .structure,
+                             .remove_ties)
+      
+      # save two data frames
+      
+      data_for_irr      <- .list$data_for_irr
+      data_for_estimand <- .list$data_for_estimand
+      
+    }
   }
   
+  
+  if (.estimand == "amce"){
+    
+    if (.structure == "choice_level" & !is.null(.ignore_position) & isTRUE(.ignore_position)){
+      
+      temp1a <- organize_data(.dataframe,
+                              .attribute,
+                              .level,
+                              .structure)
+      temp2a <- organize_data(.dataframe,
+                              .attribute,
+                              .baseline, # this is the baseline
+                              .structure)
+      temp1b <- organize_data(.dataframe,
+                              .attribute,
+                              rev(.level),
+                              .structure)
+      temp2b <- organize_data(.dataframe,
+                              .attribute,
+                              rev(.baseline), # this is the baseline; the order is reversed
+                              .structure)
+      
+      # merge data to estimate irr
+      data_for_irr <- bind_rows(
+        temp1a$data_for_irr,
+        temp2a$data_for_irr,
+        temp1b$data_for_irr,
+        temp2b$data_for_irr
+      ) %>%
+        distinct()
+      
+      # merge data to estimate mm or amce
+      data_for_estimand <- bind_rows(
+        temp1a$data_for_estimand %>% mutate(x = 1),
+        temp2a$data_for_estimand %>% mutate(x = 0),
+        temp1b$data_for_estimand %>% mutate(x = 1),
+        temp2b$data_for_estimand %>% mutate(x = 0)
+      )
+      
+    } else {
+      
+      temp1 <- organize_data(.dataframe,
+                             .attribute,
+                             .level,
+                             .structure,
+                             .remove_ties)
+      temp2 <- organize_data(.dataframe,
+                             .attribute,
+                             .baseline, # this is the baseline
+                             .structure,
+                             .remove_ties)
+      
+      # merge data to estimate irr
+      data_for_irr <- bind_rows(
+        temp1$data_for_irr,
+        temp2$data_for_irr
+      ) %>%
+        distinct()
+      
+      # merge data to estimate mm or amce
+      data_for_estimand <- bind_rows(
+        temp1$data_for_estimand %>% mutate(x = 1),
+        temp2$data_for_estimand %>% mutate(x = 0)
+      )
+      
+    }
+
+  }
+
   # Estimate or specify tau -------------------------------------------------
   
   if (is.null(.irr)){
@@ -429,7 +540,7 @@ pj_estimate <- function(
         amce_uncorrected <-  reg_amce$coefficient[2] %>% as.numeric()
         if (is.null(.irr)){
           
-          irr <- reg_tau$coefficient %>% as.numeric()
+          irr <- reg_irr$coefficient %>% as.numeric()
           tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
           
         } else {

@@ -8,14 +8,15 @@ pj_estimate(
   .data,
   .attribute,
   .level,
-  .structure = "profile_level",
-  .estimand = "mm",
-  .se_method = "analytical",
-  .irr = NULL,
-  .remove_ties = TRUE,
-  .ignore_position = NULL,
-  .n_sims = NULL,
-  .n_boot = NULL
+  .structure,
+  .estimand,
+  .se_method,
+  .irr,
+  .baseline,
+  .remove_ties,
+  .ignore_position,
+  .n_sims,
+  .n_boot
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ pj_estimate(
 \item{.se_method}{A character identifying the method of correcting measurement error bias: "analytical" (default), "simulation", or "bootstrap" (not recommended)}
 
 \item{.irr}{NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value}
+
+\item{.baseline}{A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis}
 
 \item{.remove_ties}{TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)}
 

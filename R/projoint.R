@@ -37,8 +37,8 @@ projoint <- function(
   
   # bind variables locally to the function ----------------------------------
   
-  # To be added
-  
+  .baseline <- NULL
+
   # check various settings --------------------------------------------------
   # also see: many checks in pj_estimate()
   
@@ -46,10 +46,14 @@ projoint <- function(
     stop("The .data argument must be of class `projoint_data` from the `reshape_projoint` function.")
   }
   
-  if(!is.null(.qoi) & !is(.qoi, "projoint_qoi")){
-    stop("The .qoi argument must be of class `projoint_qoi` from the `set_qoi` function.")
+  if(.estimand == "mm" & !is.null(.qoi) & !is(.qoi, "projoint_qoi_mm")){
+    stop("The .qoi argument must be of class `projoint_qoi_mm` from the `set_qoi` function.")
   }
-
+  
+  if(.estimand == "amce" & !is.null(.qoi) & !is(.qoi, "projoint_qoi_amce")){
+    stop("The .qoi argument must be of class `projoint_qoi_amce` from the `set_qoi` function.")
+  }
+  
   if(.se_method == "simulation" & is.null(.n_sims)){
     stop("If SEs are calculated by simulation, .n_sims must be specified (not NULL).")
   }
@@ -57,6 +61,11 @@ projoint <- function(
   if(.se_method == "bootstrap" & is.null(.n_boot)){
     stop("If SEs are calculated by bootstrap, .n_boot must be specified (not NULL).")
   }
+  
+  if(.estimand == "amce" & is.null(.qoi) & .structure == "choice_level"){
+    stop("The .structure argument must be profile_level if the .qoi argument is NULL.")
+  }
+  
   
   # estimate all MMs or AMCEs -----------------------------------------------
   
@@ -71,42 +80,110 @@ projoint <- function(
       attribute <- str_extract(attribute_levels[i], "^.+(?=:)")
       level     <- str_extract(attribute_levels[i], "(?<=:).+$")
       
-      temp <- pj_estimate(.data,
-                          attribute, # note: this is NOT .attribute
-                          level, # note: this is NOT .level
-                          .structure,
-                          .estimand,
-                          .se_method,
-                          .irr,
-                          .remove_ties,
-                          .ignore_position,
-                          .n_sims,
-                          .n_boot) %>% 
-        mutate(attribute = attribute, 
-               level = paste0(level, collapse = ", "))
+      if (.estimand == "mm"){
+        
+        temp <- pj_estimate(.data,
+                            .attribute = attribute, # note: this is NOT .attribute
+                            .level = level, # note: this is NOT .level
+                            .structure,
+                            .estimand = "mm",
+                            .se_method,
+                            .irr,
+                            .baseline = NULL,
+                            .remove_ties,
+                            .ignore_position,
+                            .n_sims,
+                            .n_boot) %>% 
+          mutate(attribute = attribute, 
+                 level = paste0(level, collapse = ", "))
+        
+      }
+      
+      if (.estimand == "amce"){
+        
+        baseline <- "level1" # The default baseline is "level1"
+        
+        temp <- pj_estimate(.data,
+                            .attribute = attribute, # note: this is NOT .attribute
+                            .level = level, # note: this is NOT .level
+                            .structure,
+                            .estimand = "amce",
+                            .se_method,
+                            .irr,
+                            .baseline = baseline, # note: this is NOT .baseline
+                            .remove_ties,
+                            .ignore_position,
+                            .n_sims,
+                            .n_boot) %>% 
+          mutate(attribute = attribute, 
+                 level = paste0(level, collapse = ", "),
+                 baseline = baseline)
+        
+        
+      }
+      
       
       out <- bind_rows(out, temp)
       
     }
+    
+    if (.estimand == "amce"){
+      
+      out <- out %>% 
+        filter(level != baseline)
+      
+    }
+    
+    
+    
     
   } else{
     
     attribute <- .qoi@attribute_of_interest
     level <- .qoi@levels_of_interest
     
-    out <- pj_estimate(.data,
-                       attribute, # note: this is NOT .attribute
-                       level, # note: this is NOT .level
-                       .structure,
-                       .estimand,
-                       .se_method,
-                       .irr,
-                       .remove_ties,
-                       .ignore_position,
-                       .n_sims,
-                       .n_boot) %>% 
-      mutate(attribute = attribute, 
-             level = paste0(level, collapse = ", "))
+    
+    if (.estimand == "mm"){
+      
+      out <- pj_estimate(.data,
+                         .attribute = attribute, # note: this is NOT .attribute
+                         .level = level, # note: this is NOT .level
+                         .structure,
+                         .estimand = "mm",
+                         .se_method,
+                         .irr,
+                         .baseline = NULL,
+                         .remove_ties,
+                         .ignore_position,
+                         .n_sims,
+                         .n_boot) %>% 
+        mutate(attribute = attribute, 
+               level = paste0(level, collapse = ", "))
+      
+    }
+    
+    if (.estimand == "amce"){
+      
+      baseline <- .qoi@baseline
+      
+      out <- pj_estimate(.data,
+                         .attribute = attribute, # note: this is NOT .attribute
+                         .level = level, # note: this is NOT .level
+                         .structure,
+                         .estimand = "amce",
+                         .se_method,
+                         .irr,
+                         .baseline = baseline, # note: this is NOT .baseline
+                         .remove_ties,
+                         .ignore_position,
+                         .n_sims,
+                         .n_boot) %>% 
+        mutate(attribute = attribute, 
+               level = paste0(level, collapse = ", "),
+               baseline = paste0(baseline, collapse = ", "))
+      
+      
+    }
     
   }
   
@@ -117,21 +194,45 @@ projoint <- function(
     as_tibble()
   
   
-  if(is.null(.qoi)){
-  # slots inherited from projoint_data and projoint_qoi are NULL. Why?
-    projoint_results("estimates" = estimates, # the slot specific to projoint_results
-                     labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                     irr = tau, figure = NULL) %>% 
-      return()
-  } else {
-    projoint_results("estimates" = estimates, # the slot specific to projoint_results
-                     labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                     irr = tau, figure = NULL, # slots inherited from projoint_irr
-                     attribute_of_interest = .qoi@attribute_of_interest,
-                     levels_of_interest = .qoi@levels_of_interest) %>% 
-      return()
+  if (.estimand == "mm"){
+    
+    if(is.null(.qoi)){
+      # slots inherited from projoint_data and projoint_qoi are NULL. Why?
+      projoint_results_mm("estimates" = estimates, # the slot specific to projoint_results
+                          labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
+                          irr = tau, figure = NULL) %>% 
+        return()
+    } else {
+      projoint_results_mm("estimates" = estimates, # the slot specific to projoint_results
+                          labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
+                          irr = tau, figure = NULL, # slots inherited from projoint_irr
+                          attribute_of_interest = .qoi@attribute_of_interest,
+                          levels_of_interest = .qoi@levels_of_interest) %>% 
+        return()
+    }
+    
+    
   }
   
+  if (.estimand == "amce"){
+    
+    if(is.null(.qoi)){
+      # slots inherited from projoint_data and projoint_qoi are NULL. Why?
+      projoint_results_amce("estimates" = estimates, # the slot specific to projoint_results
+                            labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
+                            irr = tau, figure = NULL) %>% 
+        return()
+    } else {
+      projoint_results_amce("estimates" = estimates, # the slot specific to projoint_results
+                            labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
+                            irr = tau, figure = NULL, # slots inherited from projoint_irr
+                            attribute_of_interest = .qoi@attribute_of_interest,
+                            levels_of_interest = .qoi@levels_of_interest) %>% 
+        return()
+    }
+    
+    
+  }
   
 }
 
