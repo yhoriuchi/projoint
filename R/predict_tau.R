@@ -262,7 +262,7 @@ predict_tau <- function(
     ggplot2::scale_x_continuous(breaks = seq(0, n_attributes, 1)) +
     ggthemes::theme_few() +
     ggplot2::labs(y = "Percent agreement", 
-                  x = "Number of attributes with levels that differ between two tasks", 
+                  x = "Number of attributes with different levels between two tasks", 
                   title = stringr::str_c(.title, "Prediction = ", format(round(prediction, digits = 2), nsmall = 2)))
   
   
