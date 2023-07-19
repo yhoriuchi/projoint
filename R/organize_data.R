@@ -31,7 +31,7 @@ organize_data <- function(
   att <- NULL
   task <- NULL
   ties <- NULL
-  disagree <- NULL
+  agree <- NULL
   profile <- NULL
   att_1 <- NULL
   att_2 <- NULL
@@ -80,7 +80,7 @@ organize_data <- function(
     out2 <- out2 %>% 
       
       # pivot the data frame
-      tidyr::pivot_wider(id_cols = c(id, task, disagree), 
+      tidyr::pivot_wider(id_cols = c(id, task, agree), 
                          names_from = profile,
                          values_from = c(att, selected)) %>% 
       
@@ -99,14 +99,14 @@ organize_data <- function(
   
   # data frame to estimate IRR
   data1 <- .dataframe %>% 
-    dplyr::select(id, disagree) %>% 
-    dplyr::filter(!is.na(disagree)) %>% 
+    dplyr::select(id, agree) %>% 
+    dplyr::filter(!is.na(agree)) %>% 
     dplyr::distinct() %>% 
     tibble::as_tibble()
   
   # data frame to estimate MM or AMCE
   data2 <- out2 %>% 
-    dplyr::select(id, task, att, selected, disagree)
+    dplyr::select(id, task, att, selected, agree)
   
   list("data_for_irr" = data1, 
        "data_for_estimand" = data2) %>% 

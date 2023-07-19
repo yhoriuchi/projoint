@@ -39,12 +39,14 @@ pj_estimate <- function(
   
   id <- NULL
   selected <- NULL
-  disagree <- NULL
+  agree <- NULL
   x <- NULL
   cov <- NULL
   vcov <- NULL
   sd <- NULL
   estimate <- NULL
+  cov_mm_tau <- NULL
+  reg_tau <- NULL
   
   # check various settings --------------------------------------------------
   
@@ -79,7 +81,7 @@ pj_estimate <- function(
   if(.se_method == "simulation" & is.null(.n_sims)){
     stop("Specify the .n_sims arguement for simulation")
   }
-
+  
   if(.se_method == "bootstrap" & is.null(.n_boot)){
     stop("Specify the .n_boot arguement for bootstrapping")
   }
@@ -126,7 +128,6 @@ pj_estimate <- function(
     data_for_irr      <- .list$data_for_irr
     data_for_estimand <- .list$data_for_estimand
     
-    
   }
   
   # Estimate or specify tau -------------------------------------------------
@@ -134,10 +135,13 @@ pj_estimate <- function(
   if (is.null(.irr)){
     
     # run intercept-only regression models
-    reg_tau <- stats::lm(disagree ~ 1, data_for_irr)
+    reg_irr <- stats::lm(agree ~ 1, data_for_irr)
     
-    tau     <- reg_tau$coefficient %>% as.numeric()
-    var_tau <- vcov(reg_tau) %>% as.numeric()
+    irr     <- reg_irr$coefficient %>% as.numeric()
+    var_irr <- vcov(reg_irr) %>% as.numeric()
+    
+    tau     <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
+    var_tau <- 0.25 * (2 * irr - 1)^(-1) * var_irr
     
   } else if (!is.null(.irr) & !is.numeric(.irr)){
     
@@ -145,7 +149,8 @@ pj_estimate <- function(
     
   } else {
     
-    tau     <- 1 - .irr
+    irr <- .irr
+    tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
     var_tau <- 0
     
   }
@@ -172,21 +177,24 @@ pj_estimate <- function(
   
   # Calculate the covariance ------------------------------------------------
   
-  # Keep the observations with both "selected" and "disagree"
+  # Keep the observations with both "selected" and "agree"
   
   data_for_cov <- data_for_estimand %>% 
-    filter(!is.na(disagree))
+    filter(!is.na(agree))
   
   if (estimand == "mm"){
     
     if (is.null(.irr)){
       
-      cov_mm_tau  <- cov(data_for_cov$selected, data_for_cov$disagree) / nrow(data_for_irr) 
+      cov_mm_irr  <- cov(data_for_cov$selected, data_for_cov$agree) / nrow(data_for_irr) 
       
     } else {
       
-      cov_mm_tau <- 0
+      cov_mm_irr <- 0
+      
     }
+    
+    cov_mm_tau  <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm_irr
     
   } 
   
@@ -197,17 +205,25 @@ pj_estimate <- function(
     
     if (is.null(.irr)){
       
-      cov_mm0_tau  <- cov(d_cov0$selected, d_cov0$disagree) / nrow(data_for_irr)
-      cov_mm1_tau  <- cov(d_cov1$selected, d_cov1$disagree) / nrow(data_for_irr)
-      cov_amce_tau <- cov_mm1_tau - cov_mm0_tau
+      cov_mm0_irr  <- cov(d_cov0$selected, d_cov0$agree) / nrow(data_for_irr)
+      cov_mm1_irr  <- cov(d_cov1$selected, d_cov1$agree) / nrow(data_for_irr)
+      cov_amce_irr <- cov_mm1_irr - cov_mm0_irr
       
     } else {
       
-      cov_amce_tau <- 0
+      cov_mm0_irr  <- 0
+      cov_mm1_irr  <- 0
+      cov_amce_irr <- 0
       
     }
     
+    cov_mm0_tau  <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm0_irr
+    cov_mm1_tau  <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm1_irr
+    cov_amce_tau <- -0.5 * (2 * irr - 1)^(-1/2) * cov_amce_irr
+    
   }
+  
+  
   
   # estimate and correct MMs ------------------------------------------------
   
@@ -288,15 +304,20 @@ pj_estimate <- function(
                            relationship = "many-to-many")
         
         # run intercept-only regression models
-        reg_tau <- stats::lm(disagree ~ 1, bs_sample_1)
+        reg_irr <- stats::lm(agree ~ 1, bs_sample_1)
         reg_mm  <- stats::lm(selected ~ 1, bs_sample_2)
         
         # calculate the means
         mm_uncorrected <-  reg_mm$coefficient %>% as.numeric()
         if (is.null(.irr)){
-          tau <- reg_tau$coefficient %>% as.numeric()
+          
+          irr <- reg_irr$coefficient %>% as.numeric()
+          tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
+          
         } else {
-          tau <- (1 - .irr)
+          
+          tau <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
+          
         }
         
         # corrected the estimate
@@ -401,15 +422,20 @@ pj_estimate <- function(
                            relationship = "many-to-many")
         
         # run intercept-only regression models
-        reg_tau  <- stats::lm(disagree ~ 1, bs_sample_1)
+        reg_irr  <- stats::lm(agree ~ 1, bs_sample_1)
         reg_amce <- stats::lm(selected ~ x, bs_sample_2)
         
         # calculate the means
         amce_uncorrected <-  reg_amce$coefficient[2] %>% as.numeric()
         if (is.null(.irr)){
-          tau <- reg_tau$coefficient %>% as.numeric()
+          
+          irr <- reg_tau$coefficient %>% as.numeric()
+          tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
+          
         } else {
-          tau <- (1 - .irr)
+          
+          tau <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
+          
         }
         
         # corrected the estimate
