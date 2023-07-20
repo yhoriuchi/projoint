@@ -9,6 +9,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+Most of the work in analyzing a conjoint task is correctly specifying the data and columns. In `projoint`, the `reshape_projoint` function makes it easy!
+
 ### Load the projoint package
 
 ```{r}
@@ -16,6 +18,8 @@ library(projoint)
 ```
 
 ### Read and wrangle data with the flipped repeated tasks
+
+Let's look at a simple example:
 
 ```{r}
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
@@ -29,7 +33,12 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .flipped = TRUE)
 ```
 
+Let's walk through the arguments we have specified. `.dataframe` is a data frame, ideally read in from Qualtrics using `read_Qualtrics()` but not necessarily. The `.idvar` argument, a character, indicates that in `exampleData1`, the column `ResponseId` indicates unique survey respondents. The `.outcomes` variable lists all the columns that are outcomes; the last element in this vector is the repeated task (if it was conducted). `.outcomes_ids` indicates the possible options for an outcome -- A or B, Candidate 1 or Candidate 2, etc. `.alphabet` defaults to "K" if the conjoint survey was conducted using either our tool or Strezhnev's. The final two arguments, `.repeated` and `.flipped`, again relate to the repeated task. If the `.repeated` is set to `TRUE`, then the last element of the `.outcomes` vector is taken to be a repetition of the first task; `.flipped` indicates whether the profiles are in the reversed order.
+
+
 ### Read and wrangle data with the not-flipped repeated tasks
+
+As a slight variation, in some cases the repeated task is *not* flipped -- that is, in the repeated task, the original Profile 1 is still Profile 1, rather than flipping positions to Profile 2. Here we specify that by changing `.flipped` to `FALSE`:
 
 ```{r}
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
@@ -44,6 +53,8 @@ out2 <- reshape_projoint(.dataframe = exampleData2,
 ```
 
 ### Read and wrangle data without the repeated tasks
+
+Or in cases with no repeated task at all, we set `.repeated` to `FALSE` and  `.flipped` to `NULL`:
 
 ```{r}
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
