@@ -1,0 +1,150 @@
+---
+title: "04. Estimate and correct MMs or AMCEs"
+output: rmarkdown::html_vignette
+description: >
+  How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs)
+vignette: >
+  %\VignetteIndexEntry{04. Estimate and correct MMs or AMCEs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Load the *projoint* package
+
+```{r}
+library(projoint)
+```
+
+# Read and wrangle data with the flipped repeated tasks
+
+```{r}
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- c(outcomes, "choice1_repeated_flipped")
+out1 <- reshape_projoint(.dataframe = exampleData1, 
+                         .idvar = "ResponseId", 
+                         .outcomes = outcomes,
+                         .outcomes_ids = c("A", "B"),
+                         .alphabet = "K", 
+                         .repeated = TRUE,
+                         .flipped = TRUE)
+```
+
+# Estimate MMs
+
+## MM (profile-level) -- all levels
+
+```{r}
+mm0 <- projoint(.data = out1,
+                .qoi = NULL,
+                .structure = "profile_level",
+                .remove_ties = TRUE,
+                .estimand = "mm",
+                .se_method = "analytical",
+                .irr = NULL)
+
+mm0@estimates
+
+```
+
+## MM (profile-level) -- specific level
+
+```{r}
+qoi_1 <- set_qoi(
+  .structure = "profile_level",
+  .estimand = "mm",
+  .attribute = "att1", 
+  .level = "level1")
+
+mm1 <- projoint(.data = out1,
+                .qoi = qoi_1,
+                .structure = "profile_level",
+                .estimand = "mm",
+                .se_method = "analytical",
+                .irr = NULL,
+                .remove_ties = TRUE,
+                .ignore_position = NULL,
+                .n_sims = NULL,
+                .n_boot = NULL)
+
+mm1@estimates
+```
+
+# MM (choice-level) -- specific level
+```{r}
+qoi_2 <- set_qoi(
+  .structure = "choice_level",
+  .estimand = "mm",
+  .attribute = "att1", 
+  .level = c("level1", "level3")
+) 
+
+mm2 <- projoint(.data = out1,
+                .qoi = qoi_2,
+                .structure = "choice_level",
+                .remove_ties = TRUE,
+                .estimand = "mm",
+                .se_method = "analytical",
+                .irr = NULL,
+                .ignore_position = FALSE,
+                .n_sims = NULL,
+                .n_boot = NULL)
+
+mm2@estimates
+```
+
+# Estimate AMCEs
+
+## AMCE (profile-level) -- all levels
+```{r}
+amce0 <- projoint(.data = out1,
+                  .qoi = NULL,
+                  .structure = "profile_level",
+                  .remove_ties = TRUE,
+                  .estimand = "amce",
+                  .se_method = "analytical",
+                  .irr = NULL)
+
+amce0@estimates
+```
+
+## AMCE (profile-level) -- specific level
+```{r}
+qoi_3 <- set_qoi(
+  .structure = "profile_level",
+  .estimand = "amce",
+  .attribute = "att1", 
+  .level = "level3",
+  .baseline = "level1"
+)
+
+amce1 <- projoint(.data = out1,
+                  .qoi = qoi_3,
+                  .structure = "profile_level",
+                  .remove_ties = TRUE,
+                  .estimand = "amce",
+                  .se_method = "analytical",
+                  .irr = NULL)
+
+amce1@estimates
+```
+
+## AMCE (choice-level) -- specific level
+```{r}
+qoi_3 <- set_qoi(
+  .structure = "profile_level",
+  .estimand = "amce",
+  .attribute = "att1", 
+  .level = "level3",
+  .baseline = "level1"
+)
+
+amce1 <- projoint(.data = out1,
+                  .qoi = qoi_3,
+                  .structure = "profile_level",
+                  .remove_ties = TRUE,
+                  .estimand = "amce",
+                  .se_method = "analytical",
+                  .irr = NULL)
+
+amce1@estimates
+```
