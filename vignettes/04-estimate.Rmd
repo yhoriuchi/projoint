@@ -130,21 +130,22 @@ amce1@estimates
 
 ## AMCE (choice-level) -- specific level
 ```{r}
-qoi_3 <- set_qoi(
-  .structure = "profile_level",
+qoi_4 <- set_qoi(
+  .structure = "choice_level",
   .estimand = "amce",
   .attribute = "att1", 
-  .level = "level3",
-  .baseline = "level1"
+  .level = c("level1", "level3"),
+  .baseline = c("level1", "level1")
 )
 
-amce1 <- projoint(.data = out1,
-                  .qoi = qoi_3,
-                  .structure = "profile_level",
+amce2 <- projoint(.data = out1,
+                  .qoi = qoi_4,
+                  .structure = "choice_level",
                   .remove_ties = TRUE,
                   .estimand = "amce",
                   .se_method = "analytical",
+                  .ignore_position = TRUE,
                   .irr = NULL)
 
-amce1@estimates
+amce2@estimates
 ```
