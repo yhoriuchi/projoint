@@ -3,4 +3,4 @@
 #' @importFrom methods new
 #' @keywords internal
 
-projoint_data <- setClass("projoint_data", slots = c("labels", "data"))
+projoint_data <- setClass("projoint_data", slots = c("labels", "data", "idvar"))

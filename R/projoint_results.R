@@ -1,4 +1,4 @@
-#' Class generator for `projoint_results`
+#' Class generators for `projoint_results_mm` and `projoint_results_amce`
 #' @importFrom methods is
 #' @importFrom methods new
 #' @keywords internal

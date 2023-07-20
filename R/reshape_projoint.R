@@ -222,7 +222,8 @@ reshape_projoint <- function(
   
   # return the data frame and the variable labels as a list
   out2 <- projoint_data("labels" = labels, 
-                        "data" = out)
+                        "data" = out,
+                        "idvar" = id)
   return(out2)
   
 }

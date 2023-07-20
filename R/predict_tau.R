@@ -13,7 +13,6 @@
 #' @importFrom stats setNames
 #' @importFrom methods new
 #' @param .data A `projoint_data` object
-#' @param .idvar A character identifying the column name containing respondent IDs
 #' @param .title The title of a figure
 #' @return A list (a vector of predicted value; ggplot object)
 #' @export
@@ -29,7 +28,6 @@
 #' outcomes <- c(outcomes, "choice1_repeated_flipped")
 #' reshaped_data = reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData1, 
-#'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
 #'   .outcomes_ids = c("A", "B"),
 #'   .alphabet = "K", 
@@ -47,7 +45,6 @@
 #' outcomes <- c(outcomes, "choice1_repeated_notflipped")
 #' reshaped_data = reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData2, 
-#'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
 #'   .outcomes_ids = c("A", "B"),
 #'   .alphabet = "K", 
@@ -65,7 +62,6 @@
 #' outcomes <- c(outcomes)
 #' reshaped_data = reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData3, 
-#'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
 #'   .outcomes_ids = c("A", "B"),
 #'   .alphabet = "K", 
@@ -76,13 +72,14 @@
 
 predict_tau <- function(
     .data,
-    .idvar = "id",
     .title = NULL
 ){
 
   # data frame
   
   .dataframe <- .data@data
+  
+  .idvar = .data@idvar
   
   # bind variables locally to the function
 
