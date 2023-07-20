@@ -50,17 +50,19 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
 library(projoint)
 
 data("exampleData1")
-head(dat)
+head(exampleData1)
 
- reshaped_data <-  reshape_projoint(
-  .dataframe = dat, 
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- c(outcomes, "choice1_repeated_flipped")
+
+reshaped_data <- reshape_projoint(
+  .dataframe = exampleData1, 
   .idvar = "ResponseId", 
-  .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
-  .outcomes_ids = c("Community A", "Community B"),
+  .outcomes = outcomes,
+  .outcomes_ids = c("A", "B"),
   .alphabet = "K", 
   .repeated = TRUE,
   .flipped = TRUE)
 
-projoint(reshaped_data) \%>\%
- plot_projoint()
+projoint(reshaped_data) 
 }

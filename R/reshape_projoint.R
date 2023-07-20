@@ -24,7 +24,7 @@
 #' head(exampleData1)
 #'
 #' # Write outcome column names
-#' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+#' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 #' outcomes <- c(outcomes, "choice1_repeated_flipped")
 #' 
 #' # Reshape the data
@@ -222,8 +222,7 @@ reshape_projoint <- function(
   
   # return the data frame and the variable labels as a list
   out2 <- projoint_data("labels" = labels, 
-                        "data" = out,
-                        "idvar" = id)
+                        "data" = out)
   return(out2)
   
 }

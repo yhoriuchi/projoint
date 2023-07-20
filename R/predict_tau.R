@@ -24,9 +24,9 @@
 #' data("exampleData1")
 #' head(exampleData1)
 #'
-#' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+#' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 #' outcomes <- c(outcomes, "choice1_repeated_flipped")
-#' reshaped_data = reshaped_data <- reshape_projoint(
+#' reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData1, 
 #'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
@@ -42,9 +42,9 @@
 #' data("exampleData2")
 #' head(exampleData2)
 #'
-#' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+#' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 #' outcomes <- c(outcomes, "choice1_repeated_notflipped")
-#' reshaped_data = reshaped_data <- reshape_projoint(
+#' reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData2, 
 #'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
@@ -60,9 +60,9 @@
 #' data("exampleData3")
 #' head(exampleData3)
 #'
-#' outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+#' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 #' outcomes <- c(outcomes)
-#' reshaped_data = reshaped_data <- reshape_projoint(
+#' reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData3, 
 #'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
@@ -81,8 +81,6 @@ predict_tau <- function(
   # data frame
   
   .dataframe <- .data@data
-  
-  .idvar = .data@idvar
   
   # bind variables locally to the function
 
@@ -120,7 +118,7 @@ predict_tau <- function(
   # There are MANY combinations of tasks for each respondent.
   
   task_combinations <- .dataframe %>% 
-    dplyr::select(dplyr::all_of(.idvar), "task1" = task, "task2" = task) %>% 
+    dplyr::select(id, "task1" = task, "task2" = task) %>% 
     dplyr::distinct() %>% 
     dplyr::group_by(id) %>% 
     tidyr::complete(task1, task2) %>% 

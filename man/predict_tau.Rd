@@ -25,9 +25,9 @@ library(stringr)
 data("exampleData1")
 head(exampleData1)
 
-outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 outcomes <- c(outcomes, "choice1_repeated_flipped")
-reshaped_data = reshaped_data <- reshape_projoint(
+reshaped_data <- reshape_projoint(
   .dataframe = exampleData1, 
   .idvar = "ResponseId", 
   .outcomes = outcomes,
@@ -43,9 +43,9 @@ tau1
 data("exampleData2")
 head(exampleData2)
 
-outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 outcomes <- c(outcomes, "choice1_repeated_notflipped")
-reshaped_data = reshaped_data <- reshape_projoint(
+reshaped_data <- reshape_projoint(
   .dataframe = exampleData2, 
   .idvar = "ResponseId", 
   .outcomes = outcomes,
@@ -61,9 +61,9 @@ tau2
 data("exampleData3")
 head(exampleData3)
 
-outcomes <- str_c("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 outcomes <- c(outcomes)
-reshaped_data = reshaped_data <- reshape_projoint(
+reshaped_data <- reshape_projoint(
   .dataframe = exampleData3, 
   .idvar = "ResponseId", 
   .outcomes = outcomes,
