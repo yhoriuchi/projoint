@@ -1,6 +1,6 @@
 #' Estimate tau when there is no repeated task.
 #'
-#' This function ...
+#' Given an output from `projoint_data`, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR). 
 #'
 #' @import dplyr
 #' @import tidyr

@@ -1,10 +1,11 @@
 #' Estimate and correct MMs or AMCEs
 #'
-#' This function ...
+#' This is the internal function used to calculate and correct marginal means or average marginal component effects of a conjoint design.
 #'
 #' @import dplyr
 #' @import rlang
 #' @importFrom MASS mvrnorm
+#' @keywords internal
 #' @param .data A `projoint_data` object
 #' @param .attribute A character column name identifying the attribute of interest
 #' @param .level  A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
@@ -17,8 +18,7 @@
 #' @param .ignore_position TRUE if you ignore the location of profile (left or right). Relevant only if .structure == "choice_level". Defaults to NULL.
 #' @param .n_sims The number of simulations. Relevant only if .method == "simulation" 
 #' @param .n_boot The number of bootstrapped samples. Relevant only if .method == "bootstrap"
-#' @return A data frame
-#' @export
+#' @return A data frame of estimates
 
 
 # .data = out1

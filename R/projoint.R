@@ -1,6 +1,7 @@
 #' Analyze a conjoint data set and correct for measurement error
 #'
-#' This function ...
+#' This main function analyzes a conjoint data set and produces measurement error-corrected estimates of either marginal means or average marginal component effects, ready for plotting.
+#' It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for users who wish to specify more complex quantities of interest.
 #'
 #' @import dplyr
 #' @import rlang
@@ -19,8 +20,24 @@
 #' @param .n_boot The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"
 #' @return A `projoint_results` object
 #' @export
+#' @example
 #' 
+#' library(projoint)
 #' 
+#' data("exampleData1")
+#' head(dat)
+#'
+#'  reshaped_data <-  reshape_projoint(
+#'   .dataframe = dat, 
+#'   .idvar = "ResponseId", 
+#'   .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
+#'   .outcomes_ids = c("Community A", "Community B"),
+#'   .alphabet = "K", 
+#'   .repeated = TRUE,
+#'   .flipped = TRUE)
+#'
+#' projoint(reshaped_data) %>%
+#'  plot_projoint()
 
 projoint <- function(
     .data,

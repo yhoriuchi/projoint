@@ -1,14 +1,14 @@
 #' Plot all MMs or AMCEs
 #'
-#' This function ...
+#' This function produces MM or AMCE plots given an output from the `projoint` function.
 #'
 #' @import ggplot2
 #' @import ggthemes
 #' @import dplyr
 #' @import stringr
 #' @param .data A `projoint_results_mm` or `projoint_results_amce` object
-#' @param .estimand Either "mm" for marginal mean or "amce" for average marginal component effect
-#' @param .estimates The estimates to be plotted, either "corrected", "uncorrected", or "both"
+#' @param .estimand Either "mm" for marginal mean (default) or "amce" for average marginal component effect
+#' @param .estimates The estimates to be plotted, either "corrected" (default), "uncorrected", or "both"
 #' @param .base_size base font size, given in pts.
 #' @param .base_family base font family
 #' @return A ggplot object
