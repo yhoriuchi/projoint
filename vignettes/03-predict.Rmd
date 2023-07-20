@@ -9,13 +9,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Load the *projoint* package
+### Load the projoint package
 
 ```{r}
 library(projoint)
 ```
 
-# Read and wrangle data without the repeated tasks
+### Read and wrangle data without the repeated tasks
 
 ```{r}
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
@@ -28,7 +28,7 @@ out3 <- reshape_projoint(.dataframe = exampleData3,
                          .flipped = NULL)
 ```
 
-# Predict IRR based on the extrapolation method
+### Predict IRR based on the extrapolation method
 
 ```{r}
 predicted_irr <- predict_tau(out3)

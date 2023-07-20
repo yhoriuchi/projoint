@@ -9,13 +9,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Load the *projoint* package
+### Load the projoint package
 
 ```{r}
 library(projoint)
 ```
 
-# Read and wrangle data with the flipped repeated tasks
+### Read and wrangle data with the flipped repeated tasks
 
 ```{r}
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
@@ -29,9 +29,9 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .flipped = TRUE)
 ```
 
-# Estimate MMs
+### Estimate MMs
 
-## MM (profile-level) -- all levels
+#### MM (profile-level) -- all levels
 
 ```{r}
 mm0 <- projoint(.data = out1,
@@ -46,7 +46,7 @@ mm0@estimates
 
 ```
 
-## MM (profile-level) -- specific level
+#### MM (profile-level) -- specific level
 
 ```{r}
 qoi_1 <- set_qoi(
@@ -69,7 +69,7 @@ mm1 <- projoint(.data = out1,
 mm1@estimates
 ```
 
-# MM (choice-level) -- specific level
+#### MM (choice-level) -- specific level
 ```{r}
 qoi_2 <- set_qoi(
   .structure = "choice_level",
@@ -92,9 +92,9 @@ mm2 <- projoint(.data = out1,
 mm2@estimates
 ```
 
-# Estimate AMCEs
+### Estimate AMCEs
 
-## AMCE (profile-level) -- all levels
+#### AMCE (profile-level) -- all levels
 ```{r}
 amce0 <- projoint(.data = out1,
                   .qoi = NULL,
@@ -107,7 +107,7 @@ amce0 <- projoint(.data = out1,
 amce0@estimates
 ```
 
-## AMCE (profile-level) -- specific level
+#### AMCE (profile-level) -- specific level
 ```{r}
 qoi_3 <- set_qoi(
   .structure = "profile_level",
@@ -128,7 +128,7 @@ amce1 <- projoint(.data = out1,
 amce1@estimates
 ```
 
-## AMCE (choice-level) -- specific level
+#### AMCE (choice-level) -- specific level
 ```{r}
 qoi_4 <- set_qoi(
   .structure = "choice_level",
