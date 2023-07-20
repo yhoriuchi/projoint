@@ -15,9 +15,9 @@ plot_projoint(
 \arguments{
 \item{.data}{A `projoint_results_mm` or `projoint_results_amce` object}
 
-\item{.estimand}{Either "mm" for marginal mean or "amce" for average marginal component effect}
+\item{.estimand}{Either "mm" for marginal mean (default) or "amce" for average marginal component effect}
 
-\item{.estimates}{The estimates to be plotted, either "corrected", "uncorrected", or "both"}
+\item{.estimates}{The estimates to be plotted, either "corrected" (default), "uncorrected", or "both"}
 
 \item{.base_size}{base font size, given in pts.}
 
@@ -27,5 +27,5 @@ plot_projoint(
 A ggplot object
 }
 \description{
-This function ...
+This function produces MM or AMCE plots given an output from the `projoint` function.
 }

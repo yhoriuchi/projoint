@@ -19,6 +19,6 @@ Read and re-format a Qualtrics csv (choice text)
 library(projoint)
 
 # Not run:
-# dat <- read_Qualtrics("mummolo_nall_replication.csv")
+# dat <- read_Qualtrics("mummolo_nall_replication_cleaned.csv")
 # head(dat)
 }

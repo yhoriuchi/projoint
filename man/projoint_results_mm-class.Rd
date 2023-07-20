@@ -4,13 +4,13 @@
 \name{projoint_results_mm-class}
 \alias{projoint_results_mm-class}
 \alias{projoint_results_mm}
-\title{Class generator for `projoint_results`}
+\title{Class generators for `projoint_results_mm` and `projoint_results_amce`}
 \arguments{
 \item{slots}{Takes one slot: `estimate`, a data frame.}
 
 \item{contains}{Inherits slots from `projoint_data`, `projoint_irr`, and, optionally `projoint_qoi_mm` or `projoint_qoi_amce`}
 }
 \description{
-Class generator for `projoint_results`
+Class generators for `projoint_results_mm` and `projoint_results_amce`
 }
 \keyword{internal}

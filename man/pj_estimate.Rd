@@ -45,8 +45,9 @@ pj_estimate(
 \item{.n_boot}{The number of bootstrapped samples. Relevant only if .method == "bootstrap"}
 }
 \value{
-A data frame
+A data frame of estimates
 }
 \description{
-This function ...
+This is the internal function used to calculate and correct marginal means or average marginal component effects of a conjoint design.
 }
+\keyword{internal}

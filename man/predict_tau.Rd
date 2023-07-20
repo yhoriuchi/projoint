@@ -4,12 +4,10 @@
 \alias{predict_tau}
 \title{Estimate tau when there is no repeated task.}
 \usage{
-predict_tau(.data, .idvar = "id", .title = NULL)
+predict_tau(.data, .title = NULL)
 }
 \arguments{
 \item{.data}{A `projoint_data` object}
-
-\item{.idvar}{A character identifying the column name containing respondent IDs}
 
 \item{.title}{The title of a figure}
 }
@@ -17,7 +15,7 @@ predict_tau(.data, .idvar = "id", .title = NULL)
 A list (a vector of predicted value; ggplot object)
 }
 \description{
-This function ...
+Given an output from `projoint_data`, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR).
 }
 \examples{
 library(projoint)
