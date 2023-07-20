@@ -252,28 +252,29 @@
 <h3 id="amce-choice-level-specific-level">AMCE (choice-level) – specific level<a class="anchor" aria-label="anchor" href="#amce-choice-level-specific-level"></a>
 </h3>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">qoi_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
-<span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
+<code class="sourceCode R"><span><span class="va">qoi_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
+<span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
 <span>  .attribute <span class="op">=</span> <span class="st">"att1"</span>, </span>
-<span>  .level <span class="op">=</span> <span class="st">"level3"</span>,</span>
-<span>  .baseline <span class="op">=</span> <span class="st">"level1"</span></span>
+<span>  .level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level1"</span>, <span class="st">"level3"</span><span class="op">)</span>,</span>
+<span>  .baseline <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level1"</span>, <span class="st">"level1"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">amce1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
-<span>                  .qoi <span class="op">=</span> <span class="va">qoi_3</span>,</span>
-<span>                  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
+<span><span class="va">amce2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
+<span>                  .qoi <span class="op">=</span> <span class="va">qoi_4</span>,</span>
+<span>                  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>                  .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
 <span>                  .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
+<span>                  .ignore_position <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                  .irr <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">amce1</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
+<span><span class="va">amce2</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
-<span><span class="co">##   estimand         estimate     se attribute level  baseline</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected   -<span style="color: #BB0000;">0.130</span> 0.018<span style="text-decoration: underline;">8</span> att1      level3 level1  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected     -<span style="color: #BB0000;">0.198</span> 0.029<span style="text-decoration: underline;">4</span> att1      level3 level1</span></span></code></pre>
+<span><span class="co">##   estimand         estimate     se attribute level          baseline      </span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected  -<span style="color: #BB0000;">0.016</span><span style="color: #BB0000; text-decoration: underline;">8</span> 0.026<span style="text-decoration: underline;">2</span> att1      level1, level3 level1, level1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected    -<span style="color: #BB0000;">0.025</span><span style="color: #BB0000; text-decoration: underline;">7</span> 0.040<span style="text-decoration: underline;">3</span> att1      level1, level3 level1, level1</span></span></code></pre>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
