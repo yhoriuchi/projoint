@@ -28,6 +28,7 @@
 #' outcomes <- c(outcomes, "choice1_repeated_flipped")
 #' reshaped_data = reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData1, 
+#'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
 #'   .outcomes_ids = c("A", "B"),
 #'   .alphabet = "K", 
@@ -45,6 +46,7 @@
 #' outcomes <- c(outcomes, "choice1_repeated_notflipped")
 #' reshaped_data = reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData2, 
+#'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
 #'   .outcomes_ids = c("A", "B"),
 #'   .alphabet = "K", 
@@ -62,6 +64,7 @@
 #' outcomes <- c(outcomes)
 #' reshaped_data = reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData3, 
+#'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
 #'   .outcomes_ids = c("A", "B"),
 #'   .alphabet = "K", 
