@@ -81,15 +81,15 @@
 
     
     
-<div class="section level2">
-<h2 id="load-the-projoint-package">Load the <em>projoint</em> package<a class="anchor" aria-label="anchor" href="#load-the-projoint-package"></a>
-</h2>
+<div class="section level3">
+<h3 id="load-the-projoint-package">Load the projoint package<a class="anchor" aria-label="anchor" href="#load-the-projoint-package"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="read-and-wrangle-data-with-the-flipped-repeated-tasks">Read and wrangle data with the flipped repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-with-the-flipped-repeated-tasks"></a>
-</h2>
+<div class="section level3">
+<h3 id="read-and-wrangle-data-with-the-flipped-repeated-tasks">Read and wrangle data with the flipped repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-with-the-flipped-repeated-tasks"></a>
+</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
@@ -101,9 +101,9 @@
 <span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="read-and-wrangle-data-with-the-not-flipped-repeated-tasks">Read and wrangle data with the not-flipped repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-with-the-not-flipped-repeated-tasks"></a>
-</h2>
+<div class="section level3">
+<h3 id="read-and-wrangle-data-with-the-not-flipped-repeated-tasks">Read and wrangle data with the not-flipped repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-with-the-not-flipped-repeated-tasks"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_notflipped"</span><span class="op">)</span></span>
@@ -115,9 +115,9 @@
 <span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                         .flipped <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="read-and-wrangle-data-without-the-repeated-tasks">Read and wrangle data without the repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-without-the-repeated-tasks"></a>
-</h2>
+<div class="section level3">
+<h3 id="read-and-wrangle-data-without-the-repeated-tasks">Read and wrangle data without the repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-without-the-repeated-tasks"></a>
+</h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">out3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData3</span>, </span>
