@@ -29,7 +29,7 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .flipped = TRUE)
 ```
 
-### Estimate MM and AMCE
+### Estimate MMs and AMCEs
 ```{r}
 mm   <- projoint(out1) 
 amce <- projoint(out1, .estimand = "amce")
@@ -37,14 +37,14 @@ amce <- projoint(out1, .estimand = "amce")
 
 
 ### Visualize MMs
-```{r}
+```{r, fig.height=10, fig.width=10}
 plot_projoint(mm)
 plot_projoint(mm, .estimates = "uncorrected")
 plot_projoint(mm, .estimates = "both")
 ```
 
 ### Visualize AMCEs
-```{r}
+```{r, fig.height=10, fig.width=10}
 plot_projoint(amce, .estimand = "amce")
 plot_projoint(amce, .estimand = "amce", .estimates = "uncorrected")
 plot_projoint(amce, .estimand = "amce", .estimates = "both")
