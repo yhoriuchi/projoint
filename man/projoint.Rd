@@ -45,3 +45,22 @@ A `projoint_results` object
 This main function analyzes a conjoint data set and produces measurement error-corrected estimates of either marginal means or average marginal component effects, ready for plotting.
 It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for users who wish to specify more complex quantities of interest.
 }
+\examples{
+
+library(projoint)
+
+data("exampleData1")
+head(dat)
+
+ reshaped_data <-  reshape_projoint(
+  .dataframe = dat, 
+  .idvar = "ResponseId", 
+  .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
+  .outcomes_ids = c("Community A", "Community B"),
+  .alphabet = "K", 
+  .repeated = TRUE,
+  .flipped = TRUE)
+
+projoint(reshaped_data) \%>\%
+ plot_projoint()
+}

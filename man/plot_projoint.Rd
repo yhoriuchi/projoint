@@ -29,3 +29,22 @@ A ggplot object
 \description{
 This function produces MM or AMCE plots given an output from the `projoint` function.
 }
+\examples{
+
+library(projoint)
+
+data("exampleData1")
+head(exampleData1)
+
+ reshaped_data <-  reshape_projoint(
+  .dataframe = exampleData1, 
+  .idvar = "ResponseId", 
+  .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
+  .outcomes_ids = c("Community A", "Community B"),
+  .alphabet = "K", 
+  .repeated = TRUE,
+  .flipped = TRUE)
+
+projoint_output <- projoint(reshaped_data)
+projoint_plot(projoint_output)
+}

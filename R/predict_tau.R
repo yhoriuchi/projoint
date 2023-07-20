@@ -120,7 +120,7 @@ predict_tau <- function(
   # There are MANY combinations of tasks for each respondent.
   
   task_combinations <- .dataframe %>% 
-    dplyr::select(all_of(.idvar), "task1" = task, "task2" = task) %>% 
+    dplyr::select(dplyr::all_of(.idvar), "task1" = task, "task2" = task) %>% 
     dplyr::distinct() %>% 
     dplyr::group_by(id) %>% 
     tidyr::complete(task1, task2) %>% 

@@ -20,7 +20,7 @@
 #' @param .n_boot The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"
 #' @return A `projoint_results` object
 #' @export
-#' @example
+#' @examples
 #' 
 #' library(projoint)
 #' 

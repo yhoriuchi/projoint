@@ -13,15 +13,15 @@
 #' @param .base_family base font family
 #' @return A ggplot object
 #' @export
-#' @example
+#' @examples
 #' 
 #' library(projoint)
 #' 
 #' data("exampleData1")
-#' head(dat)
+#' head(exampleData1)
 #'
 #'  reshaped_data <-  reshape_projoint(
-#'   .dataframe = dat, 
+#'   .dataframe = exampleData1, 
 #'   .idvar = "ResponseId", 
 #'   .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
 #'   .outcomes_ids = c("Community A", "Community B"),
@@ -29,8 +29,8 @@
 #'   .repeated = TRUE,
 #'   .flipped = TRUE)
 #'
-#' projoint(reshaped_data) %>%
-#'  plot_projoint()
+#' projoint_output <- projoint(reshaped_data)
+#' projoint_plot(projoint_output)
 
 plot_projoint <- function(
     .data, 
