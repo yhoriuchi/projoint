@@ -318,24 +318,20 @@ pj_estimate <- function(
       
       cov_mm0_irr  <- cov(d_cov0$selected, d_cov0$agree) / nrow(data_for_irr)
       cov_mm1_irr  <- cov(d_cov1$selected, d_cov1$agree) / nrow(data_for_irr)
-      cov_amce_irr <- cov_mm1_irr - cov_mm0_irr
-      
+
     } else {
       
       cov_mm0_irr  <- 0
       cov_mm1_irr  <- 0
-      cov_amce_irr <- 0
-      
+
     }
     
     cov_mm0_tau  <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm0_irr
     cov_mm1_tau  <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm1_irr
-    cov_amce_tau <- -0.5 * (2 * irr - 1)^(-1/2) * cov_amce_irr
+    cov_amce_tau <- cov_mm1_tau - cov_mm0_tau
     
   }
-  
-  
-  
+
   # estimate and correct MMs ------------------------------------------------
   
   if (estimand == "mm"){
