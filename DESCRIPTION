@@ -6,7 +6,7 @@ Author: Yusaku Horiuchi and Aaron Kaufman
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
 Description: Analyzes data sets generated from conjoint experiments, correcting for measurement error.
 Imports:
-    dplyr, 
+    dplyr (>= 1.1.2), 
     readr,
     rlang,
     tidyr,
