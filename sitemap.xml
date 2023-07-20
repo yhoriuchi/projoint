@@ -19,6 +19,9 @@
     <loc>https://yhoriuchi.github.io/projoint/articles/04-estimate.html</loc>
   </url>
   <url>
+    <loc>https://yhoriuchi.github.io/projoint/articles/05_visualize.html</loc>
+  </url>
+  <url>
     <loc>https://yhoriuchi.github.io/projoint/articles/index.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/pj_estimate.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/plot_projoint.html</loc>
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/predict_tau.html</loc>
