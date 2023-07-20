@@ -8,3 +8,4 @@
 \description{
 Class generator for `projoint_data`
 }
+\keyword{internal}

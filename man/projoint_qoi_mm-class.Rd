@@ -11,3 +11,4 @@
 \description{
 Class generator for `projoint_qoi`
 }
+\keyword{internal}

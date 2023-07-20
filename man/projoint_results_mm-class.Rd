@@ -13,3 +13,4 @@
 \description{
 Class generator for `projoint_results`
 }
+\keyword{internal}

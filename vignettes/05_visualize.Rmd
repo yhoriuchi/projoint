@@ -1,0 +1,52 @@
+---
+title: "05. Visualize MMs or AMCEs"
+output: rmarkdown::html_vignette
+description: >
+  How to visualze the marginal means (MMs) or average marginal component effects (AMCEs)
+vignette: >
+  %\VignetteIndexEntry{05. Visualize MMs or AMCEs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+### Load the projoint package
+
+```{r}
+library(projoint)
+```
+
+### Read and wrangle data with the flipped repeated tasks
+
+```{r}
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- c(outcomes, "choice1_repeated_flipped")
+out1 <- reshape_projoint(.dataframe = exampleData1, 
+                         .idvar = "ResponseId", 
+                         .outcomes = outcomes,
+                         .outcomes_ids = c("A", "B"),
+                         .alphabet = "K", 
+                         .repeated = TRUE,
+                         .flipped = TRUE)
+```
+
+### Estimate MM and AMCE
+```{r}
+mm   <- projoint(out1) 
+amce <- projoint(out1, .estimand = "amce")
+```
+
+
+### Visualize MMs
+```{r}
+plot_projoint(mm)
+plot_projoint(mm, .estimates = "uncorrected")
+plot_projoint(mm, .estimates = "both")
+```
+
+### Visualize AMCEs
+```{r}
+plot_projoint(amce, .estimand = "amce")
+plot_projoint(amce, .estimand = "amce", .estimates = "uncorrected")
+plot_projoint(amce, .estimand = "amce", .estimates = "both")
+```
+
