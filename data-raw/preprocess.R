@@ -41,10 +41,8 @@ d2 <- d %>%
          "honesty" = Q7.2,
          "comments" = Q7.3) %>% 
   select(ResponseId, 
-         choice1:choice8,
-         choice1_repeated_notflipped, 
-         choice1_repeated_flipped,
-         gender:comments, contains("K-"))
+         choice1_repeated_notflipped:honesty, 
+         contains("K-"))
 
 # data with the flipped repeated tasks
 exampleData1 <- d2 %>% 

@@ -8,17 +8,15 @@
 #' A data frame with 201 rows and 186 columns:
 #' \describe{
 #'   \item{ResponseId}{Unique respondent ID}
-#'   \item{choice1, choice2, ..., choice8}{Respondent selections for the initial 8 conjoint tasks}
-#'   \item{choice1_repeated_flipped}{Respondent choice for the task that repeats choice1 but flipped}
-#'   \item{race}{Respondent race: 5 categories}
-#'   \item{party1}{Respondent party}
-#'   \item{party2}{If party1 is not D or R: closer to Democrats or closer to Republicans?}
-#'   \item{party3}{If party1 is R: strong R or not very strong R}
-#'   \item{party4}{If party1 is D: strong D or not very strong D}
+#'   \item{race}{Respondent race: 6 categories}
+#'   \item{party_1}{Respondent party: Democrat, Republican, Independent, Something else}
+#'   \item{party_2}{If party_1 is not D or R: closer to Democrats or closer to Republicans?}
+#'   \item{party_3}{If party_1 is R: strong R or not very strong R}
+#'   \item{party_4}{If party_1 is D: strong D or not very strong D}
 #'   \item{ideology}{Respondent ideology from Extremely liberal to Extremely conservative}
 #'   \item{honesty}{Attention check: respondents should select "never"}
-#'   \item{K-1-1, K-1-2, ..., K-8-5}{K-X-Y indicates the name of the attribute that is in the Yth position in the table of the Xth task}
-#'   \item{K-1-1-1, K-1-1-2, ..., K-8-2-7}{K-X-Y-Z indicates the value of the attribute that is in the Zth position for the Yth profile (either 1 or 2 for left and right profiles) for the Xth task}
+#'   \item{choice1, choice2, ..., choice8}{Respondent selections for the initial 8 conjoint tasks}
+#'   \item{choice1_repeated_flipped}{Respondent choice for the task that repeats choice1 but flipped}
 #' }
 #' @source Qualtrics and Prolific; see Clayton et al. replication materials.
 "exampleData1"
