@@ -36,18 +36,17 @@ amce <- projoint(out1, .estimand = "amce")
 
 By default, most researchers should prefer to view the corrected estimates of either MMs or AMCEs. Researchers can, however, choose to instead visualize the uncorrected estimates, or to view both together.
 
-```{r, fig.height=10, fig.width=10}
+```{r, fig.height=8, fig.width=8}
 plot_projoint(mm)
 plot_projoint(mm, .estimates = "uncorrected")
 plot_projoint(mm, .estimates = "both")
 ```
 
-```{r, fig.height=10, fig.width=10}
+```{r, fig.height=8, fig.width=8}
 plot_projoint(amce, .estimand = "amce")
 plot_projoint(amce, .estimand = "amce", .estimates = "uncorrected")
 plot_projoint(amce, .estimand = "amce", .estimates = "both")
 ```
-
 
 ### Visualize subgroup differences
 

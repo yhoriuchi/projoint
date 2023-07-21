@@ -2,7 +2,7 @@
 
 # projoint
 
-### The One-Stop Conjoint Shop
+## The One-Stop Conjoint Shop
 
 ---
 
@@ -15,7 +15,7 @@ Some notes:
 * This package is still under construction. We plan to make the first release by the end of July 2023.
 
 
-## Installation
+### Installation
 
 You can install the development version of **projoint** from [GitHub](https://github.com/) with:
 
@@ -24,13 +24,22 @@ You can install the development version of **projoint** from [GitHub](https://gi
 devtools::install_github("yhoriuchi/projoint")
 ```
 
-## Scholarly Article
+### Relevant Articles
 
-For the framework and methods based on **projoint**, please read the following article:
+#### Methods
 
-Katherine Clayton, Yusaku Horiuchi, Aaron R. Kaufman, Gary King, and Mayya Komisarchik. “Correcting Measurement Error Bias in Conjoint Survey Experiments”. Working Paper. [[Paper](https://gking.harvard.edu/sites/scholar.harvard.edu/files/gking/files/conerr.pdf)] [[Supplementary Appendix](https://gking.harvard.edu/sites/scholar.harvard.edu/files/gking/files/conerr-supp.pdf)]
+For our framework and methods, please read and cite the following article:
 
-> **Abstract:** Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many causal effects from a single randomized experiment. Unfortunately, by their ability to mirror complicated real-world choices, these designs often generate substantial measurement error and thus bias. We replicate both the data collection and analysis from eight prominent conjoint studies, all of which closely reproduce published results, and show that a large proportion of observed variation in answers to conjoint questions is effectively random noise. We then discover a common empirical pattern in how measurement error appears in conjoint studies and, with it, introduce an easy-to-use statistical method to correct the bias.
+* Katherine Clayton, Yusaku Horiuchi, Aaron R. Kaufman, Gary King, and Mayya Komisarchik. “Correcting Measurement Error Bias in Conjoint Survey Experiments”. Working Paper. [[Paper](https://gking.harvard.edu/sites/scholar.harvard.edu/files/gking/files/conerr.pdf)] [[Supplementary Appendix](https://gking.harvard.edu/sites/scholar.harvard.edu/files/gking/files/conerr-supp.pdf)]
+  + **Abstract:** Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many causal effects from a single randomized experiment. Unfortunately, by their ability to mirror complicated real-world choices, these designs often generate substantial measurement error and thus bias. We replicate both the data collection and analysis from eight prominent conjoint studies, all of which closely reproduce published results, and show that a large proportion of observed variation in answers to conjoint questions is effectively random noise. We then discover a common empirical pattern in how measurement error appears in conjoint studies and, with it, introduce an easy-to-use statistical method to correct the bias.
+
+#### Applications
+
+Studies that apply our framework and methods include the following:
+
+* John Cho, Mia Costa, and Yusaku Horiuchi. “Trade-Offs in Asian American Representation: Choosing Between Co-Ethnicity, Pan-Ethnicity, and Co-Partisanship." Working Paper.
+  + **Abstract:** How do minority voters prioritize shared race, ethnicity, and partisanship for who represents them in Congress? Asian Americans, as the fastest-growing racial group in the United States, present an important case study to analyze trade-offs between descriptive and partisan representation. In addition to considerations about partisanship, Asian Americans face trade-offs between candidates of the same national origin and of the same race. We find that when asked outright about collective presence in the legislature, Asian Americans prioritize increased descriptive representation over partisan representation. However, when choosing between candidates for dyadic representation, Asian Americans often trade off descriptive representation for the sake of shared partisanship. Voters are only willing to cross party lines for a co-ethnic representative, but not for pan-ethnics. The findings have important implications for how ethnic minority voters make decisions about political representation and contribute to understandings about a heavily understudied and heterogeneous group.
+
 
 
 
