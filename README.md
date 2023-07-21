@@ -12,7 +12,11 @@ Some notes:
 
 * The current version assumes that the outcome variable is a binary forced choice.
 
-* This package is still under construction. We plan to make the first release by the end of July 2023.
+* This package is still under construction. Forthcoming features include the following:
+  + Add an article explaining how to set up a Qualtrics survey
+  + Add a function for subgroup comparisons.
+  + Allow users to use weights for attributes and for respondents.
+  + Allow users to use other outcome variables, such as rating.
 
 ### Installation
 
