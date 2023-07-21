@@ -49,7 +49,7 @@
     <a class="dropdown-item" href="../articles/01-setup.html">01. Setting up your Qualtrics survey</a>
     <a class="dropdown-item" href="../articles/02-wrangle.html">02. Read and wrangle your data for conjoint analysis</a>
     <a class="dropdown-item" href="../articles/03-predict.html">03. Predict the intra-respondent reliability (IRR)</a>
-    <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate and correct MMs or AMCEs</a>
+    <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate corrected MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/05_visualize.html">05. Visualize MMs or AMCEs</a>
   </div>
 </li>
@@ -82,6 +82,9 @@
 
     
     
+<p>Most of the work in analyzing a conjoint task is correctly specifying
+the data and columns. In <code>projoint</code>, the
+<code>reshape_projoint</code> function makes it easy!</p>
 <div class="section level3">
 <h3 id="load-the-projoint-package">Load the projoint package<a class="anchor" aria-label="anchor" href="#load-the-projoint-package"></a>
 </h3>
@@ -91,6 +94,7 @@
 <div class="section level3">
 <h3 id="read-and-wrangle-data-with-the-flipped-repeated-tasks">Read and wrangle data with the flipped repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-with-the-flipped-repeated-tasks"></a>
 </h3>
+<p>Let’s look at a simple example:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
@@ -101,10 +105,32 @@
 <span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
 <span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Let’s walk through the arguments we have specified.
+<code>.dataframe</code> is a data frame, ideally read in from Qualtrics
+using <code><a href="../reference/read_Qualtrics.html">read_Qualtrics()</a></code> but not necessarily. The
+<code>.idvar</code> argument, a character, indicates that in
+<code>exampleData1</code>, the column <code>ResponseId</code> indicates
+unique survey respondents. The <code>.outcomes</code> variable lists all
+the columns that are outcomes; the last element in this vector is the
+repeated task (if it was conducted). <code>.outcomes_ids</code>
+indicates the possible options for an outcome – A or B, Candidate 1 or
+Candidate 2, etc. <code>.alphabet</code> defaults to “K” if the conjoint
+survey was conducted using either our tool or Strezhnev’s. The final two
+arguments, <code>.repeated</code> and <code>.flipped</code>, again
+relate to the repeated task. If the <code>.repeated</code> is set to
+<code>TRUE</code>, then the last element of the <code>.outcomes</code>
+vector is taken to be a repetition of the first task;
+<code>.flipped</code> indicates whether the profiles are in the reversed
+order.</p>
 </div>
 <div class="section level3">
 <h3 id="read-and-wrangle-data-with-the-not-flipped-repeated-tasks">Read and wrangle data with the not-flipped repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-with-the-not-flipped-repeated-tasks"></a>
 </h3>
+<p>As a slight variation, in some cases the repeated task is
+<em>not</em> flipped – that is, in the repeated task, the original
+Profile 1 is still Profile 1, rather than flipping positions to Profile
+2. Here we specify that by changing <code>.flipped</code> to
+<code>FALSE</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_notflipped"</span><span class="op">)</span></span>
@@ -119,6 +145,9 @@
 <div class="section level3">
 <h3 id="read-and-wrangle-data-without-the-repeated-tasks">Read and wrangle data without the repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-without-the-repeated-tasks"></a>
 </h3>
+<p>Or in cases with no repeated task at all, we set
+<code>.repeated</code> to <code>FALSE</code> and <code>.flipped</code>
+to <code>NULL</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">out3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData3</span>, </span>

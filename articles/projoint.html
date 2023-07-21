@@ -49,7 +49,7 @@
     <a class="dropdown-item" href="../articles/01-setup.html">01. Setting up your Qualtrics survey</a>
     <a class="dropdown-item" href="../articles/02-wrangle.html">02. Read and wrangle your data for conjoint analysis</a>
     <a class="dropdown-item" href="../articles/03-predict.html">03. Predict the intra-respondent reliability (IRR)</a>
-    <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate and correct MMs or AMCEs</a>
+    <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate corrected MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/05_visualize.html">05. Visualize MMs or AMCEs</a>
   </div>
 </li>
@@ -141,7 +141,10 @@ vector is taken to be a repetition of the first task;
 <code>.flipped</code> indicates whether the profiles are in the reversed
 order.</p>
 <p>We can pass this data set directly into <code><a href="../reference/projoint.html">projoint()</a></code> as
-follows:</p>
+follows and pipe it immediately into <code><a href="../reference/plot_projoint.html">plot_projoint()</a></code>:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
   </main>
 </div>
 

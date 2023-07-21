@@ -49,7 +49,7 @@
     <a class="dropdown-item" href="../articles/01-setup.html">01. Setting up your Qualtrics survey</a>
     <a class="dropdown-item" href="../articles/02-wrangle.html">02. Read and wrangle your data for conjoint analysis</a>
     <a class="dropdown-item" href="../articles/03-predict.html">03. Predict the intra-respondent reliability (IRR)</a>
-    <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate and correct MMs or AMCEs</a>
+    <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate corrected MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/05_visualize.html">05. Visualize MMs or AMCEs</a>
   </div>
 </li>
@@ -82,17 +82,16 @@
 
     
     
+<p>The <code>projoint</code> package features a set of tools for
+producing publication-ready figures from conjoint analyses.</p>
 <div class="section level3">
-<h3 id="load-the-projoint-package">Load the projoint package<a class="anchor" aria-label="anchor" href="#load-the-projoint-package"></a>
+<h3 id="read-and-wrangle-data-with-the-flipped-repeated-tasks-then-estimate-mms-and-amces-">Read and wrangle data with the flipped repeated tasks, then estimate
+MMs and AMCEs.<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-with-the-flipped-repeated-tasks-then-estimate-mms-and-amces-"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="read-and-wrangle-data-with-the-flipped-repeated-tasks">Read and wrangle data with the flipped repeated tasks<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data-with-the-flipped-repeated-tasks"></a>
-</h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
 <span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span>
 <span>                         .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
@@ -100,40 +99,43 @@
 <span>                         .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
 <span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
 <span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="estimate-mms-and-amces">Estimate MMs and AMCEs<a class="anchor" aria-label="anchor" href="#estimate-mms-and-amces"></a>
-</h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mm</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span><span class="op">)</span> </span>
+<span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mm</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span><span class="op">)</span> </span>
 <span><span class="va">amce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="visualize-mms">Visualize MMs<a class="anchor" aria-label="anchor" href="#visualize-mms"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>By default, most researchers should prefer to view the corrected
+estimates of either MMs or AMCEs. Researchers can, however, choose to
+instead visualize the uncorrected estimates, or to view both
+together.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
-<p><img src="05_visualize_files/figure-html/unnamed-chunk-4-1.png" width="960"></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p><img src="05_visualize_files/figure-html/unnamed-chunk-2-1.png" width="960"></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">mm</span>, .estimates <span class="op">=</span> <span class="st">"uncorrected"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="05_visualize_files/figure-html/unnamed-chunk-4-2.png" width="960"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p><img src="05_visualize_files/figure-html/unnamed-chunk-2-2.png" width="960"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">mm</span>, .estimates <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="05_visualize_files/figure-html/unnamed-chunk-4-3.png" width="960"></p>
+<p><img src="05_visualize_files/figure-html/unnamed-chunk-2-3.png" width="960"></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="05_visualize_files/figure-html/unnamed-chunk-3-1.png" width="960"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span>, .estimates <span class="op">=</span> <span class="st">"uncorrected"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="05_visualize_files/figure-html/unnamed-chunk-3-2.png" width="960"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span>, .estimates <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="05_visualize_files/figure-html/unnamed-chunk-3-3.png" width="960"></p>
 </div>
 <div class="section level3">
-<h3 id="visualize-amces">Visualize AMCEs<a class="anchor" aria-label="anchor" href="#visualize-amces"></a>
+<h3 id="visualize-subgroup-differences">Visualize subgroup differences<a class="anchor" aria-label="anchor" href="#visualize-subgroup-differences"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="05_visualize_files/figure-html/unnamed-chunk-5-1.png" width="960"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span>, .estimates <span class="op">=</span> <span class="st">"uncorrected"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="05_visualize_files/figure-html/unnamed-chunk-5-2.png" width="960"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span>, .estimates <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="05_visualize_files/figure-html/unnamed-chunk-5-3.png" width="960"></p>
+<p>A key quantity of interest in conjoint tasks is whether estimates
+(MMs or AMCEs) differ across subpopulations. These subgroup comparisons
+are especially susceptible to IRR-induced measurement error bias.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
