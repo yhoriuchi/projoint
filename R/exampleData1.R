@@ -16,7 +16,7 @@
 #'   \item{party3}{If party1 is R: strong R or not very strong R}
 #'   \item{party4}{If party1 is D: strong D or not very strong D}
 #'   \item{ideology}{Respondent ideology from Extremely liberal to Extremely conservative}
-#'   \item{hoensty}{Attention check: respondents should select "never"}
+#'   \item{honesty}{Attention check: respondents should select "never"}
 #'   \item{K-1-1, K-1-2, ..., K-8-5}{K-X-Y indicates the name of the attribute that is in the Yth position in the table of the Xth task}
 #'   \item{K-1-1-1, K-1-1-2, ..., K-8-2-7}{K-X-Y-Z indicates the value of the attribute that is in the Zth position for the Yth profile (either 1 or 2 for left and right profiles) for the Xth task}
 #' }
