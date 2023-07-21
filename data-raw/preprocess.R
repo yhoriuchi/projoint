@@ -47,7 +47,8 @@ d2 <- d %>%
 # data with the flipped repeated tasks
 exampleData1 <- d2 %>% 
   filter(!is.na(choice1_repeated_flipped)) %>% 
-  select(-choice1_repeated_notflipped)
+  select(-choice1_repeated_notflipped) %>% 
+  as_tibble()
 
 write.csv(exampleData1, file = "data-raw/mummolo_nall_replication_cleaned.csv",
           row.names = FALSE)
@@ -55,12 +56,13 @@ write.csv(exampleData1, file = "data-raw/mummolo_nall_replication_cleaned.csv",
 # data with the non-flipped repeated tasks
 exampleData2 <- d2 %>% 
   filter(!is.na(choice1_repeated_notflipped)) %>% 
-  select(-choice1_repeated_flipped)
+  select(-choice1_repeated_flipped) %>% 
+  as_tibble()
 
 # data without the repeated tasks
 exampleData3 <- exampleData1 %>% 
-  select(-contains("repeated"))
-
+  select(-contains("repeated")) %>% 
+  as_tibble()
 
 # Apply pre-processing...
 # Save the cleaned data in the required R package location
