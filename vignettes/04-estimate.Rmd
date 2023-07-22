@@ -12,7 +12,7 @@ vignette: >
 Due to IRR-induced measurement error, default MMs and AMCEs in conjoint analysis are biased. By default, `projoint` produces bias-corrected estimates automatically.
 
 
-### Load the projoint package and set up the data
+### 4.1 Load the projoint package and set up the data
 
 ```{r}
 library(projoint)
@@ -28,7 +28,7 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .flipped = TRUE)
 ```
 
-### Estimate MMs
+### 4.2 Estimate MMs
 
 There are two main setups for which `projoint` can produce estimates. The profile-level is the most common approach in the literature, while the choice-level is more flexible and powerful.
 
@@ -100,7 +100,7 @@ mm2 <- projoint(.data = out1,
 mm2@estimates
 ```
 
-### Estimate AMCEs
+### 4.3 Estimate AMCEs
 
 Note that we can replicate all above analyses using the AMCE instead of the MM just by specifying that the `.estimand = "amce"` rather than the default `"mm"`. 
 

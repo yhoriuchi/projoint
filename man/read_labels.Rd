@@ -41,6 +41,6 @@ reshaped_data <- reshape_projoint(
 # Save a CSV file (Not Run)
 # save_labels(reshaped_data, "data-raw/labels_original.csv")
 
-# Read a revised CSV file (Not Run) 
-# out1_arranged <- read_labels("data-raw/labels_arranged.csv")
+# Not Run: Read a revised CSV file
+# reshaped_data_arranged <- read_labels(reshaped_data, "data-raw/labels_arranged.csv")
 }

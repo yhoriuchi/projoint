@@ -36,8 +36,8 @@
 #' # Save a CSV file (Not Run)
 #' # save_labels(reshaped_data, "data-raw/labels_original.csv")
 #' 
-#' # Read a revised CSV file (Not Run) 
-#' # out1_arranged <- read_labels("data-raw/labels_arranged.csv")
+#' # Not Run: Read a revised CSV file
+#' # reshaped_data_arranged <- read_labels(reshaped_data, "data-raw/labels_arranged.csv")
 
 read_labels <- function(
     .data,
@@ -48,16 +48,17 @@ read_labels <- function(
   
   attribute_id <- NULL
   attribute_id_arranged <- NULL
+  level_id <- NULL
   level_id_arranged <- NULL
   value <- NULL
   name <- NULL
   attribute <- NULL
   level <- NULL
-  level_id <- NULL
   
   labels_arranged <- readr::read_csv(.filename, 
                                      show_col_types = FALSE) %>% 
-    dplyr::mutate(attribute_id_arranged = forcats::fct_reorder(attribute_id, order),
+    dplyr::mutate(attribute_id = stringr::str_extract(level_id, "^.+(?=\\:)"),
+                  attribute_id_arranged = forcats::fct_reorder(attribute_id, order),
                   attribute_id_arranged = stringr::str_c("att", as.numeric(attribute_id_arranged))) %>% 
     dplyr::arrange(order) %>% 
     dplyr::group_by(attribute_id_arranged) %>%

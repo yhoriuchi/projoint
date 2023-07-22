@@ -12,20 +12,20 @@ vignette: >
 The `projoint` package features a set of tools for producing publication-ready figures from conjoint analyses.
 
 
-### Load the projoint package
+### 5.1 Load the projoint package
 
 ```{r}
 library(projoint)
 ```
 
-### Estimate MMs and AMCEs.
+### 5.2 Estimate MMs and AMCEs.
 
 ```{r}
 mm   <- projoint(out1_arranged) 
 amce <- projoint(out1_arranged, .estimand = "amce")
 ```
 
-### Visualize MMs
+### 5.3 Visualize MMs and AMCEs
 
 By default, most researchers should prefer to view the corrected estimates of either MMs or AMCEs. Researchers can, however, choose to instead visualize the uncorrected estimates, or to view both together.
 
@@ -41,6 +41,6 @@ plot_projoint(amce, .estimand = "amce", .estimates = "uncorrected")
 plot_projoint(amce, .estimand = "amce", .estimates = "both")
 ```
 
-### Visualize subgroup differences
+### 5.4 Visualize subgroup differences
 
 A key quantity of interest in conjoint tasks is whether estimates (MMs or AMCEs) differ across subpopulations. These subgroup comparisons are especially susceptible to IRR-induced measurement error bias.

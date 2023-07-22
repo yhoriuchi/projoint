@@ -11,13 +11,13 @@ vignette: >
 
 Most of the work in analyzing a conjoint task is correctly specifying the data and columns. In `projoint`, the `reshape_projoint` function makes it easy!
 
-### Load the projoint package
+### 2.1 Load the projoint package
 
 ```{r}
 library(projoint)
 ```
 
-### Read and wrangle data
+### 2.2 Read and wrangle data
 
 
 #### With the flipped repeated tasks
@@ -55,7 +55,7 @@ out2 <- reshape_projoint(.dataframe = exampleData2,
                          .flipped = FALSE)
 ```
 
-#### RWithout the repeated tasks
+#### Without the repeated tasks
 
 Or in cases with no repeated task at all, we set `.repeated` to `FALSE` and  `.flipped` to `NULL`:
 
@@ -70,12 +70,12 @@ out3 <- reshape_projoint(.dataframe = exampleData3,
                          .flipped = NULL)
 ```
 
-### Arrange the order and labels of attributes and levels
+### 2.3 Arrange the order and labels of attributes and levels
 
-The reshaped data have attributes and levels that are sorted alphabetically. Often, howeer, you want to reorder the attributes and/or order the levels of a particular attribute. You may also prefer not to use the actual labels for attributes and levels used in your conjoint experiments; for example, for the purpose of presentation, you may want to make them shorter. This process has been a nightmare for most applied scholars using other packages. We make this process quite easy. You first save the labels using `save_labels()`. In the CSV file you save, you should add a column named `order` and specify the order of attributes and attribute-levels you want to display in your figure. You can also revise the labels for attributes and levels in any way you like. But *you should not make any change to the column named `attribute_id` and `level_id`*. After saving the updated CSV file, you should use `read_labels()` to read it and save the object suiable for the next step (i.e., use `projoint()`).
+The reshaped data have attributes and levels that are sorted alphabetically. Often, however, you want to reorder the attributes and/or order the levels of a particular attribute. You may also prefer not to use the actual labels for attributes and levels used in your conjoint experiments; for example, for the purpose of presentation, you may want to make them shorter. This process has been a nightmare for most applied scholars using other packages. We make this process quite easy. You first save the labels using `save_labels()`. In the CSV file you save, you should add a column named `order` and specify the order of attributes and attribute-levels you want to display in your figure. You can also revise the labels for attributes and levels in any way you like. But *you should not make any change to the first column named `level_id`*. After saving the updated CSV file, you should use `read_labels()` to read it and save the object suitable for the next step (i.e., use `projoint()`).
 
 ```{r, eval=FALSE}
-save_labels(out1, "temp/labels_original.csv")
+                 save_labels(out1, "temp/labels_original.csv")
 out1_arranged <- read_labels(out1, "temp/labels_arranged.csv")
 ```
 

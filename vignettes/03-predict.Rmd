@@ -11,13 +11,13 @@ vignette: >
 
 When there is a repeated task, it is easy to estimate intra-respondent reliability (IRR). When there is not, however, we use an extrapolation method to estimate it instead.
 
-### Load the projoint package
+### 3.1 Load the projoint package
 
 ```{r}
 library(projoint)
 ```
 
-### Read and wrangle data without the repeated tasks
+### 3.2 Read and wrangle data without the repeated tasks
 
 As before, we start by reshaping our data and setting `.repeated` to `FALSE`:
 
@@ -32,7 +32,7 @@ out3 <- reshape_projoint(.dataframe = exampleData3,
                          .flipped = NULL)
 ```
 
-### Predict IRR based on the extrapolation method
+### 3.3 Predict IRR based on the extrapolation method
 
 Then, we pass this data set to the `predict_tau` function, which both calculates IRR and produces a figure showing the extrapolation method visually.
 

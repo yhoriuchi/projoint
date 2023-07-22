@@ -38,6 +38,6 @@ reshaped_data <- reshape_projoint(
   .repeated = TRUE,
   .flipped = TRUE)
 
-# Save a CSV file (Not Run)
+# Not Run: Save a CSV file
 # save_labels(reshaped_data, "data-raw/labels_original.csv")
 }
