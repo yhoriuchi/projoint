@@ -3,24 +3,30 @@
 \docType{data}
 \name{out1_arranged}
 \alias{out1_arranged}
-\title{Re-shaped example data set 1 (REORGANIZED)}
+\title{Reorganized Projoint Example Data Set 1}
 \format{
-## `out1_arranged`
- A projoint object of class `projoint_data` ready to pass to `projoint()`.
+## `exampleData1`
+A data frame with 201 rows and 186 columns:
 \describe{
-  \item{To be written}{To be written}
+  \item{ResponseId}{Unique respondent ID}
+  \item{race}{Respondent race: 6 categories}
+  \item{party_1}{Respondent party: Democrat, Republican, Independent, Something else}
+  \item{party_2}{If party_1 is not D or R: closer to Democrats or closer to Republicans?}
+  \item{party_3}{If party_1 is R: strong R or not very strong R}
+  \item{party_4}{If party_1 is D: strong D or not very strong D}
+  \item{ideology}{Respondent ideology from Extremely liberal to Extremely conservative}
+  \item{honesty}{Attention check: respondents should select "never"}
+  \item{choice1, choice2, ..., choice8}{Respondent selections for the initial 8 conjoint tasks}
+  \item{choice1_repeated_flipped}{Respondent choice for the task that repeats choice1 but flipped}
 }
 }
 \source{
-To be written
+Qualtrics and Prolific; see Clayton et al. replication materials.
 }
 \usage{
 out1_arranged
 }
 \description{
-This ...
-}
-\details{
-THIS VERSION IS AFTER MANUAL RE-LABELLING AND REORDERING.
+This data set is identical to Example Data Set 1, except its attributes and levels have been manually relabeled and reordered.
 }
 \keyword{datasets}
