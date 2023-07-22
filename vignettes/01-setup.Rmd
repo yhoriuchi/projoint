@@ -36,6 +36,6 @@ With the repeated task, researchers can use to measure intra-respondent reliabil
 
 For more information about [conjointSDT](https://github.com/astrezhnev/conjointsdt/), see Strezhnev's detailes instructions. 
 
-If you want to copy the Qualtric survey that we designed for our exmaple, download the [QSF file](https://github.com/yhoriuchi/projoint/data-raw/CHKKK_Mummolo_and_Nall_full_replication_W1_Lucid_-_August_2021.qsf) and import it to your Qualtrics account. You can then use it as a template to design your own conjoint survey experiment! 
+If you want to copy the Qualtrics survey that we designed for our exmaple, download the [QSF file](https://github.com/yhoriuchi/projoint/data-raw/CHKKK_Mummolo_and_Nall_full_replication_W1_Lucid_-_August_2021.qsf) and import it to your Qualtrics account. You can then use it as a template to design your own conjoint survey experiment! 
 
 
