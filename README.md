@@ -37,7 +37,7 @@ There are some excellent R packages for conjoint analysis, including [cjoint](ht
 
 * The profile-level MMs are known to be attenuated toward 0.5 if a conjoint design includes "ties" for the attribute of interest ([Gander 2021](https://doi.org/10.1017/pan.2021.41)). We remove these ties to calculate MMs.
 
-* The profile-level AMCEs include "irrelevant attributes" and tend to produce counter-intuitive results ([Abramson, Kocak, Magazinni, and Strezhnev, working paper](https://osf.io/preprints/socarxiv/xjre9/)). We avoid this problem by focusing on choice-level quantities of interest.
+* The profile-level AMCEs include "irrelevant attributes" in the process of calculation. For this reason, the estimates tend to be counter-intuitive ([Abramson, Kocak, Magazinni, and Strezhnev, working paper](https://osf.io/preprints/socarxiv/xjre9/)). We avoid this problem by focusing on choice-level quantities of interest.
 
 * Last, but not least, our package provide the easiest possible way to re-label and re-order attributes and levels.
 
