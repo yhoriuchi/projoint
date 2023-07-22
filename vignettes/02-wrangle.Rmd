@@ -11,11 +11,6 @@ vignette: >
 
 Most of the work in analyzing a conjoint task is correctly specifying the data and columns. In `projoint`, the `reshape_projoint` function makes it easy!
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-library(tidyverse)
-```
-
-
 ### Load the projoint package
 
 ```{r}
@@ -86,12 +81,14 @@ out1_arranged <- read_labels(out1, "temp/labels_arranged.csv")
 
 You can compare the difference between the following two figures. The first figure is using the alphabetical order:
 ```{r, fig.height=8, fig.width=8}
-projoint(out1, .estimand = "amce") %>% plot_projoint(.estimand = "amce")
+amce <- projoint(out1, .estimand = "amce")
+plot_projoint(amce, .estimand = "amce")
 ```
 
 The labels and order of all attribute-levels in the second figure is the same as the original figure (Figure 2) in [Mummolo and Nall (2017)](https://doi.org/10.1086/687569).
 ```{r, fig.height=8, fig.width=8}
-projoint(out1_arranged, .estimand = "amce") %>% plot_projoint(.estimand = "amce")
+amce <- projoint(out1_arranged, .estimand = "amce")
+plot_projoint(amce, .estimand = "amce")
 ```
 
 
