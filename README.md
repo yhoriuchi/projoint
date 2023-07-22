@@ -15,7 +15,7 @@ Some notes:
 * This package is still under construction. Forthcoming features include the following:
   + Add an article explaining how to set up a Qualtrics survey
   + Add a function for subgroup comparisons.
-  + Allow researchers to use weights for featuress and for respondents.
+  + Allow researchers to use weights for features and for respondents.
   + Allow researchers to use other outcome variables, such as rating.
 
 ### Installation
