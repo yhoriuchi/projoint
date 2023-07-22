@@ -36,8 +36,7 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .flipped = TRUE)
 ```
 
-Let's walk through the arguments we have specified. `.dataframe` is a data frame, ideally read in from Qualtrics using `read_Qualtrics()` but not necessarily. The `.idvar` argument, a character, indicates that in `exampleData1`, the column `ResponseId` indicates unique survey respondents. The `.outcomes` variable lists all the columns that are outcomes; the last element in this vector is the repeated task (if it was conducted). `.outcomes_ids` indicates the possible options for an outcome -- A or B, Candidate 1 or Candidate 2, etc. `.alphabet` defaults to "K" if the conjoint survey was conducted using either our tool or Strezhnev's. The final two arguments, `.repeated` and `.flipped`, again relate to the repeated task. If the `.repeated` is set to `TRUE`, then the last element of the `.outcomes` vector is taken to be a repetition of the first task; `.flipped` indicates whether the profiles are in the reversed order.
-
+Let's walk through the arguments we have specified. `.dataframe` is a data frame, ideally read in from Qualtrics using `read_Qualtrics()` but not necessarily. The `.idvar` argument, a character, indicates that in `exampleData1`, the column `ResponseId` indicates unique survey respondents. The `.outcomes` variable lists all the columns that are outcomes; the last element in this vector is the repeated task (if it was conducted). `.outcomes_ids` indicates the possible options for an outcome; specifically, it is a vector of characters with two elements, which are the last characters of the names of the first and second profiles. For example, it should be c("A", "B") if the profile names are "Candidate A" and "Candidate B". This charactor vector can be anything, such as c("1", "2"), c("a", "b"), etc. *If you have multiple tasks in your design, you should use the same profile names across all these tasks*. `.alphabet` defaults to "K" if the conjoint survey was conducted using either our tool or Strezhnev's [Conjoint Survey Design Tool](https://github.com/astrezhnev/conjointsdt). The final two arguments, `.repeated` and `.flipped`, again relate to the repeated task. If the `.repeated` is set to `TRUE`, then the last element of the `.outcomes` vector is taken to be a repetition of the first task; `.flipped` indicates whether the profiles are in the reversed order.
 
 #### With the not-flipped repeated tasks
 
@@ -72,20 +71,22 @@ out3 <- reshape_projoint(.dataframe = exampleData3,
 
 ### 2.3 Arrange the order and labels of attributes and levels
 
-The reshaped data have attributes and levels that are sorted alphabetically. Often, however, you want to reorder the attributes and/or order the levels of a particular attribute. You may also prefer not to use the actual labels for attributes and levels used in your conjoint experiments; for example, for the purpose of presentation, you may want to make them shorter. This process has been a nightmare for most applied scholars using other packages. We make this process quite easy. You first save the labels using `save_labels()`. In the CSV file you save, you should add a column named `order` and specify the order of attributes and attribute-levels you want to display in your figure. You can also revise the labels for attributes and levels in any way you like. But *you should not make any change to the first column named `level_id`*. After saving the updated CSV file, you should use `read_labels()` to read it and save the object suitable for the next step (i.e., use `projoint()`).
+The reshaped data have attributes and levels that are sorted alphabetically. Often, however, you want to reorder the attributes and/or order the levels of a particular attribute. You may also prefer not to use the actual labels for attributes and levels used in your conjoint experiments; for example, for the purpose of presentation, you may want to make them shorter. This process has been a nightmare for most applied scholars using other packages. We make this process quite easy. You first save the labels using `save_labels()`. In the CSV file you save in your local computer, you should revise the column named `order` to specify the order of attributes and levels you want to display in your figure. You can also revise the labels for attributes and levels in any way you like. But *you should not make any change to the first column named `level_id`*. After saving the updated CSV file, you should use `read_labels()` to read it and save the object suitable for the next step (i.e., use `projoint()`).
 
 ```{r, eval=FALSE}
-                 save_labels(out1, "temp/labels_original.csv")
+save_labels(out1, "temp/labels_original.csv")
 out1_arranged <- read_labels(out1, "temp/labels_arranged.csv")
 ```
 
-You can compare the difference between the following two figures. The first figure is using the alphabetical order:
+You can find this data set on GitHub: [labels_original.csv](https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_original.csv) and [labels_arranged.csv](https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_arranged.csv).
+
+The figure based on the original order and labels is in the alphabetical order:
 ```{r, fig.height=8, fig.width=8}
 amce <- projoint(out1, .estimand = "amce")
 plot_projoint(amce, .estimand = "amce")
 ```
 
-The labels and order of all attribute-levels in the second figure is the same as the original figure (Figure 2) in [Mummolo and Nall (2017)](https://doi.org/10.1086/687569).
+The labels and order of all attribute-levels in the second figure is the same as Figure 2 in [Mummolo and Nall (2017)](https://doi.org/10.1086/687569).
 ```{r, fig.height=8, fig.width=8}
 amce <- projoint(out1_arranged, .estimand = "amce")
 plot_projoint(amce, .estimand = "amce")

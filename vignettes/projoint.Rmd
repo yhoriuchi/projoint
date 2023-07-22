@@ -12,14 +12,14 @@ vignette: >
 Projoint is a complete pipeline for conjoint survey design, implementation, analysis, and visualization. This R library conducts the data wrangling, measurement error correction, and statistical analysis components. Most users will only encounter two main functions -- `reshape_projoint()` and `projoint()` -- while more advanced users will have a high degree of control over the mechanics of their estimation.
 
 The `projoint()` function takes a number of inputs: 
- 1. an argument specifying the data
- 2. an argument set specifying the measurement error correction method
- 3. an argument indicating the standard error estimation method
- 4. optional arguments specifying the structure of the analysis and quantities of interest
- 
+1. an argument specifying the data
+2. an argument set specifying the measurement error correction method
+3. an argument indicating the standard error estimation method
+4. optional arguments specifying the structure of the analysis and quantities of interest
+
 As well, there are arguments allowing users to step through these analysis decisions more slowly. We include a function to read the results of a conjoint survey from a Qualtrics csv, a function to estimate measurement error, functions to restructure conjoint data according to specific quantities of interest, and several visualization functions to produce publication-ready plots.
 
-To start, let's use `read_Qualtrics()` to load in a data set. We'll use an example data set that replicates a study by Mummolo & Nall (Journal of Politics, 2017) examining residential segregation in the United States. We replicate this study exactly, except for adding in an extra question we can use to estimate measurement error. You can find this data set on GitHub: \url{https://github.com/yhoriuchi/projoint/blob/master/data-raw/mummolo_nall_replication_cleaned.csv}.
+To start, let's use `read_Qualtrics()` to load in a data set. We'll use an example data set that replicates a study by [Mummolo and Nall (2017)](https://doi.org/10.1086/687569) examining residential segregation in the United States. We replicate this study exactly, except for adding in an extra question we can use to estimate measurement error. You can find this data set on GitHub: [mummolo_nall_replication_cleaned.csv](https://github.com/yhoriuchi/projoint/blob/master/data-raw/mummolo_nall_replication_cleaned.csv).
 
 ```{r, eval=FALSE}
 library(projoint)
@@ -30,19 +30,18 @@ head(dat)
 Next, we will use `reshape_projoint()` to prepare the data set for the main function. This involves stripping unnecessary columns, indicating which column (if any) is a repeated task, and specifying the respondent identifier.
 
 ```{r, eval=FALSE}
-
- reshaped_data <-  reshape_projoint(
-   .dataframe = dat, 
-   .idvar = "ResponseId", 
-   .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
-   .outcomes_ids = c("Community A", "Community B"),
-   .alphabet = "K", 
-   .repeated = TRUE,
-   .flipped = TRUE)
+reshaped_data <-  reshape_projoint(
+  .dataframe = dat, 
+  .idvar = "ResponseId", 
+  .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
+  .outcomes_ids = c("Community A", "Community B"),
+  .alphabet = "K", 
+  .repeated = TRUE,
+  .flipped = TRUE)
 
 ```
 
-Let's walk through the arguments we have specified. `dat` comes from the `read_Qualtrics()` call earlier, but the other arguments may appear to be more complicated -- rest assured, they are straightforward. The `.idvar` argument, a character, indicates that in `dat`, the column `ResponseId` indicates unique survey respondents. The `.outcomes` variable lists all the columns that are outcomes; the last element in this vector is the repeated task (if it was conducted). `.outcomes_ids` indicates the possible options for an outcome -- A or B, Candidate 1 or Candidate 2, etc. `.alphabet` defaults to "K" if the conjoint survey was conducted using either our tool or Strezhnev's. The final two arguments, `.repeated` and `.flipped`, again relate to the repeated task. If the `.repeated` is set to `TRUE`, then the last element of the `.outcomes` vector is taken to be a repetition of the first task; `.flipped` indicates whether the profiles are in the reversed order.
+Let's walk through the arguments we have specified. `.dataframe` is a data frame, ideally read in from Qualtrics using `read_Qualtrics()` but not necessarily. The `.idvar` argument, a character, indicates that in `exampleData1`, the column `ResponseId` indicates unique survey respondents. The `.outcomes` variable lists all the columns that are outcomes; the last element in this vector is the repeated task (if it was conducted). `.outcomes_ids` indicates the possible options for an outcome; specifically, it is a vector of characters with two elements, which are the last characters of the names of the first and second profiles. For example, it should be c("A", "B") if the profile names are "Candidate A" and "Candidate B". This charactor vector can be anything, such as c("1", "2"), c("a", "b"), etc. *If you have multiple tasks in your design, you should use the same profile names across all these tasks*. `.alphabet` defaults to "K" if the conjoint survey was conducted using either our tool or Strezhnev's [Conjoint Survey Design Tool](https://github.com/astrezhnev/conjointsdt). The final two arguments, `.repeated` and `.flipped`, again relate to the repeated task. If the `.repeated` is set to `TRUE`, then the last element of the `.outcomes` vector is taken to be a repetition of the first task; `.flipped` indicates whether the profiles are in the reversed order.
 
 We can pass this data set directly into `projoint()` as follows and pipe it immediately into `plot_projoint()`:
 
