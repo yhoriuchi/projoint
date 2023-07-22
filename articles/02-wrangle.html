@@ -86,13 +86,13 @@
 the data and columns. In <code>projoint</code>, the
 <code>reshape_projoint</code> function makes it easy!</p>
 <div class="section level3">
-<h3 id="load-the-projoint-package">Load the projoint package<a class="anchor" aria-label="anchor" href="#load-the-projoint-package"></a>
+<h3 id="load-the-projoint-package">2.1 Load the projoint package<a class="anchor" aria-label="anchor" href="#load-the-projoint-package"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="read-and-wrangle-data">Read and wrangle data<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data"></a>
+<h3 id="read-and-wrangle-data">2.2 Read and wrangle data<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data"></a>
 </h3>
 <div class="section level4">
 <h4 id="with-the-flipped-repeated-tasks">With the flipped repeated tasks<a class="anchor" aria-label="anchor" href="#with-the-flipped-repeated-tasks"></a>
@@ -146,7 +146,7 @@ Profile 1 is still Profile 1, rather than flipping positions to Profile
 <span>                         .flipped <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="rwithout-the-repeated-tasks">RWithout the repeated tasks<a class="anchor" aria-label="anchor" href="#rwithout-the-repeated-tasks"></a>
+<h4 id="without-the-repeated-tasks">Without the repeated tasks<a class="anchor" aria-label="anchor" href="#without-the-repeated-tasks"></a>
 </h4>
 <p>Or in cases with no repeated task at all, we set
 <code>.repeated</code> to <code>FALSE</code> and <code>.flipped</code>
@@ -163,26 +163,26 @@ to <code>NULL</code>:</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="arrange-the-order-and-labels-of-attributes-and-levels">Arrange the order and labels of attributes and levels<a class="anchor" aria-label="anchor" href="#arrange-the-order-and-labels-of-attributes-and-levels"></a>
+<h3 id="arrange-the-order-and-labels-of-attributes-and-levels">2.3 Arrange the order and labels of attributes and levels<a class="anchor" aria-label="anchor" href="#arrange-the-order-and-labels-of-attributes-and-levels"></a>
 </h3>
 <p>The reshaped data have attributes and levels that are sorted
-alphabetically. Often, howeer, you want to reorder the attributes and/or
-order the levels of a particular attribute. You may also prefer not to
-use the actual labels for attributes and levels used in your conjoint
-experiments; for example, for the purpose of presentation, you may want
-to make them shorter. This process has been a nightmare for most applied
-scholars using other packages. We make this process quite easy. You
-first save the labels using <code><a href="../reference/save_labels.html">save_labels()</a></code>. In the CSV file
-you save, you should add a column named <code>order</code> and specify
-the order of attributes and attribute-levels you want to display in your
-figure. You can also revise the labels for attributes and levels in any
-way you like. But <em>you should not make any change to the column named
-<code>attribute_id</code> and <code>level_id</code></em>. After saving
-the updated CSV file, you should use <code><a href="../reference/read_labels.html">read_labels()</a></code> to read
-it and save the object suiable for the next step (i.e., use
+alphabetically. Often, however, you want to reorder the attributes
+and/or order the levels of a particular attribute. You may also prefer
+not to use the actual labels for attributes and levels used in your
+conjoint experiments; for example, for the purpose of presentation, you
+may want to make them shorter. This process has been a nightmare for
+most applied scholars using other packages. We make this process quite
+easy. You first save the labels using <code><a href="../reference/save_labels.html">save_labels()</a></code>. In the
+CSV file you save, you should add a column named <code>order</code> and
+specify the order of attributes and attribute-levels you want to display
+in your figure. You can also revise the labels for attributes and levels
+in any way you like. But <em>you should not make any change to the first
+column named <code>level_id</code></em>. After saving the updated CSV
+file, you should use <code><a href="../reference/read_labels.html">read_labels()</a></code> to read it and save the
+object suitable for the next step (i.e., use
 <code><a href="../reference/projoint.html">projoint()</a></code>).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/save_labels.html">save_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_original.csv"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span>                 <span class="fu"><a href="../reference/save_labels.html">save_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_original.csv"</span><span class="op">)</span></span>
 <span><span class="va">out1_arranged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_labels.html">read_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_arranged.csv"</span><span class="op">)</span></span></code></pre></div>
 <p>You can compare the difference between the following two figures. The
 first figure is using the alphabetical order:</p>
