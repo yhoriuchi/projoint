@@ -21,7 +21,7 @@ What you should do is to design, for each task, a table using HTML and insert th
 
 ![](../man/figures/screenshot_first.png){#id .class width=80% height=80%} 
 
-The complete HTML for the first conjoint task in this survey is available from [here](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/task_first.html):
+The complete HTML for the first conjoint task in this survey is available from [here](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/task_first.html).
 
 A typical conjoint study will include five to ten tasks. The number of questions with such HTML pages should correspond to the number of tasks. The embedded fields in each task are different: The first digit after the "K" will increment from 1 to 10 as the tasks progress.
 
@@ -30,7 +30,7 @@ If we wish to implement *a repeated task*, then, all we need to do is copy the t
 The repeated task will then look like the following:
 ![](../man/figures/screenshot_last.png){#id .class width=80% height=80%}
 
-The complete HTML for the first conjoint task in this survey is available from [here](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/task_repeated.html):
+The complete HTML for the first conjoint task in this survey is available from [here](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/task_repeated.html).
 
 With the repeated task, researchers can use to measure intra-respondent reliability (IRR).
 
