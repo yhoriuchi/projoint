@@ -9,4 +9,119 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Under construction
+We are working on developing our own tools for building a conjoint survey in Qualtrics. In the meantime, we recommend using Anton Strezhnev's Conjoint Survey Design Tool [conjointSDT](https://github.com/astrezhnev/conjointsdt/). Strezhnev's guide to designing and implementing conjoint surveys in Qualtrics is excellent and we will not reiterate it here. But to summarize: researchers should first design their conjoint study in ConjointSDT and produce a JavaScript file, which is then inputted into Qualtrics as Q1.1 using the Edit Question Javascript functionality. 
+
+
+Rather than detailing this procedure, in this section we will focus on how to implement a *repeated task* that researchers can use to measure intra-respondent reliability (IRR). We start with a JavaScript file (produced by conjointSDT) and a Qualtrics template file (.QSF). As an example, consider the [QSF file](https://github.com/yhoriuchi/projoint/data-raw/CHKKK_Mummolo_and_Nall_full_replication_W1_Lucid_-_August_2021.qsf) implementing our replication of Mummolo and Nall's 2017 study on neighborhood selection.
+
+The JavaScript produced by ConjointSDT creates a number of *embedded fields* -- these are the attributes and levels that constitute the profile pairs of each conjoint task. For example, embedded field "K-1-1-7" contains the value (level) of the seventh attribute for the first profile (of two) in the first task, and "K-5-2-5" contains the level of the fifth attribute for the second profile (of two) in the fifth task. 
+
+The complete HTML for the first conjoint task in this survey looks like this:
+
+```{html, display = TRUE}
+<div>Which of these two communities do you prefer?&nbsp;<br />
+&nbsp;</div>
+
+<div>
+<table class="UserTable">
+ <tbody>
+  <tr>
+   <td><strong>Community Trait</strong></td>
+   <td><strong>Community A</strong></td>
+   <td><strong>Community B</strong></td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-1}</td>
+   <td>${e://Field/K-1-1-1}</td>
+   <td>${e://Field/K-1-2-1}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-2}</td>
+   <td>${e://Field/K-1-1-2}</td>
+   <td>${e://Field/K-1-2-2}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-3}</td>
+   <td>${e://Field/K-1-1-3}</td>
+   <td>${e://Field/K-1-2-3}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-4}</td>
+   <td>${e://Field/K-1-1-4}</td>
+   <td>${e://Field/K-1-2-4}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-5}</td>
+   <td>${e://Field/K-1-1-5}</td>
+   <td>${e://Field/K-1-2-5}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-6}</td>
+   <td>${e://Field/K-1-1-6}</td>
+   <td>${e://Field/K-1-2-6}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-7}</td>
+   <td>${e://Field/K-1-1-7}</td>
+   <td>${e://Field/K-1-2-7}</td>
+  </tr>
+ </tbody>
+</table>
+</div>
+```
+
+A typical conjoint study will include five to ten such HTML pages, so the first digit after the "K" will increment from 1 to 10 as the tasks progress.
+
+If we wish to implement a repeated task, then, all we need to do is copy the task to be repeated (say, the first task) to a later point in the survey (say, after the last task). We recommend that researchers *flip the order* of the two profiles as well, however: Profile 1 in the original task becomes Profile 2 in the new task. To do this, we would simply swap the middle digit of the embedded fields as below.
+
+```{html, display = TRUE}
+<div>Which of these two communities do you prefer?&nbsp;<br />
+&nbsp;</div>
+
+<div>
+<table class="UserTable">
+ <tbody>
+  <tr>
+   <td><strong>Community Trait</strong></td>
+   <td><strong>Community A</strong></td>
+   <td><strong>Community B</strong></td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-1}</td>
+   <td>${e://Field/K-1-2-1}</td>
+   <td>${e://Field/K-1-1-1}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-2}</td>
+   <td>${e://Field/K-1-2-2}</td>
+   <td>${e://Field/K-1-1-2}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-3}</td>
+   <td>${e://Field/K-1-2-3}</td>
+   <td>${e://Field/K-1-1-3}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-4}</td>
+   <td>${e://Field/K-1-2-4}</td>
+   <td>${e://Field/K-1-1-4}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-5}</td>
+   <td>${e://Field/K-1-2-5}</td>
+   <td>${e://Field/K-1-1-5}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-6}</td>
+   <td>${e://Field/K-1-2-6}</td>
+   <td>${e://Field/K-1-1-6}</td>
+  </tr>
+  <tr>
+   <td>${e://Field/K-1-7}</td>
+   <td>${e://Field/K-1-2-7}</td>
+   <td>${e://Field/K-1-1-7}</td>
+  </tr>
+ </tbody>
+</table>
+</div>
+```
