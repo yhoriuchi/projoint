@@ -27,6 +27,20 @@ You can install the development version of **projoint** from [GitHub](https://gi
 devtools::install_github("yhoriuchi/projoint")
 ```
 
+### Why **projoint**?
+
+There are some excellent R packages for conjoint analysis, including [cjoint](https://cran.r-project.org/web/packages/cjoint/) (Version: 2.1.0, Published: 2018-10-19) and [cregg](https://thomasleeper.com/cregg/packages)(Version: 0.4.0, Published: 2020-06-28). But there are some importance advantages of using our packages:
+
+* Unlike the other packages, researchers can fix the measurement error bias ([Clayton et al, working paper](https://gking.harvard.edu/conjointE)).
+
+* The existing packages assume that the unit of analysis is each profile even when researchers design a binary choice experiment. We define more straightforward and more intuitive *choice-level* MMs and AMCEs and allow users to estimate them ([Clayton et al, working paper](https://gking.harvard.edu/conjointE)). 
+
+* The profile-level MMs are known to be attenuated toward 0.5 if a conjoint design includes "ties" for the attribute of interest ([Gander 2021](https://doi.org/10.1017/pan.2021.41)). We remove these ties to calculate MMs.
+
+* The profile-level AMCEs include "irrelevant attributes" and tend to produce counter-intuitive results ([Abramson, Kocak, Magazinni, and Strezhnev, working paper](https://osf.io/preprints/socarxiv/xjre9/)). We avoid this problem by focusing on choice-level quantities of interest.
+
+* Last, but not least, our package provide the easiest possible way to re-label and re-order attributes and levels.
+
 ### Relevant Articles
 
 #### Methods
