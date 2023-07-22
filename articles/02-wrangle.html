@@ -116,15 +116,21 @@ using <code><a href="../reference/read_Qualtrics.html">read_Qualtrics()</a></cod
 unique survey respondents. The <code>.outcomes</code> variable lists all
 the columns that are outcomes; the last element in this vector is the
 repeated task (if it was conducted). <code>.outcomes_ids</code>
-indicates the possible options for an outcome – A or B, Candidate 1 or
-Candidate 2, etc. <code>.alphabet</code> defaults to “K” if the conjoint
-survey was conducted using either our tool or Strezhnev’s. The final two
-arguments, <code>.repeated</code> and <code>.flipped</code>, again
-relate to the repeated task. If the <code>.repeated</code> is set to
-<code>TRUE</code>, then the last element of the <code>.outcomes</code>
-vector is taken to be a repetition of the first task;
-<code>.flipped</code> indicates whether the profiles are in the reversed
-order.</p>
+indicates the possible options for an outcome; specifically, it is a
+vector of characters with two elements, which are the last characters of
+the names of the first and second profiles. For example, it should be
+c(“A”, “B”) if the profile names are “Candidate A” and “Candidate B”.
+This charactor vector can be anything, such as c(“1”, “2”), c(“a”, “b”),
+etc. <em>If you have multiple tasks in your design, you should use the
+same profile names across all these tasks</em>. <code>.alphabet</code>
+defaults to “K” if the conjoint survey was conducted using either our
+tool or Strezhnev’s <a href="https://github.com/astrezhnev/conjointsdt" class="external-link">Conjoint Survey Design
+Tool</a>. The final two arguments, <code>.repeated</code> and
+<code>.flipped</code>, again relate to the repeated task. If the
+<code>.repeated</code> is set to <code>TRUE</code>, then the last
+element of the <code>.outcomes</code> vector is taken to be a repetition
+of the first task; <code>.flipped</code> indicates whether the profiles
+are in the reversed order.</p>
 </div>
 <div class="section level4">
 <h4 id="with-the-not-flipped-repeated-tasks">With the not-flipped repeated tasks<a class="anchor" aria-label="anchor" href="#with-the-not-flipped-repeated-tasks"></a>
@@ -173,25 +179,28 @@ conjoint experiments; for example, for the purpose of presentation, you
 may want to make them shorter. This process has been a nightmare for
 most applied scholars using other packages. We make this process quite
 easy. You first save the labels using <code><a href="../reference/save_labels.html">save_labels()</a></code>. In the
-CSV file you save, you should add a column named <code>order</code> and
-specify the order of attributes and attribute-levels you want to display
-in your figure. You can also revise the labels for attributes and levels
-in any way you like. But <em>you should not make any change to the first
-column named <code>level_id</code></em>. After saving the updated CSV
-file, you should use <code><a href="../reference/read_labels.html">read_labels()</a></code> to read it and save the
-object suitable for the next step (i.e., use
+CSV file you save in your local computer, you should revise the column
+named <code>order</code> to specify the order of attributes and levels
+you want to display in your figure. You can also revise the labels for
+attributes and levels in any way you like. But <em>you should not make
+any change to the first column named <code>level_id</code></em>. After
+saving the updated CSV file, you should use <code><a href="../reference/read_labels.html">read_labels()</a></code>
+to read it and save the object suitable for the next step (i.e., use
 <code><a href="../reference/projoint.html">projoint()</a></code>).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span>                 <span class="fu"><a href="../reference/save_labels.html">save_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_original.csv"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/save_labels.html">save_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_original.csv"</span><span class="op">)</span></span>
 <span><span class="va">out1_arranged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_labels.html">read_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_arranged.csv"</span><span class="op">)</span></span></code></pre></div>
-<p>You can compare the difference between the following two figures. The
-first figure is using the alphabetical order:</p>
+<p>You can find this data set on GitHub: <a href="https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_original.csv" class="external-link">labels_original.csv</a>
+and <a href="https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_arranged.csv" class="external-link">labels_arranged.csv</a>.</p>
+<p>The figure based on the original order and labels is in the
+alphabetical order:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">amce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="02-wrangle_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
 <p>The labels and order of all attribute-levels in the second figure is
-the same as the original figure (Figure 2) in <a href="https://doi.org/10.1086/687569" class="external-link">Mummolo and Nall (2017)</a>.</p>
+the same as Figure 2 in <a href="https://doi.org/10.1086/687569" class="external-link">Mummolo
+and Nall (2017)</a>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">amce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
