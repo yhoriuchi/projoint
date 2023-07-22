@@ -19,8 +19,7 @@ Imports:
     tibble,
     methods,
     MASS,
-    forcats,
-    
+    forcats
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.3
