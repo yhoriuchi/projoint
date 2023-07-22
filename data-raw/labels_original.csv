@@ -1,0 +1,25 @@
+attribute,level,attribute_id,level_id
+Housing Cost,15% of pre-tax income,att1,att1:level1
+Housing Cost,30% of pre-tax income,att1,att1:level2
+Housing Cost,40% of pre-tax income,att1,att1:level3
+Presidential Vote (2020),"30% Democrat, 70% Republican",att2,att2:level1
+Presidential Vote (2020),"50% Democrat, 50% Republican",att2,att2:level2
+Presidential Vote (2020),"70% Democrat, 30% Republican",att2,att2:level3
+Racial Composition,"50% White, 50% Nonwhite",att3,att3:level1
+Racial Composition,"75% White, 25% Nonwhite",att3,att3:level2
+Racial Composition,"90% White, 10% Nonwhite",att3,att3:level3
+Racial Composition,"96% White, 4% Nonwhite",att3,att3:level4
+School Quality,5 out of 10,att4,att4:level1
+School Quality,9 out of 10,att4,att4:level2
+Total Daily Driving Time for Commuting and Errands,10 min,att5,att5:level1
+Total Daily Driving Time for Commuting and Errands,25 min,att5,att5:level2
+Total Daily Driving Time for Commuting and Errands,45 min,att5,att5:level3
+Total Daily Driving Time for Commuting and Errands,75 min,att5,att5:level4
+Type of Place,"City – downtown, with a mix of offices, apartments, and shops",att6,att6:level1
+Type of Place,"City, more residential area",att6,att6:level2
+Type of Place,Rural area,att6,att6:level3
+Type of Place,Small town,att6,att6:level4
+Type of Place,Suburban neighborhood with houses only,att6,att6:level5
+Type of Place,"Suburban neighborhood with mix of shops, houses, businesses",att6,att6:level6
+Violent Crime Rate (Vs National Rate),20% Less Crime Than National Average,att7,att7:level1
+Violent Crime Rate (Vs National Rate),20% More Crime Than National Average,att7,att7:level2

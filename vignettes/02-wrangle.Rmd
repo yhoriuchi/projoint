@@ -11,13 +11,21 @@ vignette: >
 
 Most of the work in analyzing a conjoint task is correctly specifying the data and columns. In `projoint`, the `reshape_projoint` function makes it easy!
 
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+
 ### Load the projoint package
 
 ```{r}
 library(projoint)
 ```
 
-### Read and wrangle data with the flipped repeated tasks
+### Read and wrangle data
+
+
+#### With the flipped repeated tasks
 
 Let's look at a simple example:
 
@@ -36,7 +44,7 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
 Let's walk through the arguments we have specified. `.dataframe` is a data frame, ideally read in from Qualtrics using `read_Qualtrics()` but not necessarily. The `.idvar` argument, a character, indicates that in `exampleData1`, the column `ResponseId` indicates unique survey respondents. The `.outcomes` variable lists all the columns that are outcomes; the last element in this vector is the repeated task (if it was conducted). `.outcomes_ids` indicates the possible options for an outcome -- A or B, Candidate 1 or Candidate 2, etc. `.alphabet` defaults to "K" if the conjoint survey was conducted using either our tool or Strezhnev's. The final two arguments, `.repeated` and `.flipped`, again relate to the repeated task. If the `.repeated` is set to `TRUE`, then the last element of the `.outcomes` vector is taken to be a repetition of the first task; `.flipped` indicates whether the profiles are in the reversed order.
 
 
-### Read and wrangle data with the not-flipped repeated tasks
+#### With the not-flipped repeated tasks
 
 As a slight variation, in some cases the repeated task is *not* flipped -- that is, in the repeated task, the original Profile 1 is still Profile 1, rather than flipping positions to Profile 2. Here we specify that by changing `.flipped` to `FALSE`:
 
@@ -52,7 +60,7 @@ out2 <- reshape_projoint(.dataframe = exampleData2,
                          .flipped = FALSE)
 ```
 
-### Read and wrangle data without the repeated tasks
+#### RWithout the repeated tasks
 
 Or in cases with no repeated task at all, we set `.repeated` to `FALSE` and  `.flipped` to `NULL`:
 
@@ -66,3 +74,25 @@ out3 <- reshape_projoint(.dataframe = exampleData3,
                          .repeated = FALSE,
                          .flipped = NULL)
 ```
+
+### Arrange the order and labels of attributes and levels
+
+The reshaped data have attributes and levels that are sorted alphabetically. Often, howeer, you want to reorder the attributes and/or order the levels of a particular attribute. You may also prefer not to use the actual labels for attributes and levels used in your conjoint experiments; for example, for the purpose of presentation, you may want to make them shorter. This process has been a nightmare for most applied scholars using other packages. We make this process quite easy. You first save the labels using `save_labels()`. In the CSV file you save, you should add a column named `order` and specify the order of attributes and attribute-levels you want to display in your figure. You can also revise the labels for attributes and levels in any way you like. But *you should not make any change to the column named `attribute_id` and `level_id`. After saving the updated CSV file, you should use `read_labels()` to read it and save the object suiable for the next step (i.e., use `projoint()`).
+
+```{r, eval=FALSE}
+save_labels(out1, "temp/labels_original.csv")
+out1_arranged <- read_labels(out1, "temp/labels_arranged.csv")
+```
+
+You can compare the difference between the following two figures. The first figure is using the alphabetical order:
+```{r, fig.height=8, fig.width=8}
+projoint(out1, .estimand = "amce") %>% plot_projoint(.estimand = "amce")
+```
+
+The labels and order of all attribute-levels in the second figure is the same as the original figure (Figure 2) in [Mummolo and Nall (2017)](https://doi.org/10.1086/687569).
+```{r, fig.height=8, fig.width=8}
+projoint(out1_arranged, .estimand = "amce") %>% plot_projoint(.estimand = "amce")
+```
+
+
+

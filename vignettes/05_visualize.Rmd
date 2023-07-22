@@ -11,26 +11,19 @@ vignette: >
 
 The `projoint` package features a set of tools for producing publication-ready figures from conjoint analyses.
 
-### Read and wrangle data with the flipped repeated tasks, then estimate MMs and AMCEs.
+
+### Load the projoint package
 
 ```{r}
 library(projoint)
-
-outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-outcomes <- c(outcomes, "choice1_repeated_flipped")
-out1 <- reshape_projoint(.dataframe = exampleData1, 
-                         .idvar = "ResponseId", 
-                         .outcomes = outcomes,
-                         .outcomes_ids = c("A", "B"),
-                         .alphabet = "K", 
-                         .repeated = TRUE,
-                         .flipped = TRUE)
-
-mm   <- projoint(out1) 
-amce <- projoint(out1, .estimand = "amce")
-
 ```
 
+### Estimate MMs and AMCEs.
+
+```{r}
+mm   <- projoint(out1_arranged) 
+amce <- projoint(out1_arranged, .estimand = "amce")
+```
 
 ### Visualize MMs
 
