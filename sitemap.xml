@@ -52,6 +52,9 @@
     <loc>https://yhoriuchi.github.io/projoint/reference/organize_data.html</loc>
   </url>
   <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/out1_arranged.html</loc>
+  </url>
+  <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/pj_estimate.html</loc>
   </url>
   <url>
@@ -79,7 +82,13 @@
     <loc>https://yhoriuchi.github.io/projoint/reference/read_Qualtrics.html</loc>
   </url>
   <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/read_labels.html</loc>
+  </url>
+  <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/reshape_projoint.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/save_labels.html</loc>
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/set_qoi.html</loc>
