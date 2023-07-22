@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-We are working on developing our own tools for building a conjoint survey in Qualtrics. In the meantime, we recommend using Anton Strezhnev's Conjoint Survey Design Tool [conjointSDT](https://github.com/astrezhnev/conjointsdt/). Strezhnev's guide to designing and implementing conjoint surveys in Qualtrics is excellent and we will not reiterate it here. But to summarize: researchers should first design their conjoint study in ConjointSDT and produce a JavaScript file, which is then inputted into Qualtrics as Q1.1 using the Edit Question Javascript functionality. See the following screenshot as an example to embed the javascript: 
+We are working on developing our own tools for building a conjoint survey in Qualtrics. In the meantime, we recommend using Anton Strezhnev's **Conjoint Survey Design Tool** (Link: [conjointSDT](https://github.com/astrezhnev/conjointsdt/)). Strezhnev's guide to designing and implementing conjoint surveys in Qualtrics is excellent and we will not reiterate it here. But to summarize: researchers should first design their conjoint study in ConjointSDT and produce a JavaScript file, which is then inputted into Qualtrics as Q1.1 using the Edit Question Javascript functionality. See the following screenshot as an example to embed the javascript: 
 
 Rather than detailing this procedure, in this section we will focus on how to implement a *repeated task* that researchers can use to measure intra-respondent reliability (IRR). We start with a JavaScript file (produced by conjointSDT) and a Qualtrics template file (.QSF). As an example, consider the [QSF file](https://github.com/yhoriuchi/projoint/data-raw/CHKKK_Mummolo_and_Nall_full_replication_W1_Lucid_-_August_2021.qsf) implementing our replication of Mummolo and Nall's 2017 study on neighborhood selection.
 
@@ -24,6 +24,6 @@ A typical conjoint study will include five to ten such HTML pages, so the first 
 If we wish to implement a repeated task, then, all we need to do is copy the task to be repeated (say, the first task) to a later point in the survey (say, after the last task). We recommend that researchers *flip the order* of the two profiles as well, however: Profile 1 in the original task becomes Profile 2 in the new task. To do this, we would simply swap the middle digit of the embedded fields as below.
 
 The last task should look like the following:
-![Last Task](../man/figures/screenshot_last.png){#id .class width=50% height=50%}
+![](../man/figures/screenshot_last.png){#id .class width=100% height=100%}
 
-The complete HTML for the first conjoint task in this survey is available from [here](https://github.com/yhoriuchi/projoint/data-raw/task_last.html):
+The complete HTML for the first conjoint task in this survey is available from [here](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/task_last.html):
