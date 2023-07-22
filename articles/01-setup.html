@@ -89,7 +89,8 @@ Strezhnev’s guide to designing and implementing conjoint surveys in
 Qualtrics is excellent and we will not reiterate it here. But to
 summarize: researchers should first design their conjoint study in
 ConjointSDT and produce a JavaScript file, which is then inputted into
-Qualtrics as Q1.1 using the Edit Question Javascript functionality.</p>
+Qualtrics as Q1.1 using the Edit Question Javascript functionality. See
+the following screenshot as an example to embed the javascript:</p>
 <p>Rather than detailing this procedure, in this section we will focus
 on how to implement a <em>repeated task</em> that researchers can use to
 measure intra-respondent reliability (IRR). We start with a JavaScript
@@ -104,6 +105,12 @@ embedded field “K-1-1-7” contains the value (level) of the seventh
 attribute for the first profile (of two) in the first task, and
 “K-5-2-5” contains the level of the fifth attribute for the second
 profile (of two) in the fifth task.</p>
+<p>The first task should look like the following:</p>
+<div class="figure">
+<img src="../reference/figures/screenshot_first.png" alt="A caption" width="80%"><p class="caption">
+A caption
+</p>
+</div>
 <p>The complete HTML for the first conjoint task in this survey looks
 like this:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div&gt;</span>Which of these two communities do you prefer?<span class="dv">&amp;nbsp;</span><span class="kw">&lt;br</span> <span class="kw">/&gt;</span></span>
@@ -164,6 +171,8 @@ the survey (say, after the last task). We recommend that researchers
 <em>flip the order</em> of the two profiles as well, however: Profile 1
 in the original task becomes Profile 2 in the new task. To do this, we
 would simply swap the middle digit of the embedded fields as below.</p>
+<p>The last task should look like the following:</p>
+<p>The complete HTML for the last conjoint task is:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div&gt;</span>Which of these two communities do you prefer?<span class="dv">&amp;nbsp;</span><span class="kw">&lt;br</span> <span class="kw">/&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">&amp;nbsp;</span><span class="kw">&lt;/div&gt;</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
