@@ -34,7 +34,7 @@ The complete HTML for the first conjoint task in this survey is available from [
 
 With the repeated task, researchers can use to measure intra-respondent reliability (IRR).
 
-For more information about [conjointSDT](https://github.com/astrezhnev/conjointsdt/), see Strezhnev's detailes instructions. 
+For more information about [conjointSDT](https://github.com/astrezhnev/conjointsdt/), see Strezhnev's detailed instructions. 
 
 If you want to copy the Qualtric survey that we designed for our exmaple, download the QSF file below and import it to your Qualtrics account. You can then use it as a template to design your own conjoint survey experiment! 
 
