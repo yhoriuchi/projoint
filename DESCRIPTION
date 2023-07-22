@@ -19,12 +19,14 @@ Imports:
     tibble,
     methods,
     MASS,
-    forcats
+    forcats,
+    
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 Suggests: 
     knitr,
+    downloadthis,
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
