@@ -284,14 +284,14 @@ rather than the default <code>"mm"</code>.</p>
 <code class="sourceCode R"><span><span class="va">amce1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                 .qoi <span class="op">=</span> <span class="va">qoi_3</span>,</span>
 <span>                 .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
-<span>                 .irr <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
+<span>                 .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">amce1b</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
 <span><span class="co">##   estimand         estimate     se conf.low conf.high attribute level  baseline</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected   -<span style="color: #BB0000;">0.130</span> 0.018<span style="text-decoration: underline;">8</span>   -<span style="color: #BB0000;">0.167</span>   -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1      level3 level1  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected     -<span style="color: #BB0000;">0.145</span> 0.021<span style="text-decoration: underline;">0</span>   -<span style="color: #BB0000;">0.186</span>   -<span style="color: #BB0000;">0.104</span>  att1      level3 level1</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected     -<span style="color: #BB0000;">0.184</span> 0.026<span style="text-decoration: underline;">6</span>   -<span style="color: #BB0000;">0.236</span>   -<span style="color: #BB0000;">0.132</span>  att1      level3 level1</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="amce-choice-level-specific-level">AMCE (choice-level) – specific level<a class="anchor" aria-label="anchor" href="#amce-choice-level-specific-level"></a>
