@@ -232,17 +232,20 @@ projoint <- function(
   if (.estimand == "mm"){
     
     if(is.null(.qoi)){
-      # slots inherited from projoint_data and projoint_qoi are NULL. Why?
-      projoint_results_mm("estimates" = estimates, # the slot specific to projoint_results
+      projoint_results_mm("estimates" = estimates, "tau" = tau, # the slots specific to projoint_results
                           labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                          irr = tau, figure = NULL) %>% 
+                          #irr = irr, figure = NULL # slots inherited from projoint_irr
+                          attribute_of_interest = "all",
+                          levels_of_interest = "all"
+      ) %>% 
         return()
     } else {
-      projoint_results_mm("estimates" = estimates, # the slot specific to projoint_results
+      projoint_results_mm("estimates" = estimates, "tau" = tau, # the slots specific to projoint_results
                           labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                          irr = tau, figure = NULL, # slots inherited from projoint_irr
+                          #irr = irr, figure = NULL, # slots inherited from projoint_irr
                           attribute_of_interest = .qoi@attribute_of_interest,
-                          levels_of_interest = .qoi@levels_of_interest) %>% 
+                          levels_of_interest = .qoi@levels_of_interest
+                          ) %>% 
         return()
     }
     
@@ -250,17 +253,20 @@ projoint <- function(
   } else if (.estimand == "amce"){
     
     if(is.null(.qoi)){
-      # slots inherited from projoint_data and projoint_qoi are NULL. Why?
-      projoint_results_amce("estimates" = estimates, # the slot specific to projoint_results
+      projoint_results_amce("estimates" = estimates, "tau" = tau, # the slot specific to projoint_results
                             labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                            irr = tau, figure = NULL) %>% 
+                            #irr = irr, figure = NULL # slots inherited from projoint_irr
+                            attribute_of_interest = "all",
+                            levels_of_interest = "all"
+      ) %>% 
         return()
     } else {
-      projoint_results_amce("estimates" = estimates, # the slot specific to projoint_results
+      projoint_results_amce("estimates" = estimates, "tau" = tau, # the slot specific to projoint_results
                             labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                            irr = tau, figure = NULL, # slots inherited from projoint_irr
+                            # irr = irr, figure = NULL, # slots inherited from projoint_irr
                             attribute_of_interest = .qoi@attribute_of_interest,
-                            levels_of_interest = .qoi@levels_of_interest) %>% 
+                            levels_of_interest = .qoi@levels_of_interest
+                            ) %>% 
         return()
     }
     

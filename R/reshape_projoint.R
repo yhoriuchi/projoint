@@ -14,6 +14,7 @@
 #' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".
 #' @param .repeated TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.
 #' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
+#' @param .covariates A character vector identifying respondents' covariates used for subgroup analysis
 #' @return A projoint object of class `projoint_data` ready to pass to `projoint()`.
 #' @export
 #' @examples
@@ -44,7 +45,8 @@ reshape_projoint <- function(
     .outcomes_ids = c("1", "2"),
     .alphabet = "F", 
     .repeated = FALSE,
-    .flipped = NULL
+    .flipped = NULL,
+    .covariates = NULL
 ){
   
   # bind variables locally to the function
@@ -201,28 +203,37 @@ reshape_projoint <- function(
     
     # merge
     suppressMessages(
-      out_final <- left_join(out1, out2) %>% 
+      out <- left_join(out1, out2) %>% 
         dplyr::mutate(agree = ifelse(selected == selected_repeated, 1, 0)) 
     )
     
   } else if (.repeated == FALSE){
     
-    out_final <- out1 %>% 
+    out <- out1 %>% 
       dplyr::mutate(agree = NA) 
     
   }
+
+  # Make a data frame that includes respondent covariates -------------------
+
+  covariates <- .dataframe %>%
+    # Rename the respondent identifier "id"
+    dplyr::rename("id" = all_of(.idvar)) %>%
+    # Select variables needed
+    dplyr::select(all_of(c("id", .covariates)))
   
-  # add a variable indicating disagreement ----------------------------------
-  
-  # final data frame
-  out <- out_final %>%
+
+  # Make a final data frame -------------------------------------------------
+
+  out_final <- out %>% 
+    dplyr::left_join(covariates, by = "id") %>% 
     dplyr::mutate_if(is.character, as.factor) %>%
     dplyr::mutate(id = as.character(id)) %>%
     as_tibble()
-  
+
   # return the data frame and the variable labels as a list
   out2 <- projoint_data("labels" = labels, 
-                        "data" = out)
+                        "data" = out_final)
   return(out2)
   
 }

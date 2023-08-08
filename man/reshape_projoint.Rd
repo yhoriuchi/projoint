@@ -11,7 +11,8 @@ reshape_projoint(
   .outcomes_ids = c("1", "2"),
   .alphabet = "F",
   .repeated = FALSE,
-  .flipped = NULL
+  .flipped = NULL,
+  .covariates = NULL
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ reshape_projoint(
 \item{.repeated}{TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.}
 
 \item{.flipped}{TRUE if the profiles of the repeated task are flipped (recommended)}
+
+\item{.covariates}{A character vector identifying respondents' covariates used for subgroup analysis}
 }
 \value{
 A projoint object of class `projoint_data` ready to pass to `projoint()`.

@@ -6,9 +6,9 @@
 \alias{projoint_results_mm}
 \title{Class generators for `projoint_results_mm` and `projoint_results_amce`}
 \arguments{
-\item{slots}{Takes one slot: `estimate`, a data frame.}
+\item{slots}{Takes two slots: `estimate`, a data frame and `tau`, a numerical scalar}
 
-\item{contains}{Inherits slots from `projoint_data`, `projoint_irr`, and, optionally `projoint_qoi_mm` or `projoint_qoi_amce`}
+\item{contains}{Inherits slots from `projoint_data` and, optionally `projoint_qoi_mm` or `projoint_qoi_amce`}
 }
 \description{
 Class generators for `projoint_results_mm` and `projoint_results_amce`
