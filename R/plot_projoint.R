@@ -53,6 +53,8 @@ plot_projoint <- function(
   baseline <- NULL
   estimates <- NULL
   att_level_labels <- NULL
+  conf.low <- NULL
+  conf.high <- NULL
   
   # check -------------------------------------------------------------------
   
@@ -192,8 +194,8 @@ plot_projoint <- function(
     if (.estimand == "mm"){
       
       g + ggplot2::geom_pointrange(aes(x = estimate,
-                                       xmin = estimate - 1.96 * se,
-                                       xmax = estimate + 1.96 * se, 
+                                       xmin = conf.low,
+                                       xmax = conf.high, 
                                        y = order), 
                                    na.rm = TRUE)
       
@@ -202,8 +204,8 @@ plot_projoint <- function(
       g + ggplot2::geom_pointrange(data = out4 %>% 
                                      dplyr::filter(!stringr::str_detect(level_id, "level1")),
                                    aes(x = estimate,
-                                       xmin = estimate - 1.96 * se,
-                                       xmax = estimate + 1.96 * se, 
+                                       xmin = conf.low,
+                                       xmax = conf.high, 
                                        y = order), 
                                    na.rm = TRUE) +
         ggplot2::geom_pointrange(data = out4 %>% 
@@ -223,8 +225,8 @@ plot_projoint <- function(
       
       g + ggplot2::geom_pointrange(data = out4,
                                    aes(x = estimate,
-                                       xmin = estimate - 1.96 * se,
-                                       xmax = estimate + 1.96 * se, 
+                                       xmin = conf.low,
+                                       xmax = conf.high, 
                                        y = order,
                                        color = estimates), 
                                    position = ggplot2::position_dodge(width = 0.5),
@@ -237,8 +239,8 @@ plot_projoint <- function(
       g + ggplot2::geom_pointrange(data = out4 %>% 
                                      dplyr::filter(!stringr::str_detect(level_id, "level1")),
                                    aes(x = estimate,
-                                       xmin = estimate - 1.96 * se,
-                                       xmax = estimate + 1.96 * se, 
+                                       xmin = conf.low,
+                                       xmax = conf.high, 
                                        y = order,
                                        color = estimates), 
                                    position = ggplot2::position_dodge(width = 0.5),

@@ -142,7 +142,7 @@ amce1@estimates
 amce1b <- projoint(.data = out1,
                  .qoi = qoi_3,
                  .estimand = "amce",
-                 .irr = 0.90)
+                 .irr = 0.75)
 
 amce1b@estimates
 ```
