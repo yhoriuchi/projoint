@@ -62,11 +62,11 @@
 <span>  <span class="va">.data</span>,</span>
 <span>  <span class="va">.attribute</span>,</span>
 <span>  <span class="va">.level</span>,</span>
-<span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
+<span>  .baseline <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
 <span>  .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
 <span>  .irr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .baseline <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .ignore_position <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .n_sims <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -94,8 +94,12 @@
 <dd><p>A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis</p></dd>
 
 
+<dt>.baseline</dt>
+<dd><p>A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis</p></dd>
+
+
 <dt>.structure</dt>
-<dd><p>A character identifying a data structure: "choice_level" (default) or "profile_level". Note: the right element of .level is the outcome of choice if .structure == "choice_level"</p></dd>
+<dd><p>A character identifying a data structure: "choice_level" or "profile_level" (default). Note: the right element of .level is the outcome of choice if .structure == "choice_level"</p></dd>
 
 
 <dt>.estimand</dt>
@@ -108,10 +112,6 @@
 
 <dt>.irr</dt>
 <dd><p>NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value</p></dd>
-
-
-<dt>.baseline</dt>
-<dd><p>A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis</p></dd>
 
 
 <dt>.remove_ties</dt>

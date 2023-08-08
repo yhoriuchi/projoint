@@ -97,7 +97,8 @@ the data and columns. In <code>projoint</code>, the
 <div class="section level4">
 <h4 id="with-the-flipped-repeated-tasks">With the flipped repeated tasks<a class="anchor" aria-label="anchor" href="#with-the-flipped-repeated-tasks"></a>
 </h4>
-<p>Let’s look at a simple example:</p>
+<p>Let’s look at a simple example. We expand all those arguments below
+for clarity:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
@@ -120,7 +121,7 @@ indicates the possible options for an outcome; specifically, it is a
 vector of characters with two elements, which are the last characters of
 the names of the first and second profiles. For example, it should be
 c(“A”, “B”) if the profile names are “Candidate A” and “Candidate B”.
-This charactor vector can be anything, such as c(“1”, “2”), c(“a”, “b”),
+This character vector can be anything, such as c(“1”, “2”), c(“a”, “b”),
 etc. <em>If you have multiple tasks in your design, you should use the
 same profile names across all these tasks</em>. <code>.alphabet</code>
 defaults to “K” if the conjoint survey was conducted using either our
@@ -139,7 +140,7 @@ are in the reversed order.</p>
 <em>not</em> flipped – that is, in the repeated task, the original
 Profile 1 is still Profile 1, rather than flipping positions to Profile
 2. Here we specify that by changing <code>.flipped</code> to
-<code>FALSE</code>:</p>
+<code>FALSE</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_notflipped"</span><span class="op">)</span></span>
@@ -195,16 +196,16 @@ and <a href="https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_a
 <p>The figure based on the original order and labels is in the
 alphabetical order:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">amce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="02-wrangle_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
+<code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="02-wrangle_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 <p>The labels and order of all attribute-levels in the second figure is
 the same as Figure 2 in <a href="https://doi.org/10.1086/687569" class="external-link">Mummolo
 and Nall (2017)</a>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">amce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="02-wrangle_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
+<code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="02-wrangle_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

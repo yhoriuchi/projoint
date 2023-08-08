@@ -118,10 +118,19 @@ all those arguments below for clarity:</p>
 <code class="sourceCode R"><span><span class="va">mm0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                .qoi <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>                .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
-<span>                .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
 <span>                .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
-<span>                .irr <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>                .irr <span class="op">=</span> <span class="cn">NULL</span>, </span>
+<span>                .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                .ignore_position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                .n_sims <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                .n_boot <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                .weights_1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                .clusters_1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                .se_type_1 <span class="op">=</span> <span class="st">"classical"</span>,</span>
+<span>                .weights_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                .clusters_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                .se_type_2 <span class="op">=</span> <span class="st">"classical"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mm0</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 48 × 7</span></span></span>
@@ -145,7 +154,9 @@ all those arguments below for clarity:</p>
 <p>However, it is also possible to specify the precise attributes, and
 attribute levels, of interest using the <code>set_qoi</code> function as
 below. The <code>set_qoi</code> function is the main way for users to
-specify more complex estimands in conjoint analysis.</p>
+specify more complex estimands in conjoint analysis. Al arguments for
+<code>qoi()</code> are expanded for clarify, but the default arguments
+in <code><a href="../reference/projoint.html">projoint()</a></code> are dropped for simplicity:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
@@ -154,15 +165,7 @@ specify more complex estimands in conjoint analysis.</p>
 <span>  .level <span class="op">=</span> <span class="st">"level1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
-<span>                .qoi <span class="op">=</span> <span class="va">qoi_1</span>,</span>
-<span>                .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
-<span>                .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
-<span>                .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
-<span>                .irr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                .ignore_position <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                .n_sims <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                .n_boot <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>                .qoi <span class="op">=</span> <span class="va">qoi_1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mm1</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
@@ -170,6 +173,28 @@ specify more complex estimands in conjoint analysis.</p>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1      level1</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected      0.614 0.020<span style="text-decoration: underline;">7</span>    0.573     0.654 att1      level1</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="mm-profile-level-specific-level-using-the-predicted-irr">MM (profile-level) – specific level, using the predicted IRR<a class="anchor" aria-label="anchor" href="#mm-profile-level-specific-level-using-the-predicted-irr"></a>
+</h4>
+<p>If your conjoint survey design does not include the recommended
+repeated task, you can use the specific value for <code>.irr</code>,
+which you can estimate using the <code><a href="../reference/predict_tau.html">predict_tau()</a></code> function or
+specify the value based on the prior knowledge. In the following, we use
+0.75, which is most likely IRR we find in our test data sets. The defaul
+arguments for both <code><a href="../reference/set_qoi.html">set_qoi()</a></code> and <code><a href="../reference/projoint.html">projoint()</a></code>
+are dropped hereafter.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mm1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
+<span>                 .qoi <span class="op">=</span> <span class="va">qoi_1</span>,</span>
+<span>                 .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mm1b</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
+<span><span class="co">##   estimand       estimate     se conf.low conf.high attribute level </span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1      level1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected      0.605 0.019<span style="text-decoration: underline;">0</span>    0.568     0.643 att1      level1</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="mm-choice-level-specific-level">MM (choice-level) – specific level<a class="anchor" aria-label="anchor" href="#mm-choice-level-specific-level"></a>
@@ -180,10 +205,9 @@ exponentially more choice-level estimands than there are profile-level
 estimands, so it is impractical to view all of them. Here we specify
 that we want to return the marginal mean of attribute 1, levels 1 and 3
 at the choice-level.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
-<span>  .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
 <span>  .attribute <span class="op">=</span> <span class="st">"att1"</span>, </span>
 <span>  .level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level1"</span>, <span class="st">"level3"</span><span class="op">)</span></span>
 <span><span class="op">)</span> </span>
@@ -191,13 +215,7 @@ at the choice-level.</p>
 <span><span class="va">mm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                .qoi <span class="op">=</span> <span class="va">qoi_2</span>,</span>
 <span>                .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
-<span>                .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
-<span>                .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
-<span>                .irr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                .ignore_position <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                .n_sims <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                .n_boot <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>                .ignore_position <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mm2</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
@@ -216,14 +234,9 @@ rather than the default <code>"mm"</code>.</p>
 <div class="section level4">
 <h4 id="amce-profile-level-all-levels">AMCE (profile-level) – all levels<a class="anchor" aria-label="anchor" href="#amce-profile-level-all-levels"></a>
 </h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">amce0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
-<span>                  .qoi <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
-<span>                  .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
-<span>                  .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
-<span>                  .irr <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">amce0</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 34 × 8</span></span></span>
@@ -244,7 +257,7 @@ rather than the default <code>"mm"</code>.</p>
 <div class="section level4">
 <h4 id="amce-profile-level-specific-level">AMCE (profile-level) – specific level<a class="anchor" aria-label="anchor" href="#amce-profile-level-specific-level"></a>
 </h4>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
@@ -255,11 +268,7 @@ rather than the default <code>"mm"</code>.</p>
 <span></span>
 <span><span class="va">amce1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                  .qoi <span class="op">=</span> <span class="va">qoi_3</span>,</span>
-<span>                  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
-<span>                  .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
-<span>                  .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
-<span>                  .irr <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">amce1</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
@@ -269,9 +278,25 @@ rather than the default <code>"mm"</code>.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected     -<span style="color: #BB0000;">0.198</span> 0.029<span style="text-decoration: underline;">4</span>   -<span style="color: #BB0000;">0.256</span>   -<span style="color: #BB0000;">0.140</span>  att1      level3 level1</span></span></code></pre>
 </div>
 <div class="section level4">
+<h4 id="amce-profile-level-specific-level-using-the-predicted-irr">AMCE (profile-level) – specific level, using the predicted IRR<a class="anchor" aria-label="anchor" href="#amce-profile-level-specific-level-using-the-predicted-irr"></a>
+</h4>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">amce1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
+<span>                 .qoi <span class="op">=</span> <span class="va">qoi_3</span>,</span>
+<span>                 .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
+<span>                 .irr <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">amce1b</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
+<span><span class="co">##   estimand         estimate     se conf.low conf.high attribute level  baseline</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected   -<span style="color: #BB0000;">0.130</span> 0.018<span style="text-decoration: underline;">8</span>   -<span style="color: #BB0000;">0.167</span>   -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1      level3 level1  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected     -<span style="color: #BB0000;">0.145</span> 0.021<span style="text-decoration: underline;">0</span>   -<span style="color: #BB0000;">0.186</span>   -<span style="color: #BB0000;">0.104</span>  att1      level3 level1</span></span></code></pre>
+</div>
+<div class="section level4">
 <h4 id="amce-choice-level-specific-level">AMCE (choice-level) – specific level<a class="anchor" aria-label="anchor" href="#amce-choice-level-specific-level"></a>
 </h4>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
@@ -283,11 +308,8 @@ rather than the default <code>"mm"</code>.</p>
 <span><span class="va">amce2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                  .qoi <span class="op">=</span> <span class="va">qoi_4</span>,</span>
 <span>                  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
-<span>                  .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
-<span>                  .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
-<span>                  .ignore_position <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                  .irr <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span>, </span>
+<span>                  .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">amce2</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
