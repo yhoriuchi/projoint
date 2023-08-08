@@ -19,7 +19,10 @@
     <loc>https://yhoriuchi.github.io/projoint/articles/04-estimate.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/articles/05_visualize.html</loc>
+    <loc>https://yhoriuchi.github.io/projoint/articles/05-visualize.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/articles/06-compare.html</loc>
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/articles/index.html</loc>
@@ -70,7 +73,13 @@
     <loc>https://yhoriuchi.github.io/projoint/reference/projoint_data-class.html</loc>
   </url>
   <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_diff.html</loc>
+  </url>
+  <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/projoint_irr-class.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_level.html</loc>
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/projoint_qoi_mm-class.html</loc>

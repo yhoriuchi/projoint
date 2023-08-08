@@ -31,7 +31,8 @@
     <a class="dropdown-item" href="../articles/02-wrangle.html">02. Read and wrangle your data for conjoint analysis</a>
     <a class="dropdown-item" href="../articles/03-predict.html">03. Predict the intra-respondent reliability (IRR)</a>
     <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate corrected MMs or AMCEs</a>
-    <a class="dropdown-item" href="../articles/05_visualize.html">05. Visualize MMs or AMCEs</a>
+    <a class="dropdown-item" href="../articles/05-visualize.html">05. Visualize MMs or AMCEs</a>
+    <a class="dropdown-item" href="../articles/06-compare.html">06. Compare MMs or AMCEs between the subgroups</a>
   </div>
 </li>
 <li class="nav-item">
@@ -62,6 +63,7 @@
 <span>  <span class="va">.data</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
 <span>  .estimates <span class="op">=</span> <span class="st">"corrected"</span>,</span>
+<span>  .by_var <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  .base_size <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  .base_family <span class="op">=</span> <span class="st">""</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -79,6 +81,10 @@
 
 <dt>.estimates</dt>
 <dd><p>The estimates to be plotted, either "corrected" (default), "uncorrected", or "both"</p></dd>
+
+
+<dt>.by_var</dt>
+<dd><p>TRUE to plot the difference in estimates between the two subgroups, FALSE (default) otherwise</p></dd>
 
 
 <dt>.base_size</dt>

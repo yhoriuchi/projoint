@@ -33,7 +33,8 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
     <a class="dropdown-item" href="../articles/02-wrangle.html">02. Read and wrangle your data for conjoint analysis</a>
     <a class="dropdown-item" href="../articles/03-predict.html">03. Predict the intra-respondent reliability (IRR)</a>
     <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate corrected MMs or AMCEs</a>
-    <a class="dropdown-item" href="../articles/05_visualize.html">05. Visualize MMs or AMCEs</a>
+    <a class="dropdown-item" href="../articles/05-visualize.html">05. Visualize MMs or AMCEs</a>
+    <a class="dropdown-item" href="../articles/06-compare.html">06. Compare MMs or AMCEs between the subgroups</a>
   </div>
 </li>
 <li class="nav-item">
@@ -64,6 +65,7 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">projoint</span><span class="op">(</span></span>
 <span>  <span class="va">.data</span>,</span>
 <span>  .qoi <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .by_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
 <span>  .se_method <span class="op">=</span> <span class="st">"analytical"</span>,</span>
@@ -89,6 +91,10 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
 
 <dt>.qoi</dt>
 <dd><p>A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.</p></dd>
+
+
+<dt>.by_var</dt>
+<dd><p>A dichotomous variable (character) used for subgroup analysis</p></dd>
 
 
 <dt>.structure</dt>

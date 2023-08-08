@@ -6,9 +6,10 @@ articles:
   02-wrangle: 02-wrangle.html
   03-predict: 03-predict.html
   04-estimate: 04-estimate.html
-  05_visualize: 05_visualize.html
+  05-visualize: 05-visualize.html
+  06-compare: 06-compare.html
   projoint: projoint.html
-last_built: 2023-08-08T15:52Z
+last_built: 2023-08-08T20:39Z
 urls:
   reference: https://yhoriuchi.github.io/projoint/reference
   article: https://yhoriuchi.github.io/projoint/articles
