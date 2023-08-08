@@ -98,8 +98,11 @@ adopt-and-modify them flexibly.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="read-and-wrangle-data">6.2 Read and Wrangle data<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data"></a>
+<h3 id="profile-level-analysis">6.2 Profile-level analysis<a class="anchor" aria-label="anchor" href="#profile-level-analysis"></a>
 </h3>
+<div class="section level4">
+<h4 id="read-and-wrangle-data">Read and Wrangle data<a class="anchor" aria-label="anchor" href="#read-and-wrangle-data"></a>
+</h4>
 <p>To begin, define the outcome questions in the original dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
@@ -149,29 +152,56 @@ Arrange the order and labels of attributes and levels</a>).</p>
 <span><span class="va">df_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_labels.html">read_labels</a></span><span class="op">(</span><span class="va">df_1</span>, <span class="st">"temp/labels_arranged.csv"</span><span class="op">)</span></span>
 <span><span class="va">df_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_labels.html">read_labels</a></span><span class="op">(</span><span class="va">df_d</span>, <span class="st">"temp/labels_arranged.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="estimate-mms-or-amces-and-the-difference-in-the-estimates">6.3 Estimate MMs or AMCEs and the difference in the estimates<a class="anchor" aria-label="anchor" href="#estimate-mms-or-amces-and-the-difference-in-the-estimates"></a>
-</h3>
+<div class="section level4">
+<h4 id="estimate-mms-or-amces-and-the-difference-in-the-estimates">Estimate MMs or AMCEs and the difference in the estimates<a class="anchor" aria-label="anchor" href="#estimate-mms-or-amces-and-the-difference-in-the-estimates"></a>
+</h4>
 <p>For each of the three data frames, estimate the MMs, AMCEs, or the
 differences in these estimates. The following example estimate
 profile-level marginal means (default).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">df_0</span><span class="op">)</span></span>
 <span><span class="va">out_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">df_1</span><span class="op">)</span></span>
-<span><span class="va">out_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">df_d</span>, .by_var <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">plot_0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">out_0</span><span class="op">)</span></span>
+<span><span class="va">out_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">df_d</span>, .by_var <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
+<p>Importantly, if your conjoint design includes the repeated task, the
+<code><a href="../reference/projoint.html">projoint()</a></code> function applied to each subgroup will estimate
+IRR for the corresponding subgroup. The output of <code>out_d</code>
+includes the data for these differences</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_d</span><span class="op">@</span><span class="va">estimates</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 48 × 12</span></span></span>
+<span><span class="co">##    estimand   attribute level estimate_1   se_1   tau estimate_0   se_0 estimate</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> mm_uncorr… att1      leve…      0.586 0.015<span style="text-decoration: underline;">7</span> 0.158      0.545 0.025<span style="text-decoration: underline;">8</span>   0.040<span style="text-decoration: underline;">1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> mm_correc… att1      leve…      0.625 0.023<span style="text-decoration: underline;">6</span> 0.158      0.579 0.043<span style="text-decoration: underline;">3</span>   0.046<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> mm_uncorr… att1      leve…      0.480 0.015<span style="text-decoration: underline;">8</span> 0.158      0.496 0.025<span style="text-decoration: underline;">0</span>  -<span style="color: #BB0000;">0.016</span><span style="color: #BB0000; text-decoration: underline;">3</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> mm_correc… att1      leve…      0.471 0.023<span style="text-decoration: underline;">3</span> 0.158      0.494 0.043<span style="text-decoration: underline;">2</span>  -<span style="color: #BB0000;">0.022</span><span style="color: #BB0000; text-decoration: underline;">9</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> mm_uncorr… att1      leve…      0.439 0.015<span style="text-decoration: underline;">3</span> 0.158      0.460 0.025<span style="text-decoration: underline;">4</span>  -<span style="color: #BB0000;">0.021</span><span style="color: #BB0000; text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> mm_correc… att1      leve…      0.411 0.022<span style="text-decoration: underline;">7</span> 0.158      0.431 0.044<span style="text-decoration: underline;">6</span>  -<span style="color: #BB0000;">0.020</span><span style="color: #BB0000; text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> mm_uncorr… att2      leve…      0.529 0.015<span style="text-decoration: underline;">4</span> 0.158      0.510 0.024<span style="text-decoration: underline;">5</span>   0.019<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> mm_correc… att2      leve…      0.543 0.022<span style="text-decoration: underline;">6</span> 0.158      0.517 0.042<span style="text-decoration: underline;">5</span>   0.026<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> mm_uncorr… att2      leve…      0.500 0.015<span style="text-decoration: underline;">7</span> 0.158      0.461 0.024<span style="text-decoration: underline;">8</span>   0.039<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> mm_correc… att2      leve…      0.500 0.023<span style="text-decoration: underline;">0</span> 0.158      0.432 0.041<span style="text-decoration: underline;">7</span>   0.068<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 38 more rows</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: se &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;</span></span></span></code></pre>
+<p>You can also check <code>tau</code> for each subgroup:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_d</span><span class="op">@</span><span class="va">tau</span></span></code></pre></div>
+<pre><code><span><span class="co">##        tau1      tau0</span></span>
+<span><span class="co">## 1 0.1582662 0.2113249</span></span></code></pre>
+<p>Then, make and save three ggplot objects.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot_0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">out_0</span><span class="op">)</span></span>
 <span><span class="va">plot_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">out_1</span><span class="op">)</span></span>
 <span><span class="va">plot_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">out_d</span>, .by_var <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="visualize-subgroup-differences">6.4 Visualize subgroup differences<a class="anchor" aria-label="anchor" href="#visualize-subgroup-differences"></a>
-</h3>
+<div class="section level4">
+<h4 id="visualize-subgroup-differences">Visualize subgroup differences<a class="anchor" aria-label="anchor" href="#visualize-subgroup-differences"></a>
+</h4>
 <p>Then, make a plot using the <code>patchwork</code> package.
 Researchers can add/modify layers of each ggplot. The default horizontal
 axis label is “Difference” if <code>.by_var = TRUE</code> is specified
 in the <code><a href="../reference/plot_projoint.html">plot_projoint()</a></code> function.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g_0</span> <span class="op">&lt;-</span> <span class="va">plot_0</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -196,7 +226,13 @@ in the <code><a href="../reference/plot_projoint.html">plot_projoint()</a></code
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span><span class="va">g_0</span> <span class="op">+</span> <span class="va">g_1</span> <span class="op">+</span> <span class="va">g_d</span> </span></code></pre></div>
-<p><img src="06-compare_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
+<p><img src="06-compare_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="choice-level-analysis">6.3 Choice-level analysis<a class="anchor" aria-label="anchor" href="#choice-level-analysis"></a>
+</h3>
+<p>To be written.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
