@@ -71,7 +71,13 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
 <span>  .remove_ties <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .ignore_position <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .n_sims <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .n_boot <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  .n_boot <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .weights_1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .clusters_1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .se_type_1 <span class="op">=</span> <span class="st">"classical"</span>,</span>
+<span>  .weights_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .clusters_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .se_type_2 <span class="op">=</span> <span class="st">"classical"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -114,7 +120,31 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
 
 
 <dt>.n_boot</dt>
-<dd><p>The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"</p></dd>
+<dd><p>The number of bootstrapped samples. Relevant only if .method == "bootstrap"</p></dd>
+
+
+<dt>.weights_1</dt>
+<dd><p>the weight to estimate IRR (see `lm_robust()`): NULL (default)</p></dd>
+
+
+<dt>.clusters_1</dt>
+<dd><p>the clusters to estimate IRR (see `lm_robust()`): NULL (default)</p></dd>
+
+
+<dt>.se_type_1</dt>
+<dd><p>the standard error type to estimate IRR (see `lm_robust()`): "classical" (default)</p></dd>
+
+
+<dt>.weights_2</dt>
+<dd><p>the weight to estimate MM or AMCE (see `lm_robust()`): NULL (default)</p></dd>
+
+
+<dt>.clusters_2</dt>
+<dd><p>the clusters to estimate MM or AMCE (see `lm_robust()`): NULL (default)</p></dd>
+
+
+<dt>.se_type_2</dt>
+<dd><p>the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -163,19 +193,19 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
 <span class="r-in"><span><span class="fu">projoint</span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span> </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An object of class "projoint_results_mm"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slot "estimates":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 48 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    estimand       estimate     se attribute level </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span> att1      level1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> mm_corrected      0.614 0.020<span style="text-decoration: underline;">7</span> att1      level1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> mm_uncorrected    0.485 0.013<span style="text-decoration: underline;">4</span> att1      level2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> mm_corrected      0.477 0.020<span style="text-decoration: underline;">4</span> att1      level2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> mm_uncorrected    0.445 0.013<span style="text-decoration: underline;">1</span> att1      level3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> mm_corrected      0.416 0.020<span style="text-decoration: underline;">3</span> att1      level3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> mm_uncorrected    0.489 0.013<span style="text-decoration: underline;">3</span> att2      level1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> mm_corrected      0.483 0.020<span style="text-decoration: underline;">2</span> att2      level1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> mm_uncorrected    0.524 0.013<span style="text-decoration: underline;">0</span> att2      level2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> mm_corrected      0.536 0.020<span style="text-decoration: underline;">0</span> att2      level2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 48 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    estimand       estimate     se conf.low conf.high attribute level </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1      level1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> mm_corrected      0.614 0.020<span style="text-decoration: underline;">7</span>    0.573     0.654 att1      level1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> mm_uncorrected    0.485 0.013<span style="text-decoration: underline;">4</span>    0.458     0.511 att1      level2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> mm_corrected      0.477 0.020<span style="text-decoration: underline;">4</span>    0.437     0.517 att1      level2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> mm_uncorrected    0.445 0.013<span style="text-decoration: underline;">1</span>    0.419     0.470 att1      level3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> mm_corrected      0.416 0.020<span style="text-decoration: underline;">3</span>    0.376     0.455 att1      level3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> mm_uncorrected    0.489 0.013<span style="text-decoration: underline;">3</span>    0.463     0.515 att2      level1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> mm_corrected      0.483 0.020<span style="text-decoration: underline;">2</span>    0.443     0.522 att2      level1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> mm_uncorrected    0.524 0.013<span style="text-decoration: underline;">0</span>    0.498     0.549 att2      level2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> mm_corrected      0.536 0.020<span style="text-decoration: underline;">0</span>    0.497     0.575 att2      level2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 38 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slot "labels":</span>
