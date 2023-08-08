@@ -46,9 +46,9 @@ pj_estimate(
 
 \item{.ignore_position}{TRUE if you ignore the location of profile (left or right). Relevant only if .structure == "choice_level". Defaults to NULL.}
 
-\item{.n_sims}{The number of simulations. Relevant only if .method == "simulation"}
+\item{.n_sims}{The number of simulations. Relevant only if .se_method == "simulation"}
 
-\item{.n_boot}{The number of bootstrapped samples. Relevant only if .method == "bootstrap"}
+\item{.n_boot}{The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"}
 
 \item{.weights_1}{the weight to estimate IRR (see `lm_robust()`): NULL (default)}
 

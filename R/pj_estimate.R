@@ -4,7 +4,7 @@
 #'
 #' @import dplyr
 #' @import rlang
-#' @importFrom estimatr lm_robust
+#' @import estimatr
 #' @importFrom MASS mvrnorm
 #' @keywords internal
 #' @param .data A `projoint_data` object
@@ -17,8 +17,8 @@
 #' @param .baseline  A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
 #' @param .remove_ties TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)
 #' @param .ignore_position TRUE if you ignore the location of profile (left or right). Relevant only if .structure == "choice_level". Defaults to NULL.
-#' @param .n_sims The number of simulations. Relevant only if .method == "simulation" 
-#' @param .n_boot The number of bootstrapped samples. Relevant only if .method == "bootstrap"
+#' @param .n_sims The number of simulations. Relevant only if .se_method == "simulation" 
+#' @param .n_boot The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"
 #' @param .weights_1 the weight to estimate IRR (see `lm_robust()`): NULL (default)
 #' @param .clusters_1 the clusters to estimate IRR (see `lm_robust()`): NULL (default)
 #' @param .se_type_1 the standard error type to estimate IRR (see `lm_robust()`): "classical" (default)

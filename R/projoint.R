@@ -5,10 +5,10 @@
 #'
 #' @import dplyr
 #' @import rlang
+#' @import estimatr
 #' @importFrom MASS mvrnorm
 #' @importFrom methods is
 #' @importFrom methods new
-#' @importFrom estimatr lm_robust
 #' @param .data A `projoint_data` object
 #' @param .qoi A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.
 #' @param .structure Either "profile_level" or "choice_level"
@@ -19,7 +19,6 @@
 #' @param .se_method c("analytic", "simulation", "bootstrap") description
 #' @param .n_sims The number of simulations. Relevant only if .se_method == "simulation" 
 #' @param .n_boot The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"
-#' @param .n_boot The number of bootstrapped samples. Relevant only if .method == "bootstrap"
 #' @param .weights_1 the weight to estimate IRR (see `lm_robust()`): NULL (default)
 #' @param .clusters_1 the clusters to estimate IRR (see `lm_robust()`): NULL (default)
 #' @param .se_type_1 the standard error type to estimate IRR (see `lm_robust()`): "classical" (default)
