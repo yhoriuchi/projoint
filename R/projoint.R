@@ -8,6 +8,7 @@
 #' @importFrom MASS mvrnorm
 #' @importFrom methods is
 #' @importFrom methods new
+#' @importFrom estimatr lm_robust
 #' @param .data A `projoint_data` object
 #' @param .qoi A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.
 #' @param .structure Either "profile_level" or "choice_level"
@@ -18,6 +19,13 @@
 #' @param .se_method c("analytic", "simulation", "bootstrap") description
 #' @param .n_sims The number of simulations. Relevant only if .se_method == "simulation" 
 #' @param .n_boot The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"
+#' @param .n_boot The number of bootstrapped samples. Relevant only if .method == "bootstrap"
+#' @param .weights_1 the weight to estimate IRR (see `lm_robust()`): NULL (default)
+#' @param .clusters_1 the clusters to estimate IRR (see `lm_robust()`): NULL (default)
+#' @param .se_type_1 the standard error type to estimate IRR (see `lm_robust()`): "classical" (default)
+#' @param .weights_2 the weight to estimate MM or AMCE (see `lm_robust()`): NULL (default)
+#' @param .clusters_2 the clusters to estimate MM or AMCE (see `lm_robust()`): NULL (default)
+#' @param .se_type_2 the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)
 #' @return A `projoint_results` object
 #' @export
 #' @examples
@@ -51,13 +59,19 @@ projoint <- function(
     .remove_ties = TRUE,
     .ignore_position = NULL,
     .n_sims = NULL,
-    .n_boot = NULL
+    .n_boot = NULL,
+    .weights_1 = NULL,
+    .clusters_1 = NULL,
+    .se_type_1 = "classical",
+    .weights_2 = NULL,
+    .clusters_2 = NULL,
+    .se_type_2 = "classical"
 ){
   
   # bind variables locally to the function ----------------------------------
   
   .baseline <- NULL
-
+  
   # check various settings --------------------------------------------------
   # also see: many checks in pj_estimate()
   

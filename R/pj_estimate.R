@@ -4,6 +4,7 @@
 #'
 #' @import dplyr
 #' @import rlang
+#' @importFrom estimatr lm_robust
 #' @importFrom MASS mvrnorm
 #' @keywords internal
 #' @param .data A `projoint_data` object
@@ -18,21 +19,32 @@
 #' @param .ignore_position TRUE if you ignore the location of profile (left or right). Relevant only if .structure == "choice_level". Defaults to NULL.
 #' @param .n_sims The number of simulations. Relevant only if .method == "simulation" 
 #' @param .n_boot The number of bootstrapped samples. Relevant only if .method == "bootstrap"
+#' @param .weights_1 the weight to estimate IRR (see `lm_robust()`): NULL (default)
+#' @param .clusters_1 the clusters to estimate IRR (see `lm_robust()`): NULL (default)
+#' @param .se_type_1 the standard error type to estimate IRR (see `lm_robust()`): "classical" (default)
+#' @param .weights_2 the weight to estimate MM or AMCE (see `lm_robust()`): NULL (default)
+#' @param .clusters_2 the clusters to estimate MM or AMCE (see `lm_robust()`): NULL (default)
+#' @param .se_type_2 the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)
 #' @return A data frame of estimates
-
 
 # .data = out1
 # .attribute = "att1"
-# .level = "level1"
+# .level = "level2"
 # .structure = "profile_level"
-# .estimand = "mm"
+# .estimand = "amce"
 # .se_method = "analytical"
 # .irr = NULL
-# .baseline = NULL
+# .baseline = "level1"
 # .remove_ties = TRUE
 # .ignore_position = NULL
 # .n_sims = NULL
 # .n_boot = NULL
+# .weights_1 <- NULL
+# .clusters_1 <- NULL
+# .se_type_1 <- "classical"
+# .weights_2 <- NULL
+# .clusters_2 <- NULL
+# .se_type_2 <- "classical"
 
 pj_estimate <- function(
     .data,
@@ -46,7 +58,13 @@ pj_estimate <- function(
     .remove_ties = TRUE,
     .ignore_position = NULL,
     .n_sims = NULL,
-    .n_boot = NULL
+    .n_boot = NULL,
+    .weights_1 = NULL,
+    .clusters_1 = NULL,
+    .se_type_1 = "classical",
+    .weights_2 = NULL,
+    .clusters_2 = NULL,
+    .se_type_2 = "classical"
 ){
   
   .dataframe <- .data@data
@@ -63,12 +81,13 @@ pj_estimate <- function(
   estimate <- NULL
   cov_mm_tau <- NULL
   reg_tau <- NULL
+  se <- NULL
   
   # check various settings --------------------------------------------------
   
   structure <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
   estimand  <- rlang::arg_match0(.estimand, c("mm", "amce"))
-  se_method    <- rlang::arg_match0(.se_method, c("analytical", "simulation", "bootstrap"))
+  se_method <- rlang::arg_match0(.se_method, c("analytical", "simulation", "bootstrap"))
   
   if(!is.null(.irr) & !is.numeric(.irr) & length(.irr) == 1){
     stop("The .irr argument must be either a numeric scalar or NULL.")
@@ -81,7 +100,7 @@ pj_estimate <- function(
   if (.structure == "profile_level" & !is.null(.ignore_position)){
     stop("The .ignore_position argument can be specified only when the .structure argument is choice_level.")
   }
-
+  
   if (.structure == "choice_level" & is.null(.ignore_position)){
     stop("Specify the .ignore_position argument.")
   }
@@ -101,20 +120,20 @@ pj_estimate <- function(
   if(.se_method == "simulation" & is.null(.n_sims)){
     stop("Specify the .n_sims arguement for simulation")
   }
-
+  
   if(.se_method != "simulation" & !is.null(.n_sims)){
     stop("You cannot specify the .n_sims arguement for analytical derivation or bootstrapping")
   }
-
+  
   if(.se_method == "bootstrap" & is.null(.n_boot)){
     stop("Specify the .n_boot arguement for bootstrapping")
   }
-
+  
   if(.se_method != "bootstrap" & !is.null(.n_boot)){
     stop("You cannot specify the .n_boot arguement for analytical derivation or simulation")
   }
   
-    
+  
   if (.structure == "choice_level" & .estimand == "mm" & .remove_ties == FALSE){
     stop("The .remove_ties argument should be TRUE to estimate choice-level MMs.")
   }
@@ -238,18 +257,22 @@ pj_estimate <- function(
       )
       
     }
-
+    
   }
-
+  
   # Estimate or specify tau -------------------------------------------------
   
   if (is.null(.irr)){
     
     # run intercept-only regression models
-    reg_irr <- stats::lm(agree ~ 1, data_for_irr)
+    reg_irr <- estimatr::lm_robust(agree ~ 1, 
+                                   weights = .weights_1, 
+                                   clusters = .clusters_1,
+                                   se_type = .se_type_1,
+                                   data = data_for_irr) %>% tidy()
     
-    irr     <- reg_irr$coefficient %>% as.numeric()
-    var_irr <- vcov(reg_irr) %>% as.numeric()
+    irr     <- reg_irr$estimate[1]
+    var_irr <- reg_irr$std.error[1]^2 
     
     tau     <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
     var_tau <- 0.25 * (2 * irr - 1)^(-1) * var_irr
@@ -270,19 +293,33 @@ pj_estimate <- function(
   
   if (estimand == "mm"){
     
-    reg_mm  <- stats::lm(selected ~ 1, data_for_estimand)
+    reg_mm  <- estimatr::lm_robust(selected ~ 1, 
+                                   weights = .weights_2, 
+                                   clusters = .clusters_2,
+                                   se_type = .se_type_2,
+                                   data = data_for_estimand) %>% tidy()
     
-    mm_uncorrected <-  reg_mm$coefficient %>% as.numeric()
-    var_uncorrected_mm <- vcov(reg_mm)  %>% as.numeric()
+    # the critical t-value
+    critical_t <- abs((reg_mm$conf.low[1] - reg_mm$estimate[1]) / reg_mm$std.error[1])
+    
+    mm_uncorrected <-  reg_mm$estimate[1]
+    var_uncorrected_mm <- reg_mm$std.error[1]^2
     
   } 
   
   if (estimand == "amce") {
     
-    reg_amce  <- stats::lm(selected ~ x, data_for_estimand)
+    reg_amce  <- estimatr::lm_robust(selected ~ x, 
+                                     weights = .weights_2, 
+                                     clusters = .clusters_2,
+                                     se_type = .se_type_2,
+                                     data = data_for_estimand) %>% tidy()
     
-    amce_uncorrected <-  reg_amce$coefficient[2] %>% as.numeric()
-    var_uncorrected_amce <- vcov(reg_amce)[2, 2]  %>% as.numeric()
+    # the critical t-value
+    critical_t <- abs((reg_amce$conf.low[2] - reg_amce$estimate[2]) / reg_amce$std.error[2])
+    
+    amce_uncorrected <-  reg_amce$estimate[2]
+    var_uncorrected_amce <- reg_amce$std.error[2]^2
     
   } 
   
@@ -318,12 +355,12 @@ pj_estimate <- function(
       
       cov_mm0_irr  <- cov(d_cov0$selected, d_cov0$agree) / nrow(data_for_irr)
       cov_mm1_irr  <- cov(d_cov1$selected, d_cov1$agree) / nrow(data_for_irr)
-
+      
     } else {
       
       cov_mm0_irr  <- 0
       cov_mm1_irr  <- 0
-
+      
     }
     
     cov_mm0_tau  <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm0_irr
@@ -331,7 +368,7 @@ pj_estimate <- function(
     cov_amce_tau <- cov_mm1_tau - cov_mm0_tau
     
   }
-
+  
   # estimate and correct MMs ------------------------------------------------
   
   if (estimand == "mm"){
@@ -355,7 +392,9 @@ pj_estimate <- function(
                            "estimate" = c(mm_uncorrected, mm_corrected),
                            "se" = c(sqrt(var_uncorrected_mm),
                                     sqrt(var_corrected_mm))) %>% 
-        dplyr::mutate("tau" = tau)
+        dplyr::mutate("conf.low" = estimate - critical_t * se,
+                      "conf.high" = estimate + critical_t * se,
+                      "tau" = tau)
       
     } 
     
@@ -381,7 +420,9 @@ pj_estimate <- function(
       output <- data.frame("estimand" = c("mm_uncorrected", "mm_corrected"),
                            "estimate" = c(mm_uncorrected, mean(sim_mm$mm_corrected)),
                            "se" = c(sqrt(var_uncorrected_mm), sd(sim_mm$mm_corrected))) %>% 
-        dplyr::mutate("tau" = tau)
+        dplyr::mutate("conf.low" = estimate - critical_t * se,
+                      "conf.high" = estimate + critical_t * se,
+                      "tau" = tau)
       
     }  
     
@@ -411,14 +452,24 @@ pj_estimate <- function(
                            relationship = "many-to-many")
         
         # run intercept-only regression models
-        reg_irr <- stats::lm(agree ~ 1, bs_sample_1)
-        reg_mm  <- stats::lm(selected ~ 1, bs_sample_2)
+        reg_irr <- estimatr::lm_robust(agree ~ 1, 
+                                       weights = .weights_1, 
+                                       clusters = .clusters_1,
+                                       se_type = .se_type_1,
+                                       data = bs_sample_1) %>% tidy()
+        
+        reg_mm  <- estimatr::lm_robust(selected ~ 1, 
+                                       weights = .weights_2, 
+                                       clusters = .clusters_2,
+                                       se_type = .se_type_2,
+                                       data = bs_sample_2) %>% tidy()
         
         # calculate the means
-        mm_uncorrected <-  reg_mm$coefficient %>% as.numeric()
+        mm_uncorrected <-  reg_mm$estimate[1]
+        
         if (is.null(.irr)){
           
-          irr <- reg_irr$coefficient %>% as.numeric()
+          irr <- reg_irr$estimate[1]
           tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
           
         } else {
@@ -445,7 +496,9 @@ pj_estimate <- function(
                                           mean(out %>% filter(estimand == "mm_corrected") %>% pull(estimate))),
                            "se"       = c(sd(out %>% filter(estimand == "mm_uncorrected") %>% pull(estimate)), 
                                           sd(out %>% filter(estimand == "mm_corrected") %>% pull(estimate)))) %>% 
-        dplyr::mutate("tau" = tau)
+        dplyr::mutate("conf.low" = estimate - critical_t * se,
+                      "conf.high" = estimate + critical_t * se,
+                      "tau" = tau)
     }
     
   } 
@@ -473,7 +526,9 @@ pj_estimate <- function(
                            "estimate" = c(amce_uncorrected, amce_corrected),
                            "se" = c(sqrt(var_uncorrected_amce),
                                     sqrt(var_corrected_amce))) %>% 
-        dplyr::mutate("tau" = tau)
+        dplyr::mutate("conf.low" = estimate - critical_t * se,
+                      "conf.high" = estimate + critical_t * se,
+                      "tau" = tau)
       
     } 
     
@@ -499,7 +554,9 @@ pj_estimate <- function(
       output <- data.frame("estimand" = c("amce_uncorrected", "amce_corrected"),
                            "estimate" = c(amce_uncorrected, mean(sim_amce$amce_corrected)),
                            "se" = c(sqrt(var_uncorrected_amce), sd(sim_amce$amce_corrected))) %>% 
-        dplyr::mutate("tau" = tau)
+        dplyr::mutate("conf.low" = estimate - critical_t * se,
+                      "conf.high" = estimate + critical_t * se,
+                      "tau" = tau)
       
     } 
     
@@ -529,14 +586,24 @@ pj_estimate <- function(
                            relationship = "many-to-many")
         
         # run intercept-only regression models
-        reg_irr  <- stats::lm(agree ~ 1, bs_sample_1)
-        reg_amce <- stats::lm(selected ~ x, bs_sample_2)
+        reg_irr <- estimatr::lm_robust(agree ~ 1, 
+                                       weights = .weights_1, 
+                                       clusters = .clusters_1,
+                                       se_type = .se_type_1,
+                                       data = bs_sample_1) %>% tidy()
+        
+        reg_amce  <- estimatr::lm_robust(selected ~ x, 
+                                         weights = .weights_2, 
+                                         clusters = .clusters_2,
+                                         se_type = .se_type_2,
+                                         bs_sample_2) %>% tidy()
+        
         
         # calculate the means
-        amce_uncorrected <-  reg_amce$coefficient[2] %>% as.numeric()
+        amce_uncorrected <-  reg_amce$estimate[2]
         if (is.null(.irr)){
           
-          irr <- reg_irr$coefficient %>% as.numeric()
+          irr <- reg_irr$estimate[1]
           tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
           
         } else {
@@ -563,7 +630,9 @@ pj_estimate <- function(
                                           mean(out %>% filter(estimand == "amce_corrected") %>% pull(estimate))),
                            "se"       = c(sd(out %>% filter(estimand == "amce_uncorrected") %>% pull(estimate)), 
                                           sd(out %>% filter(estimand == "amce_corrected") %>% pull(estimate)))) %>% 
-        dplyr::mutate("tau" = tau)
+        dplyr::mutate("conf.low" = estimate - critical_t * se,
+                      "conf.high" = estimate + critical_t * se,
+                      "tau" = tau)
       
     }
   }  

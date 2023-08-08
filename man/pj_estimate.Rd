@@ -16,7 +16,13 @@ pj_estimate(
   .remove_ties = TRUE,
   .ignore_position = NULL,
   .n_sims = NULL,
-  .n_boot = NULL
+  .n_boot = NULL,
+  .weights_1 = NULL,
+  .clusters_1 = NULL,
+  .se_type_1 = "classical",
+  .weights_2 = NULL,
+  .clusters_2 = NULL,
+  .se_type_2 = "classical"
 )
 }
 \arguments{
@@ -43,6 +49,18 @@ pj_estimate(
 \item{.n_sims}{The number of simulations. Relevant only if .method == "simulation"}
 
 \item{.n_boot}{The number of bootstrapped samples. Relevant only if .method == "bootstrap"}
+
+\item{.weights_1}{the weight to estimate IRR (see `lm_robust()`): NULL (default)}
+
+\item{.clusters_1}{the clusters to estimate IRR (see `lm_robust()`): NULL (default)}
+
+\item{.se_type_1}{the standard error type to estimate IRR (see `lm_robust()`): "classical" (default)}
+
+\item{.weights_2}{the weight to estimate MM or AMCE (see `lm_robust()`): NULL (default)}
+
+\item{.clusters_2}{the clusters to estimate MM or AMCE (see `lm_robust()`): NULL (default)}
+
+\item{.se_type_2}{the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)}
 }
 \value{
 A data frame of estimates
