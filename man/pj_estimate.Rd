@@ -8,11 +8,11 @@ pj_estimate(
   .data,
   .attribute,
   .level,
-  .structure = "choice_level",
+  .baseline = NULL,
+  .structure = "profile_level",
   .estimand = "mm",
   .se_method = "analytical",
   .irr = NULL,
-  .baseline = NULL,
   .remove_ties = TRUE,
   .ignore_position = NULL,
   .n_sims = NULL,
@@ -32,15 +32,15 @@ pj_estimate(
 
 \item{.level}{A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis}
 
-\item{.structure}{A character identifying a data structure: "choice_level" (default) or "profile_level". Note: the right element of .level is the outcome of choice if .structure == "choice_level"}
+\item{.baseline}{A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis}
+
+\item{.structure}{A character identifying a data structure: "choice_level" or "profile_level" (default). Note: the right element of .level is the outcome of choice if .structure == "choice_level"}
 
 \item{.estimand}{A character identifying the estimand: "mm" (default) or "amce"}
 
 \item{.se_method}{A character identifying the method of correcting measurement error bias: "analytical" (default), "simulation", or "bootstrap" (not recommended)}
 
 \item{.irr}{NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value}
-
-\item{.baseline}{A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis}
 
 \item{.remove_ties}{TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)}
 

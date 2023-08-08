@@ -13,7 +13,7 @@
 #' @export
 
 set_qoi <- function(
-    .structure = "choice_level",
+    .structure = "profile_level",
     .estimand = "mm",
     .attribute, 
     .level,

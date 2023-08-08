@@ -10,7 +10,7 @@
 #' @param .data A `projoint_data` object
 #' @param .attribute A character column name identifying the attribute of interest
 #' @param .level  A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
-#' @param .structure A character identifying a data structure: "choice_level" (default) or "profile_level". Note: the right element of .level is the outcome of choice if .structure == "choice_level"
+#' @param .structure A character identifying a data structure: "choice_level" or "profile_level" (default). Note: the right element of .level is the outcome of choice if .structure == "choice_level"
 #' @param .estimand A character identifying the estimand: "mm" (default) or "amce"
 #' @param .se_method  A character identifying the method of correcting measurement error bias: "analytical" (default), "simulation", or "bootstrap" (not recommended)
 #' @param .irr NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value
@@ -27,12 +27,29 @@
 #' @param .se_type_2 the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)
 #' @return A data frame of estimates
 
+
+# THE FOLLOWING CODES ARE FOR TEST. PLEASE DO NOT YET DELETE THEM.
+# 
+# library(projoint)
+# library(tidyverse)
+# library(estimatr)
+# outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
+# outcomes <- c(outcomes, "choice1_repeated_flipped")
+# out1 <- reshape_projoint(.dataframe = exampleData1, 
+#                          .idvar = "ResponseId", 
+#                          .outcomes = outcomes,
+#                          .outcomes_ids = c("A", "B"),
+#                          .alphabet = "K", 
+#                          .repeated = TRUE,
+#                          .flipped = TRUE)
+# 
 # .data = out1
 # .attribute = "att1"
 # .level = "level2"
 # .structure = "profile_level"
 # .estimand = "amce"
 # .se_method = "analytical"
+# .irr = 0.75
 # .irr = NULL
 # .baseline = "level1"
 # .remove_ties = TRUE
@@ -50,11 +67,11 @@ pj_estimate <- function(
     .data,
     .attribute,
     .level,
-    .structure = "choice_level",
+    .baseline = NULL,
+    .structure = "profile_level",
     .estimand = "mm",
     .se_method = "analytical",
     .irr = NULL,
-    .baseline = NULL,
     .remove_ties = TRUE,
     .ignore_position = NULL,
     .n_sims = NULL,
@@ -68,6 +85,10 @@ pj_estimate <- function(
 ){
   
   .dataframe <- .data@data
+  
+  structure <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
+  estimand  <- rlang::arg_match0(.estimand, c("mm", "amce"))
+  se_method <- rlang::arg_match0(.se_method, c("analytical", "simulation", "bootstrap"))
   
   # bind variables locally to the function ----------------------------------
   
@@ -83,75 +104,11 @@ pj_estimate <- function(
   reg_tau <- NULL
   se <- NULL
   
-  # check various settings --------------------------------------------------
-  
-  structure <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
-  estimand  <- rlang::arg_match0(.estimand, c("mm", "amce"))
-  se_method <- rlang::arg_match0(.se_method, c("analytical", "simulation", "bootstrap"))
-  
-  if(!is.null(.irr) & !is.numeric(.irr) & length(.irr) == 1){
-    stop("The .irr argument must be either a numeric scalar or NULL.")
-  }
-  
-  if(!is.logical(.remove_ties)){
-    stop("The .remove_ties argument must be either TRUE or FALSE.")
-  }
-  
-  if (.structure == "profile_level" & !is.null(.ignore_position)){
-    stop("The .ignore_position argument can be specified only when the .structure argument is choice_level.")
-  }
-  
-  if (.structure == "choice_level" & is.null(.ignore_position)){
-    stop("Specify the .ignore_position argument.")
-  }
-  
-  if (.structure == "choice_level" & !is.null(.ignore_position) & !is.logical(.ignore_position)){
-    stop("The .ignore_position argument must be either TRUE or FALSE.")
-  }
-  
-  if(!is.null(.n_sims) & !is.numeric(.n_sims) & length(.n_sims) == 1){
-    stop("The .n_sims argument must be either a numeric scalar or NULL.")
-  }
-  
-  if(!is.null(.n_boot) & !is.numeric(.n_boot) & length(.n_boot) == 1){
-    stop("The .n_boot argument must be either a numeric scalar or NULL.")
-  }
-  
-  if(.se_method == "simulation" & is.null(.n_sims)){
-    stop("Specify the .n_sims arguement for simulation")
-  }
-  
-  if(.se_method != "simulation" & !is.null(.n_sims)){
-    stop("You cannot specify the .n_sims arguement for analytical derivation or bootstrapping")
-  }
-  
-  if(.se_method == "bootstrap" & is.null(.n_boot)){
-    stop("Specify the .n_boot arguement for bootstrapping")
-  }
-  
-  if(.se_method != "bootstrap" & !is.null(.n_boot)){
-    stop("You cannot specify the .n_boot arguement for analytical derivation or simulation")
-  }
-  
-  
-  if (.structure == "choice_level" & .estimand == "mm" & .remove_ties == FALSE){
-    stop("The .remove_ties argument should be TRUE to estimate choice-level MMs.")
-  }
-  
-  if (.estimand == "mm" & !is.null(.baseline)){
-    stop("The .baseline argument can be specified only when the .estimand argument is amce.")
-  }
-  
-  if (.estimand == "amce" & is.null(.baseline)){
-    stop("Specify .baseline argument for the estimation of AMCEs.")
-  }
-  
-  
   # Organize data -----------------------------------------------------------
   
-  if (.estimand == "mm"){
+  if (estimand == "mm"){
     
-    if (.structure == "choice_level" & !is.null(.ignore_position) & isTRUE(.ignore_position)){
+    if (structure == "choice_level" & !is.null(.ignore_position) & isTRUE(.ignore_position)){
       
       temp1 <- organize_data(.dataframe,
                              .attribute,
@@ -192,9 +149,9 @@ pj_estimate <- function(
   }
   
   
-  if (.estimand == "amce"){
+  if (estimand == "amce"){
     
-    if (.structure == "choice_level" & !is.null(.ignore_position) & isTRUE(.ignore_position)){
+    if (structure == "choice_level" & !is.null(.ignore_position) & isTRUE(.ignore_position)){
       
       temp1a <- organize_data(.dataframe,
                               .attribute,

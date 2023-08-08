@@ -11,7 +11,7 @@
 #' @importFrom methods new
 #' @param .data A `projoint_data` object
 #' @param .qoi A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.
-#' @param .structure Either "profile_level" or "choice_level"
+#' @param .structure Either "profile_level" (default) or "choice_level" 
 #' @param .estimand Either "mm" for marginal mean or "amce" for average marginal component effect
 #' @param .remove_ties Logical: should ties be removed before estimation? Defaults to TRUE.
 #' @param .irr NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
@@ -72,8 +72,11 @@ projoint <- function(
   .baseline <- NULL
   
   # check various settings --------------------------------------------------
-  # also see: many checks in pj_estimate()
-  
+
+  structure <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
+  estimand  <- rlang::arg_match0(.estimand, c("mm", "amce"))
+  se_method <- rlang::arg_match0(.se_method, c("analytical", "simulation", "bootstrap"))
+
   if(!is(.data, "projoint_data")){
     stop("The .data argument must be of class `projoint_data` from the `reshape_projoint` function.")
   }
@@ -98,6 +101,62 @@ projoint <- function(
     stop("The .structure argument must be profile_level if the .qoi argument is NULL.")
   }
   
+  if(!is.null(.irr) & !is.numeric(.irr) & length(.irr) == 1){
+    stop("The .irr argument must be either a numeric scalar or NULL.")
+  }
+  
+  if(!is.logical(.remove_ties)){
+    stop("The .remove_ties argument must be either TRUE or FALSE.")
+  }
+  
+  if (.structure == "profile_level" & !is.null(.ignore_position)){
+    stop("The .ignore_position argument can be specified only when the .structure argument is choice_level.")
+  }
+  
+  if (.structure == "choice_level" & is.null(.ignore_position)){
+    stop("Specify the .ignore_position argument.")
+  }
+  
+  if (.structure == "choice_level" & !is.null(.ignore_position) & !is.logical(.ignore_position)){
+    stop("The .ignore_position argument must be either TRUE or FALSE.")
+  }
+  
+  if(!is.null(.n_sims) & !is.numeric(.n_sims) & length(.n_sims) == 1){
+    stop("The .n_sims argument must be either a numeric scalar or NULL.")
+  }
+  
+  if(!is.null(.n_boot) & !is.numeric(.n_boot) & length(.n_boot) == 1){
+    stop("The .n_boot argument must be either a numeric scalar or NULL.")
+  }
+  
+  if(.se_method == "simulation" & is.null(.n_sims)){
+    stop("Specify the .n_sims arguement for simulation")
+  }
+  
+  if(.se_method != "simulation" & !is.null(.n_sims)){
+    stop("You cannot specify the .n_sims arguement for analytical derivation or bootstrapping")
+  }
+  
+  if(.se_method == "bootstrap" & is.null(.n_boot)){
+    stop("Specify the .n_boot arguement for bootstrapping")
+  }
+  
+  if(.se_method != "bootstrap" & !is.null(.n_boot)){
+    stop("You cannot specify the .n_boot arguement for analytical derivation or simulation")
+  }
+  
+  
+  if (.structure == "choice_level" & .estimand == "mm" & .remove_ties == FALSE){
+    stop("The .remove_ties argument should be TRUE to estimate choice-level MMs.")
+  }
+  
+  if (.estimand == "mm" & !is.null(.baseline)){
+    stop("The .baseline argument can be specified only when the .estimand argument is amce.")
+  }
+  
+  if (.estimand == "amce" & is.null(.baseline)){
+    stop("Specify .baseline argument for the estimation of AMCEs.")
+  }
   
   # estimate all MMs or AMCEs -----------------------------------------------
   

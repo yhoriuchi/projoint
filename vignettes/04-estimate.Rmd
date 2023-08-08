@@ -40,10 +40,19 @@ The default method in `projoint` is to estimate marginal means (MMs) at the prof
 mm0 <- projoint(.data = out1,
                 .qoi = NULL,
                 .structure = "profile_level",
-                .remove_ties = TRUE,
                 .estimand = "mm",
                 .se_method = "analytical",
-                .irr = NULL)
+                .irr = NULL, 
+                .remove_ties = TRUE,
+                .ignore_position = NULL,
+                .n_sims = NULL,
+                .n_boot = NULL,
+                .weights_1 = NULL,
+                .clusters_1 = NULL,
+                .se_type_1 = "classical",
+                .weights_2 = NULL,
+                .clusters_2 = NULL,
+                .se_type_2 = "classical")
 
 mm0@estimates
 
@@ -51,7 +60,7 @@ mm0@estimates
 
 #### MM (profile-level) -- specific level
 
-However, it is also possible to specify the precise attributes, and attribute levels, of interest using the `set_qoi` function as below. The `set_qoi` function is the main way for users to specify more complex estimands in conjoint analysis.
+However, it is also possible to specify the precise attributes, and attribute levels, of interest using the `set_qoi` function as below. The `set_qoi` function is the main way for users to specify more complex estimands in conjoint analysis. Al arguments for `qoi()` are expanded for clarify, but the default arguments in `projoint()` are dropped for simplicity:
 
 ```{r}
 qoi_1 <- set_qoi(
@@ -61,18 +70,23 @@ qoi_1 <- set_qoi(
   .level = "level1")
 
 mm1 <- projoint(.data = out1,
-                .qoi = qoi_1,
-                .structure = "profile_level",
-                .estimand = "mm",
-                .se_method = "analytical",
-                .irr = NULL,
-                .remove_ties = TRUE,
-                .ignore_position = NULL,
-                .n_sims = NULL,
-                .n_boot = NULL)
+                .qoi = qoi_1)
 
 mm1@estimates
 ```
+
+#### MM (profile-level) -- specific level, using the predicted IRR
+
+If your conjoint survey design does not include the recommended repeated task, you can use the specific value for `.irr`, which you can estimate using the `predict_tau()` function or specify the value based on the prior knowledge. In the following, we use 0.75, which is most likely IRR we find in our test data sets. The defaul arguments for both `set_qoi()` and `projoint()` are dropped hereafter.
+
+```{r}
+mm1b <- projoint(.data = out1,
+                 .qoi = qoi_1,
+                 .irr = 0.75)
+
+mm1b@estimates
+```
+
 
 #### MM (choice-level) -- specific level
 
@@ -81,7 +95,6 @@ As soon as users wish to switch from profile-level to choice-level analysis, the
 ```{r}
 qoi_2 <- set_qoi(
   .structure = "choice_level",
-  .estimand = "mm",
   .attribute = "att1", 
   .level = c("level1", "level3")
 ) 
@@ -89,13 +102,7 @@ qoi_2 <- set_qoi(
 mm2 <- projoint(.data = out1,
                 .qoi = qoi_2,
                 .structure = "choice_level",
-                .remove_ties = TRUE,
-                .estimand = "mm",
-                .se_method = "analytical",
-                .irr = NULL,
-                .ignore_position = FALSE,
-                .n_sims = NULL,
-                .n_boot = NULL)
+                .ignore_position = FALSE)
 
 mm2@estimates
 ```
@@ -107,12 +114,7 @@ Note that we can replicate all above analyses using the AMCE instead of the MM j
 #### AMCE (profile-level) -- all levels
 ```{r}
 amce0 <- projoint(.data = out1,
-                  .qoi = NULL,
-                  .structure = "profile_level",
-                  .remove_ties = TRUE,
-                  .estimand = "amce",
-                  .se_method = "analytical",
-                  .irr = NULL)
+                  .estimand = "amce")
 
 amce0@estimates
 ```
@@ -129,14 +131,22 @@ qoi_3 <- set_qoi(
 
 amce1 <- projoint(.data = out1,
                   .qoi = qoi_3,
-                  .structure = "profile_level",
-                  .remove_ties = TRUE,
-                  .estimand = "amce",
-                  .se_method = "analytical",
-                  .irr = NULL)
+                  .estimand = "amce")
 
 amce1@estimates
 ```
+
+#### AMCE (profile-level) -- specific level, using the predicted IRR
+
+```{r}
+amce1b <- projoint(.data = out1,
+                 .qoi = qoi_3,
+                 .estimand = "amce",
+                 .irr = 0.90)
+
+amce1b@estimates
+```
+
 
 #### AMCE (choice-level) -- specific level
 ```{r}
@@ -151,11 +161,8 @@ qoi_4 <- set_qoi(
 amce2 <- projoint(.data = out1,
                   .qoi = qoi_4,
                   .structure = "choice_level",
-                  .remove_ties = TRUE,
-                  .estimand = "amce",
-                  .se_method = "analytical",
-                  .ignore_position = TRUE,
-                  .irr = NULL)
+                  .estimand = "amce", 
+                  .ignore_position = TRUE)
 
 amce2@estimates
 ```

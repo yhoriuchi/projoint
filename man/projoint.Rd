@@ -28,7 +28,7 @@ projoint(
 
 \item{.qoi}{A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.}
 
-\item{.structure}{Either "profile_level" or "choice_level"}
+\item{.structure}{Either "profile_level" (default) or "choice_level"}
 
 \item{.estimand}{Either "mm" for marginal mean or "amce" for average marginal component effect}
 

@@ -5,7 +5,7 @@
 \title{Set the quantities of interest}
 \usage{
 set_qoi(
-  .structure = "choice_level",
+  .structure = "profile_level",
   .estimand = "mm",
   .attribute,
   .level,
