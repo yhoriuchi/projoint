@@ -11,11 +11,14 @@ vignette: >
 
 A key quantity of interest in conjoint tasks is whether estimates (MMs or AMCEs) differ across sub-populations. These subgroup comparisons are especially susceptible to IRR-induced measurement error bias. In the following, we present some sample codes so that researchers and adopt-and-modify them flexibly.
 
-### 6.1 Load the projoint and tidyverse packages
+### 6.1 Load the projoint package. 
+
+Also load some additional packages required for this vignette
 
 ```{r, warning=FALSE, message=FALSE}
 library(projoint)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 ```
 
 ### 6.2 Read and Wrangle data
