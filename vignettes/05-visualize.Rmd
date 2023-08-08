@@ -11,21 +11,22 @@ vignette: >
 
 The `projoint` package features a set of tools for producing publication-ready figures from conjoint analyses.
 
-
 ### 5.1 Load the projoint package
 
 ```{r}
 library(projoint)
 ```
 
-### 5.2 Estimate MMs and AMCEs.
+### 5.2 Profile-level analysis
+
+#### Estimate MMs and AMCEs.
 
 ```{r}
 mm   <- projoint(out1_arranged) 
 amce <- projoint(out1_arranged, .estimand = "amce")
 ```
 
-### 5.3 Visualize MMs and AMCEs
+#### Visualize MMs and AMCEs
 
 By default, most researchers should prefer to view the corrected estimates of either MMs or AMCEs. Researchers can, however, choose to instead visualize the uncorrected estimates, or to view both together.
 
@@ -40,3 +41,7 @@ plot_projoint(amce, .estimand = "amce")
 plot_projoint(amce, .estimand = "amce", .estimates = "uncorrected")
 plot_projoint(amce, .estimand = "amce", .estimates = "both")
 ```
+
+### 5.3 Choice-level analysis
+
+To be written.

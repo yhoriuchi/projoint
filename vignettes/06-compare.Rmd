@@ -21,7 +21,9 @@ library(dplyr)
 library(ggplot2)
 ```
 
-### 6.2 Read and Wrangle data
+### 6.2 Profile-level analysis
+
+#### Read and Wrangle data
 
 To begin, define the outcome questions in the original dataset. 
 
@@ -79,20 +81,33 @@ df_1 <- read_labels(df_1, "../data-raw/labels_arranged.csv")
 df_d <- read_labels(df_d, "../data-raw/labels_arranged.csv")
 ```
 
-### 6.3 Estimate MMs or AMCEs and the difference in the estimates
+#### Estimate MMs or AMCEs and the difference in the estimates
 
 For each of the three data frames, estimate the MMs, AMCEs, or the differences in these estimates. The following example estimate profile-level marginal means (default).
 ```{r}
 out_0 <- projoint(df_0)
 out_1 <- projoint(df_1)
 out_d <- projoint(df_d, .by_var = "white")
+```
 
+Importantly, if your conjoint design includes the repeated task, the `projoint()` function applied to each subgroup will estimate IRR for the corresponding subgroup. The output of `out_d` includes the data for these differences
+```{r}
+out_d@estimates
+```
+
+You can also check `tau` for each subgroup:
+```{r}
+out_d@tau
+```
+Then, make and save three ggplot objects.
+
+```{r}
 plot_0 <- plot_projoint(out_0)
 plot_1 <- plot_projoint(out_1)
 plot_d <- plot_projoint(out_d, .by_var = TRUE)
 ```
 
-### 6.4 Visualize subgroup differences
+#### Visualize subgroup differences
 
 Then, make a plot using the `patchwork` package. Researchers can add/modify layers of each ggplot. The default horizontal axis label is "Difference" if `.by_var = TRUE` is specified in the `plot_projoint()` function.
 
@@ -122,3 +137,8 @@ g_d <- plot_d +
 library(patchwork)
 g_0 + g_1 + g_d 
 ```
+
+### 6.3 Choice-level analysis
+
+To be written.
+
