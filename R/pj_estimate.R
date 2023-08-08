@@ -10,13 +10,13 @@
 #' @param .data A `projoint_data` object
 #' @param .attribute A character column name identifying the attribute of interest
 #' @param .level  A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
-#' @param .structure A character identifying a data structure: "choice_level" or "profile_level" (default). Note: the right element of .level is the outcome of choice if .structure == "choice_level"
-#' @param .estimand A character identifying the estimand: "mm" (default) or "amce"
-#' @param .se_method  A character identifying the method of correcting measurement error bias: "analytical" (default), "simulation", or "bootstrap" (not recommended)
-#' @param .irr NULL (default) if IRR is calculate using the repeated task. Otherwise, a numerical value
 #' @param .baseline  A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
-#' @param .remove_ties TRUE (default) if you want to remove ties for the attribute of interest (in profile-level analysis)
-#' @param .ignore_position TRUE if you ignore the location of profile (left or right). Relevant only if .structure == "choice_level". Defaults to NULL.
+#' @param .structure Either "profile_level" (default) or "choice_level" 
+#' @param .estimand Either "mm" for marginal mean or "amce" for average marginal component effect
+#' @param .se_method c("analytic", "simulation", "bootstrap") description
+#' @param .irr NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
+#' @param .remove_ties Logical: should ties be removed before estimation? Defaults to TRUE.
+#' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right. Relevant only if analyzed at the choice level
 #' @param .n_sims The number of simulations. Relevant only if .se_method == "simulation" 
 #' @param .n_boot The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"
 #' @param .weights_1 the weight to estimate IRR (see `lm_robust()`): NULL (default)
@@ -27,47 +27,12 @@
 #' @param .se_type_2 the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)
 #' @return A data frame of estimates
 
-
-# THE FOLLOWING CODES ARE FOR TEST. PLEASE DO NOT YET DELETE THEM.
-# 
-# library(projoint)
-# library(tidyverse)
-# library(estimatr)
-# outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-# outcomes <- c(outcomes, "choice1_repeated_flipped")
-# out1 <- reshape_projoint(.dataframe = exampleData1, 
-#                          .idvar = "ResponseId", 
-#                          .outcomes = outcomes,
-#                          .outcomes_ids = c("A", "B"),
-#                          .alphabet = "K", 
-#                          .repeated = TRUE,
-#                          .flipped = TRUE)
-# 
-# .data = out1
-# .attribute = "att1"
-# .level = "level2"
-# .structure = "profile_level"
-# .estimand = "amce"
-# .se_method = "analytical"
-# .irr = 0.75
-# .irr = NULL
-# .baseline = "level1"
-# .remove_ties = TRUE
-# .ignore_position = NULL
-# .n_sims = NULL
-# .n_boot = NULL
-# .weights_1 <- NULL
-# .clusters_1 <- NULL
-# .se_type_1 <- "classical"
-# .weights_2 <- NULL
-# .clusters_2 <- NULL
-# .se_type_2 <- "classical"
-
 pj_estimate <- function(
     .data,
     .attribute,
     .level,
     .baseline = NULL,
+    
     .structure = "profile_level",
     .estimand = "mm",
     .se_method = "analytical",

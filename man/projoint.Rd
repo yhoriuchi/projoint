@@ -7,6 +7,7 @@
 projoint(
   .data,
   .qoi = NULL,
+  .by_var = NULL,
   .structure = "profile_level",
   .estimand = "mm",
   .se_method = "analytical",
@@ -27,6 +28,8 @@ projoint(
 \item{.data}{A `projoint_data` object}
 
 \item{.qoi}{A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.}
+
+\item{.by_var}{A dichotomous variable (character) used for subgroup analysis}
 
 \item{.structure}{Either "profile_level" (default) or "choice_level"}
 

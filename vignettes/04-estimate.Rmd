@@ -39,6 +39,7 @@ The default method in `projoint` is to estimate marginal means (MMs) at the prof
 ```{r}
 mm0 <- projoint(.data = out1,
                 .qoi = NULL,
+                .by_var = NULL,
                 .structure = "profile_level",
                 .estimand = "mm",
                 .se_method = "analytical",

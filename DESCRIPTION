@@ -27,7 +27,8 @@ Suggests:
     knitr,
     downloadthis,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    patchwork
 Config/testthat/edition: 3
 URL: https://yhoriuchi.github.io/projoint/
 Depends: 

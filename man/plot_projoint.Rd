@@ -8,6 +8,7 @@ plot_projoint(
   .data,
   .estimand = "mm",
   .estimates = "corrected",
+  .by_var = FALSE,
   .base_size = 12,
   .base_family = ""
 )
@@ -18,6 +19,8 @@ plot_projoint(
 \item{.estimand}{Either "mm" for marginal mean (default) or "amce" for average marginal component effect}
 
 \item{.estimates}{The estimates to be plotted, either "corrected" (default), "uncorrected", or "both"}
+
+\item{.by_var}{TRUE to plot the difference in estimates between the two subgroups, FALSE (default) otherwise}
 
 \item{.base_size}{base font size, given in pts.}
 

@@ -9,6 +9,7 @@
 #' @param .data A `projoint_results_mm` or `projoint_results_amce` object
 #' @param .estimand Either "mm" for marginal mean (default) or "amce" for average marginal component effect
 #' @param .estimates The estimates to be plotted, either "corrected" (default), "uncorrected", or "both"
+#' @param .by_var TRUE to plot the difference in estimates between the two subgroups, FALSE (default) otherwise 
 #' @param .base_size base font size, given in pts.
 #' @param .base_family base font family
 #' @return A ggplot object
@@ -39,6 +40,7 @@ plot_projoint <- function(
     .data, 
     .estimand = "mm",
     .estimates = "corrected",
+    .by_var = FALSE,
     .base_size = 12,
     .base_family = "") {
   
@@ -58,27 +60,59 @@ plot_projoint <- function(
   
   # check -------------------------------------------------------------------
   
-  if (.estimand == "mm"){
+  if (.by_var == FALSE){
     
-    .xintercept = 0.5
-    .xlabel = "Marginal Mean"
-    if(!is(.data, "projoint_results_mm")){
-      stop("The .data argument must be of class `projoint_results_mm` from the `projoint` function.")
+    if (.estimand == "mm"){
+      
+      .xintercept = 0.5
+      .xlabel = "Marginal Mean"
+      if(!is(.data, "projoint_results_mm")){
+        stop("The .data argument must be of class `projoint_results_mm` from the `projoint` function.")
+      }
+      
+    } else if (.estimand == "amce"){
+      
+      .xintercept = 0
+      .xlabel = "Average Marginal Component Effect"
+      if(!is(.data, "projoint_results_amce")){
+        stop("The .data argument must be of class `projoint_results_amce` from the `projoint` function.")
+      }
+      
+    } else{
+      
+      stop("The .estimand argument should be either mm or amce.")
+      
     }
     
-  } else if (.estimand == "amce"){
+  } else if (.by_var == TRUE){
     
     .xintercept = 0
-    .xlabel = "Average Marginal Component Effect"
-    if(!is(.data, "projoint_results_amce")){
-      stop("The .data argument must be of class `projoint_results_amce` from the `projoint` function.")
+    .xlabel = "Difference"
+    
+    if (.estimand == "mm"){
+      
+      if(!is(.data, "projoint_results_mm")){
+        stop("The .data argument must be of class `projoint_results_mm` from the `projoint` function.")
+      }
+      
+    } else if (.estimand == "amce"){
+      
+      if(!is(.data, "projoint_results_amce")){
+        stop("The .data argument must be of class `projoint_results_amce` from the `projoint` function.")
+      }
+      
+    } else{
+      
+      stop("The .estimand argument should be either mm or amce.")
     }
     
-  } else{
+  } else {
     
-    stop("The .estimand argument should be either mm or amce.")
+    stop("The .by_var argument should be logical.")
     
   }
+  
+  
   
   # initial data wrangling --------------------------------------------------
   
