@@ -47,26 +47,4 @@ set_qoi <- function(
                "attribute_of_interest_0_baseline" = .att_notchoose_b,
                "levels_of_interest_0_baseline" = .lev_notchoose_b)
   
-  # if (estimand == "mm"){
-  #   
-  #   out <- projoint_qoi_mm("attribute_of_interest" = .att_choose,
-  #                          "levels_of_interest" = .lev_choose,
-  #                          "attribute_of_interest_0" = .att_notchoose,
-  #                          "levels_of_interest_0" = .lev_notchoose)
-  #   
-  # } else{
-  #   
-  #   out <- projoint_qoi_amce("attribute_of_interest" = .att_choose,
-  #                            "levels_of_interest" = .lev_choose,
-  #                            "attribute_of_interest_0" = .att_notchoose,
-  #                            "levels_of_interest_0" = .lev_notchoose,
-  #                            "attribute_of_interest_baseline" = .att_choose_b,
-  #                            "levels_of_interest_baseline" = .lev_choose_b,
-  #                            "attribute_of_interest_0_baseline" = .att_notchoose_b,
-  #                            "levels_of_interest_0_baseline" = .lev_notchoose_b)
-  #   
-  # }
-  # 
-  # return(out)
-  
 }

@@ -17,13 +17,3 @@ projoint_results <- setClass("projoint_results",
                                        "attribute_of_interest_0_baseline",
                                        "levels_of_interest_0_baseline"),
                              contains = c("projoint_data"))
-
-# projoint_results_mm <- setClass("projoint_results_mm",
-#                                 slots = c("estimates", "tau"),
-#                                 contains = c("projoint_data", 
-#                                              "projoint_qoi"))
-# 
-# projoint_results_amce <- setClass("projoint_results_amce",
-#                                   slots = c("estimates", "tau"),
-#                                   contains = c("projoint_data", 
-#                                                "projoint_qoi"))
