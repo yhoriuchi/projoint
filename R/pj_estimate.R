@@ -8,11 +8,16 @@
 #' @importFrom MASS mvrnorm
 #' @keywords internal
 #' @param .data A `projoint_data` object
-#' @param .attribute A character column name identifying the attribute of interest
-#' @param .level  A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
-#' @param .baseline  A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis
 #' @param .structure Either "profile_level" (default) or "choice_level" 
 #' @param .estimand Either "mm" for marginal mean or "amce" for average marginal component effect
+#' @param .att_choose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).
+#' @param .lev_choose  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis
+#' @param .att_notchoose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".
+#' @param .lev_notchoose  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".
+#' @param .att_choose_b [baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).
+#' @param .lev_choose_b  [baseline for AMCE] A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis
+#' @param .att_notchoose_b [baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".
+#' @param .lev_notchoose_b [baseline for AMCE]  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".
 #' @param .se_method c("analytic", "simulation", "bootstrap") description
 #' @param .irr NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
 #' @param .remove_ties Logical: should ties be removed before estimation? Defaults to TRUE.
@@ -27,14 +32,45 @@
 #' @param .se_type_2 the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)
 #' @return A data frame of estimates
 
+# .data <- df
+# .structure = "choice_level"
+# .estimand = "mm"
+# 
+# .att_choose = "att1"
+# .lev_choose = "level2"
+# .att_notchoose = "att2"
+# .lev_notchoose = "level1"
+# 
+# .att_choose_b = "att1" 
+# .lev_choose_b = "level3"
+# .att_notchoose_b = "att1" 
+# .lev_notchoose_b ="level1"
+# 
+# .se_method = "analytical"
+# .irr = NULL
+# .remove_ties = TRUE
+# .ignore_position = FALSE
+# .n_sims = NULL
+# .n_boot = NULL
+# .weights_1 = NULL
+# .clusters_1 = NULL
+# .se_type_1 = "classical"
+# .weights_2 = NULL
+# .clusters_2 = NULL
+# .se_type_2 = "classical"
+
 pj_estimate <- function(
     .data,
-    .attribute,
-    .level,
-    .baseline = NULL,
-    
     .structure = "profile_level",
     .estimand = "mm",
+    .att_choose, 
+    .lev_choose,
+    .att_notchoose = NULL, 
+    .lev_notchoose = NULL,
+    .att_choose_b = NULL, 
+    .lev_choose_b = NULL,
+    .att_notchoose_b = NULL, 
+    .lev_notchoose_b = NULL,
     .se_method = "analytical",
     .irr = NULL,
     .remove_ties = TRUE,
@@ -49,21 +85,106 @@ pj_estimate <- function(
     .se_type_2 = "classical"
 ){
   
-  .dataframe <- .data@data
-  
   # check various settings --------------------------------------------------
   
   structure <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
   estimand  <- rlang::arg_match0(.estimand, c("mm", "amce"))
   se_method <- rlang::arg_match0(.se_method, c("analytical", "simulation", "bootstrap"))
   
-  if (.estimand == "mm" & !is.null(.baseline)){
-    stop("The .baseline argument can be specified only when the .estimand argument is amce.")
+  if (is.null(.att_choose)){
+    stop("The .att_choose argument must be specified.")
+  }
+  if (is.null(.lev_choose)){
+    stop("The .att_choose argument must be specified.")
   }
   
-  if (.estimand == "amce" & is.null(.baseline)){
-    stop("Specify .baseline argument for the estimation of AMCEs.")
+  if (.structure == "profile_level"){
+    
+    if (.estimand == "mm"){
+      if (!is.null(.att_notchoose)){
+        stop("The .att_notchoose argument must be NULL.") 
+      } 
+      if (!is.null(.lev_notchoose)){
+        stop("The .lev_notchoose argument must be NULL.") 
+      } 
+      if (!is.null(.att_choose_b)){
+        stop("The .att_choose_b argument must be NULL.") 
+      } 
+      if (!is.null(.lev_choose_b)){
+        stop("The .lev_choose_b argument must be NULL.") 
+      } 
+      if (!is.null(.att_notchoose_b)){
+        stop("The .att_notchoose_b argument must be NULL.") 
+      } 
+      if (!is.null(.lev_notchoose_b)){
+        stop("The .lev_notchoose_b argument must be NULL.") 
+      } 
+    } else {
+      if (!is.null(.att_notchoose)){
+        stop("The .att_notchoose argument must be NULL.") 
+      } 
+      if (!is.null(.lev_notchoose)){
+        stop("The .lev_notchoose argument must be NULL.") 
+      } 
+      if (is.null(.att_choose_b)){
+        stop("The .att_choose_b argument must be specified") 
+      } 
+      if (is.null(.lev_choose_b)){
+        stop("The .lev_choose_b argument must be specified") 
+      } 
+      if (!is.null(.att_notchoose_b)){
+        stop("The .att_notchoose_b argument must be NULL.") 
+      } 
+      if (!is.null(.lev_notchoose_b)){
+        stop("The .lev_notchoose_b argument must be NULL.") 
+      } 
+    }
+    
+    
+  } else {
+    
+    if (.estimand == "mm"){
+      if (is.null(.att_notchoose)){
+        stop("The .att_notchoose argument must be specified") 
+      } 
+      if (is.null(.lev_notchoose)){
+        stop("The .lev_notchoose argument must be specified") 
+      } 
+      if (!is.null(.att_choose_b)){
+        stop("The .att_choose_b argument must be NULL.") 
+      } 
+      if (!is.null(.lev_choose_b)){
+        stop("The .lev_choose_b argument must be NULL.") 
+      } 
+      if (!is.null(.att_notchoose_b)){
+        stop("The .att_notchoose_b argument must be NULL.") 
+      } 
+      if (!is.null(.lev_notchoose_b)){
+        stop("The .lev_notchoose_b argument must be NULL.") 
+      } 
+    } else {
+      if (is.null(.att_notchoose)){
+        stop("The .att_notchoose argument must be specified") 
+      } 
+      if (is.null(.lev_notchoose)){
+        stop("The .lev_notchoose argument must be specified") 
+      } 
+      if (is.null(.att_choose_b)){
+        stop("The .att_choose_b argument must be specified") 
+      } 
+      if (is.null(.lev_choose_b)){
+        stop("The .lev_choose_b argument must be specified") 
+      } 
+      if (is.null(.att_notchoose_b)){
+        stop("The .att_notchoose_b argument must be specified") 
+      } 
+      if (is.null(.lev_notchoose_b)){
+        stop("The .lev_notchoose_b argument must be specified") 
+      } 
+    }
+    
   }
+  
   
   if(!is.null(.irr) & !is.numeric(.irr) & length(.irr) == 1){
     stop("The .irr argument must be either a numeric scalar or NULL.")
@@ -109,7 +230,6 @@ pj_estimate <- function(
     stop("You cannot specify the .n_boot arguement for analytical derivation or simulation")
   }
   
-  
   if (.structure == "choice_level" & .estimand == "mm" & .remove_ties == FALSE){
     stop("The .remove_ties argument should be TRUE to estimate choice-level MMs.")
   }
@@ -117,7 +237,6 @@ pj_estimate <- function(
   # bind variables locally to the function ----------------------------------
   
   id <- NULL
-  selected <- NULL
   agree <- NULL
   x <- NULL
   cov <- NULL
@@ -127,42 +246,99 @@ pj_estimate <- function(
   cov_mm_tau <- NULL
   reg_tau <- NULL
   se <- NULL
-  
+  qoi <- NULL
+  qoi_1 <- NULL
+  qoi_2 <- NULL
+  qoi_choose <- NULL
+  qoi_choose_1 <- NULL
+  qoi_choose_2 <- NULL
+  qoi_notchoose <- NULL
+  qoi_notchoose_1 <- NULL
+  qoi_notchoose_2 <- NULL
+  selected <- NULL
+  selected_1 <- NULL
+  selected_2 <- NULL
+
   # Organize data -----------------------------------------------------------
   
   if (estimand == "mm"){
     
-    if (structure == "choice_level" & !is.null(.ignore_position) & isTRUE(.ignore_position)){
+    if (structure == "choice_level"){
       
-      temp1 <- organize_data(.dataframe,
-                             .attribute,
-                             .level,
-                             .structure)
-      temp2 <- organize_data(.dataframe,
-                             .attribute,
-                             rev(.level), # the order is reversed
-                             .structure)
+      # specify the attributes and levels of interest
+      attlev_choose    <- stringr::str_c(.att_choose,  ":", .lev_choose)
+      attlev_notchoose <- stringr::str_c(.att_notchoose,  ":", .lev_notchoose)
       
-      # merge data to estimate irr
-      data_for_irr <- bind_rows(
-        temp1$data_for_irr,
-        temp2$data_for_irr
-      ) %>% 
+      temp1 <- organize_data(.dataframe = .data@data,
+                             .structure = structure,
+                             .estimand = estimand,
+                             .remove_ties,
+                             .att_choose,
+                             .lev_choose,
+                             .att_notchoose,
+                             .lev_notchoose)
+      
+      if (isTRUE(.ignore_position)){
+        
+        if (.att_choose == .att_notchoose){
+          
+          temp2 <- temp1$data_for_estimand %>% 
+            dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        } else{
+          
+          temp2 <- temp1$data_for_estimand %>% 
+            dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        }
+        
+      } else{
+        
+        if (.att_choose == .att_notchoose){
+          
+          temp2 <- temp1$data_for_estimand %>% 
+            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) %>% 
+            dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        } else{
+          
+          temp2 <- temp1$data_for_estimand %>% 
+            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) %>% 
+            
+            dplyr::mutate(selected = selected_2, 
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        }
+      }
+      
+      # data to estimate irr
+      data_for_irr <- temp1$data_for_irr %>% 
         distinct()
       
-      # merge data to estimate mm or amce
-      data_for_estimand <- bind_rows(
-        temp1$data_for_estimand,
-        temp2$data_for_estimand %>% mutate(selected = 1 - selected)
-      )
+      # data to estimate QoI
+      data_for_estimand <- temp2
       
     } else {
       
-      .list <- organize_data(.dataframe,
-                             .attribute,
-                             .level,
-                             .structure,
-                             .remove_ties)
+      .list <- organize_data(.dataframe = .data@data,
+                             .structure = structure,
+                             .estimand = estimand,
+                             .remove_ties,
+                             .att_choose,
+                             .lev_choose,
+                             .att_notchoose,
+                             .lev_notchoose)
       
       # save two data frames
       
@@ -170,71 +346,174 @@ pj_estimate <- function(
       data_for_estimand <- .list$data_for_estimand
       
     }
-  }
-  
-  
-  if (estimand == "amce"){
     
-    if (structure == "choice_level" & !is.null(.ignore_position) & isTRUE(.ignore_position)){
+  } else {
+    
+    if (structure == "choice_level"){
       
-      temp1a <- organize_data(.dataframe,
-                              .attribute,
-                              .level,
-                              .structure)
-      temp2a <- organize_data(.dataframe,
-                              .attribute,
-                              .baseline, # this is the baseline
-                              .structure)
-      temp1b <- organize_data(.dataframe,
-                              .attribute,
-                              rev(.level),
-                              .structure)
-      temp2b <- organize_data(.dataframe,
-                              .attribute,
-                              rev(.baseline), # this is the baseline; the order is reversed
-                              .structure)
+      # NOT baseline ------------------------------------------------------------
+      
+      # specify the attributes and levels of interest
+      attlev_choose    <- stringr::str_c(.att_choose,  ":", .lev_choose)
+      attlev_notchoose <- stringr::str_c(.att_notchoose,  ":", .lev_notchoose)
+      
+      temp1 <- organize_data(.dataframe = .data@data,
+                             .structure = structure,
+                             .estimand = estimand,
+                             .remove_ties,
+                             .att_choose,
+                             .lev_choose,
+                             .att_notchoose,
+                             .lev_notchoose)
+      
+      if (isTRUE(.ignore_position)){
+        
+        if (.att_choose == .att_notchoose){
+          
+          temp2 <- temp1$data_for_estimand %>% 
+            dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        } else{
+          
+          temp2 <- temp1$data_for_estimand %>% 
+            dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        }
+        
+      } else{
+        
+        if (.att_choose == .att_notchoose){
+          
+          temp2 <- temp1$data_for_estimand %>% 
+            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) %>% 
+            dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        } else{
+          
+          temp2 <- temp1$data_for_estimand %>% 
+            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) %>% 
+            dplyr::mutate(selected = selected_2, 
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        }
+      }
+      
+      
+      # Baseline ----------------------------------------------------------------
+      
+      # specify the attributes and levels of interest
+      attlev_choose_b    <- stringr::str_c(.att_choose_b,  ":", .lev_choose_b)
+      attlev_notchoose_b <- stringr::str_c(.att_notchoose_b,  ":", .lev_notchoose_b)
+      
+      temp1_b <- organize_data(.dataframe = .data@data,
+                               .structure = structure,
+                               .estimand = estimand,
+                               .remove_ties,
+                               .att_choose = .att_choose_b,
+                               .lev_choose = .lev_choose_b,
+                               .att_notchoose = .att_notchoose_b,
+                               .lev_notchoose = .lev_notchoose_b)
+      
+      if (isTRUE(.ignore_position)){
+        
+        if (.att_choose_b == .att_notchoose_b){
+          
+          temp2_b <- temp1_b$data_for_estimand %>% 
+            dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        } else{
+          
+          temp2_b <- temp1_b$data_for_estimand %>% 
+            dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        }
+        
+      } else{
+        
+        if (.att_choose_b == .att_notchoose_b){
+          
+          temp2_b <- temp1_b$data_for_estimand %>% 
+            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) %>% 
+            dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        } else{
+          
+          temp2_b <- temp1_b$data_for_estimand %>% 
+            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) %>% 
+            
+            dplyr::mutate(selected = selected_2, 
+                          qoi_choose = str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+            dplyr::select(-matches("_\\d$"))
+          
+        }
+      }
+      
+      # Merge -------------------------------------------------------------------
       
       # merge data to estimate irr
       data_for_irr <- bind_rows(
-        temp1a$data_for_irr,
-        temp2a$data_for_irr,
-        temp1b$data_for_irr,
-        temp2b$data_for_irr
+        temp1$data_for_irr,
+        temp1_b$data_for_irr
       ) %>%
         distinct()
       
       # merge data to estimate mm or amce
       data_for_estimand <- bind_rows(
-        temp1a$data_for_estimand %>% mutate(x = 1),
-        temp2a$data_for_estimand %>% mutate(x = 0),
-        temp1b$data_for_estimand %>% mutate(x = 1),
-        temp2b$data_for_estimand %>% mutate(x = 0)
+        temp2 %>% mutate(x = 1),
+        temp2_b %>% mutate(x = 0)
       )
       
     } else {
       
-      temp1 <- organize_data(.dataframe,
-                             .attribute,
-                             .level,
-                             .structure,
-                             .remove_ties)
-      temp2 <- organize_data(.dataframe,
-                             .attribute,
-                             .baseline, # this is the baseline
-                             .structure,
-                             .remove_ties)
+      temp1 <- organize_data(.dataframe = .data@data,
+                             .structure = structure,
+                             .estimand = estimand,
+                             .remove_ties,
+                             .att_choose,
+                             .lev_choose,
+                             .att_notchoose,
+                             .lev_notchoose)
+      temp1_b <- organize_data(.dataframe = .data@data,
+                               .structure = structure,
+                               .estimand = estimand,
+                               .remove_ties,
+                               .att_choose = .att_choose_b,
+                               .lev_choose = .lev_choose_b,
+                               .att_notchoose = .att_notchoose_b,
+                               .lev_notchoose = .lev_notchoose_b)
       
       # merge data to estimate irr
       data_for_irr <- bind_rows(
         temp1$data_for_irr,
-        temp2$data_for_irr
+        temp1_b$data_for_irr
       ) %>%
         distinct()
       
       # merge data to estimate mm or amce
       data_for_estimand <- bind_rows(
         temp1$data_for_estimand %>% mutate(x = 1),
-        temp2$data_for_estimand %>% mutate(x = 0)
+        temp1_b$data_for_estimand %>% mutate(x = 0)
       )
       
     }

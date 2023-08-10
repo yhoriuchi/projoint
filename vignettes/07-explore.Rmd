@@ -1,0 +1,22 @@
+---
+title: "07. Explore further"
+output: rmarkdown::html_vignette
+description: >
+  How to estimate more under-investigated quantities of interest
+vignette: >
+  %\VignetteIndexEntry{07. Explore further}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The choice-level analysis will allow reserachers to examine many more questions under-investigated in the litearture. This article explains some possible avenues for fruitful research. 
+
+### 6.1 Examine trade-offs
+
+To be written
+
+### 6.1 Set multiple levels for the attribute of interest
+
+To be written
+
+

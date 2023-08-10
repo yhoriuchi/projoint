@@ -109,8 +109,6 @@ projoint <- function(
                   .se_type_2)
     
   }
-  
-  
-  
+
 }
 

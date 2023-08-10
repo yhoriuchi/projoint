@@ -57,8 +57,14 @@ plot_projoint <- function(
   att_level_labels <- NULL
   conf.low <- NULL
   conf.high <- NULL
-  
+  att_level_choose <- NULL
+
   # check -------------------------------------------------------------------
+  
+  if(!is(.data, "projoint_results")){
+    stop("The .data argument must be of class `projoint_results` from the `projoint` function.")
+  }
+  
   
   if (.by_var == FALSE){
     
@@ -66,17 +72,11 @@ plot_projoint <- function(
       
       .xintercept = 0.5
       .xlabel = "Marginal Mean"
-      if(!is(.data, "projoint_results_mm")){
-        stop("The .data argument must be of class `projoint_results_mm` from the `projoint` function.")
-      }
       
     } else if (.estimand == "amce"){
       
       .xintercept = 0
       .xlabel = "Average Marginal Component Effect"
-      if(!is(.data, "projoint_results_amce")){
-        stop("The .data argument must be of class `projoint_results_amce` from the `projoint` function.")
-      }
       
     } else{
       
@@ -88,23 +88,6 @@ plot_projoint <- function(
     
     .xintercept = 0
     .xlabel = "Difference"
-    
-    if (.estimand == "mm"){
-      
-      if(!is(.data, "projoint_results_mm")){
-        stop("The .data argument must be of class `projoint_results_mm` from the `projoint` function.")
-      }
-      
-    } else if (.estimand == "amce"){
-      
-      if(!is(.data, "projoint_results_amce")){
-        stop("The .data argument must be of class `projoint_results_amce` from the `projoint` function.")
-      }
-      
-    } else{
-      
-      stop("The .estimand argument should be either mm or amce.")
-    }
     
   } else {
     
@@ -118,10 +101,10 @@ plot_projoint <- function(
   
   out1 <- dplyr::left_join(
     .data@estimates %>% 
-      dplyr::mutate(level_id = str_c(attribute, ":", level),
+      dplyr::mutate(level_id = att_level_choose,
                     estimates = case_when(str_detect(estimand, "uncorrected") ~ "uncorrected",
                                           str_detect(estimand, "corrected") ~ "corrected")) %>%
-      dplyr::select(-attribute, -level, -estimand),
+      dplyr::select(-estimand),
     .data@labels %>% 
       dplyr::select(attribute, level, level_id),
     by = join_by(level_id)

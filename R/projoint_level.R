@@ -48,7 +48,11 @@ projoint_level <- function(
   
   # bind variables locally to the function ----------------------------------
   
-  .baseline <- NULL
+  baseline <- NULL
+  att_level_choose <- NULL
+  att_level_notchoose <- NULL
+  att_level_choose_baseline <- NULL
+  att_level_notchoose_baseline <- NULL
   
   # check various settings --------------------------------------------------
   # Also see the checking in pj_estimate()
@@ -61,12 +65,8 @@ projoint_level <- function(
     stop("The .data argument must be of class `projoint_data` from the `reshape_projoint` function.")
   }
   
-  if(.estimand == "mm" & !is.null(.qoi) & !is(.qoi, "projoint_qoi_mm")){
-    stop("The .qoi argument must be of class `projoint_qoi_mm` from the `set_qoi` function.")
-  }
-  
-  if(.estimand == "amce" & !is.null(.qoi) & !is(.qoi, "projoint_qoi_amce")){
-    stop("The .qoi argument must be of class `projoint_qoi_amce` from the `set_qoi` function.")
+  if(!is.null(.qoi) & !is(.qoi, "projoint_qoi")){
+    stop("The .qoi argument must be of class `projoint_qoi` from the `set_qoi` function.")
   }
   
   if(.se_method == "simulation" & is.null(.n_sims)){
@@ -79,6 +79,10 @@ projoint_level <- function(
   
   if(.estimand == "amce" & is.null(.qoi) & .structure == "choice_level"){
     stop("The .structure argument must be profile_level if the .qoi argument is NULL.")
+  }
+  
+  if (is.null(.qoi) & structure == "choice-level"){
+    stop("The .qoi argument must be specified for choice-level analysis.") 
   }
   
   # estimate all MMs or AMCEs -----------------------------------------------
@@ -94,112 +98,138 @@ projoint_level <- function(
       attribute <- str_extract(attribute_levels[i], "^.+(?=:)")
       level     <- str_extract(attribute_levels[i], "(?<=:).+$")
       
-      if (.estimand == "mm"){
+      if (estimand == "mm"){
         
-        temp <- pj_estimate(.data,
-                            .attribute = attribute, # note: this is NOT .attribute
-                            .level = level, # note: this is NOT .level
-                            .structure,
-                            .estimand = "mm",
-                            .se_method,
-                            .irr,
-                            .baseline = NULL,
-                            .remove_ties,
-                            .ignore_position,
-                            .n_sims,
-                            .n_boot) %>% 
-          mutate(attribute = attribute, 
-                 level = paste0(level, collapse = ", "))
+        temp1 <- pj_estimate(.data,
+                             .structure = structure,
+                             .estimand = estimand,
+                             
+                             .att_choose = attribute,
+                             .lev_choose = level,
+                             .att_notchoose = NULL, 
+                             .lev_notchoose = NULL,
+                             .att_choose_b = NULL, 
+                             .lev_choose_b = NULL,
+                             .att_notchoose_b = NULL, 
+                             .lev_notchoose_b = NULL,
+                             
+                             .se_method,
+                             .irr,
+                             .remove_ties,
+                             .ignore_position,
+                             .n_sims,
+                             .n_boot,
+                             .weights_1 = NULL,
+                             .clusters_1 = NULL,
+                             .se_type_1 = "classical",
+                             .weights_2 = NULL,
+                             .clusters_2 = NULL,
+                             .se_type_2 = "classical") %>% 
+          dplyr::mutate(att_level_choose = str_c(str_c(attribute, level, sep = ":"), collapse = " or "))
+        
+      } else {
+        
+        temp1 <- pj_estimate(.data,
+                             .structure = structure,
+                             .estimand = estimand,
+                             
+                             .att_choose = attribute,
+                             .lev_choose = level,
+                             .att_notchoose = NULL, 
+                             .lev_notchoose = NULL,
+                             .att_choose_b = attribute, 
+                             .lev_choose_b = "level1", # The default baseline is "level1"
+                             .att_notchoose_b = NULL, 
+                             .lev_notchoose_b = NULL,
+                             
+                             .se_method,
+                             .irr,
+                             .remove_ties,
+                             .ignore_position,
+                             .n_sims,
+                             .n_boot,
+                             .weights_1 = NULL,
+                             .clusters_1 = NULL,
+                             .se_type_1 = "classical",
+                             .weights_2 = NULL,
+                             .clusters_2 = NULL,
+                             .se_type_2 = "classical") %>% 
+          dplyr::mutate(att_level_choose = str_c(str_c(attribute, level, sep = ":"), collapse = " or "),
+                        att_level_choose_baseline = str_c(str_c(attribute, "level1", sep = ":"), collapse = " or "),
+          )
         
       }
       
-      if (.estimand == "amce"){
-        
-        baseline <- "level1" # The default baseline is "level1"
-        
-        temp <- pj_estimate(.data,
-                            .attribute = attribute, # note: this is NOT .attribute
-                            .level = level, # note: this is NOT .level
-                            .structure,
-                            .estimand = "amce",
-                            .se_method,
-                            .irr,
-                            .baseline = baseline, # note: this is NOT .baseline
-                            .remove_ties,
-                            .ignore_position,
-                            .n_sims,
-                            .n_boot) %>% 
-          mutate(attribute = attribute, 
-                 level = paste0(level, collapse = ", "),
-                 baseline = baseline)
-        
-        
-      }
-      
-      
-      out <- bind_rows(out, temp)
+      out <- dplyr::bind_rows(out, temp1)
       
     }
     
-    if (.estimand == "amce"){
+    if (estimand == "amce"){
       
       out <- out %>% 
-        filter(level != baseline)
+        dplyr::filter(att_level_choose != att_level_choose_baseline)
       
     }
-    
-    
-    
     
   } else{
     
-    attribute <- .qoi@attribute_of_interest
-    level <- .qoi@levels_of_interest
+    attribute_of_interest  <- .qoi@attribute_of_interest
+    levels_of_interest     <- .qoi@levels_of_interest
+    
+    attribute_of_interest_0  <- .qoi@attribute_of_interest_0
+    levels_of_interest_0     <- .qoi@levels_of_interest_0
+    
+    attribute_of_interest_baseline <- .qoi@attribute_of_interest_baseline
+    levels_of_interest_baseline     <- .qoi@levels_of_interest_baseline
+    
+    attribute_of_interest_0_baseline <- .qoi@attribute_of_interest_0_baseline
+    levels_of_interest_0_baseline     <- .qoi@levels_of_interest_0_baseline
+    
+    temp <- pj_estimate(.data,
+                        .structure = structure,
+                        .estimand = estimand,
+                        
+                        .att_choose = attribute_of_interest,
+                        .lev_choose = levels_of_interest,
+                        .att_notchoose = attribute_of_interest_0, 
+                        .lev_notchoose = levels_of_interest_0,
+                        .att_choose_b = attribute_of_interest_baseline, 
+                        .lev_choose_b = levels_of_interest_baseline,
+                        .att_notchoose_b = attribute_of_interest_0_baseline, 
+                        .lev_notchoose_b = levels_of_interest_0_baseline,
+                        
+                        .se_method,
+                        .irr,
+                        .remove_ties,
+                        .ignore_position,
+                        .n_sims,
+                        .n_boot,
+                        .weights_1 = NULL,
+                        .clusters_1 = NULL,
+                        .se_type_1 = "classical",
+                        .weights_2 = NULL,
+                        .clusters_2 = NULL,
+                        .se_type_2 = "classical")
     
     
-    if (.estimand == "mm"){
+    if (estimand == "mm"){
       
-      out <- pj_estimate(.data,
-                         .attribute = attribute, # note: this is NOT .attribute
-                         .level = level, # note: this is NOT .level
-                         .structure,
-                         .estimand = "mm",
-                         .se_method,
-                         .irr,
-                         .baseline = NULL,
-                         .remove_ties,
-                         .ignore_position,
-                         .n_sims,
-                         .n_boot) %>% 
-        mutate(attribute = attribute, 
-               level = paste0(level, collapse = ", "))
+      out <- temp %>% 
+        dplyr::mutate(att_level_choose = str_c(str_c(attribute_of_interest, levels_of_interest, sep = ":"), collapse = " or "),
+                      att_level_notchoose = str_c(str_c(attribute_of_interest_0, levels_of_interest_0, sep = ":"), collapse = " or "))
       
-    }
-    
-    if (.estimand == "amce"){
+    } else{
       
-      baseline <- .qoi@baseline
-      
-      out <- pj_estimate(.data,
-                         .attribute = attribute, # note: this is NOT .attribute
-                         .level = level, # note: this is NOT .level
-                         .structure,
-                         .estimand = "amce",
-                         .se_method,
-                         .irr,
-                         .baseline = baseline, # note: this is NOT .baseline
-                         .remove_ties,
-                         .ignore_position,
-                         .n_sims,
-                         .n_boot) %>% 
-        mutate(attribute = attribute, 
-               level = paste0(level, collapse = ", "),
-               baseline = paste0(baseline, collapse = ", "))
-      
+      out <- temp %>% 
+        dplyr::mutate(att_level_choose = str_c(str_c(attribute_of_interest, levels_of_interest, sep = ":"), collapse = " or "),
+                      att_level_notchoose = str_c(str_c(attribute_of_interest_0, levels_of_interest_0, sep = ":"), collapse = " or "),
+                      att_level_choose_baseline = str_c(str_c(attribute_of_interest_baseline, levels_of_interest_baseline, sep = ":"), collapse = " or "),
+                      att_level_notchoose_baseline = str_c(str_c(attribute_of_interest_0_baseline, levels_of_interest_0_baseline, sep = ":"), collapse = " or "))
       
     }
     
   }
+  
   
   # return(out)
   tau <- unique(out$tau)
@@ -208,52 +238,71 @@ projoint_level <- function(
     as_tibble()
   
   # return estimates --------------------------------------------------------
-
+  
   if (.estimand == "mm"){
     
     if(is.null(.qoi)){
-      projoint_results_mm("estimates" = estimates, "tau" = tau, # the slots specific to projoint_results
-                          labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                          #irr = irr, figure = NULL # slots inherited from projoint_irr
-                          attribute_of_interest = "all",
-                          levels_of_interest = "all"
-      ) %>% 
+      projoint_results("estimates" = estimates, 
+                       "tau" = tau,
+                       "attribute_of_interest" = "all",
+                       "levels_of_interest" = "all",
+                       "attribute_of_interest_0" = NULL,
+                       "levels_of_interest_0" = NULL,
+                       "attribute_of_interest_baseline" = NULL,
+                       "levels_of_interest_baseline" = NULL,
+                       "attribute_of_interest_0_baseline" = NULL,
+                       "levels_of_interest_0_baseline" = NULL,
+                       labels = .data@labels,
+                       data = .data@data) %>%
         return()
     } else {
-      projoint_results_mm("estimates" = estimates, "tau" = tau, # the slots specific to projoint_results
-                          labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                          #irr = irr, figure = NULL, # slots inherited from projoint_irr
-                          attribute_of_interest = .qoi@attribute_of_interest,
-                          levels_of_interest = .qoi@levels_of_interest
-      ) %>% 
+      projoint_results("estimates" = estimates, 
+                       "tau" = tau, 
+                       "attribute_of_interest" = .qoi@attribute_of_interest,
+                       "levels_of_interest" = .qoi@levels_of_interest,
+                       "attribute_of_interest_0" = .qoi@attribute_of_interest_0,
+                       "levels_of_interest_0" = .qoi@levels_of_interest_0,
+                       "attribute_of_interest_baseline" = NULL,
+                       "levels_of_interest_baseline" = NULL,
+                       "attribute_of_interest_0_baseline" = NULL,
+                       "levels_of_interest_0_baseline" = NULL,
+                       labels = .data@labels,
+                       data = .data@data) %>%
         return()
     }
     
-    
-  } else if (.estimand == "amce"){
+  } else {
     
     if(is.null(.qoi)){
-      projoint_results_amce("estimates" = estimates, "tau" = tau, # the slot specific to projoint_results
-                            labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                            #irr = irr, figure = NULL # slots inherited from projoint_irr
-                            attribute_of_interest = "all",
-                            levels_of_interest = "all"
-      ) %>% 
+      projoint_results("estimates" = estimates, 
+                       "tau" = tau,
+                       "attribute_of_interest" = "all",
+                       "levels_of_interest" = "all except level1",
+                       "attribute_of_interest_0" = NULL,
+                       "levels_of_interest_0" = NULL,
+                       "attribute_of_interest_baseline" = "all",
+                       "levels_of_interest_baseline" = "level1",
+                       "attribute_of_interest_0_baseline" = NULL,
+                       "levels_of_interest_0_baseline" = NULL,
+                       labels = .data@labels,
+                       data = .data@data) %>%
         return()
     } else {
-      projoint_results_amce("estimates" = estimates, "tau" = tau, # the slot specific to projoint_results
-                            labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                            # irr = irr, figure = NULL, # slots inherited from projoint_irr
-                            attribute_of_interest = .qoi@attribute_of_interest,
-                            levels_of_interest = .qoi@levels_of_interest
-      ) %>% 
+      projoint_results("estimates" = estimates, 
+                       "tau" = tau, 
+                       "attribute_of_interest" = .qoi@attribute_of_interest,
+                       "levels_of_interest" = .qoi@levels_of_interest,
+                       "attribute_of_interest_0" = .qoi@attribute_of_interest_0,
+                       "levels_of_interest_0" = .qoi@levels_of_interest_0,
+                       "attribute_of_interest_baseline" = .qoi@attribute_of_interest_baseline,
+                       "levels_of_interest_baseline" = .qoi@levels_of_interest_baseline,
+                       "attribute_of_interest_0_baseline" = .qoi@attribute_of_interest_0_baseline,
+                       "levels_of_interest_0_baseline" = .qoi@levels_of_interest_0_baseline,
+                       labels = .data@labels,
+                       data = .data@data) %>%
         return()
     }
     
-    
-  } else{
-    stop("Estimand must be either 'mm' or 'amce'")
   }
   
 }
-

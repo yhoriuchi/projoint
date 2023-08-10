@@ -54,12 +54,16 @@ projoint_diff <- function(
   attribute <- NULL
   level <- NULL
   estimate <- NULL
-  se <- NULL
   estimate_1 <- NULL
   estimate_0 <- NULL
+  se <- NULL
   se_1 <- NULL
   se_0 <- NULL
-
+  att_level_choose <- NULL
+  att_level_notchoose <- NULL
+  att_level_choose_baseline <- NULL
+  att_level_notchoose_baseline <- NULL
+  
   # estimate QoIs by subgroups ----------------------------------------------
   
   subgroup1 <- .data@data %>% filter(.data[[.by_var]] == 1)
@@ -105,18 +109,18 @@ projoint_diff <- function(
   # prepare to return the estimates -----------------------------------------
   
   estimate1 <- out1@estimates %>% 
-    dplyr::select(estimand, attribute, level,
+    dplyr::select(estimand, att_level_choose,
                   "estimate_1" = estimate,
                   "se_1" = se) %>% 
     dplyr::mutate(tau = out1@tau)
   
   estimate0 <- out0@estimates %>% 
-    dplyr::select(estimand, attribute, level,
+    dplyr::select(estimand, att_level_choose,
                   "estimate_0" = estimate,
                   "se_0" = se)
   
   estimates <- estimate1 %>% 
-    dplyr::left_join(estimate0, by = c("estimand", "attribute", "level")) %>% 
+    dplyr::left_join(estimate0, by = c("estimand", "att_level_choose")) %>% 
     mutate(estimate = estimate_1 - estimate_0,
            se = sqrt(se_1^2 + se_0^2), 
            conf.low = estimate - 1.96 * se,
@@ -124,55 +128,73 @@ projoint_diff <- function(
   
   tau <- data.frame("tau1" = out1@tau,
                     "tau0" = out0@tau)
-  
-  
-  # return estimates --------------------------------------------------------
 
+  # return estimates --------------------------------------------------------
+  
   if (.estimand == "mm"){
     
     if(is.null(.qoi)){
-      projoint_results_mm("estimates" = estimates, "tau" = tau, # the slots specific to projoint_results
-                          labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                          #irr = irr, figure = NULL # slots inherited from projoint_irr
-                          attribute_of_interest = "all",
-                          levels_of_interest = "all"
-      ) %>% 
+      projoint_results("estimates" = estimates, 
+                       "tau" = tau,
+                       "attribute_of_interest" = "all",
+                       "levels_of_interest" = "all",
+                       "attribute_of_interest_0" = NULL,
+                       "levels_of_interest_0" = NULL,
+                       "attribute_of_interest_baseline" = NULL,
+                       "levels_of_interest_baseline" = NULL,
+                       "attribute_of_interest_0_baseline" = NULL,
+                       "levels_of_interest_0_baseline" = NULL,
+                       labels = .data@labels,
+                       data = .data@data) %>%
         return()
     } else {
-      projoint_results_mm("estimates" = estimates, "tau" = tau, # the slots specific to projoint_results
-                          labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                          #irr = irr, figure = NULL, # slots inherited from projoint_irr
-                          attribute_of_interest = .qoi@attribute_of_interest,
-                          levels_of_interest = .qoi@levels_of_interest
-      ) %>% 
+      projoint_results("estimates" = estimates, 
+                       "tau" = tau, 
+                       "attribute_of_interest" = .qoi@attribute_of_interest,
+                       "levels_of_interest" = .qoi@levels_of_interest,
+                       "attribute_of_interest_0" = .qoi@attribute_of_interest_0,
+                       "levels_of_interest_0" = .qoi@levels_of_interest_0,
+                       "attribute_of_interest_baseline" = NULL,
+                       "levels_of_interest_baseline" = NULL,
+                       "attribute_of_interest_0_baseline" = NULL,
+                       "levels_of_interest_0_baseline" = NULL,
+                       labels = .data@labels,
+                       data = .data@data) %>%
         return()
     }
     
-    
-  } else if (.estimand == "amce"){
+  } else {
     
     if(is.null(.qoi)){
-      projoint_results_amce("estimates" = estimates, "tau" = tau, # the slot specific to projoint_results
-                            labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                            #irr = irr, figure = NULL # slots inherited from projoint_irr
-                            attribute_of_interest = "all",
-                            levels_of_interest = "all"
-      ) %>% 
+      projoint_results("estimates" = estimates, 
+                       "tau" = tau,
+                       "attribute_of_interest" = "all",
+                       "levels_of_interest" = "all except level1",
+                       "attribute_of_interest_0" = NULL,
+                       "levels_of_interest_0" = NULL,
+                       "attribute_of_interest_baseline" = "all",
+                       "levels_of_interest_baseline" = "level1",
+                       "attribute_of_interest_0_baseline" = NULL,
+                       "levels_of_interest_0_baseline" = NULL,
+                       labels = .data@labels,
+                       data = .data@data) %>%
         return()
     } else {
-      projoint_results_amce("estimates" = estimates, "tau" = tau, # the slot specific to projoint_results
-                            labels = .data@labels, data = .data@data, # the slots inherited from projoint_data
-                            # irr = irr, figure = NULL, # slots inherited from projoint_irr
-                            attribute_of_interest = .qoi@attribute_of_interest,
-                            levels_of_interest = .qoi@levels_of_interest
-      ) %>% 
+      projoint_results("estimates" = estimates, 
+                       "tau" = tau, 
+                       "attribute_of_interest" = .qoi@attribute_of_interest,
+                       "levels_of_interest" = .qoi@levels_of_interest,
+                       "attribute_of_interest_0" = .qoi@attribute_of_interest_0,
+                       "levels_of_interest_0" = .qoi@levels_of_interest_0,
+                       "attribute_of_interest_baseline" = .qoi@attribute_of_interest_baseline,
+                       "levels_of_interest_baseline" = .qoi@levels_of_interest_baseline,
+                       "attribute_of_interest_0_baseline" = .qoi@attribute_of_interest_0_baseline,
+                       "levels_of_interest_0_baseline" = .qoi@levels_of_interest_0_baseline,
+                       labels = .data@labels,
+                       data = .data@data) %>%
         return()
     }
     
-    
-  } else{
-    stop("Estimand must be either 'mm' or 'amce'")
   }
-  
 }
 

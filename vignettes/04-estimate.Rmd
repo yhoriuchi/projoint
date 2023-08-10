@@ -67,8 +67,8 @@ However, it is also possible to specify the precise attributes, and attribute le
 qoi_1 <- set_qoi(
   .structure = "profile_level",
   .estimand = "mm",
-  .attribute = "att1", 
-  .level = "level1")
+  .att_choose = "att1", 
+  .lev_choose = "level1")
 
 mm1 <- projoint(.data = out1,
                 .qoi = qoi_1)
@@ -96,8 +96,10 @@ As soon as users wish to switch from profile-level to choice-level analysis, the
 ```{r}
 qoi_2 <- set_qoi(
   .structure = "choice_level",
-  .attribute = "att1", 
-  .level = c("level1", "level3")
+  .att_choose = "att1", 
+  .lev_choose = "level3",
+  .att_notchoose = "att1", 
+  .lev_notchoose = "level1"
 ) 
 
 mm2 <- projoint(.data = out1,
@@ -125,9 +127,10 @@ amce0@estimates
 qoi_3 <- set_qoi(
   .structure = "profile_level",
   .estimand = "amce",
-  .attribute = "att1", 
-  .level = "level3",
-  .baseline = "level1"
+  .att_choose = "att1", 
+  .lev_choose = "level3",
+  .att_choose_b = "att1",
+  .lev_choose_b = "level1"
 )
 
 amce1 <- projoint(.data = out1,
@@ -154,9 +157,14 @@ amce1b@estimates
 qoi_4 <- set_qoi(
   .structure = "choice_level",
   .estimand = "amce",
-  .attribute = "att1", 
-  .level = c("level1", "level3"),
-  .baseline = c("level1", "level1")
+  .att_choose = "att1", 
+  .lev_choose = "level3",
+  .att_notchoose = "att1", 
+  .lev_notchoose = "level1",
+  .att_choose_b = "att1", 
+  .lev_choose_b = "level2",
+  .att_notchoose_b = "att1", 
+  .lev_notchoose_b = "level1"
 )
 
 amce2 <- projoint(.data = out1,

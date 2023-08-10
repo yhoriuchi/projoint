@@ -2,13 +2,14 @@
 #' @importFrom methods is
 #' @importFrom methods new
 #' @keywords internal
-#' @param slots Takes two or three slots: a scalar indicating the attribute of interest, a scalar or vector indicating the levels of interest, and a scalar or vector indicating the baseline levels of interest (for AMCE)
+#' @param slots Takes four for MMs and eight for AMCEs
 
-projoint_qoi_mm <- setClass("projoint_qoi_mm",
-                            slots = c("attribute_of_interest",
-                                      "levels_of_interest"))
-
-projoint_qoi_amce <- setClass("projoint_qoi_amce",
-                              slots = c("attribute_of_interest",
-                                        "levels_of_interest",
-                                        "baseline"))
+projoint_qoi <- setClass("projoint_qoi",
+                         slots = c("attribute_of_interest",
+                                   "levels_of_interest",
+                                   "attribute_of_interest_0",
+                                   "levels_of_interest_0",
+                                   "attribute_of_interest_baseline",
+                                   "levels_of_interest_baseline",
+                                   "attribute_of_interest_0_baseline",
+                                   "levels_of_interest_0_baseline"))

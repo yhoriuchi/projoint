@@ -6,11 +6,16 @@
 \usage{
 pj_estimate(
   .data,
-  .attribute,
-  .level,
-  .baseline = NULL,
   .structure = "profile_level",
   .estimand = "mm",
+  .att_choose,
+  .lev_choose,
+  .att_notchoose = NULL,
+  .lev_notchoose = NULL,
+  .att_choose_b = NULL,
+  .lev_choose_b = NULL,
+  .att_notchoose_b = NULL,
+  .lev_notchoose_b = NULL,
   .se_method = "analytical",
   .irr = NULL,
   .remove_ties = TRUE,
@@ -28,15 +33,25 @@ pj_estimate(
 \arguments{
 \item{.data}{A `projoint_data` object}
 
-\item{.attribute}{A character column name identifying the attribute of interest}
-
-\item{.level}{A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis}
-
-\item{.baseline}{A character vector identifying the baseline level. Its length should be 1 for profile-level analysis and 2 for choice-level analysis}
-
 \item{.structure}{Either "profile_level" (default) or "choice_level"}
 
 \item{.estimand}{Either "mm" for marginal mean or "amce" for average marginal component effect}
+
+\item{.att_choose}{A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).}
+
+\item{.lev_choose}{A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis}
+
+\item{.att_notchoose}{A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".}
+
+\item{.lev_notchoose}{A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".}
+
+\item{.att_choose_b}{[baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).}
+
+\item{.lev_choose_b}{[baseline for AMCE] A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis}
+
+\item{.att_notchoose_b}{[baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".}
+
+\item{.lev_notchoose_b}{[baseline for AMCE]  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".}
 
 \item{.se_method}{c("analytic", "simulation", "bootstrap") description}
 
