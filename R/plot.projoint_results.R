@@ -1,6 +1,6 @@
 #' Plot all MMs or AMCEs
 #'
-#' This function produces MM or AMCE plots given an output from the `projoint` function.
+#' This method produces MM or AMCE plots given a `projoint_results` object, the output from the `projoint` function.
 #'
 #' @import ggplot2
 #' @import ggthemes
@@ -34,9 +34,9 @@
 #'   .flipped = TRUE)
 #'
 #' projoint_output <- projoint(reshaped_data)
-#' plot_projoint(projoint_output)
+#' plot(projoint_output)
 
-plot_projoint <- function(
+plot.projoint_data <- function(
     .data, 
     .estimand = "mm",
     .estimates = "corrected",

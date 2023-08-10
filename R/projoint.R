@@ -114,3 +114,10 @@ projoint <- function(
   
 }
 
+
+#' @export
+#' @rdname projoint
+
+print.projoint_results <- function(x, ...) {
+  ## What should we put here?
+}
