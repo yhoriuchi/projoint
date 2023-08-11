@@ -279,8 +279,8 @@ predict_tau <- function(
 
 
 
-#' @export
-#' @rdname predict_tau
+# @export
+# @rdname predict_tau
 
 #print.projoint_tau <- function(x, ...) {
 #  ## What should we put here?
@@ -291,8 +291,8 @@ predict_tau <- function(
 #}
 
 
-#' @export
-#' @rdname predict_tau
+# @export
+# @rdname predict_tau
 
 #summarize.projoint_tau <- function(x, ...) {
 #  ## What should we put here?
@@ -305,8 +305,8 @@ predict_tau <- function(
 #}
 
 
-#' @export
-#' @rdname predict_tau
+# @export
+# @rdname predict_tau
 
 #summarize.projoint_tau <- function(x, ...) {
 #  ## What should we put here?
@@ -319,7 +319,8 @@ predict_tau <- function(
 #}
 
 
-
+#' @param x A `projoint_tau` object, outputted from `predict_tau`
+#' @param ... Optional arguments; currently unused
 #' @export
 #' @rdname predict_tau
 

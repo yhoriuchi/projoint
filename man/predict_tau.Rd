@@ -2,14 +2,19 @@
 % Please edit documentation in R/predict_tau.R
 \name{predict_tau}
 \alias{predict_tau}
+\alias{plot.projoint_tau}
 \title{Estimate tau when there is no repeated task.}
 \usage{
 predict_tau(.data, .title = NULL)
+
+\method{plot}{projoint_tau}(x, ...)
 }
 \arguments{
-\item{.data}{A `projoint_data` object}
+\item{.data}{A `projoint_data` object, outputted from `reshape_projoint`}
 
 \item{.title}{The title of a figure}
+
+\item{x}{A `projoint_tau` object, outputted from `predict_tau`}
 }
 \value{
 A list (a vector of predicted value; ggplot object)

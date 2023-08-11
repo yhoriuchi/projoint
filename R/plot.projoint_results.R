@@ -36,7 +36,7 @@
 #' projoint_output <- projoint(reshaped_data)
 #' plot(projoint_output)
 
-plot.projoint_data <- function(
+plot.projoint_results <- function(
     .data, 
     .estimand = "mm",
     .estimates = "corrected",
