@@ -2,6 +2,8 @@
 % Please edit documentation in R/projoint.R
 \name{projoint}
 \alias{projoint}
+\alias{print.projoint_results}
+\alias{summary.projoint_results}
 \title{Analyze a conjoint data set and correct for measurement error}
 \usage{
 projoint(
@@ -23,6 +25,10 @@ projoint(
   .clusters_2 = NULL,
   .se_type_2 = "classical"
 )
+
+\method{print}{projoint_results}(x, ...)
+
+\method{summary}{projoint_results}(object, ...)
 }
 \arguments{
 \item{.data}{A `projoint_data` object}
@@ -58,6 +64,12 @@ projoint(
 \item{.clusters_2}{the clusters to estimate MM or AMCE (see `lm_robust()`): NULL (default)}
 
 \item{.se_type_2}{the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)}
+
+\item{x}{A `projoint_results` object}
+
+\item{...}{Optional arguments; currently none accepted}
+
+\item{object}{A projoint_results object}
 }
 \value{
 A `projoint_results` object

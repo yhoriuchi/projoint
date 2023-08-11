@@ -6,12 +6,13 @@
 #' @import ggthemes
 #' @import dplyr
 #' @import stringr
-#' @param .data A `projoint_results_mm` or `projoint_results_amce` object
+#' @param x A `projoint_results_mm` or `projoint_results_amce` object
 #' @param .estimand Either "mm" for marginal mean (default) or "amce" for average marginal component effect
 #' @param .estimates The estimates to be plotted, either "corrected" (default), "uncorrected", or "both"
 #' @param .by_var TRUE to plot the difference in estimates between the two subgroups, FALSE (default) otherwise 
 #' @param .base_size base font size, given in pts.
 #' @param .base_family base font family
+#' @param ... Additional optional arguments
 #' @return A ggplot object
 #' @export
 #' @examples
@@ -37,12 +38,13 @@
 #' plot(projoint_output)
 
 plot.projoint_results <- function(
-    .data, 
+    x, 
     .estimand = "mm",
     .estimates = "corrected",
     .by_var = FALSE,
     .base_size = 12,
-    .base_family = "") {
+    .base_family = "",
+    ...) {
   
   # bind variables locally to the function ----------------------------------
   
@@ -61,8 +63,8 @@ plot.projoint_results <- function(
 
   # check -------------------------------------------------------------------
   
-  if(!is(.data, "projoint_results")){
-    stop("The .data argument must be of class `projoint_results` from the `projoint` function.")
+  if(!is(x, "projoint_results")){
+    stop("The x argument must be of class `projoint_results` from the `projoint` function.")
   }
   
   
@@ -100,17 +102,17 @@ plot.projoint_results <- function(
   # initial data wrangling --------------------------------------------------
   
   out1 <- dplyr::left_join(
-    .data@estimates %>% 
+    x@estimates %>% 
       dplyr::mutate(level_id = att_level_choose,
                     estimates = case_when(str_detect(estimand, "uncorrected") ~ "uncorrected",
                                           str_detect(estimand, "corrected") ~ "corrected")) %>%
       dplyr::select(-estimand),
-    .data@labels %>% 
+    x@labels %>% 
       dplyr::select(attribute, level, level_id),
     by = join_by(level_id)
   )
   
-  attributes <-  .data@labels %>% 
+  attributes <-  x@labels %>% 
     dplyr::select(attribute, level_id) %>%
     dplyr::mutate(level_id = str_replace_all(level_id, "\\d+$", "0")) %>% 
     dplyr::distinct()
@@ -125,7 +127,7 @@ plot.projoint_results <- function(
     
   } else if (.estimand == "amce"){
     
-    levels1 <- .data@labels %>% 
+    levels1 <- x@labels %>% 
       dplyr::select(attribute, level, level_id) %>% 
       dplyr::filter(str_detect(level_id, "level1"))
     

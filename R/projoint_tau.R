@@ -7,5 +7,6 @@
 
 projoint_tau <- setClass("projoint_tau",
                          slots = c("irr",
-                                   "figure"),
+                                   "figure",
+                                   "method"),
                          contains = c("projoint_data"))

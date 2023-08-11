@@ -278,51 +278,33 @@ predict_tau <- function(
 
 
 
-
-# @export
-# @rdname predict_tau
-
-#print.projoint_tau <- function(x, ...) {
-#  ## What should we put here?
-#   # Function call
-#   # Tau and whether it's estimated or assumed
-#   # Some details about the data set
-#   # No results
-#}
-
-
-# @export
-# @rdname predict_tau
-
-#summarize.projoint_tau <- function(x, ...) {
-#  ## What should we put here?
-#   # Function call
-#       # Choice or profile
-#       # QOI
-#   # Tau and whether it's estimated or assumed
-#   # Some details about the data set
-#   # Uncorrected and corrected MM or AMCE (and what type of qoi it is)
-#}
-
-
-# @export
-# @rdname predict_tau
-
-#summarize.projoint_tau <- function(x, ...) {
-#  ## What should we put here?
-#   # Function call
-#       # Choice or profile
-#       # QOI
-#   # Tau and whether it's estimated or assumed
-#   # Some details about the data set
-#   # Uncorrected and corrected MM or AMCE (and what type of qoi it is)
-#}
-
-
-#' @param x A `projoint_tau` object, outputted from `predict_tau`
-#' @param ... Optional arguments; currently unused
+#' @param x An object of class `projoint_tau` derived from `predict_tau`
+#' @param ... Optional arguments; currently none accepted
 #' @export
 #' @rdname predict_tau
+
+print.projoint_tau <- function(x, ...) {
+ ## What should we put here?
+   # Function call
+  print("Tau estimated using the extrapolation method:", as.character(x@irr))
+   # Some details about the data set
+   # No results
+}
+
+#' @param object An object of class `projoint_tau` derived from `predict_tau`
+#' @param ... Optional arguments; currently none accepted
+#' @export
+#' @rdname predict_tau
+
+summary.projoint_tau <- function(object, ...) {
+  object@irr  
+}
+
+#' @param x An object of class `projoint_tau` derived from `predict_tau`
+#' @param ... Optional arguments; currently none accepted
+#' @export
+#' @rdname predict_tau
+
 
 plot.projoint_tau <- function(x, ...) {
   x@figure

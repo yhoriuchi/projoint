@@ -5,16 +5,17 @@
 \title{Plot all MMs or AMCEs}
 \usage{
 \method{plot}{projoint_results}(
-  .data,
+  x,
   .estimand = "mm",
   .estimates = "corrected",
   .by_var = FALSE,
   .base_size = 12,
-  .base_family = ""
+  .base_family = "",
+  ...
 )
 }
 \arguments{
-\item{.data}{A `projoint_results_mm` or `projoint_results_amce` object}
+\item{x}{A `projoint_results_mm` or `projoint_results_amce` object}
 
 \item{.estimand}{Either "mm" for marginal mean (default) or "amce" for average marginal component effect}
 
@@ -25,6 +26,8 @@
 \item{.base_size}{base font size, given in pts.}
 
 \item{.base_family}{base font family}
+
+\item{...}{Additional optional arguments}
 }
 \value{
 A ggplot object

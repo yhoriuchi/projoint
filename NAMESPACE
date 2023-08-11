@@ -2,6 +2,10 @@
 
 S3method(plot,projoint_results)
 S3method(plot,projoint_tau)
+S3method(print,projoint_results)
+S3method(print,projoint_tau)
+S3method(summary,projoint_results)
+S3method(summary,projoint_tau)
 export(predict_tau)
 export(projoint)
 export(read_Qualtrics)

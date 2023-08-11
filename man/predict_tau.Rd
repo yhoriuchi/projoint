@@ -2,10 +2,16 @@
 % Please edit documentation in R/predict_tau.R
 \name{predict_tau}
 \alias{predict_tau}
+\alias{print.projoint_tau}
+\alias{summary.projoint_tau}
 \alias{plot.projoint_tau}
 \title{Estimate tau when there is no repeated task.}
 \usage{
 predict_tau(.data, .title = NULL)
+
+\method{print}{projoint_tau}(x, ...)
+
+\method{summary}{projoint_tau}(object, ...)
 
 \method{plot}{projoint_tau}(x, ...)
 }
@@ -14,7 +20,11 @@ predict_tau(.data, .title = NULL)
 
 \item{.title}{The title of a figure}
 
-\item{x}{A `projoint_tau` object, outputted from `predict_tau`}
+\item{x}{An object of class `projoint_tau` derived from `predict_tau`}
+
+\item{...}{Optional arguments; currently none accepted}
+
+\item{object}{An object of class `projoint_tau` derived from `predict_tau`}
 }
 \value{
 A list (a vector of predicted value; ggplot object)

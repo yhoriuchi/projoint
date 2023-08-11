@@ -113,42 +113,33 @@ projoint <- function(
 }
 
 
+#' @param x A `projoint_results` object
+#' @param ... Optional arguments; currently none accepted
 #' @export
 #' @rdname projoint
 
-#print.projoint_results <- function(x, ...) {
+print.projoint_results <- function(x, ...) {
 #  ## What should we put here?
-#   # Function call
-#   # Tau and whether it's estimated or assumed
-#   # Some details about the data set
-#   # No results
-#}
+   print("A projoint output with", as.character(length(x@labels$level)), "attribute-levels.",
+         "[ESTIMANDS]", "are estimated at the", "XXX", "level.")
+   # Tau and whether it's estimated or assumed
+   # Some details about the data set
+   # No results
+}
 
 
+#' @param object A projoint_results object
+#' @param ... Optional arguments; currently none accepted
 #' @export
 #' @rdname projoint
 
-#summarize.projoint_results <- function(x, ...) {
-#  ## What should we put here?
-#   # Function call
-#       # Choice or profile
-#       # QOI
-#   # Tau and whether it's estimated or assumed
-#   # Some details about the data set
-#   # Uncorrected and corrected MM or AMCE (and what type of qoi it is)
-#}
+summary.projoint_results <- function(object, ...) {
+## What should we put here?
+  ests <- object@estimates
+  labs <- object@labels
+  out <- merge(ests, labs, by.x = "att_level_choose", by.y = "level_id")
+  return(out)
+}
 
 
-#' @export
-#' @rdname projoint
-
-#summarize.projoint_results <- function(x, ...) {
-#  ## What should we put here?
-#   # Function call
-#       # Choice or profile
-#       # QOI
-#   # Tau and whether it's estimated or assumed
-#   # Some details about the data set
-#   # Uncorrected and corrected MM or AMCE (and what type of qoi it is)
-#}
 
