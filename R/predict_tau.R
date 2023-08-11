@@ -12,7 +12,7 @@
 #' @import ggthemes
 #' @importFrom stats setNames
 #' @importFrom methods new
-#' @param .data A `projoint_data` object
+#' @param .data A `projoint_data` object, outputted from `reshape_projoint`
 #' @param .title The title of a figure
 #' @return A list (a vector of predicted value; ggplot object)
 #' @export
@@ -78,6 +78,10 @@ predict_tau <- function(
     .title = NULL
 ){
 
+  if(!is(.data, "projoint_data")){
+    stop("The .data argument must be of class `projoint_data` from the `reshape_projoint` function.")
+  }
+  
   # data frame
   
   .dataframe <- .data@data
@@ -265,7 +269,61 @@ predict_tau <- function(
   
   
   # return
-  out = projoint_irr(irr = predicted, figure = g)
+  out <- projoint_tau(irr = predicted, figure = g)
+  
   return(out)
   
 }
+
+
+
+
+
+#' @export
+#' @rdname predict_tau
+
+#print.projoint_tau <- function(x, ...) {
+#  ## What should we put here?
+#   # Function call
+#   # Tau and whether it's estimated or assumed
+#   # Some details about the data set
+#   # No results
+#}
+
+
+#' @export
+#' @rdname predict_tau
+
+#summarize.projoint_tau <- function(x, ...) {
+#  ## What should we put here?
+#   # Function call
+#       # Choice or profile
+#       # QOI
+#   # Tau and whether it's estimated or assumed
+#   # Some details about the data set
+#   # Uncorrected and corrected MM or AMCE (and what type of qoi it is)
+#}
+
+
+#' @export
+#' @rdname predict_tau
+
+#summarize.projoint_tau <- function(x, ...) {
+#  ## What should we put here?
+#   # Function call
+#       # Choice or profile
+#       # QOI
+#   # Tau and whether it's estimated or assumed
+#   # Some details about the data set
+#   # Uncorrected and corrected MM or AMCE (and what type of qoi it is)
+#}
+
+
+
+#' @export
+#' @rdname predict_tau
+
+plot.projoint_tau <- function(x, ...) {
+  x@figure
+}
+

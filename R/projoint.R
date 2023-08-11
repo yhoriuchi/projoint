@@ -118,4 +118,37 @@ projoint <- function(
 
 #print.projoint_results <- function(x, ...) {
 #  ## What should we put here?
+#   # Function call
+#   # Tau and whether it's estimated or assumed
+#   # Some details about the data set
+#   # No results
 #}
+
+
+#' @export
+#' @rdname projoint
+
+#summarize.projoint_results <- function(x, ...) {
+#  ## What should we put here?
+#   # Function call
+#       # Choice or profile
+#       # QOI
+#   # Tau and whether it's estimated or assumed
+#   # Some details about the data set
+#   # Uncorrected and corrected MM or AMCE (and what type of qoi it is)
+#}
+
+
+#' @export
+#' @rdname projoint
+
+#summarize.projoint_results <- function(x, ...) {
+#  ## What should we put here?
+#   # Function call
+#       # Choice or profile
+#       # QOI
+#   # Tau and whether it's estimated or assumed
+#   # Some details about the data set
+#   # Uncorrected and corrected MM or AMCE (and what type of qoi it is)
+#}
+
