@@ -35,6 +35,7 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
     <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate corrected MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/05-visualize.html">05. Visualize MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/06-compare.html">06. Compare MMs or AMCEs between the subgroups</a>
+    <a class="dropdown-item" href="../articles/07-explore.html">07. Explore further</a>
   </div>
 </li>
 <li class="nav-item">
@@ -80,7 +81,13 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
 <span>  .weights_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .clusters_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .se_type_2 <span class="op">=</span> <span class="st">"classical"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for projoint_results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for projoint_results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -152,6 +159,18 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
 <dt>.se_type_2</dt>
 <dd><p>the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)</p></dd>
 
+
+<dt>x</dt>
+<dd><p>A `projoint_results` object</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Optional arguments; currently none accepted</p></dd>
+
+
+<dt>object</dt>
+<dd><p>A projoint_results object</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -197,65 +216,7 @@ It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for
 <span class="r-in"><span>  .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">projoint</span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span> </span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> An object of class "projoint_results_mm"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "estimates":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 48 × 7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    estimand       estimate     se conf.low conf.high attribute level </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1      level1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> mm_corrected      0.614 0.020<span style="text-decoration: underline;">7</span>    0.573     0.654 att1      level1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> mm_uncorrected    0.485 0.013<span style="text-decoration: underline;">4</span>    0.458     0.511 att1      level2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> mm_corrected      0.477 0.020<span style="text-decoration: underline;">4</span>    0.437     0.517 att1      level2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> mm_uncorrected    0.445 0.013<span style="text-decoration: underline;">1</span>    0.419     0.470 att1      level3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> mm_corrected      0.416 0.020<span style="text-decoration: underline;">3</span>    0.376     0.455 att1      level3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> mm_uncorrected    0.489 0.013<span style="text-decoration: underline;">3</span>    0.463     0.515 att2      level1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> mm_corrected      0.483 0.020<span style="text-decoration: underline;">2</span>    0.443     0.522 att2      level1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> mm_uncorrected    0.524 0.013<span style="text-decoration: underline;">0</span>    0.498     0.549 att2      level2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> mm_corrected      0.536 0.020<span style="text-decoration: underline;">0</span>    0.497     0.575 att2      level2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 38 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "tau":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1721281</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "labels":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    attribute                level                        attribute_id level_id  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Housing Cost             15% of pre-tax income        att1         att1:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Housing Cost             30% of pre-tax income        att1         att1:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Housing Cost             40% of pre-tax income        att1         att1:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Presidential Vote (2020) 30% Democrat, 70% Republican att2         att2:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Presidential Vote (2020) 50% Democrat, 50% Republican att2         att2:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Presidential Vote (2020) 70% Democrat, 30% Republican att2         att2:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Racial Composition       50% White, 50% Nonwhite      att3         att3:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Racial Composition       75% White, 25% Nonwhite      att3         att3:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Racial Composition       90% White, 10% Nonwhite      att3         att3:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Racial Composition       96% White, 4% Nonwhite       att3         att3:leve…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "data":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6,400 × 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    id            task profile att4  att7  att3  att1  att2  att5  att6  selected</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R_1M3TDihZz…     1       1 att4… att7… att3… att1… att2… att5… att6…        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> R_1M3TDihZz…     1       2 att4… att7… att3… att1… att2… att5… att6…        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> R_1M3TDihZz…     2       1 att4… att7… att3… att1… att2… att5… att6…        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> R_1M3TDihZz…     2       2 att4… att7… att3… att1… att2… att5… att6…        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> R_1M3TDihZz…     3       1 att4… att7… att3… att1… att2… att5… att6…        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> R_1M3TDihZz…     3       2 att4… att7… att3… att1… att2… att5… att6…        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> R_1M3TDihZz…     4       1 att4… att7… att3… att1… att2… att5… att6…        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R_1M3TDihZz…     4       2 att4… att7… att3… att1… att2… att5… att6…        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R_1M3TDihZz…     5       1 att4… att7… att3… att1… att2… att5… att6…        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R_1M3TDihZz…     5       2 att4… att7… att3… att1… att2… att5… att6…        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6,390 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: selected_repeated &lt;dbl&gt;, agree &lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "attribute_of_interest":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "all"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "levels_of_interest":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "all"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "A projoint output with 24 attribute-levels. [ESTIMANDS] are estimated at the XXX level."</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

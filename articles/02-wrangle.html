@@ -52,6 +52,7 @@
     <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate corrected MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/05-visualize.html">05. Visualize MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/06-compare.html">06. Compare MMs or AMCEs between the subgroups</a>
+    <a class="dropdown-item" href="../articles/07-explore.html">07. Explore further</a>
   </div>
 </li>
 <li class="nav-item">
@@ -198,14 +199,14 @@ and <a href="https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_a
 alphabetical order:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="02-wrangle_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 <p>The labels and order of all attribute-levels in the second figure is
 the same as Figure 2 in <a href="https://doi.org/10.1086/687569" class="external-link">Mummolo
 and Nall (2017)</a>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="02-wrangle_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

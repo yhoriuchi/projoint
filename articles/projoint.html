@@ -52,6 +52,7 @@
     <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate corrected MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/05-visualize.html">05. Visualize MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/06-compare.html">06. Compare MMs or AMCEs between the subgroups</a>
+    <a class="dropdown-item" href="../articles/07-explore.html">07. Explore further</a>
   </div>
 </li>
 <li class="nav-item">
@@ -108,18 +109,255 @@ this study exactly, except for adding in an extra question we can use to
 estimate measurement error. You can find this data set on GitHub: <a href="https://github.com/yhoriuchi/projoint/blob/master/data-raw/mummolo_nall_replication_cleaned.csv" class="external-link">mummolo_nall_replication_cleaned.csv</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
-<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_Qualtrics.html">read_Qualtrics</a></span><span class="op">(</span><span class="st">"data-raw/mummolo_nall_replication_cleaned.csv"</span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_Qualtrics.html">read_Qualtrics</a></span><span class="op">(</span><span class="st">"data/mummolo_nall_replication_cleaned.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## New names:</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Community B` -&gt; `Community B...2`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Community A` -&gt; `Community A...3`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Community A` -&gt; `Community A...4`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Community B` -&gt; `Community B...5`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Community B` -&gt; `Community B...6`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Community B` -&gt; `Community B...7`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Community A` -&gt; `Community A...8`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Community B` -&gt; `Community B...9`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Community A` -&gt; `Community A...10`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `NA` -&gt; `NA...14`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `NA` -&gt; `NA...15`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Presidential Vote (2020)` -&gt; `Presidential Vote (2020)...18`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% Democrat, 50% Republican` -&gt; `50% Democrat, 50% Republican...19`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Racial Composition` -&gt; `Racial Composition...20`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% White, 50% Nonwhite` -&gt; `50% White, 50% Nonwhite...21`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `School Quality` -&gt; `School Quality...22`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...23`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Housing Cost` -&gt; `Housing Cost...24`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `40% of pre-tax income` -&gt; `40% of pre-tax income...25`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Total Daily Driving Time for Commuting and Errands` -&gt; `Total Daily Driving</span></span>
+<span><span class="co">##   Time for Commuting and Errands...26`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `25 min` -&gt; `25 min...27`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Type of Place` -&gt; `Type of Place...28`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Small town` -&gt; `Small town...29`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Violent Crime Rate (Vs National Rate)` -&gt; `Violent Crime Rate (Vs National</span></span>
+<span><span class="co">##   Rate)...30`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% More Crime Than National Average` -&gt; `20% More Crime Than National</span></span>
+<span><span class="co">##   Average...31`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `70% Democrat, 30% Republican` -&gt; `70% Democrat, 30% Republican...32`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `75% White, 25% Nonwhite` -&gt; `75% White, 25% Nonwhite...33`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `5 out of 10` -&gt; `5 out of 10...34`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `40% of pre-tax income` -&gt; `40% of pre-tax income...35`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `75 min` -&gt; `75 min...36`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Rural area` -&gt; `Rural area...37`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% Less Crime Than National Average` -&gt; `20% Less Crime Than National</span></span>
+<span><span class="co">##   Average...38`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Presidential Vote (2020)` -&gt; `Presidential Vote (2020)...39`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `30% Democrat, 70% Republican` -&gt; `30% Democrat, 70% Republican...40`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Racial Composition` -&gt; `Racial Composition...41`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `75% White, 25% Nonwhite` -&gt; `75% White, 25% Nonwhite...42`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `School Quality` -&gt; `School Quality...43`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...44`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Housing Cost` -&gt; `Housing Cost...45`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `30% of pre-tax income` -&gt; `30% of pre-tax income...46`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Total Daily Driving Time for Commuting and Errands` -&gt; `Total Daily Driving</span></span>
+<span><span class="co">##   Time for Commuting and Errands...47`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `25 min` -&gt; `25 min...48`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Type of Place` -&gt; `Type of Place...49`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Suburban neighborhood with houses only` -&gt; `Suburban neighborhood with</span></span>
+<span><span class="co">##   houses only...50`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Violent Crime Rate (Vs National Rate)` -&gt; `Violent Crime Rate (Vs National</span></span>
+<span><span class="co">##   Rate)...51`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% More Crime Than National Average` -&gt; `20% More Crime Than National</span></span>
+<span><span class="co">##   Average...52`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `30% Democrat, 70% Republican` -&gt; `30% Democrat, 70% Republican...53`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `96% White, 4% Nonwhite` -&gt; `96% White, 4% Nonwhite...54`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `5 out of 10` -&gt; `5 out of 10...55`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `40% of pre-tax income` -&gt; `40% of pre-tax income...56`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `45 min` -&gt; `45 min...57`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Suburban neighborhood with houses only` -&gt; `Suburban neighborhood with</span></span>
+<span><span class="co">##   houses only...58`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% More Crime Than National Average` -&gt; `20% More Crime Than National</span></span>
+<span><span class="co">##   Average...59`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Presidential Vote (2020)` -&gt; `Presidential Vote (2020)...60`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `70% Democrat, 30% Republican` -&gt; `70% Democrat, 30% Republican...61`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Racial Composition` -&gt; `Racial Composition...62`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% White, 50% Nonwhite` -&gt; `50% White, 50% Nonwhite...63`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `School Quality` -&gt; `School Quality...64`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...65`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Housing Cost` -&gt; `Housing Cost...66`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `30% of pre-tax income` -&gt; `30% of pre-tax income...67`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Total Daily Driving Time for Commuting and Errands` -&gt; `Total Daily Driving</span></span>
+<span><span class="co">##   Time for Commuting and Errands...68`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `75 min` -&gt; `75 min...69`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Type of Place` -&gt; `Type of Place...70`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Violent Crime Rate (Vs National Rate)` -&gt; `Violent Crime Rate (Vs National</span></span>
+<span><span class="co">##   Rate)...72`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% Less Crime Than National Average` -&gt; `20% Less Crime Than National</span></span>
+<span><span class="co">##   Average...73`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% Democrat, 50% Republican` -&gt; `50% Democrat, 50% Republican...74`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `90% White, 10% Nonwhite` -&gt; `90% White, 10% Nonwhite...75`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `5 out of 10` -&gt; `5 out of 10...76`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `15% of pre-tax income` -&gt; `15% of pre-tax income...77`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `45 min` -&gt; `45 min...78`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% Less Crime Than National Average` -&gt; `20% Less Crime Than National</span></span>
+<span><span class="co">##   Average...80`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Presidential Vote (2020)` -&gt; `Presidential Vote (2020)...81`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% Democrat, 50% Republican` -&gt; `50% Democrat, 50% Republican...82`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Racial Composition` -&gt; `Racial Composition...83`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% White, 50% Nonwhite` -&gt; `50% White, 50% Nonwhite...84`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `School Quality` -&gt; `School Quality...85`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...86`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Housing Cost` -&gt; `Housing Cost...87`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `30% of pre-tax income` -&gt; `30% of pre-tax income...88`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Total Daily Driving Time for Commuting and Errands` -&gt; `Total Daily Driving</span></span>
+<span><span class="co">##   Time for Commuting and Errands...89`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `45 min` -&gt; `45 min...90`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Type of Place` -&gt; `Type of Place...91`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Small town` -&gt; `Small town...92`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Violent Crime Rate (Vs National Rate)` -&gt; `Violent Crime Rate (Vs National</span></span>
+<span><span class="co">##   Rate)...93`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% Less Crime Than National Average` -&gt; `20% Less Crime Than National</span></span>
+<span><span class="co">##   Average...94`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% Democrat, 50% Republican` -&gt; `50% Democrat, 50% Republican...95`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `90% White, 10% Nonwhite` -&gt; `90% White, 10% Nonwhite...96`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...97`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `15% of pre-tax income` -&gt; `15% of pre-tax income...98`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `25 min` -&gt; `25 min...99`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Suburban neighborhood with houses only` -&gt; `Suburban neighborhood with</span></span>
+<span><span class="co">##   houses only...100`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% Less Crime Than National Average` -&gt; `20% Less Crime Than National</span></span>
+<span><span class="co">##   Average...101`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Presidential Vote (2020)` -&gt; `Presidential Vote (2020)...102`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% Democrat, 50% Republican` -&gt; `50% Democrat, 50% Republican...103`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Racial Composition` -&gt; `Racial Composition...104`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `75% White, 25% Nonwhite` -&gt; `75% White, 25% Nonwhite...105`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `School Quality` -&gt; `School Quality...106`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...107`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Housing Cost` -&gt; `Housing Cost...108`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `40% of pre-tax income` -&gt; `40% of pre-tax income...109`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Total Daily Driving Time for Commuting and Errands` -&gt; `Total Daily Driving</span></span>
+<span><span class="co">##   Time for Commuting and Errands...110`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `75 min` -&gt; `75 min...111`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Type of Place` -&gt; `Type of Place...112`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Suburban neighborhood with houses only` -&gt; `Suburban neighborhood with</span></span>
+<span><span class="co">##   houses only...113`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Violent Crime Rate (Vs National Rate)` -&gt; `Violent Crime Rate (Vs National</span></span>
+<span><span class="co">##   Rate)...114`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% More Crime Than National Average` -&gt; `20% More Crime Than National</span></span>
+<span><span class="co">##   Average...115`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% Democrat, 50% Republican` -&gt; `50% Democrat, 50% Republican...116`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `96% White, 4% Nonwhite` -&gt; `96% White, 4% Nonwhite...117`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...118`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `15% of pre-tax income` -&gt; `15% of pre-tax income...119`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Rural area` -&gt; `Rural area...121`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% More Crime Than National Average` -&gt; `20% More Crime Than National</span></span>
+<span><span class="co">##   Average...122`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Presidential Vote (2020)` -&gt; `Presidential Vote (2020)...123`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% Democrat, 50% Republican` -&gt; `50% Democrat, 50% Republican...124`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Racial Composition` -&gt; `Racial Composition...125`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% White, 50% Nonwhite` -&gt; `50% White, 50% Nonwhite...126`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `School Quality` -&gt; `School Quality...127`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `5 out of 10` -&gt; `5 out of 10...128`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Housing Cost` -&gt; `Housing Cost...129`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `15% of pre-tax income` -&gt; `15% of pre-tax income...130`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Total Daily Driving Time for Commuting and Errands` -&gt; `Total Daily Driving</span></span>
+<span><span class="co">##   Time for Commuting and Errands...131`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `25 min` -&gt; `25 min...132`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Type of Place` -&gt; `Type of Place...133`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `City, more residential area` -&gt; `City, more residential area...134`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Violent Crime Rate (Vs National Rate)` -&gt; `Violent Crime Rate (Vs National</span></span>
+<span><span class="co">##   Rate)...135`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% More Crime Than National Average` -&gt; `20% More Crime Than National</span></span>
+<span><span class="co">##   Average...136`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `70% Democrat, 30% Republican` -&gt; `70% Democrat, 30% Republican...137`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `90% White, 10% Nonwhite` -&gt; `90% White, 10% Nonwhite...138`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `5 out of 10` -&gt; `5 out of 10...139`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `30% of pre-tax income` -&gt; `30% of pre-tax income...140`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `25 min` -&gt; `25 min...141`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Suburban neighborhood with houses only` -&gt; `Suburban neighborhood with</span></span>
+<span><span class="co">##   houses only...142`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% Less Crime Than National Average` -&gt; `20% Less Crime Than National</span></span>
+<span><span class="co">##   Average...143`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Presidential Vote (2020)` -&gt; `Presidential Vote (2020)...144`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `70% Democrat, 30% Republican` -&gt; `70% Democrat, 30% Republican...145`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Racial Composition` -&gt; `Racial Composition...146`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `96% White, 4% Nonwhite` -&gt; `96% White, 4% Nonwhite...147`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `School Quality` -&gt; `School Quality...148`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `5 out of 10` -&gt; `5 out of 10...149`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Housing Cost` -&gt; `Housing Cost...150`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `30% of pre-tax income` -&gt; `30% of pre-tax income...151`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Total Daily Driving Time for Commuting and Errands` -&gt; `Total Daily Driving</span></span>
+<span><span class="co">##   Time for Commuting and Errands...152`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `45 min` -&gt; `45 min...153`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Type of Place` -&gt; `Type of Place...154`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Small town` -&gt; `Small town...155`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Violent Crime Rate (Vs National Rate)` -&gt; `Violent Crime Rate (Vs National</span></span>
+<span><span class="co">##   Rate)...156`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% Less Crime Than National Average` -&gt; `20% Less Crime Than National</span></span>
+<span><span class="co">##   Average...157`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `70% Democrat, 30% Republican` -&gt; `70% Democrat, 30% Republican...158`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `75% White, 25% Nonwhite` -&gt; `75% White, 25% Nonwhite...159`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...160`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `30% of pre-tax income` -&gt; `30% of pre-tax income...161`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `25 min` -&gt; `25 min...162`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `City, more residential area` -&gt; `City, more residential area...163`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% Less Crime Than National Average` -&gt; `20% Less Crime Than National</span></span>
+<span><span class="co">##   Average...164`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Presidential Vote (2020)` -&gt; `Presidential Vote (2020)...165`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `70% Democrat, 30% Republican` -&gt; `70% Democrat, 30% Republican...166`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Racial Composition` -&gt; `Racial Composition...167`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `96% White, 4% Nonwhite` -&gt; `96% White, 4% Nonwhite...168`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `School Quality` -&gt; `School Quality...169`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...170`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Housing Cost` -&gt; `Housing Cost...171`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `30% of pre-tax income` -&gt; `30% of pre-tax income...172`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Total Daily Driving Time for Commuting and Errands` -&gt; `Total Daily Driving</span></span>
+<span><span class="co">##   Time for Commuting and Errands...173`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `45 min` -&gt; `45 min...174`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Type of Place` -&gt; `Type of Place...175`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Suburban neighborhood with houses only` -&gt; `Suburban neighborhood with</span></span>
+<span><span class="co">##   houses only...176`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Violent Crime Rate (Vs National Rate)` -&gt; `Violent Crime Rate (Vs National</span></span>
+<span><span class="co">##   Rate)...177`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% Less Crime Than National Average` -&gt; `20% Less Crime Than National</span></span>
+<span><span class="co">##   Average...178`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `50% Democrat, 50% Republican` -&gt; `50% Democrat, 50% Republican...179`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `75% White, 25% Nonwhite` -&gt; `75% White, 25% Nonwhite...180`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `9 out of 10` -&gt; `9 out of 10...181`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `15% of pre-tax income` -&gt; `15% of pre-tax income...182`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `45 min` -&gt; `45 min...183`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `Rural area` -&gt; `Rural area...184`</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">•</span> `20% More Crime Than National Average` -&gt; `20% More Crime Than National</span></span>
+<span><span class="co">##   Average...185`</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 398 × 185</span></span></span>
+<span><span class="co">##    ResponseId     choice1_repeated_fli…¹ choice1 choice2 choice3 choice4 choice5</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> R_yjYj0jtOY98… Community B            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> R_1dKd05O6FTO… Community B            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> R_1otDp642wWY… Community A            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> R_2BnD3fuJMRK… Community A            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> R_1cZo7yXoxo7… Community A            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> R_2zo0OJ1CnBF… Community B            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> R_9Zglxj22RFH… Community A            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> R_NUBwH4ZBNCS… Community B            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> R_1KiHr7ZV4cI… Community B            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> R_2b2vVVm1bwn… Community A            Commun… Commun… Commun… Commun… Commun…</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 388 more rows</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ abbreviated name: ¹​choice1_repeated_flipped</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 178 more variables: choice6 &lt;chr&gt;, choice7 &lt;chr&gt;, choice8 &lt;chr&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   race &lt;chr&gt;, party_1 &lt;chr&gt;, party_2 &lt;chr&gt;, party_3 &lt;chr&gt;, party_4 &lt;chr&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   ideology &lt;chr&gt;, honesty &lt;chr&gt;, `K-1-1` &lt;chr&gt;, `K-1-1-1` &lt;chr&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   `K-1-2` &lt;chr&gt;, `K-1-1-2` &lt;chr&gt;, `K-1-3` &lt;chr&gt;, `K-1-1-3` &lt;chr&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   `K-1-4` &lt;chr&gt;, `K-1-1-4` &lt;chr&gt;, `K-1-5` &lt;chr&gt;, `K-1-1-5` &lt;chr&gt;, …</span></span></span></code></pre>
 <p>Next, we will use <code><a href="../reference/reshape_projoint.html">reshape_projoint()</a></code> to prepare the data
 set for the main function. This involves stripping unnecessary columns,
 indicating which column (if any) is a repeated task, and specifying the
 respondent identifier.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">reshaped_data</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
 <span>  .dataframe <span class="op">=</span> <span class="va">dat</span>, </span>
 <span>  .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
 <span>  .outcomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span>,</span>
-<span>  .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Community A"</span>, <span class="st">"Community B"</span><span class="op">)</span>,</span>
+<span>  .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
 <span>  .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
 <span>  .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -135,7 +373,7 @@ indicates the possible options for an outcome; specifically, it is a
 vector of characters with two elements, which are the last characters of
 the names of the first and second profiles. For example, it should be
 c(“A”, “B”) if the profile names are “Candidate A” and “Candidate B”.
-This charactor vector can be anything, such as c(“1”, “2”), c(“a”, “b”),
+This character vector can be anything, such as c(“1”, “2”), c(“a”, “b”),
 etc. <em>If you have multiple tasks in your design, you should use the
 same profile names across all these tasks</em>. <code>.alphabet</code>
 defaults to “K” if the conjoint survey was conducted using either our
@@ -147,10 +385,15 @@ element of the <code>.outcomes</code> vector is taken to be a repetition
 of the first task; <code>.flipped</code> indicates whether the profiles
 are in the reversed order.</p>
 <p>We can pass this data set directly into <code><a href="../reference/projoint.html">projoint()</a></code> as
-follows and pipe it immediately into <code><a href="../reference/plot_projoint.html">plot_projoint()</a></code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/plot_projoint.html">plot_projoint</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+follows:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "A projoint output with 24 attribute-levels. [ESTIMANDS] are estimated at the XXX level."</span></span></code></pre>
+<p>Or pass it immediately into <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
+<p><img src="projoint_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
   </main>
 </div>
 

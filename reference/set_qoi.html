@@ -33,6 +33,7 @@
     <a class="dropdown-item" href="../articles/04-estimate.html">04. Estimate corrected MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/05-visualize.html">05. Visualize MMs or AMCEs</a>
     <a class="dropdown-item" href="../articles/06-compare.html">06. Compare MMs or AMCEs between the subgroups</a>
+    <a class="dropdown-item" href="../articles/07-explore.html">07. Explore further</a>
   </div>
 </li>
 <li class="nav-item">
@@ -62,9 +63,14 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">set_qoi</span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
-<span>  <span class="va">.attribute</span>,</span>
-<span>  <span class="va">.level</span>,</span>
-<span>  .baseline <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="va">.att_choose</span>,</span>
+<span>  <span class="va">.lev_choose</span>,</span>
+<span>  .att_notchoose <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .lev_notchoose <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .att_choose_b <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .lev_choose_b <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .att_notchoose_b <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .lev_notchoose_b <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -78,16 +84,36 @@
 <dd><p>Either "mm" for marginal mean or "amce" for average marginal component effect</p></dd>
 
 
-<dt>.attribute</dt>
-<dd><p>A character column name identifying the attribute of interest</p></dd>
+<dt>.att_choose</dt>
+<dd><p>A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).</p></dd>
 
 
-<dt>.level</dt>
-<dd><p>A character vector identifying the levels of interest. Its length should be 1 for profile-level analysis and 2 for choice-level analysis</p></dd>
+<dt>.lev_choose</dt>
+<dd><p>A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis</p></dd>
 
 
-<dt>.baseline</dt>
-<dd><p>A character vector identifying the baseline level for AMCE. Its length should be 1 for profile-level analysis and 2 for choice-level analysis</p></dd>
+<dt>.att_notchoose</dt>
+<dd><p>A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".</p></dd>
+
+
+<dt>.lev_notchoose</dt>
+<dd><p>A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".</p></dd>
+
+
+<dt>.att_choose_b</dt>
+<dd><p>[baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).</p></dd>
+
+
+<dt>.lev_choose_b</dt>
+<dd><p>[baseline for AMCE] A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis</p></dd>
+
+
+<dt>.att_notchoose_b</dt>
+<dd><p>[baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".</p></dd>
+
+
+<dt>.lev_notchoose_b</dt>
+<dd><p>[baseline for AMCE]  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".</p></dd>
 
 </dl></div>
     <div class="section level2">

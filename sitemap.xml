@@ -25,6 +25,9 @@
     <loc>https://yhoriuchi.github.io/projoint/articles/06-compare.html</loc>
   </url>
   <url>
+    <loc>https://yhoriuchi.github.io/projoint/articles/07-explore.html</loc>
+  </url>
+  <url>
     <loc>https://yhoriuchi.github.io/projoint/articles/index.html</loc>
   </url>
   <url>
@@ -61,7 +64,7 @@
     <loc>https://yhoriuchi.github.io/projoint/reference/pj_estimate.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/reference/plot_projoint.html</loc>
+    <loc>https://yhoriuchi.github.io/projoint/reference/plot.projoint_results.html</loc>
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/predict_tau.html</loc>
@@ -76,16 +79,16 @@
     <loc>https://yhoriuchi.github.io/projoint/reference/projoint_diff.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_irr-class.html</loc>
-  </url>
-  <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/projoint_level.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_qoi_mm-class.html</loc>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_qoi-class.html</loc>
   </url>
   <url>
-    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_results_mm-class.html</loc>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_results-class.html</loc>
+  </url>
+  <url>
+    <loc>https://yhoriuchi.github.io/projoint/reference/projoint_tau-class.html</loc>
   </url>
   <url>
     <loc>https://yhoriuchi.github.io/projoint/reference/read_Qualtrics.html</loc>
