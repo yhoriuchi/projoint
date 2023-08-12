@@ -87,13 +87,13 @@ You can find this data set on GitHub: [labels_original.csv](https://github.com/y
 The figure based on the original order and labels is in the alphabetical order:
 ```{r, fig.height=8, fig.width=8}
 mm <- projoint(out1, .estimand = "mm")
-plot_projoint(mm, .estimand = "mm")
+plot(mm, .estimand = "mm")
 ```
 
 The labels and order of all attribute-levels in the second figure is the same as Figure 2 in [Mummolo and Nall (2017)](https://doi.org/10.1086/687569).
 ```{r, fig.height=8, fig.width=8}
 mm <- projoint(out1_arranged, .estimand = "mm")
-plot_projoint(mm, .estimand = "mm")
+plot(mm, .estimand = "mm")
 ```
 
 

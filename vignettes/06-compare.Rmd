@@ -102,14 +102,14 @@ out_d@tau
 Then, make and save three ggplot objects.
 
 ```{r}
-plot_0 <- plot_projoint(out_0)
-plot_1 <- plot_projoint(out_1)
-plot_d <- plot_projoint(out_d, .by_var = TRUE)
+plot_0 <- plot(out_0)
+plot_1 <- plot(out_1)
+plot_d <- plot(out_d, .by_var = TRUE)
 ```
 
 #### Visualize subgroup differences
 
-Then, make a plot using the `patchwork` package. Researchers can add/modify layers of each ggplot. The default horizontal axis label is "Difference" if `.by_var = TRUE` is specified in the `plot_projoint()` function.
+Then, make a plot using the `patchwork` package. Researchers can add/modify layers of each ggplot. The default horizontal axis label is "Difference" if `.by_var = TRUE` is specified in the `plot()` function.
 
 ```{r, fig.height=8, fig.width=8}
 g_0 <- plot_0 +

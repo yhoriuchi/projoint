@@ -31,15 +31,15 @@ amce <- projoint(out1_arranged, .estimand = "amce")
 By default, most researchers should prefer to view the corrected estimates of either MMs or AMCEs. Researchers can, however, choose to instead visualize the uncorrected estimates, or to view both together.
 
 ```{r, fig.height=8, fig.width=8}
-plot_projoint(mm)
-plot_projoint(mm, .estimates = "uncorrected")
-plot_projoint(mm, .estimates = "both")
+plot(mm)
+plot(mm, .estimates = "uncorrected")
+plot(mm, .estimates = "both")
 ```
 
 ```{r, fig.height=8, fig.width=8}
-plot_projoint(amce, .estimand = "amce")
-plot_projoint(amce, .estimand = "amce", .estimates = "uncorrected")
-plot_projoint(amce, .estimand = "amce", .estimates = "both")
+plot(amce, .estimand = "amce")
+plot(amce, .estimand = "amce", .estimates = "uncorrected")
+plot(amce, .estimand = "amce", .estimates = "both")
 ```
 
 ### 5.3 Choice-level analysis

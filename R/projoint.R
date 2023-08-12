@@ -120,8 +120,13 @@ projoint <- function(
 
 print.projoint_results <- function(x, ...) {
 #  ## What should we put here?
-   print("A projoint output with", as.character(length(x@labels$level)), "attribute-levels.",
-         "[ESTIMANDS]", "are estimated at the", "XXX", "level.")
+   print(paste("A projoint output with", 
+               as.character(length(x@labels$level)), 
+               "attribute-levels.",
+               "[ESTIMANDS]", 
+               "are estimated at the", 
+               "XXX", 
+               "level."))
    # Tau and whether it's estimated or assumed
    # Some details about the data set
    # No results
