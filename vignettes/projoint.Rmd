@@ -25,7 +25,7 @@ When you download a file from Qualtrics, please make sure to "use choice text" (
 
 ![](../man/figures/screenshot_excel.png){#id .class width=100% height=100%}
 
-The `read_Qualtrics()` functon uses the first row as the column names and skip the second and third rows. 
+The `read_Qualtrics()` function uses the first row as the column names and skip the second and third rows. 
 
 ```{r, eval=FALSE}
 library(projoint)
@@ -37,7 +37,7 @@ library(projoint)
 dat <- read_Qualtrics("../data-raw/mummolo_nall_replication_cleaned.csv")
 ```
 
-After reading the Qualtrics data into R, you perhaps need to add a few more lines to clean your data -- e.g., removing incomplete resposnes, filtering out respondents who failed to pass the attention check questions, some responses that Qualtrics flagged as possible bots, etc. Then, your data frame (more specifically, tibble) should look like the following. Each row corresponds to each respondent. 
+After reading the Qualtrics data into R, you perhaps need to add a few more lines to clean your data -- e.g., removing incomplete responses, filtering out respondents who failed to pass the attention check questions, some responses that Qualtrics flagged as possible bots, etc. Then, your data frame (more specifically, tibble) should look like the following. Each row corresponds to each respondent. 
 
 ```{r, echo = FALSE}
 dat
@@ -73,7 +73,7 @@ To see the summary of the estimated results, use `summary()`:
 ```{r}
 summary(output)
 ```
-To plot the estimates, use `plot()`, but please note that the current version only shows the figure for profile-level MMs or AMCEs.
+The `summary()` returns a tibble (the tidyverse version of data frame). So researchers can save and use it to make tables and figures. For those who want to skip this manual step and plot the estimates, use `plot()`, but please note that the current version only shows the figure for profile-level MMs or AMCEs.
 ```{r, eval=TRUE, fig.height=8, fig.width=8}
 plot(output)
 ```
