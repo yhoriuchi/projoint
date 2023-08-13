@@ -1,0 +1,34 @@
+citHeader("To cite projoint in publications use:")
+
+
+citEntry(
+  entry    = "Article",
+  title    = "Correcting Measurement Error Bias in Conjoint Survey Experiments",
+  author   =  c(person("Katherine", "Clayton"),
+                person("Yusaku", "Horiuchi"), 
+                person("Aaron", "Kaufman"),
+                person("Gary", "King"),
+                person("Mayya", "Komisarchik")),
+  journal  = "Working Paper",
+  year     = "2023",
+  url      = "https://gking.harvard.edu/files/gking/files/conerr.pdf",
+  textVersion = paste(
+    "Katherine Clayton, Yusaku Horiuchi, Aaron R. Kaufman, Gary King, and Mayya Komisarchik (2023).",
+    "Correcting Measurement Error Bias in Conjoint Survey Experiments.",
+    "Working Paper. URL https://gking.harvard.edu/files/gking/files/conerr.pdf"
+  )
+)
+
+citEntry(
+  entry    = "misc",
+  title    = "projoint: The One Stop Conjoint Shop",
+  author   = c(person("Yusaku", "Horiuchi"), 
+                   person("Aaron", "Kaufman")),
+  year     = "2023",
+  publisher = "GitHub repository",
+  url      = "https://github.com/yhoriuchi/projoint",
+  textVersion = paste("Yusaku Horiuchi and Aaron R. Kaufman (2023).",
+        "projoint: The One Stop Conjoint Shop.",
+        "URL https://github.com/yhoriuchi/projoint")
+)
+

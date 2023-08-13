@@ -29,5 +29,5 @@ reference:
 - title: Visualize
   desc: Produce plots
   contents:
-  - plot
+  - plot.projoint_results
 
