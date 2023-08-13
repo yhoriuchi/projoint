@@ -1,13 +1,19 @@
-#' Class generators for `projoint_results_mm` and `projoint_results_amce`
+#' Class generators for `projoint_results`
 #' @importFrom methods is
 #' @importFrom methods new
 #' @keywords internal
-#' @param slots Takes 10 slots: `estimate`, a data frame and `tau`, a numerical scalar, ... [to be written]
+#' @param slots Takes 16 slots: [to be written]
 #' @param contains Inherits slots from `projoint_data`
 
 projoint_results <- setClass("projoint_results",
-                             slots = c("estimates", 
+                             slots = c("estimand",
+                                       "structure",
+                                       "estimates",
+                                       "se_method",
+                                       "irr",
                                        "tau",
+                                       "remove_ties",
+                                       "ignore_position",
                                        "attribute_of_interest",
                                        "levels_of_interest",
                                        "attribute_of_interest_0",
