@@ -60,5 +60,6 @@ Studies that apply our framework and methods include the following:
   + **Abstract:** How do minority voters prioritize shared race, ethnicity, and partisanship for who represents them in Congress? Asian Americans, as the fastest-growing racial group in the United States, present an important case study to analyze trade-offs between descriptive and partisan representation. In addition to considerations about partisanship, Asian Americans face trade-offs between candidates of the same national origin and of the same race. We find that when asked outright about collective presence in the legislature, Asian Americans prioritize increased descriptive representation over partisan representation. However, when choosing between candidates for dyadic representation, Asian Americans often trade off descriptive representation for the sake of shared partisanship. Voters are only willing to cross party lines for a co-ethnic representative, but not for pan-ethnics. The findings have important implications for how ethnic minority voters make decisions about political representation and contribute to understandings about a heavily understudied and heterogeneous group.
 
 
+## Code of Conduct
 
-
+Please note that the patchwork project is released with a [Contributor Code of Conduct](https://yhoriuchi.github.io/projoint/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

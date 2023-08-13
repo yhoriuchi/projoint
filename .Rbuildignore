@@ -10,3 +10,4 @@
 ^data-raw$
 ^desktop\.ini$
 vignettes
+^CODE_OF_CONDUCT\.md$
