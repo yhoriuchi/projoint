@@ -55,7 +55,8 @@ mm0 <- projoint(.data = out1,
                 .clusters_2 = NULL,
                 .se_type_2 = "classical")
 
-mm0@estimates
+print(mm0)
+summary(mm0)
 
 ```
 
@@ -73,7 +74,9 @@ qoi_1 <- set_qoi(
 mm1 <- projoint(.data = out1,
                 .qoi = qoi_1)
 
-mm1@estimates
+print(mm1)
+summary(mm1)
+
 ```
 
 #### MM (profile-level) -- specific level, using the predicted IRR
@@ -85,7 +88,9 @@ mm1b <- projoint(.data = out1,
                  .qoi = qoi_1,
                  .irr = 0.75)
 
-mm1b@estimates
+print(mm1b)
+summary(mm1b)
+
 ```
 
 
@@ -107,7 +112,9 @@ mm2 <- projoint(.data = out1,
                 .structure = "choice_level",
                 .ignore_position = FALSE)
 
-mm2@estimates
+print(mm2)
+summary(mm2)
+
 ```
 
 ### 4.3 Estimate AMCEs
@@ -119,7 +126,9 @@ Note that we can replicate all above analyses using the AMCE instead of the MM j
 amce0 <- projoint(.data = out1,
                   .estimand = "amce")
 
-amce0@estimates
+print(amce0)
+summary(amce0)
+
 ```
 
 #### AMCE (profile-level) -- specific level
@@ -137,7 +146,8 @@ amce1 <- projoint(.data = out1,
                   .qoi = qoi_3,
                   .estimand = "amce")
 
-amce1@estimates
+print(amce1)
+summary(amce1)
 ```
 
 #### AMCE (profile-level) -- specific level, using the predicted IRR
@@ -148,7 +158,8 @@ amce1b <- projoint(.data = out1,
                  .estimand = "amce",
                  .irr = 0.75)
 
-amce1b@estimates
+print(amce1b)
+summary(amce1b)
 ```
 
 
@@ -173,5 +184,6 @@ amce2 <- projoint(.data = out1,
                   .estimand = "amce", 
                   .ignore_position = TRUE)
 
-amce2@estimates
+print(amce2)
+summary(amce2)
 ```

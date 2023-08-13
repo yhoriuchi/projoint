@@ -109,7 +109,7 @@ projoint <- function(
                   .se_type_2)
     
   }
-
+  
 }
 
 
@@ -119,17 +119,17 @@ projoint <- function(
 #' @rdname projoint
 
 print.projoint_results <- function(x, ...) {
-#  ## What should we put here?
-   print(paste("A projoint output with", 
-               as.character(length(x@labels$level)), 
-               "attribute-levels.",
-               "[ESTIMANDS]", 
-               "are estimated at the", 
-               "XXX", 
-               "level."))
-   # Tau and whether it's estimated or assumed
-   # Some details about the data set
-   # No results
+  #  ## What should we put here?
+  cat("[A projoint output]\n", 
+      "The estimand:", x@estimand, "\n",
+      "The structure:", x@structure, "\n",
+      "IRR:", x@irr, "\n",
+      "Tau:", x@tau, "\n",
+      "Remove ties:", x@remove_ties, "\n",
+      "SE methods:", x@se_method)
+  # Tau and whether it's estimated or assumed
+  # Some details about the data set
+  # No results
 }
 
 
@@ -139,11 +139,12 @@ print.projoint_results <- function(x, ...) {
 #' @rdname projoint
 
 summary.projoint_results <- function(object, ...) {
-## What should we put here?
+  ## What should we put here?
   ests <- object@estimates
   labs <- object@labels
-  out <- merge(ests, labs, by.x = "att_level_choose", by.y = "level_id")
-  return(out)
+  left_join(ests, 
+            labs, 
+            by = c("att_level_choose" = "level_id"))
 }
 
 

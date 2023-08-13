@@ -37,11 +37,12 @@ library(projoint)
 dat <- read_Qualtrics("../data-raw/mummolo_nall_replication_cleaned.csv")
 ```
 
-```{r}
+After reading the Qualtrics data into R, you perhaps need to add a few more lines to clean your data -- e.g., removing incomplete resposnes, filtering out respondents who failed to pass the attention check questions, some responses that Qualtrics flagged as possible bots, etc. Then, your data frame (more specifically, tibble) should look like the following. Each row corresponds to each respondent. 
+
+```{r, echo = FALSE}
 dat
 ```
 
-After reading the Qualtrics data into R, you perhaps need to add a few more lines to clean your data -- e.g., removing incomplete resposnes, filtering out respondents who failed to pass the attention check questions, some responses that Qualtrics flagged as possible bots, etc.
 
 Next, we will use `reshape_projoint()` to prepare the data set for the main function. This involves stripping unnecessary columns, indicating which column (if any) is a repeated task, and specifying the respondent identifier.
 
@@ -63,11 +64,16 @@ We can pass this data set directly into `projoint()` as follows:
 
 ```{r, eval=TRUE}
 output <- projoint(reshaped_data)
+```
+To see the key components of the estimate, use `print()`:
+```{r}
 print(output)
 ```
-
-Or pass it immediately into `plot()`:
-
+To see the summary of the estimated results, use `summary()`:
+```{r}
+summary(output)
+```
+To plot the estimates, use `plot()`, but please note that the current version only shows the figure for profile-level MMs or AMCEs.
 ```{r, eval=TRUE, fig.height=8, fig.width=8}
 plot(output)
 ```

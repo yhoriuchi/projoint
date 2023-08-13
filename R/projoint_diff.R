@@ -63,6 +63,7 @@ projoint_diff <- function(
   att_level_notchoose <- NULL
   att_level_choose_baseline <- NULL
   att_level_notchoose_baseline <- NULL
+  irr <- NULL
   
   # estimate QoIs by subgroups ----------------------------------------------
   
@@ -131,11 +132,23 @@ projoint_diff <- function(
 
   # return estimates --------------------------------------------------------
   
+  if (is.null(.irr)){
+    irr <- str_c("Assumed (", .irr, ")")
+  } else{
+    irr <- "Estimated" 
+  }
+  
   if (.estimand == "mm"){
     
     if(is.null(.qoi)){
-      projoint_results("estimates" = estimates, 
+      projoint_results("estimand" = .estimand,
+                       "structure" = .structure,
+                       "estimates" = estimates, 
+                       "se_method" = .se_method,
+                       "irr" = irr,
                        "tau" = tau,
+                       "remove_ties" = .remove_ties,
+                       "ignore_position" = .ignore_position,
                        "attribute_of_interest" = "all",
                        "levels_of_interest" = "all",
                        "attribute_of_interest_0" = NULL,
@@ -148,8 +161,14 @@ projoint_diff <- function(
                        data = .data@data) %>%
         return()
     } else {
-      projoint_results("estimates" = estimates, 
-                       "tau" = tau, 
+      projoint_results("estimand" = .estimand,
+                       "structure" = .structure,
+                       "estimates" = estimates, 
+                       "se_method" = .se_method,
+                       "irr" = irr,
+                       "tau" = tau,
+                       "remove_ties" = .remove_ties,
+                       "ignore_position" = .ignore_position,
                        "attribute_of_interest" = .qoi@attribute_of_interest,
                        "levels_of_interest" = .qoi@levels_of_interest,
                        "attribute_of_interest_0" = .qoi@attribute_of_interest_0,
@@ -166,8 +185,14 @@ projoint_diff <- function(
   } else {
     
     if(is.null(.qoi)){
-      projoint_results("estimates" = estimates, 
+      projoint_results("estimand" = .estimand,
+                       "structure" = .structure,
+                       "estimates" = estimates, 
+                       "se_method" = .se_method,
+                       "irr" = irr,
                        "tau" = tau,
+                       "remove_ties" = .remove_ties,
+                       "ignore_position" = .ignore_position,
                        "attribute_of_interest" = "all",
                        "levels_of_interest" = "all except level1",
                        "attribute_of_interest_0" = NULL,
@@ -180,8 +205,14 @@ projoint_diff <- function(
                        data = .data@data) %>%
         return()
     } else {
-      projoint_results("estimates" = estimates, 
-                       "tau" = tau, 
+      projoint_results("estimand" = .estimand,
+                       "structure" = .structure,
+                       "estimates" = estimates, 
+                       "se_method" = .se_method,
+                       "irr" = irr,
+                       "tau" = tau,
+                       "remove_ties" = .remove_ties,
+                       "ignore_position" = .ignore_position,
                        "attribute_of_interest" = .qoi@attribute_of_interest,
                        "levels_of_interest" = .qoi@levels_of_interest,
                        "attribute_of_interest_0" = .qoi@attribute_of_interest_0,

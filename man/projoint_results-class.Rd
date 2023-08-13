@@ -4,13 +4,13 @@
 \name{projoint_results-class}
 \alias{projoint_results-class}
 \alias{projoint_results}
-\title{Class generators for `projoint_results_mm` and `projoint_results_amce`}
+\title{Class generators for `projoint_results`}
 \arguments{
-\item{slots}{Takes 10 slots: `estimate`, a data frame and `tau`, a numerical scalar, ... [to be written]}
+\item{slots}{Takes 16 slots: [to be written]}
 
 \item{contains}{Inherits slots from `projoint_data`}
 }
 \description{
-Class generators for `projoint_results_mm` and `projoint_results_amce`
+Class generators for `projoint_results`
 }
 \keyword{internal}
