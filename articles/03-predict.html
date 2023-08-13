@@ -115,8 +115,22 @@ an extrapolation method to estimate it instead.</p>
 which both calculates IRR and produces a figure showing the
 extrapolation method visually.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">predicted_irr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predict_tau.html">predict_tau</a></span><span class="op">(</span><span class="va">out3</span><span class="op">)</span></span>
-<span><span class="va">predicted_irr</span><span class="op">@</span><span class="va">irr</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">predicted_irr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predict_tau.html">predict_tau</a></span><span class="op">(</span><span class="va">out3</span><span class="op">)</span></span></code></pre></div>
+<p>A <code>projoint_tau</code> object, created by
+<code>predict_tau</code>, can be explored using the usual tools. The
+<code>print</code> method explains that this estimate of tau was
+produced via extrapolation rather than assumed or calculated using a
+repeated task and presents that estimate:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">predicted_irr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "Tau estimated using the extrapolation method: 0.743"</span></span></code></pre>
+<p>The <code>summary</code> method returns a tibble of IRR as the
+profiles become more dissimilar. When <code>x=7</code>, in this example,
+all attributes are different between the two profiles and we see that
+IRR is 0.503. We extrapolate to <code>x=0</code>, which is the IRR when
+both profiles are identical:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">predicted_irr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
 <span><span class="co">##       x predicted</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -128,9 +142,11 @@ extrapolation method visually.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">6</span>     5     0.572</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">7</span>     6     0.537</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">8</span>     7     0.503</span></span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">predicted_irr</span><span class="op">@</span><span class="va">figure</span></span></code></pre></div>
-<p><img src="03-predict_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p>And the <code>plot</code> method renders a plot showing the
+extrapolated value of tau:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predicted_irr</span><span class="op">)</span></span></code></pre></div>
+<p><img src="03-predict_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

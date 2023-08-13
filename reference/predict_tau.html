@@ -99,6 +99,9 @@
     
 
 <p>A list (a vector of predicted value; ggplot object)</p>
+
+
+<p>A tibble showing IRR as profile similarity changes. The value of `predicted` when `x=0` is the estimated IRR.</p>
     </div>
 
     <div class="section level2">
@@ -139,8 +142,7 @@
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span><span class="va">tau1</span> <span class="op">&lt;-</span> <span class="fu">predict_tau</span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tau1</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in print.default("Tau estimated using the extrapolation method:",     as.character(x@irr)):</span> invalid printing digits -2147483648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Tau estimated using the extrapolation method: 0.743"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Example 2: repeated, unflipped task</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"exampleData2"</span><span class="op">)</span></span></span>
@@ -175,8 +177,7 @@
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span><span class="va">tau2</span> <span class="op">&lt;-</span> <span class="fu">predict_tau</span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tau2</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in print.default("Tau estimated using the extrapolation method:",     as.character(x@irr)):</span> invalid printing digits -2147483648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Tau estimated using the extrapolation method: 0.743"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Example 3: no repeated task</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"exampleData3"</span><span class="op">)</span></span></span>
@@ -210,8 +211,7 @@
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span><span class="va">tau3</span> <span class="op">&lt;-</span> <span class="fu">predict_tau</span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tau3</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in print.default("Tau estimated using the extrapolation method:",     as.character(x@irr)):</span> invalid printing digits -2147483648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Tau estimated using the extrapolation method: 0.743"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
