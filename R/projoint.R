@@ -121,8 +121,8 @@ projoint <- function(
 print.projoint_results <- function(x, ...) {
   #  ## What should we put here?
   cat("[A projoint output]\n", 
-      "The estimand:", x@estimand, "\n",
-      "The structure:", x@structure, "\n",
+      "Estimand:", x@estimand, "\n",
+      "Structure:", x@structure, "\n",
       "IRR:", x@irr, "\n",
       "Tau:", x@tau, "\n",
       "Remove ties:", x@remove_ties, "\n",
