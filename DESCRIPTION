@@ -2,8 +2,8 @@ Package: projoint
 Type: Package
 Title: The One Stop Conjoint Shop
 Version: 0.2.0
-Author: Yusaku Horiuchi and Aaron Kaufman
-Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
+Authors@R: c(person("Yusaku", "Horiuchi", email = "yusaku.horiuchi@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0295-4089")),
+             person("Aaron", "Kaufman", email = "aaronkaufman@nyu.edu", role = c("aut"), comment = c(ORCID = "0000-0003-3688-0428")))
 Description: Analyzes data sets generated from conjoint experiments, correcting for measurement error.
 Imports:
     dplyr (>= 1.1.2), 
