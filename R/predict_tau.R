@@ -286,7 +286,7 @@ predict_tau <- function(
 print.projoint_tau <- function(x, ...) {
  ## What should we put here?
    # Function call
-  print("Tau estimated using the extrapolation method:", as.character(x@irr))
+  print(paste("Tau estimated using the extrapolation method:", as.character(round(x@irr$predicted[1],3))))
    # Some details about the data set
    # No results
 }
@@ -294,6 +294,7 @@ print.projoint_tau <- function(x, ...) {
 #' @param object An object of class `projoint_tau` derived from `predict_tau`
 #' @param ... Optional arguments; currently none accepted
 #' @export
+#' @return A tibble showing IRR as profile similarity changes. The value of `predicted` when `x=0` is the estimated IRR.
 #' @rdname predict_tau
 
 summary.projoint_tau <- function(object, ...) {

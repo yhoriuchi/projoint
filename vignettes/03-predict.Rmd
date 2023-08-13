@@ -40,13 +40,13 @@ Then, we pass this data set to the `predict_tau` function, which both calculates
 predicted_irr <- predict_tau(out3)
 ```
 
-A `projoint_tau` object, created by `predict_tau`, can be explored using the usual tools. The `print` method explains that this estimate of tau was produced via extrapolation rather than assumed or calculated using a repeated task.
+A `projoint_tau` object, created by `predict_tau`, can be explored using the usual tools. The `print` method explains that this estimate of tau was produced via extrapolation rather than assumed or calculated using a repeated task and presents that estimate:
 
 ```{r}
 print(predicted_irr)
 ```
 
-The `summary` method simply returns the estimate:
+The `summary` method returns a tibble of IRR as the profiles become more dissimilar. When `x=7`, in this example, all attributes are different between the two profiles and we see that IRR is 0.503. We extrapolate to `x=0`, which is the IRR when both profiles are identical:
 
 ```{r}
 summary(predicted_irr)
