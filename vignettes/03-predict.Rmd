@@ -38,6 +38,22 @@ Then, we pass this data set to the `predict_tau` function, which both calculates
 
 ```{r}
 predicted_irr <- predict_tau(out3)
-predicted_irr@irr
-predicted_irr@figure
+```
+
+A `projoint_tau` object, created by `predict_tau`, can be explored using the usual tools. The `print` method explains that this estimate of tau was produced via extrapolation rather than assumed or calculated using a repeated task.
+
+```{r}
+print(predicted_irr)
+```
+
+The `summary` method simply returns the estimate:
+
+```{r}
+summary(predicted_irr)
+```
+
+And the `plot` method renders a plot showing the extrapolated value of tau:
+
+```{r}
+plot(predicted_irr)
 ```
