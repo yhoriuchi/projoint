@@ -1,3 +1,33 @@
 url: https://yhoriuchi.github.io/projoint/
 template:
   bootstrap: 5
+
+reference:
+- title: Data sets
+  desc: Example data sets
+  contents:
+  - exampleData1
+  - exampleData2
+  - exampleData3
+  - out1_arranged
+
+- title: Setup
+  desc: Read in and clean data
+  contents:
+  - read_Qualtrics
+  - read_labels
+  - reshape_projoint
+  - save_labels
+  - set_qoi
+
+- title: Analysis
+  desc: Estimates conjoint quantities of interest
+  contents:
+  - predict_tau
+  - projoint
+
+- title: Visualize
+  desc: Produce plots
+  contents:
+  - plot
+
