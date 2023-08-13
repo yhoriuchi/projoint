@@ -113,13 +113,13 @@ Export Options</a>). Please note that the original Qualtrics file has
 three rows to describe variables. Thus, it should look like the
 following:</p>
 <p><img src="../reference/figures/screenshot_excel.png" id="id" class="class" style="width:100.0%;height:100.0%"></p>
-<p>The <code><a href="../reference/read_Qualtrics.html">read_Qualtrics()</a></code> functon uses the first row as the
+<p>The <code><a href="../reference/read_Qualtrics.html">read_Qualtrics()</a></code> function uses the first row as the
 column names and skip the second and third rows.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_Qualtrics.html">read_Qualtrics</a></span><span class="op">(</span><span class="st">"data/mummolo_nall_replication.csv"</span><span class="op">)</span></span></code></pre></div>
 <p>After reading the Qualtrics data into R, you perhaps need to add a
-few more lines to clean your data – e.g., removing incomplete resposnes,
+few more lines to clean your data – e.g., removing incomplete responses,
 filtering out respondents who failed to pass the attention check
 questions, some responses that Qualtrics flagged as possible bots, etc.
 Then, your data frame (more specifically, tibble) should look like the
@@ -214,9 +214,11 @@ follows:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> mm_corre…    0.536 0.020<span style="text-decoration: underline;">0</span>    0.497     0.576 att2:level2      Presiden… 50% …</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 38 more rows</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: attribute_id &lt;chr&gt;</span></span></span></code></pre>
-<p>To plot the estimates, use <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, but please note that
-the current version only shows the figure for profile-level MMs or
-AMCEs.</p>
+<p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> returns a tibble (the tidyverse version of
+data frame). So researchers can save and use it to make tables and
+figures. For those who want to skip this manual step and plot the
+estimates, use <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, but please note that the current
+version only shows the figure for profile-level MMs or AMCEs.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
 <p><img src="projoint_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
