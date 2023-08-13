@@ -1,0 +1,12 @@
+citHeader("To cite prjoint in publications use:")
+
+bibentry(
+  key          = "horiuchi_kaufman_2023",
+  bibtype      = "misc",
+	title        = "projoint: The One-Stop Conjoint Shop",
+  author       = c(person("Horiuchi", "Yusaku"), 
+                   person("Kaufman", "Aaron")),
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/yhoriuchi/projoint}},
+)
