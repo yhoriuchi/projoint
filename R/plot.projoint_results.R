@@ -1,15 +1,15 @@
 #' Plot all MMs or AMCEs
 #'
-#' This method produces MM or AMCE plots given a `projoint_results` object, the output from the `projoint` function.
+#' This method produces MM or AMCE plots given a \code\link{projoint_results} object, the output from the \code\link{projoint} function.
 #'
 #' @import ggplot2
 #' @import ggthemes
 #' @import dplyr
 #' @import stringr
-#' @param x A `projoint_results_mm` or `projoint_results_amce` object
-#' @param .estimand Either "mm" for marginal mean (default) or "amce" for average marginal component effect
-#' @param .estimates The estimates to be plotted, either "corrected" (default), "uncorrected", or "both"
-#' @param .by_var TRUE to plot the difference in estimates between the two subgroups, FALSE (default) otherwise 
+#' @param x A \code\link{projoint_results} object
+#' @param .estimand Either \code{"mm"} for marginal mean (default) or \code{"amce"} for average marginal component effect
+#' @param .estimates The estimates to be plotted, either \code{"corrected"} (default), \code{"uncorrected"}, or \code{"both"}
+#' @param .by_var \code{TRUE} to plot the difference in estimates between the two subgroups, \code{FALSE} (default) otherwise 
 #' @param .base_size base font size, given in pts.
 #' @param .base_family base font family
 #' @param ... Additional optional arguments
