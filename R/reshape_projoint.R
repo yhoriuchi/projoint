@@ -1,22 +1,26 @@
 #' Reshapes survey response data for conjoint analysis
 #'
-#' This function takes a data frame, preferably from`read_Qualtrics()`, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
+#' This function takes a data frame, preferably from \code{\link{read_Qualtrics}}, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
 #'
 #' @import dplyr
 #' @import tidyr
 #' @import stringr
 #' @import rlang
 #' @import tidyselect
-#' @param .dataframe A data frame, preferably from `read_Qualtrics()`
+#' @param .dataframe A data frame, preferably from \code{\link{read_Qualtrics}}
 #' @param .idvar A character identifying the column name containing respondent IDs
 #' @param .outcomes A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.
-#' @param .outcomes_ids A vector identifying the possibilities for the outcome variables -- e.g., `c("Candidate A", "Candidate B")`
-#' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".
+#' @param .outcomes_ids A vector identifying the possibilities for the outcome variables -- e.g., \code{c("Candidate A", "Candidate B")}
+#' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics, the default is \code{F}.
 #' @param .repeated TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.
 #' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
 #' @param .covariates A character vector identifying respondents' covariates used for subgroup analysis
+<<<<<<< Updated upstream
 #' @param .fill A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).
 #' @return A projoint object of class `projoint_data` ready to pass to `projoint()`.
+=======
+#' @return A projoint object of class \code{\link{projoint_data} ready to pass to \code{\link{projoint}}.
+>>>>>>> Stashed changes
 #' @export
 #' @examples
 #' library(projoint)
