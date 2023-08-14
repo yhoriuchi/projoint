@@ -237,13 +237,13 @@ reshape_projoint <- function(
     dplyr::left_join(covariates, by = "id") %>% 
     dplyr::mutate_if(is.character, as.factor) %>%
     dplyr::mutate(id = as.character(id)) %>%
-    as_tibble()
+    dplyr::as_tibble()
 
   if (.fill == TRUE){
     
     out_final <- out_final_before_fill %>% 
-      arrange(id, task, agree) %>% 
-      fill(agree)
+      dplyr::arrange(id, task, agree) %>% 
+      tidyr::fill(agree)
     
   } else{
     
