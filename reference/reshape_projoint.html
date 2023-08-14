@@ -68,7 +68,8 @@
 <span>  .alphabet <span class="op">=</span> <span class="st">"F"</span>,</span>
 <span>  .repeated <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  .flipped <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .covariates <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  .covariates <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .fill <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -104,6 +105,10 @@
 
 <dt>.covariates</dt>
 <dd><p>A character vector identifying respondents' covariates used for subgroup analysis</p></dd>
+
+
+<dt>.fill</dt>
+<dd><p>A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -149,7 +154,8 @@
 <span class="r-in"><span>  .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span></span>
 <span class="r-in"><span>  .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  .flipped <span class="op">=</span> <span class="cn">TRUE</span>, </span></span>
+<span class="r-in"><span>  .fill <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
