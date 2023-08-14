@@ -2,22 +2,22 @@
 % Please edit documentation in R/read_labels.R
 \name{read_labels}
 \alias{read_labels}
-\title{Reads in a CSV of reordered attributes and levels, and applies it to a `projoint_data` object.}
+\title{Reads in a CSV of reordered attributes and levels, and applies it to a \code{\link{projoint_data}} object.}
 \usage{
 read_labels(.data, .filename)
 }
 \arguments{
 \item{.data}{A `projoint_data` object}
 
-\item{.filename}{The name of a revised CSV file, originally derived from `save_labels`, after manual arrangement}
+\item{.filename}{The name of a revised CSV file, originally derived from \code{\link{save_labels}}, after manual arrangement}
 }
 \value{
-A projoint object of class `projoint_data` ready to pass to `projoint()`.
+A projoint object of class \code{\link{projoint_data}} ready to pass to \code{\link{projoint}}.
 }
 \description{
 For users interested in reordering the attributes and levels of their conjoint data set.
-First save the existing order to a CSV using `save_labels`, then manually reorder them in the CSV.
-Finally, use this function to read in the modified CSV and automatically apply the new order to the existing `projoint_data`.
+First save the existing order to a CSV using \code{\link{save_labels}}, then manually reorder them in the CSV.
+Finally, use this function to read in the modified CSV and automatically apply the new order to the existing \code{\link{projoint_data}}.
 }
 \examples{
 library(projoint)

@@ -1,8 +1,8 @@
-#' Reads in a CSV of reordered attributes and levels, and applies it to a `projoint_data` object.
+#' Reads in a CSV of reordered attributes and levels, and applies it to a \code{\link{projoint_data}} object.
 #'
 #' For users interested in reordering the attributes and levels of their conjoint data set.
-#' First save the existing order to a CSV using `save_labels`, then manually reorder them in the CSV.
-#' Finally, use this function to read in the modified CSV and automatically apply the new order to the existing `projoint_data`.
+#' First save the existing order to a CSV using \code{\link{save_labels}}, then manually reorder them in the CSV.
+#' Finally, use this function to read in the modified CSV and automatically apply the new order to the existing \code{\link{projoint_data}}.
 #' 
 #' @import readr
 #' @import dplyr
@@ -11,8 +11,8 @@
 #' @import stringr
 #' @import tidyselect
 #' @param .data A `projoint_data` object
-#' @param .filename The name of a revised CSV file, originally derived from `save_labels`, after manual arrangement
-#' @return A projoint object of class `projoint_data` ready to pass to `projoint()`.
+#' @param .filename The name of a revised CSV file, originally derived from \code{\link{save_labels}}, after manual arrangement
+#' @return A projoint object of class \code{\link{projoint_data}} ready to pass to \code{\link{projoint}}.
 #' @export
 #' @examples
 #' library(projoint)

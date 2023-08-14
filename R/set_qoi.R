@@ -4,17 +4,17 @@
 #'
 #' @import rlang
 #' @import stringr
-#' @param .structure Either "profile_level" or "choice_level"
-#' @param .estimand Either "mm" for marginal mean or "amce" for average marginal component effect
-#' @param .att_choose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).
-#' @param .lev_choose  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis
-#' @param .att_notchoose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".
-#' @param .lev_notchoose  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".
-#' @param .att_choose_b [baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).
-#' @param .lev_choose_b  [baseline for AMCE] A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis
-#' @param .att_notchoose_b [baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".
-#' @param .lev_notchoose_b [baseline for AMCE]  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".
-#' @return A `projoint_qoi` object
+#' @param .structure Either \code{"profile_level"} or \code{"choice_level"}
+#' @param .estimand Either \code{\link{"mm"} for marginal mean or \code{\link{"amce"} for average marginal component effect
+#' @param .att_choose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}).
+#' @param .lev_choose  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis
+#' @param .att_notchoose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{not chosen}). This argument should be specified only if the \code{.structure} argument is \code{"choice-level"}.
+#' @param .lev_notchoose  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels \strong{not chosen}). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the \code{.structure} argument is \code{"choice-level"}.
+#' @param .att_choose_b [baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}).
+#' @param .lev_choose_b  [baseline for AMCE] A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis
+#' @param .att_notchoose_b [baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{not chosen*}). This argument should be specified only if the \code{.structure} argument is \code{"choice-level"}.
+#' @param .lev_notchoose_b [baseline for AMCE]  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels \strong{not chosen}). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the \code{.structure} argument is \code{"choice-level"}.
+#' @return A \code{\link{projoint_qoi}} object
 #' @export
 
 set_qoi <- function(

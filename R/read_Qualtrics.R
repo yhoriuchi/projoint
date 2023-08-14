@@ -1,7 +1,7 @@
 #' Read and re-format a Qualtrics csv (choice text)
 #'
 #' @param .file A file name corresponding to a csv downloaded from Qualtrics.
-#' @return A data frame suitable for reshape_conjoint()
+#' @return A data frame suitable for \code{\link{reshape_projoint}}
 #' @export
 #' @examples
 #' library(projoint)
