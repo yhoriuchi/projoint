@@ -159,7 +159,7 @@ all those arguments below for clarity:</p>
 attribute levels, of interest using the <code>set_qoi</code> function as
 below. The <code>set_qoi</code> function is the main way for users to
 specify more complex estimands in conjoint analysis. Al arguments for
-<code>qoi()</code> are expanded for clarify, but the default arguments
+<code>qoi()</code> are expanded for clarity, but the default arguments
 in <code><a href="../reference/projoint.html">projoint()</a></code> are dropped for simplicity:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
@@ -195,10 +195,10 @@ in <code><a href="../reference/projoint.html">projoint()</a></code> are dropped 
 <p>If your conjoint survey design does not include the recommended
 repeated task, you can use the specific value for <code>.irr</code>,
 which you can estimate using the <code><a href="../reference/predict_tau.html">predict_tau()</a></code> function or
-specify the value based on the prior knowledge. In the following, we use
-0.75, which is most likely IRR we find in our test data sets. The defaul
-arguments for both <code><a href="../reference/set_qoi.html">set_qoi()</a></code> and <code><a href="../reference/projoint.html">projoint()</a></code>
-are dropped hereafter.</p>
+specify the value based on prior knowledge. In the following, we use
+0.75, which is most likely IRR we find in our test data sets. The
+default arguments for both <code><a href="../reference/set_qoi.html">set_qoi()</a></code> and
+<code><a href="../reference/projoint.html">projoint()</a></code> are dropped hereafter.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                 .qoi <span class="op">=</span> <span class="va">qoi_1</span>,</span>
