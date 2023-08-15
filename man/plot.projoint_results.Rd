@@ -6,7 +6,6 @@
 \usage{
 \method{plot}{projoint_results}(
   x,
-  .estimand = "mm",
   .estimates = "corrected",
   .by_var = FALSE,
   .base_size = 12,
@@ -16,8 +15,6 @@
 }
 \arguments{
 \item{x}{A \code{\link{projoint_results}} object}
-
-\item{.estimand}{Either \code{"mm"} for marginal mean (default) or \code{"amce"} for average marginal component effect}
 
 \item{.estimates}{The estimates to be plotted, either \code{"corrected"} (default), \code{"uncorrected"}, or \code{"both"}}
 

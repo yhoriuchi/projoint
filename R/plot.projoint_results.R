@@ -7,7 +7,6 @@
 #' @import dplyr
 #' @import stringr
 #' @param x A \code{\link{projoint_results}} object
-#' @param .estimand Either \code{"mm"} for marginal mean (default) or \code{"amce"} for average marginal component effect
 #' @param .estimates The estimates to be plotted, either \code{"corrected"} (default), \code{"uncorrected"}, or \code{"both"}
 #' @param .by_var \code{TRUE} to plot the difference in estimates between the two subgroups, \code{FALSE} (default) otherwise 
 #' @param .base_size base font size, given in pts.
@@ -39,7 +38,6 @@
 
 plot.projoint_results <- function(
     x, 
-    .estimand = "mm",
     .estimates = "corrected",
     .by_var = FALSE,
     .base_size = 12,
@@ -67,6 +65,7 @@ plot.projoint_results <- function(
     stop("The x argument must be of class `projoint_results` from the `projoint` function.")
   }
   
+  .estimand = x@estimand
   
   if (.by_var == FALSE){
     
