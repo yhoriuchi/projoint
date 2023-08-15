@@ -248,7 +248,8 @@ reshape_projoint <- function(
     
   } else{
     
-    out_final <- out_final_before_fill %>% dplyr::arrange(id, task, agree)
+    out_final <- out_final_before_fill %>% 
+      dplyr::arrange(id, task, agree)
   }
   
   
