@@ -140,11 +140,13 @@ print.projoint_results <- function(x, ...) {
 
 summary.projoint_results <- function(object, ...) {
   ## What should we put here?
-  ests <- object@estimates
-  labs <- object@labels
-  left_join(ests, 
-            labs, 
-            by = c("att_level_choose" = "level_id"))
+  # ests <- object@estimates
+  # labs <- object@labels
+  # left_join(ests, 
+  #           labs, 
+  #           by = c("att_level_choose" = "level_id"))
+  object@estimates
+  
 }
 
 
