@@ -1,10 +1,10 @@
 ---
-title: "04. Estimate corrected MMs or AMCEs"
+title: "4. Estimate corrected MMs or AMCEs"
 output: rmarkdown::html_vignette
 description: >
   How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs)
 vignette: >
-  %\VignetteIndexEntry{04. Estimate corrected MMs or AMCEs}
+  %\VignetteIndexEntry{4. Estimate corrected MMs or AMCEs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

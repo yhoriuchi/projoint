@@ -1,10 +1,10 @@
 ---
-title: "01. Setting up your Qualtrics survey"
+title: "1. Setting up your Qualtrics survey"
 output: rmarkdown::html_vignette
 description: >
   How to set up your Qualtrics survey
 vignette: >
-  %\VignetteIndexEntry{01. Setting up your Qualtrics survey}
+  %\VignetteIndexEntry{1. Setting up your Qualtrics survey}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

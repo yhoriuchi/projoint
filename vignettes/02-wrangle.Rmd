@@ -1,10 +1,10 @@
 ---
-title: "02. Read and wrangle your data for conjoint analysis"
+title: "2. Read and wrangle your data for conjoint analysis"
 output: rmarkdown::html_vignette
 description: >
   How to read and reshape data for conjoint analysis
 vignette: >
-  %\VignetteIndexEntry{02. Read and wrangle your data for conjoint analysis}
+  %\VignetteIndexEntry{2. Read and wrangle your data for conjoint analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

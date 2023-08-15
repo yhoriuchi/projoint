@@ -1,10 +1,10 @@
 ---
-title: "05. Visualize MMs or AMCEs"
+title: "5. Visualize MMs or AMCEs"
 output: rmarkdown::html_vignette
 description: >
   How to visualze the marginal means (MMs) or average marginal component effects (AMCEs)
 vignette: >
-  %\VignetteIndexEntry{05. Visualize MMs or AMCEs}
+  %\VignetteIndexEntry{5. Visualize MMs or AMCEs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

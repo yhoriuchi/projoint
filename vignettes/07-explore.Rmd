@@ -1,10 +1,10 @@
 ---
-title: "07. Explore further"
+title: "7. Explore further"
 output: rmarkdown::html_vignette
 description: >
   How to estimate more under-investigated quantities of interest
 vignette: >
-  %\VignetteIndexEntry{07. Explore further}
+  %\VignetteIndexEntry{7. Explore further}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

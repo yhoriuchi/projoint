@@ -1,10 +1,10 @@
 ---
-title: "06. Compare MMs or AMCEs between the subgroups"
+title: "6. Compare MMs or AMCEs between the subgroups"
 output: rmarkdown::html_vignette
 description: >
   How to visualze the differences in the marginal means (MMs) or average marginal component effects (AMCEs)
 vignette: >
-  %\VignetteIndexEntry{06. Compare MMs or AMCEs between the subgroups}
+  %\VignetteIndexEntry{6. Compare MMs or AMCEs between the subgroups}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
