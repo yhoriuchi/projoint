@@ -62,7 +62,7 @@ summary(mm0)
 
 #### MM (profile-level) -- specific level
 
-However, it is also possible to specify the precise attributes, and attribute levels, of interest using the `set_qoi` function as below. The `set_qoi` function is the main way for users to specify more complex estimands in conjoint analysis. Al arguments for `qoi()` are expanded for clarify, but the default arguments in `projoint()` are dropped for simplicity:
+However, it is also possible to specify the precise attributes, and attribute levels, of interest using the `set_qoi` function as below. The `set_qoi` function is the main way for users to specify more complex estimands in conjoint analysis. Al arguments for `qoi()` are expanded for clarity, but the default arguments in `projoint()` are dropped for simplicity:
 
 ```{r}
 qoi_1 <- set_qoi(
@@ -81,7 +81,7 @@ summary(mm1)
 
 #### MM (profile-level) -- specific level, using the predicted IRR
 
-If your conjoint survey design does not include the recommended repeated task, you can use the specific value for `.irr`, which you can estimate using the `predict_tau()` function or specify the value based on the prior knowledge. In the following, we use 0.75, which is most likely IRR we find in our test data sets. The defaul arguments for both `set_qoi()` and `projoint()` are dropped hereafter.
+If your conjoint survey design does not include the recommended repeated task, you can use the specific value for `.irr`, which you can estimate using the `predict_tau()` function or specify the value based on prior knowledge. In the following, we use 0.75, which is most likely IRR we find in our test data sets. The default arguments for both `set_qoi()` and `projoint()` are dropped hereafter.
 
 ```{r}
 mm1b <- projoint(.data = out1,
