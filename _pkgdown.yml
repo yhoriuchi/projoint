@@ -11,6 +11,7 @@ reference:
   - exampleData2
   - exampleData3
   - out1_arranged
+  - exampleData1_labelled_tibble
 
 - title: Setup
   desc: Read in and clean data
@@ -18,6 +19,7 @@ reference:
   - read_Qualtrics
   - read_labels
   - reshape_projoint
+  - make_projoint_data
   - save_labels
   - set_qoi
 
