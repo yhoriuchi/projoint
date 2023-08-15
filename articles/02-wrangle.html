@@ -184,21 +184,21 @@ the non-repeated tasks, FALSE (otherwise).</p>
 <p>You can see the difference by comparing the following two:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fill_FALSE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span>
-<span>                 .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
-<span>                 .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
-<span>                 .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
-<span>                 .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
-<span>                 .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                 .flipped <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                 .fill <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>                               .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
+<span>                               .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
+<span>                               .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>                               .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
+<span>                               .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                               .flipped <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                               .fill <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">fill_TRUE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span>
-<span>                 .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
-<span>                 .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
-<span>                 .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
-<span>                 .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
-<span>                 .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                 .flipped <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                 .fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>                              .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
+<span>                              .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
+<span>                              .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>                              .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
+<span>                              .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                              .flipped <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                              .fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>We just select the essential variables only. The first data frame
 includes the values for the <code>agree</code> variable (whether the
 same profile was chosen or not) only for the repeated task. The second
@@ -247,7 +247,104 @@ empirical tests suggest the validity of this assumption, if you are
 unsure about it, it is better to use the default value (FALSE).</p>
 </div>
 <div class="section level3">
-<h3 id="arrange-the-order-and-labels-of-attributes-and-levels">2.4 Arrange the order and labels of attributes and levels<a class="anchor" aria-label="anchor" href="#arrange-the-order-and-labels-of-attributes-and-levels"></a>
+<h3 id="read-your-already-wrangled-tibble">2.4 Read your already-wrangled tibble<a class="anchor" aria-label="anchor" href="#read-your-already-wrangled-tibble"></a>
+</h3>
+<p>You may have already read the original data downloaded from
+Qualtrics, load it to R, and wrangle data to make a data frame (or
+tibble) ready of analysis. In such a case, you you use
+<code><a href="../reference/make_projoint_data.html">make_projoint_data()</a></code> to save your data as a “projoint_data”
+class object necessary to use <code><a href="../reference/projoint.html">projoint()</a></code>. Here is an
+example. First, load your data frame.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">exampleData1_labelled_tibble</span></span></code></pre></div>
+<p>It should looks like the following. Each row should correspond to
+each of two profiles in each task for each respondent. The data frame
+should have columns indicating (1) each respondent’s ID, (2) task
+number, (3) profile number, and (4) a column recording each response (0,
+1) for each task. If your design includes the repeated task, it should
+also include a column recording the response for the repeated task.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6,400 × 14</span></span></span>
+<span><span class="co">##    id                 task profile selected selected_repeated `School Quality`</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> R_00zYHdY1te1Qlrz     1       1        1                 1 9 out of 10     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> R_00zYHdY1te1Qlrz     1       2        0                 0 5 out of 10     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> R_00zYHdY1te1Qlrz     2       1        1                <span style="color: #BB0000;">NA</span> 9 out of 10     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> R_00zYHdY1te1Qlrz     2       2        0                <span style="color: #BB0000;">NA</span> 9 out of 10     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> R_00zYHdY1te1Qlrz     3       1        1                <span style="color: #BB0000;">NA</span> 5 out of 10     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> R_00zYHdY1te1Qlrz     3       2        0                <span style="color: #BB0000;">NA</span> 9 out of 10     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> R_00zYHdY1te1Qlrz     4       1        0                <span style="color: #BB0000;">NA</span> 5 out of 10     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> R_00zYHdY1te1Qlrz     4       2        1                <span style="color: #BB0000;">NA</span> 9 out of 10     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> R_00zYHdY1te1Qlrz     5       1        1                <span style="color: #BB0000;">NA</span> 5 out of 10     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> R_00zYHdY1te1Qlrz     5       2        0                <span style="color: #BB0000;">NA</span> 5 out of 10     </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 6,390 more rows</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 8 more variables: `Violent Crime Rate (Vs National Rate)` &lt;chr&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   `Racial Composition` &lt;chr&gt;, `Housing Cost` &lt;chr&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   `Presidential Vote (2020)` &lt;chr&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   `Total Daily Driving Time for Commuting and Errands` &lt;chr&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   `Type of Place` &lt;chr&gt;, race &lt;fct&gt;, ideology &lt;fct&gt;</span></span></span></code></pre>
+<p>Next, make a character vector of your attributes.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">attributes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"School Quality"</span>,</span>
+<span>                <span class="st">"Violent Crime Rate (Vs National Rate)"</span>,</span>
+<span>                <span class="st">"Racial Composition"</span>,</span>
+<span>                <span class="st">"Housing Cost"</span>,</span>
+<span>                <span class="st">"Presidential Vote (2020)"</span>,</span>
+<span>                <span class="st">"Total Daily Driving Time for Commuting and Errands"</span>,</span>
+<span>                <span class="st">"Type of Place"</span><span class="op">)</span></span></code></pre></div>
+<p>Then, make a suitable object for the next steps using
+<code><a href="../reference/make_projoint_data.html">make_projoint_data()</a></code>. The default variable names are shown
+below. If your data frame uses different names, you can change them.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_projoint_data.html">make_projoint_data</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">data</span>,</span>
+<span>                           .attribute_vars <span class="op">=</span> <span class="va">attributes</span>, </span>
+<span>                           .id_var <span class="op">=</span> <span class="st">"id"</span>, <span class="co"># the default name</span></span>
+<span>                           .task_var <span class="op">=</span> <span class="st">"task"</span>, <span class="co"># the default name</span></span>
+<span>                           .profile_var <span class="op">=</span> <span class="st">"profile"</span>, <span class="co"># the default name</span></span>
+<span>                           .selected_var <span class="op">=</span> <span class="st">"selected"</span>, <span class="co"># the default name</span></span>
+<span>                           .selected_repeated_var <span class="op">=</span> <span class="st">"selected_repeated"</span>, <span class="co"># the default is NULL</span></span>
+<span>                           .fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>The output will be the same as the output of <code>fill_FALSE</code>
+in the previous section.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out4</span></span></code></pre></div>
+<pre><code><span><span class="co">## An object of class "projoint_data"</span></span>
+<span><span class="co">## Slot "labels":</span></span>
+<span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
+<span><span class="co">##    attribute_id level                        level_id  attribute               </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> att1         15% of pre-tax income        att1:lev1 Housing Cost            </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> att1         30% of pre-tax income        att1:lev2 Housing Cost            </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> att1         40% of pre-tax income        att1:lev3 Housing Cost            </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> att2         30% Democrat, 70% Republican att2:lev1 Presidential Vote (2020)</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> att2         50% Democrat, 50% Republican att2:lev2 Presidential Vote (2020)</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> att2         70% Democrat, 30% Republican att2:lev3 Presidential Vote (2020)</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> att3         50% White, 50% Nonwhite      att3:lev1 Racial Composition      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> att3         75% White, 25% Nonwhite      att3:lev2 Racial Composition      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> att3         90% White, 10% Nonwhite      att3:lev3 Racial Composition      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> att3         96% White, 4% Nonwhite       att3:lev4 Racial Composition      </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Slot "data":</span></span>
+<span><span class="co">## <span style="color: #949494;"># A tibble: 6,400 × 13</span></span></span>
+<span><span class="co">##    id      task profile selected selected_repeated agree att4  att7  att3  att1 </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> R_00z…     1       1        1                 1     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> R_00z…     1       2        0                 0     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> R_00z…     2       1        1                <span style="color: #BB0000;">NA</span>     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> R_00z…     2       2        0                <span style="color: #BB0000;">NA</span>     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> R_00z…     3       1        1                <span style="color: #BB0000;">NA</span>     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> R_00z…     3       2        0                <span style="color: #BB0000;">NA</span>     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> R_00z…     4       1        0                <span style="color: #BB0000;">NA</span>     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> R_00z…     4       2        1                <span style="color: #BB0000;">NA</span>     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> R_00z…     5       1        1                <span style="color: #BB0000;">NA</span>     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> R_00z…     5       2        0                <span style="color: #BB0000;">NA</span>     1 att4… att7… att3… att1…</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 6,390 more rows</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: att2 &lt;chr&gt;, att5 &lt;chr&gt;, att6 &lt;chr&gt;</span></span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="arrange-the-order-and-labels-of-attributes-and-levels">2.5 Arrange the order and labels of attributes and levels<a class="anchor" aria-label="anchor" href="#arrange-the-order-and-labels-of-attributes-and-levels"></a>
 </h3>
 <p>The reshaped data have attributes and levels that are sorted
 alphabetically. Often, however, you want to reorder the attributes
@@ -265,24 +362,24 @@ any change to the first column named <code>level_id</code></em>. After
 saving the updated CSV file, you should use <code><a href="../reference/read_labels.html">read_labels()</a></code>
 to read it and save the object suitable for the next step (i.e., use
 <code><a href="../reference/projoint.html">projoint()</a></code>).</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/save_labels.html">save_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_original.csv"</span><span class="op">)</span></span>
 <span><span class="va">out1_arranged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_labels.html">read_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_arranged.csv"</span><span class="op">)</span></span></code></pre></div>
 <p>You can find this data set on GitHub: <a href="https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_original.csv" class="external-link">labels_original.csv</a>
 and <a href="https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_arranged.csv" class="external-link">labels_arranged.csv</a>.</p>
 <p>The figure based on the original order and labels is in the
 alphabetical order:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="02-wrangle_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
+<p><img src="02-wrangle_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
 <p>The labels and order of all attribute-levels in the second figure is
 the same as Figure 2 in <a href="https://doi.org/10.1086/687569" class="external-link">Mummolo
 and Nall (2017)</a>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="02-wrangle_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
+<p><img src="02-wrangle_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
