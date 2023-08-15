@@ -1,4 +1,4 @@
-#' Class generator for `projoint_data`
+#' Class generator for \code{\link{projoint_data}}
 #' @importFrom methods is
 #' @importFrom methods new
 #' @keywords internal

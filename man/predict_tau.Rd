@@ -20,16 +20,16 @@ predict_tau(.data, .title = NULL)
 
 \item{.title}{The title of a figure}
 
-\item{x}{An object of class `projoint_tau` derived from `predict_tau`}
+\item{x}{An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}}
 
 \item{...}{Optional arguments; currently none accepted}
 
-\item{object}{An object of class `projoint_tau` derived from `predict_tau`}
+\item{object}{An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}}
 }
 \value{
 A list (a vector of predicted value; ggplot object)
 
-A tibble showing IRR as profile similarity changes. The value of `predicted` when `x=0` is the estimated IRR.
+A tibble showing IRR as profile similarity changes. The value of \code{predicted} when \code{x=0} is the estimated IRR.
 }
 \description{
 Given an output from `projoint_data`, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR).

@@ -4,13 +4,13 @@
 \name{projoint_tau-class}
 \alias{projoint_tau-class}
 \alias{projoint_tau}
-\title{Class generator for `projoint_tau`}
+\title{Class generator for \code{projoint_tau} objects}
 \arguments{
-\item{slots}{Takes two slots: `irr` and `figure`}
+\item{slots}{Takes two slots: \code{irr} and \code{figure}}
 
-\item{contains}{Inherits slots from `projoint_data`}
+\item{contains}{Inherits slots from \code{\link{projoint_data}}}
 }
 \description{
-Class generator for `projoint_tau`
+Class generator for \code{projoint_tau} objects
 }
 \keyword{internal}

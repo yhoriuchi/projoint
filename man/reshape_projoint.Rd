@@ -17,15 +17,15 @@ reshape_projoint(
 )
 }
 \arguments{
-\item{.dataframe}{A data frame, preferably from `read_Qualtrics()`}
+\item{.dataframe}{A data frame, preferably from \code{\link{read_Qualtrics}}}
 
 \item{.idvar}{A character identifying the column name containing respondent IDs}
 
 \item{.outcomes}{A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.}
 
-\item{.outcomes_ids}{A vector identifying the possibilities for the outcome variables -- e.g., `c("Candidate A", "Candidate B")`}
+\item{.outcomes_ids}{A vector identifying the possibilities for the outcome variables -- e.g., \code{c("Candidate A", "Candidate B")}}
 
-\item{.alphabet}{The letter indicating conjoint attributes. If using Strezhnev's package (https://github.com/astrezhnev/conjointsdt) in Qualtrics, the default is "F".}
+\item{.alphabet}{The letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics, the default is \code{F}.}
 
 \item{.repeated}{TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.}
 
@@ -37,9 +37,11 @@ reshape_projoint(
 }
 \value{
 A projoint object of class `projoint_data` ready to pass to `projoint()`.
+
+A projoint object of class \code{\link{projoint_data}} ready to pass to \code{\link{projoint}}.
 }
 \description{
-This function takes a data frame, preferably from`read_Qualtrics()`, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
+This function takes a data frame, preferably from \code{\link{read_Qualtrics}}, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
 }
 \examples{
 library(projoint)

@@ -4,11 +4,11 @@
 \name{projoint_qoi-class}
 \alias{projoint_qoi-class}
 \alias{projoint_qoi}
-\title{Class generator for `projoint_qoi`}
+\title{Class generator for \code{projoint_qoi}}
 \arguments{
 \item{slots}{Takes four for MMs and eight for AMCEs}
 }
 \description{
-Class generator for `projoint_qoi`
+Class generator for \code{projoint_qoi}
 }
 \keyword{internal}

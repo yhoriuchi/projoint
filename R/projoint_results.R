@@ -1,9 +1,9 @@
-#' Class generators for `projoint_results`
+#' Class generators for \code{projoint_results}
 #' @importFrom methods is
 #' @importFrom methods new
 #' @keywords internal
-#' @param slots Takes 16 slots: [to be written]
-#' @param contains Inherits slots from `projoint_data`
+#' @param slots Takes 16 slots. See documentation for \code{\link{projoint}}.
+#' @param contains Inherits slots from \code{\link{projoint_data}}
 
 projoint_results <- setClass("projoint_results",
                              slots = c("estimand",

@@ -5,7 +5,7 @@
 #' @import rlang
 #' @import stringr
 #' @param .structure Either \code{"profile_level"} or \code{"choice_level"}
-#' @param .estimand Either \code{\link{"mm"} for marginal mean or \code{\link{"amce"} for average marginal component effect
+#' @param .estimand Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect
 #' @param .att_choose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}).
 #' @param .lev_choose  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis
 #' @param .att_notchoose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{not chosen}). This argument should be specified only if the \code{.structure} argument is \code{"choice-level"}.

@@ -4,8 +4,8 @@
 \name{projoint_data-class}
 \alias{projoint_data-class}
 \alias{projoint_data}
-\title{Class generator for `projoint_data`}
+\title{Class generator for \code{\link{projoint_data}}}
 \description{
-Class generator for `projoint_data`
+Class generator for \code{\link{projoint_data}}
 }
 \keyword{internal}

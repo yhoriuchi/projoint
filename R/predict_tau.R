@@ -278,7 +278,7 @@ predict_tau <- function(
 
 
 
-#' @param x An object of class `projoint_tau` derived from `predict_tau`
+#' @param x An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}
 #' @param ... Optional arguments; currently none accepted
 #' @export
 #' @rdname predict_tau
@@ -291,17 +291,17 @@ print.projoint_tau <- function(x, ...) {
    # No results
 }
 
-#' @param object An object of class `projoint_tau` derived from `predict_tau`
+#' @param object An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}
 #' @param ... Optional arguments; currently none accepted
 #' @export
-#' @return A tibble showing IRR as profile similarity changes. The value of `predicted` when `x=0` is the estimated IRR.
+#' @return A tibble showing IRR as profile similarity changes. The value of \code{predicted} when \code{x=0} is the estimated IRR.
 #' @rdname predict_tau
 
 summary.projoint_tau <- function(object, ...) {
   object@irr  
 }
 
-#' @param x An object of class `projoint_tau` derived from `predict_tau`
+#' @param x An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}
 #' @param ... Optional arguments; currently none accepted
 #' @export
 #' @rdname predict_tau

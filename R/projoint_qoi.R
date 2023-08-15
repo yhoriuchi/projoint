@@ -1,4 +1,4 @@
-#' Class generator for `projoint_qoi`
+#' Class generator for \code{projoint_qoi}
 #' @importFrom methods is
 #' @importFrom methods new
 #' @keywords internal

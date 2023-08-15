@@ -25,42 +25,42 @@ projoint_diff(
 )
 }
 \arguments{
-\item{.data}{A `projoint_data` object}
+\item{.data}{A \code{\link{projoint_data}} object}
 
-\item{.qoi}{A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.}
+\item{.qoi}{A \code{\link{projoint_qoi}} object. If \code{NULL}, defaults to producing all MMs and all AMCEs.}
 
 \item{.by_var}{A dichotomous variable (character) used for subgroup analysis}
 
-\item{.structure}{Either "profile_level" (default) or "choice_level"}
+\item{.structure}{Either \code{"profile_level"} (default) or \code{"choice_level"}}
 
-\item{.estimand}{Either "mm" for marginal mean or "amce" for average marginal component effect}
+\item{.estimand}{Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect}
 
-\item{.se_method}{c("analytic", "simulation", "bootstrap") description}
+\item{.se_method}{By default, \code{c("analytic", "simulation", "bootstrap")} description}
 
-\item{.irr}{NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value}
+\item{.irr}{\code{NULL} (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value}
 
-\item{.remove_ties}{Logical: should ties be removed before estimation? Defaults to TRUE.}
+\item{.remove_ties}{Logical: should ties be removed before estimation? Defaults to \code{TRUE}.}
 
-\item{.ignore_position}{TRUE (default) if you ignore the location of profile (left or right. Relevant only if analyzed at the choice level}
+\item{.ignore_position}{TRUE (default) if you ignore the location of profile (left or right). Relevant only if analyzed at the choice level}
 
-\item{.n_sims}{The number of simulations. Relevant only if .se_method == "simulation"}
+\item{.n_sims}{The number of simulations. Relevant only if \code{.se_method == "simulation"}}
 
-\item{.n_boot}{The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"}
+\item{.n_boot}{The number of bootstrapped samples. Relevant only if \code{.se_method == "bootstrap"}}
 
-\item{.weights_1}{the weight to estimate IRR (see `lm_robust()`): NULL (default)}
+\item{.weights_1}{the weight to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
 
-\item{.clusters_1}{the clusters to estimate IRR (see `lm_robust()`): NULL (default)}
+\item{.clusters_1}{the clusters to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
 
-\item{.se_type_1}{the standard error type to estimate IRR (see `lm_robust()`): "classical" (default)}
+\item{.se_type_1}{the standard error type to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)}
 
-\item{.weights_2}{the weight to estimate MM or AMCE (see `lm_robust()`): NULL (default)}
+\item{.weights_2}{the weight to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
 
-\item{.clusters_2}{the clusters to estimate MM or AMCE (see `lm_robust()`): NULL (default)}
+\item{.clusters_2}{the clusters to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
 
-\item{.se_type_2}{the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)}
+\item{.se_type_2}{the standard error type to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)}
 }
 \value{
-A `projoint_results` object
+A \code{\link{projoint_results}} object
 }
 \description{
 This is the internal function used to calculate and correct marginal means or average marginal component effects of a conjoint design.

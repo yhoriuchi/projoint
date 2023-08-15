@@ -4,13 +4,13 @@
 \name{projoint_results-class}
 \alias{projoint_results-class}
 \alias{projoint_results}
-\title{Class generators for `projoint_results`}
+\title{Class generators for \code{projoint_results}}
 \arguments{
-\item{slots}{Takes 16 slots: [to be written]}
+\item{slots}{Takes 16 slots. See documentation for \code{\link{projoint}}.}
 
-\item{contains}{Inherits slots from `projoint_data`}
+\item{contains}{Inherits slots from \code{\link{projoint_data}}}
 }
 \description{
-Class generators for `projoint_results`
+Class generators for \code{projoint_results}
 }
 \keyword{internal}

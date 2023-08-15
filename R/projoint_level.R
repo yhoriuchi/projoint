@@ -9,23 +9,23 @@
 #' @importFrom methods is
 #' @importFrom methods new
 #' @keywords internal
-#' @param .data A `projoint_data` object
-#' @param .qoi A `projoint_qoi` object. If NULL, defaults to producing all MMs and all AMCEs.
-#' @param .structure Either "profile_level" (default) or "choice_level" 
-#' @param .estimand Either "mm" for marginal mean or "amce" for average marginal component effect
-#' @param .se_method c("analytic", "simulation", "bootstrap") description
-#' @param .irr NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
-#' @param .remove_ties Logical: should ties be removed before estimation? Defaults to TRUE.
-#' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right. Relevant only if analyzed at the choice level
-#' @param .n_sims The number of simulations. Relevant only if .se_method == "simulation" 
-#' @param .n_boot The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"
-#' @param .weights_1 the weight to estimate IRR (see `lm_robust()`): NULL (default)
-#' @param .clusters_1 the clusters to estimate IRR (see `lm_robust()`): NULL (default)
-#' @param .se_type_1 the standard error type to estimate IRR (see `lm_robust()`): "classical" (default)
-#' @param .weights_2 the weight to estimate MM or AMCE (see `lm_robust()`): NULL (default)
-#' @param .clusters_2 the clusters to estimate MM or AMCE (see `lm_robust()`): NULL (default)
-#' @param .se_type_2 the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)
-#' @return A `projoint_results` object
+#' @param .data A \code{\link{projoint_data}} object
+#' @param .qoi A \code{\link{projoint_qoi}} object. If \code{NULL}, defaults to producing all MMs and all AMCEs.
+#' @param .structure Either \code{"profile_level"} (default) or \code{"choice_level"} 
+#' @param .estimand Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect
+#' @param .se_method By default, \code{c("analytic", "simulation", "bootstrap")} description
+#' @param .irr \code{NULL} (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
+#' @param .remove_ties Logical: should ties be removed before estimation? Defaults to \code{TRUE}.
+#' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right). Relevant only if analyzed at the choice level
+#' @param .n_sims The number of simulations. Relevant only if \code{.se_method == "simulation"} 
+#' @param .n_boot The number of bootstrapped samples. Relevant only if \code{.se_method == "bootstrap"}
+#' @param .weights_1 the weight to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)
+#' @param .clusters_1 the clusters to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)
+#' @param .se_type_1 the standard error type to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)
+#' @param .weights_2 the weight to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)
+#' @param .clusters_2 the clusters to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)
+#' @param .se_type_2 the standard error type to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)
+#' @return A \code{\link{projoint_results}} object
 
 projoint_level <- function(
     .data,

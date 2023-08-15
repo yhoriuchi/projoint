@@ -15,13 +15,13 @@
 )
 }
 \arguments{
-\item{x}{A `projoint_results_mm` or `projoint_results_amce` object}
+\item{x}{A \code{\link{projoint_results}} object}
 
-\item{.estimand}{Either "mm" for marginal mean (default) or "amce" for average marginal component effect}
+\item{.estimand}{Either \code{"mm"} for marginal mean (default) or \code{"amce"} for average marginal component effect}
 
-\item{.estimates}{The estimates to be plotted, either "corrected" (default), "uncorrected", or "both"}
+\item{.estimates}{The estimates to be plotted, either \code{"corrected"} (default), \code{"uncorrected"}, or \code{"both"}}
 
-\item{.by_var}{TRUE to plot the difference in estimates between the two subgroups, FALSE (default) otherwise}
+\item{.by_var}{\code{TRUE} to plot the difference in estimates between the two subgroups, \code{FALSE} (default) otherwise}
 
 \item{.base_size}{base font size, given in pts.}
 
@@ -30,10 +30,10 @@
 \item{...}{Additional optional arguments}
 }
 \value{
-A ggplot object
+A \code{ggplot} object
 }
 \description{
-This method produces MM or AMCE plots given a `projoint_results` object, the output from the `projoint` function.
+This method produces MM or AMCE plots given a \code{\link{projoint_results}} object, the output from the \code{\link{projoint}} function.
 }
 \examples{
 
