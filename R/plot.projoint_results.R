@@ -129,7 +129,7 @@ plot.projoint_results <- function(
     
     levels1 <- x@labels %>% 
       dplyr::select(attribute, level, level_id) %>% 
-      dplyr::filter(str_detect(level_id, "level1"))
+      dplyr::filter(str_detect(level_id, "level1$"))
     
     out2 <- bind_rows(
       out1,
@@ -139,8 +139,8 @@ plot.projoint_results <- function(
       attributes %>% dplyr::mutate(estimates = "uncorrected")
     ) %>% 
       dplyr::arrange(level_id) %>% 
-      dplyr::mutate(estimate = ifelse(stringr::str_detect(level_id, "level1"), 0, estimate),
-                    se = ifelse(stringr::str_detect(level_id, "level1"), 0, se)) %>% 
+      dplyr::mutate(estimate = ifelse(stringr::str_detect(level_id, "level1$"), 0, estimate),
+                    se = ifelse(stringr::str_detect(level_id, "level1$"), 0, se)) %>% 
       dplyr::select(-baseline)
     
     
@@ -221,14 +221,14 @@ plot.projoint_results <- function(
     } else if (.estimand == "amce"){
       
       g + ggplot2::geom_pointrange(data = out4 %>% 
-                                     dplyr::filter(!stringr::str_detect(level_id, "level1")),
+                                     dplyr::filter(!stringr::str_detect(level_id, "level1$")),
                                    aes(x = estimate,
                                        xmin = conf.low,
                                        xmax = conf.high, 
                                        y = order), 
                                    na.rm = TRUE) +
         ggplot2::geom_pointrange(data = out4 %>% 
-                                   dplyr::filter(stringr::str_detect(level_id, "level1")),
+                                   dplyr::filter(stringr::str_detect(level_id, "level1$")),
                                  aes(x = estimate,
                                      xmin = estimate,
                                      xmax = estimate,
@@ -256,7 +256,7 @@ plot.projoint_results <- function(
     } else if (.estimand == "amce"){
       
       g + ggplot2::geom_pointrange(data = out4 %>% 
-                                     dplyr::filter(!stringr::str_detect(level_id, "level1")),
+                                     dplyr::filter(!stringr::str_detect(level_id, "level1$")),
                                    aes(x = estimate,
                                        xmin = conf.low,
                                        xmax = conf.high, 
@@ -265,7 +265,7 @@ plot.projoint_results <- function(
                                    position = ggplot2::position_dodge(width = 0.5),
                                    na.rm = TRUE) +
         ggplot2::geom_pointrange(data = out4 %>% 
-                                   dplyr::filter(stringr::str_detect(level_id, "level1")),
+                                   dplyr::filter(stringr::str_detect(level_id, "level1$")),
                                  aes(x = estimate,
                                      xmin = estimate,
                                      xmax = estimate,
