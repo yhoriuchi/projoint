@@ -90,95 +90,95 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>.data</dt>
-<dd><p>A `projoint_data` object</p></dd>
+<dd><p>A <code><a href="projoint_data-class.html">projoint_data</a></code> object</p></dd>
 
 
 <dt>.structure</dt>
-<dd><p>Either "profile_level" (default) or "choice_level"</p></dd>
+<dd><p>Either <code>"profile_level"</code> (default) or <code>"choice_level"</code></p></dd>
 
 
 <dt>.estimand</dt>
-<dd><p>Either "mm" for marginal mean or "amce" for average marginal component effect</p></dd>
+<dd><p>Either <code>"mm"</code> for marginal mean or <code>"amce"</code> for average marginal component effect</p></dd>
 
 
 <dt>.att_choose</dt>
-<dd><p>A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).</p></dd>
+<dd><p>A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels <strong>chosen</strong>).</p></dd>
 
 
 <dt>.lev_choose</dt>
-<dd><p>A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis</p></dd>
+<dd><p>A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels <strong>chosen</strong>). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis</p></dd>
 
 
 <dt>.att_notchoose</dt>
-<dd><p>A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".</p></dd>
+<dd><p>A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels <strong>not chosen</strong>). This argument should be specified only if the <code>.structure</code> argument is <code>"choice-level"</code>.</p></dd>
 
 
 <dt>.lev_notchoose</dt>
-<dd><p>A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".</p></dd>
+<dd><p>A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels <strong>not chosen</strong>). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the <code>.structure</code> argument is <code>"choice-level"</code>.</p></dd>
 
 
 <dt>.att_choose_b</dt>
-<dd><p>[baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *chosen*).</p></dd>
+<dd><p>[baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels <strong>chosen</strong>).</p></dd>
 
 
 <dt>.lev_choose_b</dt>
-<dd><p>[baseline for AMCE] A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis</p></dd>
+<dd><p>[baseline for AMCE] A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels <strong>chosen</strong>). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis</p></dd>
 
 
 <dt>.att_notchoose_b</dt>
-<dd><p>[baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels *not chosen*). This argument should be specified only if the `.structure` argument is "choice-level".</p></dd>
+<dd><p>[baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels <strong>not chosen*</strong>). This argument should be specified only if the <code>.structure</code> argument is <code>"choice-level"</code>.</p></dd>
 
 
 <dt>.lev_notchoose_b</dt>
-<dd><p>[baseline for AMCE]  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels *not chosen*). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the `.structure` argument is "choice-level".</p></dd>
+<dd><p>[baseline for AMCE]  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels <strong>not chosen</strong>). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the <code>.structure</code> argument is <code>"choice-level"</code>.</p></dd>
 
 
 <dt>.se_method</dt>
-<dd><p>c("analytic", "simulation", "bootstrap") description</p></dd>
+<dd><p>By default, <code>c("analytic", "simulation", "bootstrap")</code> description</p></dd>
 
 
 <dt>.irr</dt>
-<dd><p>NULL (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value</p></dd>
+<dd><p><code>NULL</code> (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value</p></dd>
 
 
 <dt>.remove_ties</dt>
-<dd><p>Logical: should ties be removed before estimation? Defaults to TRUE.</p></dd>
+<dd><p>Logical: should ties be removed before estimation? Defaults to <code>TRUE</code>.</p></dd>
 
 
 <dt>.ignore_position</dt>
-<dd><p>TRUE (default) if you ignore the location of profile (left or right. Relevant only if analyzed at the choice level</p></dd>
+<dd><p><code>TRUE</code> (default) if you ignore the location of profile (left or right). Relevant only if analyzed at the choice level</p></dd>
 
 
 <dt>.n_sims</dt>
-<dd><p>The number of simulations. Relevant only if .se_method == "simulation"</p></dd>
+<dd><p>The number of simulations. Relevant only if <code>.se_method == "simulation"</code></p></dd>
 
 
 <dt>.n_boot</dt>
-<dd><p>The number of bootstrapped samples. Relevant only if .se_method == "bootstrap"</p></dd>
+<dd><p>The number of bootstrapped samples. Relevant only if <code>.se_method == "bootstrap"</code></p></dd>
 
 
 <dt>.weights_1</dt>
-<dd><p>the weight to estimate IRR (see `lm_robust()`): NULL (default)</p></dd>
+<dd><p>the weight to estimate IRR (see <code><a href="https://declaredesign.org/r/estimatr/reference/lm_robust.html" class="external-link">lm_robust</a></code>): <code>NULL</code> (default)</p></dd>
 
 
 <dt>.clusters_1</dt>
-<dd><p>the clusters to estimate IRR (see `lm_robust()`): NULL (default)</p></dd>
+<dd><p>the clusters to estimate IRR (see <code><a href="https://declaredesign.org/r/estimatr/reference/lm_robust.html" class="external-link">lm_robust</a></code>): <code>NULL</code> (default)</p></dd>
 
 
 <dt>.se_type_1</dt>
-<dd><p>the standard error type to estimate IRR (see `lm_robust()`): "classical" (default)</p></dd>
+<dd><p>the standard error type to estimate IRR (see <code><a href="https://declaredesign.org/r/estimatr/reference/lm_robust.html" class="external-link">lm_robust</a></code>): <code>"classical"</code> (default)</p></dd>
 
 
 <dt>.weights_2</dt>
-<dd><p>the weight to estimate MM or AMCE (see `lm_robust()`): NULL (default)</p></dd>
+<dd><p>the weight to estimate MM or AMCE (see <code><a href="https://declaredesign.org/r/estimatr/reference/lm_robust.html" class="external-link">lm_robust</a></code>): <code>NULL</code> (default)</p></dd>
 
 
 <dt>.clusters_2</dt>
-<dd><p>the clusters to estimate MM or AMCE (see `lm_robust()`): NULL (default)</p></dd>
+<dd><p>the clusters to estimate MM or AMCE (see <code><a href="https://declaredesign.org/r/estimatr/reference/lm_robust.html" class="external-link">lm_robust</a></code>): <code>NULL</code> (default)</p></dd>
 
 
 <dt>.se_type_2</dt>
-<dd><p>the standard error type to estimate MM or AMCE (see `lm_robust()`): "classical" (default)</p></dd>
+<dd><p>the standard error type to estimate MM or AMCE (see <code><a href="https://declaredesign.org/r/estimatr/reference/lm_robust.html" class="external-link">lm_robust</a></code>): <code>"classical"</code> (default)</p></dd>
 
 </dl></div>
     <div class="section level2">
