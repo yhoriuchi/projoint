@@ -102,15 +102,16 @@ the data and columns. In <code>projoint</code>, the
 <p>Let’s look at a simple example. We expand all those arguments below
 for clarity:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">outcomes1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">outcomes1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes1</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
 <span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span>
 <span>                         .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
-<span>                         .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span>
+<span>                         .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
 <span>                         .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
 <span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
 <span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                         .fill <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Let’s walk through the arguments we have specified.
 <code>.dataframe</code> is a data frame, ideally read in from Qualtrics
 using <code><a href="../reference/read_Qualtrics.html">read_Qualtrics()</a></code> but not necessarily. The
@@ -144,15 +145,16 @@ Profile 1 is still Profile 1, rather than flipping positions to Profile
 2. Here we specify that by changing <code>.flipped</code> to
 <code>FALSE</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_notflipped"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">outcomes2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">outcomes2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes2</span>, <span class="st">"choice1_repeated_notflipped"</span><span class="op">)</span></span>
 <span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData2</span>, </span>
 <span>                         .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
-<span>                         .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span>
+<span>                         .outcomes <span class="op">=</span> <span class="va">outcomes2</span>,</span>
 <span>                         .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
 <span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
 <span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                         .flipped <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>                         .flipped <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                         .fill <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="without-the-repeated-tasks">Without the repeated tasks<a class="anchor" aria-label="anchor" href="#without-the-repeated-tasks"></a>
@@ -161,18 +163,91 @@ Profile 1 is still Profile 1, rather than flipping positions to Profile
 <code>.repeated</code> to <code>FALSE</code> and <code>.flipped</code>
 to <code>NULL</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">outcomes3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">out3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData3</span>, </span>
 <span>                         .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
-<span>                         .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span>
+<span>                         .outcomes <span class="op">=</span> <span class="va">outcomes3</span>,</span>
 <span>                         .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
 <span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
 <span>                         .repeated <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                         .flipped <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span>                         .flipped <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                         .fill <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="arrange-the-order-and-labels-of-attributes-and-levels">2.3 Arrange the order and labels of attributes and levels<a class="anchor" aria-label="anchor" href="#arrange-the-order-and-labels-of-attributes-and-levels"></a>
+<h3 id="the--fill-argument">2.3 The <code>.fill</code> argument<a class="anchor" aria-label="anchor" href="#the--fill-argument"></a>
+</h3>
+<p>The <code>.fill</code> argument is logical: TRUE if you want to use
+information about whether a respondent chose the same profile for the
+repeated task and “fill” (using the ‘tidyr’ package) missing values for
+the non-repeated tasks, FALSE (otherwise).</p>
+<p>You can see the difference by comparing the following two:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fill_FALSE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span>
+<span>                 .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
+<span>                 .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
+<span>                 .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>                 .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
+<span>                 .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                 .flipped <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                 .fill <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">fill_TRUE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span>
+<span>                 .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
+<span>                 .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
+<span>                 .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>                 .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
+<span>                 .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                 .flipped <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                 .fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>We just select the essential variables only. The first data frame
+includes the values for the <code>agree</code> variable (whether the
+same profile was chosen or not) only for the repeated task. The second
+data frame fills the missing values for the other non-repeated
+tasks.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">selected_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"task"</span>, <span class="st">"profile"</span>, <span class="st">"selected"</span>, <span class="st">"selected_repeated"</span>, <span class="st">"agree"</span><span class="op">)</span></span>
+<span><span class="va">fill_FALSE</span><span class="op">@</span><span class="va">data</span><span class="op">[</span><span class="va">selected_vars</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6,400 × 6</span></span></span>
+<span><span class="co">##    id                 task profile selected selected_repeated agree</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> R_00zYHdY1te1Qlrz     1       1        1                 1     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> R_00zYHdY1te1Qlrz     1       2        0                 0     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> R_00zYHdY1te1Qlrz     2       1        1                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> R_00zYHdY1te1Qlrz     2       2        0                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> R_00zYHdY1te1Qlrz     3       1        1                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> R_00zYHdY1te1Qlrz     3       2        0                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> R_00zYHdY1te1Qlrz     4       1        0                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> R_00zYHdY1te1Qlrz     4       2        1                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> R_00zYHdY1te1Qlrz     5       1        1                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> R_00zYHdY1te1Qlrz     5       2        0                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 6,390 more rows</span></span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fill_TRUE</span><span class="op">@</span><span class="va">data</span><span class="op">[</span><span class="va">selected_vars</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6,400 × 6</span></span></span>
+<span><span class="co">##    id                 task profile selected selected_repeated agree</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> R_00zYHdY1te1Qlrz     1       1        1                 1     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> R_00zYHdY1te1Qlrz     1       2        0                 0     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> R_00zYHdY1te1Qlrz     2       1        1                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> R_00zYHdY1te1Qlrz     2       2        0                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> R_00zYHdY1te1Qlrz     3       1        1                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> R_00zYHdY1te1Qlrz     3       2        0                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> R_00zYHdY1te1Qlrz     4       1        0                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> R_00zYHdY1te1Qlrz     4       2        1                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> R_00zYHdY1te1Qlrz     5       1        1                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> R_00zYHdY1te1Qlrz     5       2        0                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 6,390 more rows</span></span></span></code></pre>
+<p>If the number of respondents is small, if the number of specific
+profile pairs of your interest is small, and/or if the number of
+specific respondent subgroups you want to study is small, it is worth
+changing this option to TRUE. But please note that
+<code>.fill = TRUE</code> is based on an assumption that IRR is
+independent of information contained in conjoint tables. Although our
+empirical tests suggest the validity of this assumption, if you are
+unsure about it, it is better to use the default value (FALSE).</p>
+</div>
+<div class="section level3">
+<h3 id="arrange-the-order-and-labels-of-attributes-and-levels">2.4 Arrange the order and labels of attributes and levels<a class="anchor" aria-label="anchor" href="#arrange-the-order-and-labels-of-attributes-and-levels"></a>
 </h3>
 <p>The reshaped data have attributes and levels that are sorted
 alphabetically. Often, however, you want to reorder the attributes
@@ -190,24 +265,24 @@ any change to the first column named <code>level_id</code></em>. After
 saving the updated CSV file, you should use <code><a href="../reference/read_labels.html">read_labels()</a></code>
 to read it and save the object suitable for the next step (i.e., use
 <code><a href="../reference/projoint.html">projoint()</a></code>).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/save_labels.html">save_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_original.csv"</span><span class="op">)</span></span>
 <span><span class="va">out1_arranged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_labels.html">read_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_arranged.csv"</span><span class="op">)</span></span></code></pre></div>
 <p>You can find this data set on GitHub: <a href="https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_original.csv" class="external-link">labels_original.csv</a>
 and <a href="https://github.com/yhoriuchi/projoint/blob/master/data-raw/labels_arranged.csv" class="external-link">labels_arranged.csv</a>.</p>
 <p>The figure based on the original order and labels is in the
 alphabetical order:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="02-wrangle_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
+<p><img src="02-wrangle_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
 <p>The labels and order of all attribute-levels in the second figure is
 the same as Figure 2 in <a href="https://doi.org/10.1086/687569" class="external-link">Mummolo
 and Nall (2017)</a>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="02-wrangle_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
+<p><img src="02-wrangle_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
