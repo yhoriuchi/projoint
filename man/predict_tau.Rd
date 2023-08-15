@@ -4,7 +4,6 @@
 \alias{predict_tau}
 \alias{print.projoint_tau}
 \alias{summary.projoint_tau}
-\alias{plot.projoint_tau}
 \title{Estimate tau when there is no repeated task.}
 \usage{
 predict_tau(.data, .title = NULL)
@@ -12,11 +11,9 @@ predict_tau(.data, .title = NULL)
 \method{print}{projoint_tau}(x, ...)
 
 \method{summary}{projoint_tau}(object, ...)
-
-\method{plot}{projoint_tau}(x, ...)
 }
 \arguments{
-\item{.data}{A `projoint_data` object, outputted from `reshape_projoint`}
+\item{.data}{A \code{\link{projoint_data}} object, outputted from \code{\link{reshape_projoint}}}
 
 \item{.title}{The title of a figure}
 
@@ -27,12 +24,12 @@ predict_tau(.data, .title = NULL)
 \item{object}{An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}}
 }
 \value{
-A list (a vector of predicted value; ggplot object)
+A \code{\link{projoint_tau}} object containing the estimate of tau and a figure visualizing the extrapolation method.
 
 A tibble showing IRR as profile similarity changes. The value of \code{predicted} when \code{x=0} is the estimated IRR.
 }
 \description{
-Given an output from `projoint_data`, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR).
+Given an output from \code{\link{projoint_data}}, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR).
 }
 \examples{
 library(projoint)

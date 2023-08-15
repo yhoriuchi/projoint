@@ -33,6 +33,7 @@ reference:
   desc: Produce plots
   contents:
   - plot.projoint_results
+  - plot.projoint_tau
 
 articles:
 - title: Recommendations

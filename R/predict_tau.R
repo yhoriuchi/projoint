@@ -1,6 +1,6 @@
 #' Estimate tau when there is no repeated task.
 #'
-#' Given an output from `projoint_data`, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR). 
+#' Given an output from \code{\link{projoint_data}}, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR). 
 #'
 #' @import dplyr
 #' @import tidyr
@@ -12,9 +12,9 @@
 #' @import ggthemes
 #' @importFrom stats setNames
 #' @importFrom methods new
-#' @param .data A `projoint_data` object, outputted from `reshape_projoint`
+#' @param .data A \code{\link{projoint_data}} object, outputted from \code{\link{reshape_projoint}}
 #' @param .title The title of a figure
-#' @return A list (a vector of predicted value; ggplot object)
+#' @return A \code{\link{projoint_tau}} object containing the estimate of tau and a figure visualizing the extrapolation method.
 #' @export
 #' @examples
 #' library(projoint)
@@ -300,14 +300,3 @@ print.projoint_tau <- function(x, ...) {
 summary.projoint_tau <- function(object, ...) {
   object@irr  
 }
-
-#' @param x An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}
-#' @param ... Optional arguments; currently none accepted
-#' @export
-#' @rdname predict_tau
-
-
-plot.projoint_tau <- function(x, ...) {
-  x@figure
-}
-
