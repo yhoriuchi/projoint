@@ -17,7 +17,7 @@
 #' @param .se_method By default, \code{c("analytic", "simulation", "bootstrap")} description
 #' @param .irr \code{NULL} (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
 #' @param .remove_ties Logical: should ties be removed before estimation? Defaults to \code{TRUE}.
-#' @param .ignore_position NULL (default) if \code{.structure = "profile_level"}. Set to TRUE if you ignore the position of profile (left or right); FALSE if the relative positioning of profiles matters for analysis. If  \code{.structure = "choice_level"} and this argument is \code{NULL}, it is automatically reset to \code{TRUE}.
+#' @param .ignore_position NULL (default) if \code{.structure = "choice_level"}. Set to TRUE if you ignore the position of profile (left or right); FALSE if the relative positioning of profiles matters for analysis. If  \code{.structure = "choice_level"} and this argument is \code{NULL}, it is automatically reset to \code{TRUE}.
 #' @param .n_sims The number of simulations. Relevant only if \code{.se_method == "simulation"} 
 #' @param .n_boot The number of bootstrapped samples. Relevant only if \code{.se_method == "bootstrap"}
 #' @param .weights_1 the weight to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)

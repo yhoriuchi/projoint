@@ -47,7 +47,7 @@ projoint(
 
 \item{.remove_ties}{Logical: should ties be removed before estimation? Defaults to \code{TRUE}.}
 
-\item{.ignore_position}{NULL (default) if \code{.structure = "profile_level"}. Set to TRUE if you ignore the position of profile (left or right); FALSE if the relative positioning of profiles matters for analysis. If  \code{.structure = "profile_level"} and this argument is \code{NULL}, it is automatically reset to \code{TRUE}.}
+\item{.ignore_position}{NULL (default) if \code{.structure = "choice_level"}. Set to TRUE if you ignore the position of profile (left or right); FALSE if the relative positioning of profiles matters for analysis. If  \code{.structure = "choice_level"} and this argument is \code{NULL}, it is automatically reset to \code{TRUE}.}
 
 \item{.n_sims}{The number of simulations. Relevant only if \code{.se_method == "simulation"}}
 
