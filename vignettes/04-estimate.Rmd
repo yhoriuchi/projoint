@@ -22,8 +22,17 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .idvar = "ResponseId", 
                          .outcomes = outcomes,
                          .outcomes_ids = c("A", "B"),
-                         .alphabet = "K")
+                         .alphabet = "K",
+                         .repeated = TRUE,
+                         .flipped = TRUE)
 ```
+
+<span style="color:red">Important: To estimate and visualize the quantities of your interest using our package (at least in the current version), you need to set the attributes and levels using the IDs, rather than their actual labels. We think that this approach is prone to error because some applications may include foreign characters (e.g., 2-byte Japanese characters) or special characters. To check which IDs correspond to which attributes and levels, you can type the following line in your script:</span>
+```{r}
+out1@labels
+```
+<span style="color:red">You can also `save_labels()` and save a CSV file for your reference.</span>
+
 
 ### 4.2 Estimate MMs
 
