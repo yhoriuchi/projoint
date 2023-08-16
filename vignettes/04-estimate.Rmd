@@ -22,9 +22,7 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .idvar = "ResponseId", 
                          .outcomes = outcomes,
                          .outcomes_ids = c("A", "B"),
-                         .alphabet = "K", 
-                         .repeated = TRUE,
-                         .flipped = TRUE)
+                         .alphabet = "K")
 ```
 
 ### 4.2 Estimate MMs

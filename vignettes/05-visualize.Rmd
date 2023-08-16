@@ -65,7 +65,9 @@ summary(choice_mm)
 plot(choice_mm)
 ```
 
-The default plot for the choice-level marginal means is a basic ggplot object. You can polish by adding some layers :
+Since there are not many estimates, we encourage your to make plots based on the objectives of your research. The default plot for the choice-level marginal means is a basic ggplot object, which compares the marginal mean for each of the two options. The sum of the two percenntages is 100, and thus you may think that redundant information is presented in this figure. But we think this figure is an effectivey way to show the results of a head-to-head (choice-level) comparison.
+
+You can polish by adding some layers :
 ```{r, fig.height=4, fig.width=8}
 plot(choice_mm,
      .labels = c("15% of pre-tax income", 
