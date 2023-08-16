@@ -17,27 +17,14 @@ When there is a repeated task, it is easy to estimate intra-respondent reliabili
 library(projoint)
 ```
 
-### 3.2 Read and wrangle data without the repeated tasks
+### 3.2 Predict IRR based on the extrapolation method
 
-As before, we start by reshaping our data and setting `.repeated` to `FALSE`:
+As before, you should start by reading your Qualtrics file and reshaping it using `reshape_projiont()`. See [2.2 Read and wrangle data, with the flipped repeated tasks](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#read-and-wrangle-data). But we skip this step in this instruction and we use the already wrangled data named "out1_arranged". 
 
+We pass this data set to the `predict_tau` function, which both calculates IRR and produces a figure showing the extrapolation method visually. (see [2.3 Arrange the order and labels of attributes and levels](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#arrange-the-order-and-labels-of-attributes-and-levels})).
+With the flipped repeated tasks
 ```{r}
-outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-out3 <- reshape_projoint(.dataframe = exampleData3, 
-                         .idvar = "ResponseId", 
-                         .outcomes = outcomes,
-                         .outcomes_ids = c("A", "B"),
-                         .alphabet = "K", 
-                         .repeated = FALSE,
-                         .flipped = NULL)
-```
-
-### 3.3 Predict IRR based on the extrapolation method
-
-Then, we pass this data set to the `predict_tau` function, which both calculates IRR and produces a figure showing the extrapolation method visually.
-
-```{r}
-predicted_irr <- predict_tau(out3)
+predicted_irr <- predict_tau(out1_arranged)
 ```
 
 A `projoint_tau` object, created by `predict_tau`, can be explored using the usual tools. The `print` method explains that this estimate of tau was produced via extrapolation rather than assumed or calculated using a repeated task and presents that estimate:
@@ -54,6 +41,6 @@ summary(predicted_irr)
 
 And the `plot` method renders a plot showing the extrapolated value of tau:
 
-```{r}
+```{r, fig.height=4, fig.width=8}
 plot(predicted_irr)
 ```
