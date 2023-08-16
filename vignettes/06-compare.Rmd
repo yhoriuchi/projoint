@@ -140,5 +140,70 @@ g_0 + g_1 + g_d
 
 ### 6.3 Choice-level analysis
 
-To be written.
+We encourage users of our package to make custom figures based on the estimates of your choice-level analysis. The following is just one example.
 
+```{r, fig.height=4, fig.width=8}
+df_D <- exampleData1 %>% 
+  filter(party_1 == "Democrat") %>% 
+  reshape_projoint(.idvar = "ResponseId", 
+                   .outcomes = outcomes,
+                   .outcomes_ids = c("A", "B"),
+                   .alphabet = "K", 
+                   .repeated = TRUE,
+                   .flipped = TRUE)
+
+df_R <- exampleData1 %>% 
+  filter(party_1 == "Republican") %>% 
+  reshape_projoint(.idvar = "ResponseId", 
+                   .outcomes = outcomes,
+                   .outcomes_ids = c("A", "B"),
+                   .alphabet = "K", 
+                   .repeated = TRUE,
+                   .flipped = TRUE)
+
+df_0 <- exampleData1 %>% 
+  filter(party_1 %in% c("Something else", "Independent")) %>% 
+  reshape_projoint(.idvar = "ResponseId", 
+                   .outcomes = outcomes,
+                   .outcomes_ids = c("A", "B"),
+                   .alphabet = "K", 
+                   .repeated = TRUE,
+                   .flipped = TRUE)
+
+qoi <- set_qoi(
+  .structure = "choice_level",
+  .estimand = "mm",
+  .att_choose = "att2", # Presidential Vote (2020)
+  .lev_choose = "level3", # 70% Democrat, 30% Republican 
+  .att_notchoose = "att2", 
+  .lev_notchoose = "level1", # 30% Democrat, 70% Republican
+)
+
+out_D <- projoint(df_D, qoi, .structure = "choice_level", .ignore_position = TRUE)
+out_R <- projoint(df_R, qoi, .structure = "choice_level", .ignore_position = TRUE)
+out_0 <- projoint(df_0, qoi, .structure = "choice_level", .ignore_position = TRUE)
+
+out_merged <- bind_rows(
+  out_D@estimates %>% mutate(party = "Democrat"),
+  out_R@estimates %>% mutate(party = "Republican"),
+  out_0@estimates %>% mutate(party = "Independent")
+) %>% 
+  filter(estimand == "mm_corrected")
+
+ggplot(out_merged, 
+       aes(y = party,
+           x = estimate)) +
+  geom_vline(xintercept = 0.5,
+             linetype = "dashed", 
+             color = "gray") +
+  geom_pointrange(aes(xmin = conf.low,
+                      xmax = conf.high)) +
+  geom_text(aes(label = format(round(estimate, digits = 2), nsmall = 2)),
+            vjust = -1) +
+  labs(y = NULL,
+       x = "Choice-level marginal mean", 
+       title = "Choose an area with 70% Democrat as opposed to an area with 30% Democrat") +
+  theme_classic()
+
+
+```
