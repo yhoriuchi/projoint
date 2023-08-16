@@ -2,10 +2,11 @@
 #' @importFrom methods is
 #' @importFrom methods new
 #' @keywords internal
-#' @param slots Takes four for MMs and eight for AMCEs
+#' @param slots Takes four for MMs and eight for AMCEs as well as estimand and structure
 
 projoint_qoi <- setClass("projoint_qoi",
-                         slots = c("attribute_of_interest",
+                         slots = c("estimand", "structure",
+                                   "attribute_of_interest",
                                    "levels_of_interest",
                                    "attribute_of_interest_0",
                                    "levels_of_interest_0",

@@ -6,7 +6,7 @@
 \alias{projoint_qoi}
 \title{Class generator for \code{projoint_qoi}}
 \arguments{
-\item{slots}{Takes four for MMs and eight for AMCEs}
+\item{slots}{Takes four for MMs and eight for AMCEs as well as estimand and structure}
 }
 \description{
 Class generator for \code{projoint_qoi}

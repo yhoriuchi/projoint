@@ -37,9 +37,9 @@ projoint(
 
 \item{.by_var}{A dichotomous variable (character) used for subgroup analysis}
 
-\item{.structure}{Either \code{"profile_level"} (default) or \code{"choice_level"}}
+\item{.structure}{Either \code{"profile_level"} (default) or \code{"choice_level"}. If \code{.qoi} is set, the value of \code{structure} from \code{.qoi} overrides this value.}
 
-\item{.estimand}{Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect}
+\item{.estimand}{Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect. If \code{.qoi} is set, the value of \code{estimand} from \code{.qoi} overrides this value.}
 
 \item{.se_method}{By default, \code{c("analytic", "simulation", "bootstrap")} description}
 
@@ -47,7 +47,7 @@ projoint(
 
 \item{.remove_ties}{Logical: should ties be removed before estimation? Defaults to \code{TRUE}.}
 
-\item{.ignore_position}{TRUE (default) if you ignore the location of profile (left or right). Relevant only if analyzed at the choice level}
+\item{.ignore_position}{NULL (default) if \code{.structure = "profile_level"}. Set to TRUE if you ignore the position of profile (left or right); FALSE if the relative positioning of profiles matters for analysis. If  \code{.structure = "profile_level"} and this argument is \code{NULL}, it is automatically reset to \code{TRUE}.}
 
 \item{.n_sims}{The number of simulations. Relevant only if \code{.se_method == "simulation"}}
 

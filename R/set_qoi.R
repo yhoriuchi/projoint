@@ -38,7 +38,9 @@ set_qoi <- function(
   
   # return ------------------------------------------------------------------
   
-  projoint_qoi("attribute_of_interest" = .att_choose,
+  projoint_qoi("estimand" = .estimand,
+               "structure" = .structure,
+    "attribute_of_interest" = .att_choose,
                "levels_of_interest" = .lev_choose,
                "attribute_of_interest_0" = .att_notchoose,
                "levels_of_interest_0" = .lev_notchoose,

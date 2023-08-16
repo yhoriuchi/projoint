@@ -27,6 +27,7 @@ Qualtrics and Prolific; see Clayton et al. replication materials.
 out1_arranged
 }
 \description{
-This data set is identical to Example Data Set 1, except its attributes and levels have been manually relabeled and reordered.
+This data set is identical to Example Data Set 1, except its attributes and levels have been manually relabeled and reordered using \code{\link{save_labels}} and \code{\link{read_labels}}.
+Please see \url{https://yhoriuchi.github.io/projoint/articles/02-wrangle.html} for instructions on manually relabeling.
 }
 \keyword{datasets}

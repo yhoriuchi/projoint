@@ -12,12 +12,12 @@
 #' @param .data A \code{\link{projoint_data}} object
 #' @param .qoi A \code{\link{projoint_qoi}} object. If \code{NULL}, defaults to producing all MMs and all AMCEs.
 #' @param .by_var A dichotomous variable (character) used for subgroup analysis
-#' @param .structure Either \code{"profile_level"} (default) or \code{"choice_level"} 
-#' @param .estimand Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect
+#' @param .structure Either \code{"profile_level"} (default) or \code{"choice_level"}. If \code{.qoi} is set, the value of \code{structure} from \code{.qoi} overrides this value.
+#' @param .estimand Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect. If \code{.qoi} is set, the value of \code{estimand} from \code{.qoi} overrides this value.
 #' @param .se_method By default, \code{c("analytic", "simulation", "bootstrap")} description
 #' @param .irr \code{NULL} (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
 #' @param .remove_ties Logical: should ties be removed before estimation? Defaults to \code{TRUE}.
-#' @param .ignore_position TRUE (default) if you ignore the location of profile (left or right). Relevant only if analyzed at the choice level
+#' @param .ignore_position NULL (default) if \code{.structure = "profile_level"}. Set to TRUE if you ignore the position of profile (left or right); FALSE if the relative positioning of profiles matters for analysis. If  \code{.structure = "profile_level"} and this argument is \code{NULL}, it is automatically reset to \code{TRUE}.
 #' @param .n_sims The number of simulations. Relevant only if \code{.se_method == "simulation"} 
 #' @param .n_boot The number of bootstrapped samples. Relevant only if \code{.se_method == "bootstrap"}
 #' @param .weights_1 the weight to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)
@@ -68,6 +68,21 @@ projoint <- function(
     .clusters_2 = NULL,
     .se_type_2 = "classical"
 ){
+  
+  if(!is.null(.structure) & !is.null(.qoi)){
+    .structure = .qoi@structure
+    warning("Both .qoi and .structure are specified; using the value from .qoi.")
+  }
+
+  if(!is.null(.estimand) & !is.null(.qoi)){
+    .estimand = .qoi@estimand
+    warning("Both .qoi and .estimand are specified; using the value from .qoi.")
+  }
+  
+    
+  if(.structure == "choice_level" & is.null(.ignore_position)){
+    .ignore_position = TRUE
+  }
   
   if (is.null(.by_var)){
     
