@@ -75,18 +75,101 @@
 
     
     
-<p>The choice-level analysis will allow reserachers to examine many more
-questions under-investigated in the litearture. This article explains
+<p>The choice-level analysis will allow researchers to examine many more
+questions under-investigated in the literature. This article explains
 some possible avenues for fruitful research.</p>
 <div class="section level3">
-<h3 id="examine-trade-offs">6.1 Examine trade-offs<a class="anchor" aria-label="anchor" href="#examine-trade-offs"></a>
+<h3 id="load-the-projoint-package-and-the-other-necessary-package">7.1 Load the projoint package and the other necessary package<a class="anchor" aria-label="anchor" href="#load-the-projoint-package-and-the-other-necessary-package"></a>
 </h3>
-<p>To be written</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
+<p>As in the previous articles, we use the already wrangled and cleaned
+data named “out1_reshaped.” To see what the attribute IDs and level IDs
+means, you can type:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out1_arranged</span><span class="op">@</span><span class="va">labels</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
+<span><span class="co">##    attribute                level                        attribute_id level_id  </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> Housing Cost             15% of pre-tax income        att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Housing Cost             30% of pre-tax income        att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Housing Cost             40% of pre-tax income        att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Presidential Vote (2020) 50% Democrat, 50% Republican att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> Presidential Vote (2020) 30% Democrat, 70% Republican att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Presidential Vote (2020) 70% Democrat, 30% Republican att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Racial Composition       50% White, 50% Nonwhite      att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Racial Composition       75% White, 25% Nonwhite      att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> Racial Composition       90% White, 10% Nonwhite      att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> Racial Composition       96% White, 4% Nonwhite       att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="examine-trade-offs">7.1 Examine trade-offs<a class="anchor" aria-label="anchor" href="#examine-trade-offs"></a>
+</h3>
+<p>You may be interested in how people make a choice when they face
+trade-off options. For example, on the one hand, they may want to live
+in an inexpensive house. On the other hand, they may prefer to avoid
+living in an area with a high crime rate. Which of these two options
+would they prefer? You can compare these two options directly. For the
+customization of the figure, see <a href="https://yhoriuchi.github.io/projoint/articles/05-visualize.html#choice-level-analysis">Visualize
+MMs or AMCEs, Choice-level analysis</a></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">qoi_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
+<span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
+<span>  .att_choose <span class="op">=</span> <span class="st">"att1"</span>, </span>
+<span>  .lev_choose <span class="op">=</span> <span class="st">"level1"</span>,</span>
+<span>  .att_notchoose <span class="op">=</span> <span class="st">"att6"</span>, </span>
+<span>  .lev_notchoose <span class="op">=</span> <span class="st">"level2"</span></span>
+<span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">mm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1_arranged</span>,</span>
+<span>                .qoi <span class="op">=</span> <span class="va">qoi_1</span>,</span>
+<span>                .structure <span class="op">=</span> <span class="st">"choice_level"</span>, </span>
+<span>                .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm1</span>,</span>
+<span>     .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Housing Cost\n(15% of pre-tax income)"</span>, </span>
+<span>                 <span class="st">"Violent Crime Rate\n(20% &gt; National Average)"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Marginal mean"</span>,</span>
+<span>       x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>             linetype <span class="op">=</span> <span class="st">"dashed"</span>, </span>
+<span>             color <span class="op">=</span> <span class="st">"darkgray"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="07-explore_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="set-multiple-levels-for-the-attribute-of-interest">6.1 Set multiple levels for the attribute of interest<a class="anchor" aria-label="anchor" href="#set-multiple-levels-for-the-attribute-of-interest"></a>
 </h3>
-<p>To be written</p>
+<p>You may be interested in measuring the marginal means of choosing
+more than one level. For example, you may want to estimate the marginal
+mean of choosing “City, more residential area” OR “City, downtown area”
+as opposed to “Suburban, only houses” OR “Suburban, downtown area”.
+Then, you can run the following code:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">qoi_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
+<span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
+<span>  .att_choose <span class="op">=</span> <span class="st">"att7"</span>, </span>
+<span>  .lev_choose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level2"</span>, <span class="st">"level3"</span><span class="op">)</span>,</span>
+<span>  .att_notchoose <span class="op">=</span> <span class="st">"att7"</span>, </span>
+<span>  .lev_notchoose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level5"</span>, <span class="st">"level6"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1_arranged</span>,</span>
+<span>                .qoi <span class="op">=</span> <span class="va">qoi_2</span>,</span>
+<span>                .structure <span class="op">=</span> <span class="st">"choice_level"</span>, </span>
+<span>                .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm2</span>, </span>
+<span>     .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"City"</span>, <span class="st">"Suburban"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Marginal mean"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Type of place"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>             linetype <span class="op">=</span> <span class="st">"dashed"</span>, </span>
+<span>             color <span class="op">=</span> <span class="st">"darkgray"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="07-explore_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
