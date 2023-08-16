@@ -13,7 +13,8 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .outcomes_ids = c("A", "B"),
                          .alphabet = "K", 
                          .repeated = TRUE,
-                         .flipped = TRUE)
+                         .flipped = TRUE, 
+                         .fill = TRUE)
 
 save_labels(out1, "data-raw/labels_original.csv")
 out1_arranged <- read_labels(out1, "data-raw/labels_arranged.csv")
