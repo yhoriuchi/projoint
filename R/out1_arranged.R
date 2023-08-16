@@ -3,7 +3,7 @@
 #' This data set is identical to Example Data Set 1, except its attributes and levels have been manually relabeled and reordered using \code{\link{save_labels}} and \code{\link{read_labels}}.
 #' Please see \url{https://yhoriuchi.github.io/projoint/articles/02-wrangle.html} for instructions on manually relabeling.
 #' 
-#' @format ## `exampleData1`
+#' @format ## `out1_arranged`
 #' A data frame with 201 rows and 186 columns:
 #' \describe{
 #'   \item{ResponseId}{Unique respondent ID}

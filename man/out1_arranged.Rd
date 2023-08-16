@@ -5,7 +5,7 @@
 \alias{out1_arranged}
 \title{Reorganized Projoint Example Data Set 1}
 \format{
-## `exampleData1`
+## `out1_arranged`
 A data frame with 201 rows and 186 columns:
 \describe{
   \item{ResponseId}{Unique respondent ID}
