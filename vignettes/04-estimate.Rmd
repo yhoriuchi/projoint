@@ -27,14 +27,18 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .flipped = TRUE)
 ```
 
-<span style="color:red">Important: To estimate and visualize the quantities of your interest using our package (at least in the current version), you need to set the attributes and levels using the IDs, rather than their actual labels. We think that this approach is prone to error because some applications may include foreign characters (e.g., 2-byte Japanese characters) or special characters. To check which IDs correspond to which attributes and levels, you can type the following line in your script:</span>
+### 4.2 Why do we recommend you use IDs? 
+
+To estimate and visualize the quantities of your interest using our package (at least in the current version), you need to set the attributes and levels using the IDs, such as `att1` and `level2`, rather than their actual labels, such as "Housing Cost" (for `att1`) and "15% of pre-tax income" (for `level1` of `att1`). We think that this approach is prone to error because some applications may include foreign characters (e.g., 2-byte Japanese characters) or special characters. Sometimes, your design may include the same levels for more than one attribute; for example, "Teaching quality" = {"High", "Low"} and "Research quality" = {"High", "Low")). To avoid any possible strange result, we use the unique identiers for each attribute-level. 
+
+To check which IDs correspond to which attributes and levels, you can type the following line in your script:
 ```{r}
 out1@labels
 ```
-<span style="color:red">You can also `save_labels()` and save a CSV file for your reference.</span>
+You can also `save_labels()` and save a CSV file for your reference.
 
 
-### 4.2 Estimate MMs
+### 4.3 Estimate MMs
 
 There are two main setups for which `projoint` can produce estimates. The profile-level is the most common approach in the literature, while the choice-level is more flexible and powerful.
 
@@ -123,7 +127,7 @@ summary(mm2)
 
 ```
 
-### 4.3 Estimate AMCEs
+### 4.4 Estimate AMCEs
 
 Note that we can replicate all above analyses using the AMCE instead of the MM just by specifying that the `.estimand = "amce"` rather than the default `"mm"`. 
 
