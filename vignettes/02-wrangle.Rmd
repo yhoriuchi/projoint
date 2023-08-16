@@ -57,7 +57,7 @@ out2 <- reshape_projoint(.dataframe = exampleData2,
 
 #### Without the repeated tasks
 
-Or in cases with no repeated task at all, we set `.repeated` to `FALSE` and  `.flipped` to `NULL`:
+Or in cases with no repeated task at all, we set `.repeated` to `FALSE` and  `.flipped` to `NULL`. Don't worry, we can still correct for measurement error using an extrapolation method; see our third vignette for details.
 
 ```{r}
 outcomes3 <- paste0("choice", seq(from = 1, to = 8, by = 1))
@@ -76,7 +76,8 @@ out3 <- reshape_projoint(.dataframe = exampleData3,
 
 The `.fill` argument is logical: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the 'tidyr' package) missing values for the non-repeated tasks, FALSE (otherwise). 
 
-You can see the difference by comparing the following two:
+You can see the difference by comparing the results of `reshape_projoint` when `.fill` is either `TRUE` or `FALSE`. 
+
 ```{r}
 fill_FALSE <- reshape_projoint(.dataframe = exampleData1, 
                                .idvar = "ResponseId", 
@@ -95,23 +96,29 @@ fill_TRUE <- reshape_projoint(.dataframe = exampleData1,
                               .flipped = TRUE, 
                               .fill = TRUE)
 ```
-We just select the essential variables only. The first data frame includes the values for the `agree` variable (whether the same profile was chosen or not) only for the repeated task. The second data frame fills the missing values for the other non-repeated tasks.
+Looking only at a subset of the variables, we can see that the first data frame includes the values for the `agree` variable (whether the same profile was chosen or not) only for the repeated task. The second data frame fills the missing values for the other non-repeated tasks.
+
 ```{r}
 selected_vars <- c("id", "task", "profile", "selected", "selected_repeated", "agree")
 fill_FALSE@data[selected_vars]
 fill_TRUE@data[selected_vars]
-
 ```
+
 If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).
 
-### 2.4 Read your already-wrangled tibble
+### 2.4 What if your data is already clean?
 
-You may have already read the original data downloaded from Qualtrics, load it to R, and wrangle data to make a data frame (or tibble) ready of analysis. In such a case, you you use  `make_projoint_data()` to save your data as a "projoint_data" class object necessary to use `projoint()`. Here is an example. First, load your data frame. 
+If you have already downloaded your data set from Qualtrics, loaded it into R, and cleaned it, then you can use  `make_projoint_data()` to save your data frame or tibble as a `projoint_data` object for use with the `projoint()`. Here is an example. First, load your data frame. 
 ```{r}
 data <- exampleData1_labelled_tibble
 ```
-It should looks like the following. Each row should correspond to each of two profiles in each task for each respondent. The data frame should have columns indicating (1) each respondent's ID, (2) task number, (3) profile number, and (4) a column recording each response (0, 1) for each task. If your design includes the repeated task, it should also include a column recording the response for the repeated task. 
+
+
+It should look like the tibble below. Each row should correspond to one profile from one task for one respondent. The data frame should have columns indicating (1) the respondent ID, (2) task number, (3) profile number, (4) attributes, and (5) a column recording each response (0, 1) for each task. If your design includes the repeated task, it should also include a column recording the response for the repeated task. In this case, that column is `select_repeated`.
+
+
 ```{r}
+options(tibble.width = Inf)
 data
 ```
 
@@ -125,7 +132,9 @@ attributes <- c("School Quality",
                 "Total Daily Driving Time for Commuting and Errands",
                 "Type of Place")
 ```
-Then, make a suitable object for the next steps using `make_projoint_data()`. The default variable names are shown below. If your data frame uses different names, you can change them. 
+
+With your data frame and attributes vector, you can use `make_projoint_data()` to produce a `projoint_data` object. We can see above that the column indicating the respondent ID is called `id`, so we pass that to the `.id_var` argument of `make_projoint_data`. `id` is also the default for that argument.
+
 ```{r, message=FALSE}
 out4 <- make_projoint_data(.dataframe = data,
                            .attribute_vars = attributes, 
@@ -136,7 +145,9 @@ out4 <- make_projoint_data(.dataframe = data,
                            .selected_repeated_var = "selected_repeated", # the default is NULL
                            .fill = TRUE)
 ```
-The output will be the same as the output of `fill_FALSE` in the previous section.
+
+The output from this function should look the same as the output of `fill_FALSE` in the previous section.
+
 ```{r}
 out4
 ```
@@ -144,7 +155,9 @@ out4
 
 ### 2.5 Arrange the order and labels of attributes and levels
 
-The reshaped data have attributes and levels that are sorted alphabetically. Often, however, you want to reorder the attributes and/or order the levels of a particular attribute. You may also prefer not to use the actual labels for attributes and levels used in your conjoint experiments; for example, for the purpose of presentation, you may want to make them shorter. This process has been challenging for applied scholars using other packages. We make this process easy. You first save the labels using `save_labels()`. In the CSV file you save in your local computer, you should revise the column named `order` to specify the order of attributes and levels you want to display in your figure. You can also revise the labels for attributes and levels in any way you like. But *you should not make any change to the first column named `level_id`*. After saving the updated CSV file, you should use `read_labels()` to read it and save the object suitable for the next step (i.e., use `projoint()`).
+By default, reshaped data will have attributes and levels that are ordered alphabetically. If you would like to reorder or relable those attributes or levels, we make that process easy.
+
+You first save the labels using `save_labels()`, which produces a CSV file. In that CSV file saved to your local computer, you should revise the column named `order` to specify the order of attributes and levels you want to display in your figure. You can also revise the labels for attributes and levels in any way you like. But *you should not make any change to the first column named `level_id`*. After saving the updated CSV file, you can use `read_labels()` to read in the modified CSV. We will use this object later in the  `projoint` function.
 
 ```{r, eval=FALSE}
 save_labels(out1, "temp/labels_original.csv")

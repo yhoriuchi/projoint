@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-When there is a repeated task, it is easy to estimate intra-respondent reliability (IRR). When there is not, however, we use an extrapolation method to estimate it instead.
+We use two methods to estimate intra-respondent reliability (IRR). The first-best method requires researchers to add a repeated task to their conjoint survey, but is the most reliable. The second method, which uses linear extrapolation, does not require a repeated task but is noisier. If no repeated task is specified, we can use the `predict_tau` function to pe
 
 ### 3.1 Load the projoint package
 
@@ -19,15 +19,19 @@ library(projoint)
 
 ### 3.2 Predict IRR based on the extrapolation method
 
-As before, you should start by reading your Qualtrics file and reshaping it using `reshape_projiont()`. See [2.2 Read and wrangle data, with the flipped repeated tasks](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#read-and-wrangle-data). But we skip this step in this instruction and we use the already wrangled data named "out1_arranged" (See [2.5 Arrange the order and labels of attributes and levels](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#arrange-the-order-and-labels-of-attributes-and-levels). 
+As before, start by reading your Qualtrics file and reshaping it using `reshape_projoint()`. See [2.2 Read and wrangle data, with the flipped repeated tasks](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#read-and-wrangle-data). Since we already did that, we'll skip right ahead and load in the "out1_arranged" object from before. (See [2.5 Arrange the order and labels of attributes and levels](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#arrange-the-order-and-labels-of-attributes-and-levels). 
 
-We pass this data set to the `predict_tau` function, which both calculates IRR and produces a figure showing the extrapolation method visually. (see [2.3 Arrange the order and labels of attributes and levels](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#arrange-the-order-and-labels-of-attributes-and-levels})).
-With the flipped repeated tasks
+```{r}
+data(out1_arranged)
+```
+
+We pass this data set to the `predict_tau` function, which both calculates IRR and produces a figure showing the extrapolation method visually (see [2.3 Arrange the order and labels of attributes and levels](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#arrange-the-order-and-labels-of-attributes-and-levels})).
+
 ```{r}
 predicted_irr <- predict_tau(out1_arranged)
 ```
 
-A `projoint_tau` object, created by `predict_tau`, can be explored using the usual tools. The `print` method explains that this estimate of tau was produced via extrapolation rather than assumed or calculated using a repeated task and presents that estimate:
+This `projoint_tau` object, created by `predict_tau`, can be explored using the usual tools. The `print` method explains that this estimate of tau was produced via extrapolation rather than assumed or calculated using a repeated task and presents that estimate:
 
 ```{r}
 print(predicted_irr)

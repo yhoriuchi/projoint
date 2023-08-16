@@ -65,7 +65,7 @@ summary(choice_mm)
 plot(choice_mm)
 ```
 
-Since there are not many estimates, we encourage your to make plots based on the objectives of your research. The default plot for the choice-level marginal means is a basic ggplot object, which compares the marginal mean for each of the two options. The sum of the two percenntages is 100, and thus you may think that redundant information is presented in this figure. But we think this figure is an effectivey way to show the results of a head-to-head (choice-level) comparison.
+Since there are not many estimates, we encourage your to make plots based on the objectives of your research. The default plot for the choice-level marginal means is a basic ggplot object, which compares the marginal mean for each of the two options. The sum of the two percentages is 100, and thus you may think that redundant information is presented in this figure. But we think this figure is an effective way to show the results of a head-to-head (choice-level) comparison.
 
 You can polish by adding some layers :
 ```{r, fig.height=4, fig.width=8}
@@ -81,4 +81,4 @@ plot(choice_mm,
 
 ```
 
-<span style="color:red">Note: The current version of the `projoint` package does not have a function to plot choice-level average marginal compoennt effects. Stay tuned!</span> 
+<span style="color:red">Note: The current version of the `projoint` package does not have a function to plot choice-level average marginal component effects. Stay tuned!</span> 
