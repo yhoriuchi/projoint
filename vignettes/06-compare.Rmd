@@ -143,6 +143,7 @@ g_0 + g_1 + g_d
 We encourage users of our package to make custom figures based on the estimates of your choice-level analysis. The following is just one example.
 
 ```{r, fig.height=4, fig.width=8}
+
 df_D <- exampleData1 %>% 
   filter(party_1 == "Democrat") %>% 
   reshape_projoint(.idvar = "ResponseId", 
@@ -202,7 +203,7 @@ ggplot(out_merged,
             vjust = -1) +
   labs(y = NULL,
        x = "Choice-level marginal mean", 
-       title = "Choose an area with 70% Democrat as opposed to an area with 30% Democrat") +
+       title = "Choose an area with 70% Democrat\n as opposed to an area with 30% Democrat") +
   theme_classic()
 
 
