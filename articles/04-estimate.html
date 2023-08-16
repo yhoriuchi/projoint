@@ -93,14 +93,24 @@ bias-corrected estimates automatically.</p>
 <span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span>,</span>
 <span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><span style="color:red">Important: To estimate and visualize the
-quantities of your interest using our package (at least in the current
-version), you need to set the attributes and levels using the IDs,
-rather than their actual labels. We think that this approach is prone to
-error because some applications may include foreign characters (e.g.,
-2-byte Japanese characters) or special characters. To check which IDs
-correspond to which attributes and levels, you can type the following
-line in your script:</span></p>
+</div>
+<div class="section level3">
+<h3 id="why-do-we-recommend-you-use-ids">4.2 Why do we recommend you use IDs?<a class="anchor" aria-label="anchor" href="#why-do-we-recommend-you-use-ids"></a>
+</h3>
+<p>To estimate and visualize the quantities of your interest using our
+package (at least in the current version), you need to set the
+attributes and levels using the IDs, such as <code>att1</code> and
+<code>level2</code>, rather than their actual labels, such as “Housing
+Cost” (for <code>att1</code>) and “15% of pre-tax income” (for
+<code>level1</code> of <code>att1</code>). We think that this approach
+is prone to error because some applications may include foreign
+characters (e.g., 2-byte Japanese characters) or special characters.
+Sometimes, your design may include the same levels for more than one
+attribute; for example, “Teaching quality” = {“High”, “Low”} and
+“Research quality” = {“High”, “Low”)). To avoid any possible strange
+result, we use the unique identiers for each attribute-level.</p>
+<p>To check which IDs correspond to which attributes and levels, you can
+type the following line in your script:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out1</span><span class="op">@</span><span class="va">labels</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
@@ -117,11 +127,11 @@ line in your script:</span></p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> Racial Composition       90% White, 10% Nonwhite      att3         att3:leve…</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> Racial Composition       96% White, 4% Nonwhite       att3         att3:leve…</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
-<p><span style="color:red">You can also <code><a href="../reference/save_labels.html">save_labels()</a></code> and
-save a CSV file for your reference.</span></p>
+<p>You can also <code><a href="../reference/save_labels.html">save_labels()</a></code> and save a CSV file for your
+reference.</p>
 </div>
 <div class="section level3">
-<h3 id="estimate-mms">4.2 Estimate MMs<a class="anchor" aria-label="anchor" href="#estimate-mms"></a>
+<h3 id="estimate-mms">4.3 Estimate MMs<a class="anchor" aria-label="anchor" href="#estimate-mms"></a>
 </h3>
 <p>There are two main setups for which <code>projoint</code> can produce
 estimates. The profile-level is the most common approach in the
@@ -287,7 +297,7 @@ at the choice-level.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="estimate-amces">4.3 Estimate AMCEs<a class="anchor" aria-label="anchor" href="#estimate-amces"></a>
+<h3 id="estimate-amces">4.4 Estimate AMCEs<a class="anchor" aria-label="anchor" href="#estimate-amces"></a>
 </h3>
 <p>Note that we can replicate all above analyses using the AMCE instead
 of the MM just by specifying that the <code>.estimand = "amce"</code>
