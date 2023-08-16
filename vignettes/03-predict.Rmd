@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-We use two methods to estimate intra-respondent reliability (IRR). The first-best method requires researchers to add a repeated task to their conjoint survey, but is the most reliable. The second method, which uses linear extrapolation, does not require a repeated task but is noisier. If no repeated task is specified, we can use the `predict_tau` function to pe
+We use two methods to estimate intra-respondent reliability (IRR). The first-best method requires researchers to add a repeated task to their conjoint survey, but is the most reliable. The second method, which uses linear extrapolation, does not require a repeated task but is noisier. If no repeated task is specified, we can use the `predict_tau` function to perform the extrapolation method and estimate IRR.
 
 ### 3.1 Load the projoint package
 
