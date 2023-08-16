@@ -78,10 +78,11 @@
 <p>The <code>projoint</code> package features a set of tools for
 producing publication-ready figures from conjoint analyses.</p>
 <div class="section level3">
-<h3 id="load-the-projoint-package">5.1 Load the projoint package<a class="anchor" aria-label="anchor" href="#load-the-projoint-package"></a>
+<h3 id="load-the-projoint-package-and-the-other-necessary-package">5.1 Load the projoint package and the other necessary package<a class="anchor" aria-label="anchor" href="#load-the-projoint-package-and-the-other-necessary-package"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="profile-level-analysis">5.2 Profile-level analysis<a class="anchor" aria-label="anchor" href="#profile-level-analysis"></a>
@@ -110,20 +111,69 @@ together.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span>, .estimates <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="05-visualize_files/figure-html/unnamed-chunk-3-3.png" width="768"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amce</span><span class="op">)</span></span></code></pre></div>
 <p><img src="05-visualize_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span>, .estimates <span class="op">=</span> <span class="st">"uncorrected"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amce</span>, .estimates <span class="op">=</span> <span class="st">"uncorrected"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="05-visualize_files/figure-html/unnamed-chunk-4-2.png" width="768"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amce</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span>, .estimates <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amce</span>, .estimates <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="05-visualize_files/figure-html/unnamed-chunk-4-3.png" width="768"></p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="choice-level-analysis">5.3 Choice-level analysis<a class="anchor" aria-label="anchor" href="#choice-level-analysis"></a>
 </h3>
-<p>To be written.</p>
+<p>To undertake choice-level analysis, you first need to specify your
+quantity of interest using <code><a href="../reference/set_qoi.html">set_qoi()</a></code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">qoi_mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span>.structure <span class="op">=</span> <span class="st">"choice_level"</span>, </span>
+<span>                  .att_choose <span class="op">=</span> <span class="st">"att1"</span>, </span>
+<span>                  .lev_choose <span class="op">=</span> <span class="st">"level1"</span>, </span>
+<span>                  .att_notchoose <span class="op">=</span> <span class="st">"att1"</span>, </span>
+<span>                  .lev_notchoose <span class="op">=</span> <span class="st">"level3"</span><span class="op">)</span></span></code></pre></div>
+<p>You can then estimate the choice-level marginal means:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">choice_mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1_arranged</span>, </span>
+<span>                      .structure <span class="op">=</span> <span class="st">"choice_level"</span>, </span>
+<span>                      .qoi <span class="op">=</span> <span class="va">qoi_mm</span>, </span>
+<span>                      .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">choice_mm</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [A projoint output]</span></span>
+<span><span class="co">##  Estimand: mm </span></span>
+<span><span class="co">##  Structure: choice_level </span></span>
+<span><span class="co">##  IRR: Estimated </span></span>
+<span><span class="co">##  Tau: 0.1721281 </span></span>
+<span><span class="co">##  Remove ties: TRUE </span></span>
+<span><span class="co">##  SE methods: analytical</span></span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">choice_mm</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
+<span><span class="co">##   estimand       estimate     se conf.low conf.high att_level_choose</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.581 0.018<span style="text-decoration: underline;">7</span>    0.544     0.618 att1:level1     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected      0.624 0.029<span style="text-decoration: underline;">3</span>    0.566     0.681 att1:level1     </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: att_level_notchoose &lt;chr&gt;</span></span></span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">choice_mm</span><span class="op">)</span></span></code></pre></div>
+<p><img src="05-visualize_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
+<p>The default plot for the choice-level marginal means is a basic
+ggplot object. You can polish by adding some layers :</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">choice_mm</span>,</span>
+<span>     .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"15% of pre-tax income"</span>, </span>
+<span>                 <span class="st">"30% of pre-tax income"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Marginal mean"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Housing Cost"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>             linetype <span class="op">=</span> <span class="st">"dashed"</span>, </span>
+<span>             color <span class="op">=</span> <span class="st">"darkgray"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="05-visualize_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
+<p><span style="color:red">Note: The current version of the
+<code>projoint</code> package does not have a function to plot
+choice-level average marginal compoennt effects. Stay tuned!</span></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

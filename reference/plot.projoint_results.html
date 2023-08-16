@@ -56,6 +56,7 @@
 <span>  <span class="va">x</span>,</span>
 <span>  .estimates <span class="op">=</span> <span class="st">"corrected"</span>,</span>
 <span>  .by_var <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .base_size <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  .base_family <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -73,7 +74,11 @@
 
 
 <dt>.by_var</dt>
-<dd><p><code>TRUE</code> to plot the difference in estimates between the two subgroups, <code>FALSE</code> (default) otherwise</p></dd>
+<dd><p>(only if the structure is profile-level) <code>TRUE</code> to plot the difference in estimates between the two subgroups, <code>FALSE</code> (default) otherwise</p></dd>
+
+
+<dt>.labels</dt>
+<dd><p>(only if the structure is choice-level) A chaarcter vector for the x-axis labels</p></dd>
 
 
 <dt>.base_size</dt>
@@ -95,47 +100,6 @@
 <p>A <code>ggplot</code> object</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"exampleData1"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">exampleData1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 185</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ResponseId      choice1_repeated_fli…¹ choice1 choice2 choice3 choice4 choice5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> R_1M3TDihZzq9z… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> R_3HtXzkcSSlfi… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> R_yjYj0jtOY98X… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> R_1dKd05O6FTOV… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> R_1otDp642wWYl… Community A            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> R_2BnD3fuJMRKZ… Community A            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ abbreviated name: ¹​choice1_repeated_flipped</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 178 more variables: choice6 &lt;chr&gt;, choice7 &lt;chr&gt;, choice8 &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   race &lt;chr&gt;, party_1 &lt;chr&gt;, party_2 &lt;chr&gt;, party_3 &lt;chr&gt;, party_4 &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ideology &lt;chr&gt;, honesty &lt;chr&gt;, `K-1-1` &lt;chr&gt;, `K-1-1-1` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-2` &lt;chr&gt;, `K-1-1-2` &lt;chr&gt;, `K-1-3` &lt;chr&gt;, `K-1-1-3` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-4` &lt;chr&gt;, `K-1-1-4` &lt;chr&gt;, `K-1-5` &lt;chr&gt;, `K-1-1-5` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-6` &lt;chr&gt;, `K-1-1-6` &lt;chr&gt;, `K-1-7` &lt;chr&gt;, `K-1-1-7` &lt;chr&gt;, …</span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">reshaped_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span></span>
-<span class="r-in"><span>  .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span></span>
-<span class="r-in"><span>  .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span></span>
-<span class="r-in"><span>  .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span></span>
-<span class="r-in"><span>  .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">projoint_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="projoint.html">projoint</a></span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">projoint_output</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot.projoint_results-1.png" alt="" width="700" height="433"></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
