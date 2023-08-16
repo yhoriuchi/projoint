@@ -8,6 +8,7 @@
   x,
   .estimates = "corrected",
   .by_var = FALSE,
+  .labels = NULL,
   .base_size = 12,
   .base_family = "",
   ...
@@ -18,7 +19,9 @@
 
 \item{.estimates}{The estimates to be plotted, either \code{"corrected"} (default), \code{"uncorrected"}, or \code{"both"}}
 
-\item{.by_var}{\code{TRUE} to plot the difference in estimates between the two subgroups, \code{FALSE} (default) otherwise}
+\item{.by_var}{(only if the structure is profile-level) \code{TRUE} to plot the difference in estimates between the two subgroups, \code{FALSE} (default) otherwise}
+
+\item{.labels}{(only if the structure is choice-level) A chaarcter vector for the x-axis labels}
 
 \item{.base_size}{base font size, given in pts.}
 
@@ -31,26 +34,4 @@ A \code{ggplot} object
 }
 \description{
 This method produces MM or AMCE plots given a \code{\link{projoint_results}} object, the output from the \code{\link{projoint}} function.
-}
-\examples{
-
-library(projoint)
-
-data("exampleData1")
-head(exampleData1)
-
-outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-outcomes <- c(outcomes, "choice1_repeated_flipped")
-
-reshaped_data <- reshape_projoint(
-  .dataframe = exampleData1, 
-  .idvar = "ResponseId", 
-  .outcomes = outcomes,
-  .outcomes_ids = c("A", "B"),
-  .alphabet = "K", 
-  .repeated = TRUE,
-  .flipped = TRUE)
-
-projoint_output <- projoint(reshaped_data)
-plot(projoint_output)
 }
