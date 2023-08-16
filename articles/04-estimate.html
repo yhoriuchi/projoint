@@ -90,7 +90,35 @@ bias-corrected estimates automatically.</p>
 <span>                         .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
 <span>                         .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span>
 <span>                         .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
-<span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span><span class="op">)</span></span></code></pre></div>
+<span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span>,</span>
+<span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><span style="color:red">Important: To estimate and visualize the
+quantities of your interest using our package (at least in the current
+version), you need to set the attributes and levels using the IDs,
+rather than their actual labels. We think that this approach is prone to
+error because some applications may include foreign characters (e.g.,
+2-byte Japanese characters) or special characters. To check which IDs
+correspond to which attributes and levels, you can type the following
+line in your script:</span></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out1</span><span class="op">@</span><span class="va">labels</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
+<span><span class="co">##    attribute                level                        attribute_id level_id  </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> Housing Cost             15% of pre-tax income        att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Housing Cost             30% of pre-tax income        att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Housing Cost             40% of pre-tax income        att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Presidential Vote (2020) 30% Democrat, 70% Republican att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> Presidential Vote (2020) 50% Democrat, 50% Republican att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Presidential Vote (2020) 70% Democrat, 30% Republican att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Racial Composition       50% White, 50% Nonwhite      att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Racial Composition       75% White, 25% Nonwhite      att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> Racial Composition       90% White, 10% Nonwhite      att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> Racial Composition       96% White, 4% Nonwhite       att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
+<p><span style="color:red">You can also <code><a href="../reference/save_labels.html">save_labels()</a></code> and
+save a CSV file for your reference.</span></p>
 </div>
 <div class="section level3">
 <h3 id="estimate-mms">4.2 Estimate MMs<a class="anchor" aria-label="anchor" href="#estimate-mms"></a>
@@ -105,7 +133,7 @@ literature, while the choice-level is more flexible and powerful.</p>
 means (MMs) at the profile-level. If you run
 <code>projoint(out1)</code>, it will conduct this analysis. We expand
 all those arguments below for clarity:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                .qoi <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>                .by_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -122,78 +150,31 @@ all those arguments below for clarity:</p>
 <span>                .se_type_1 <span class="op">=</span> <span class="st">"classical"</span>,</span>
 <span>                .weights_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>                .clusters_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                .se_type_2 <span class="op">=</span> <span class="st">"classical"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm0</span><span class="op">)</span></span></code></pre></div>
+<span>                .se_type_2 <span class="op">=</span> <span class="st">"classical"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm0</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: mm </span></span>
 <span><span class="co">##  Structure: profile_level </span></span>
 <span><span class="co">##  IRR: Estimated </span></span>
-<span><span class="co">##  Tau: NA </span></span>
+<span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm0</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 48 × 6</span></span></span>
-<span><span class="co">##    estimand       estimate      se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> mm_uncorrected    0.574  0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> mm_corrected     <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     att1:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> mm_uncorrected    0.485  0.013<span style="text-decoration: underline;">4</span>    0.458     0.511 att1:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> mm_corrected     <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     att1:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> mm_uncorrected    0.445  0.013<span style="text-decoration: underline;">1</span>    0.419     0.470 att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> mm_corrected     <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> mm_uncorrected    0.489  0.013<span style="text-decoration: underline;">3</span>    0.463     0.515 att2:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> mm_corrected     <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     att2:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> mm_uncorrected    0.524  0.013<span style="text-decoration: underline;">0</span>    0.498     0.549 att2:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> mm_corrected     <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     att2:level2     </span></span>
+<span><span class="co">##    estimand       estimate     se conf.low conf.high att_level_choose</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1:level1     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> mm_corrected      0.614 0.020<span style="text-decoration: underline;">7</span>    0.573     0.654 att1:level1     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> mm_uncorrected    0.485 0.013<span style="text-decoration: underline;">4</span>    0.458     0.511 att1:level2     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> mm_corrected      0.477 0.020<span style="text-decoration: underline;">4</span>    0.437     0.517 att1:level2     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> mm_uncorrected    0.445 0.013<span style="text-decoration: underline;">1</span>    0.419     0.470 att1:level3     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> mm_corrected      0.416 0.020<span style="text-decoration: underline;">3</span>    0.376     0.455 att1:level3     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> mm_uncorrected    0.489 0.013<span style="text-decoration: underline;">3</span>    0.463     0.515 att2:level1     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> mm_corrected      0.483 0.020<span style="text-decoration: underline;">2</span>    0.443     0.522 att2:level1     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> mm_uncorrected    0.524 0.013<span style="text-decoration: underline;">0</span>    0.498     0.549 att2:level2     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> mm_corrected      0.536 0.020<span style="text-decoration: underline;">0</span>    0.497     0.575 att2:level2     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 38 more rows</span></span></span></code></pre>
 </div>
 <div class="section level4">
@@ -213,24 +194,23 @@ in <code><a href="../reference/projoint.html">projoint()</a></code> are dropped 
 <span>  .lev_choose <span class="op">=</span> <span class="st">"level1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
-<span>                .qoi <span class="op">=</span> <span class="va">qoi_1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span></code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm1</span><span class="op">)</span></span></code></pre></div>
+<span>                .qoi <span class="op">=</span> <span class="va">qoi_1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: mm </span></span>
 <span><span class="co">##  Structure: profile_level </span></span>
 <span><span class="co">##  IRR: Estimated </span></span>
-<span><span class="co">##  Tau: NA </span></span>
+<span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
-<span><span class="co">##   estimand       estimate      se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.574  0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected     <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     att1:level1     </span></span>
+<span><span class="co">##   estimand       estimate     se conf.low conf.high att_level_choose</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1:level1     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected      0.614 0.020<span style="text-decoration: underline;">7</span>    0.573     0.654 att1:level1     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: att_level_notchoose &lt;chr&gt;</span></span></span></code></pre>
 </div>
 <div class="section level4">
@@ -243,7 +223,7 @@ specify the value based on prior knowledge. In the following, we use
 0.75, which is most likely IRR we find in our test data sets. The
 default arguments for both <code><a href="../reference/set_qoi.html">set_qoi()</a></code> and
 <code><a href="../reference/projoint.html">projoint()</a></code> are dropped hereafter.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                 .qoi <span class="op">=</span> <span class="va">qoi_1</span>,</span>
 <span>                 .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
@@ -256,7 +236,7 @@ default arguments for both <code><a href="../reference/set_qoi.html">set_qoi()</
 <span><span class="co">##  Tau: 0.1464466 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm1b</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
 <span><span class="co">##   estimand       estimate     se conf.low conf.high att_level_choose</span></span>
@@ -274,7 +254,7 @@ exponentially more choice-level estimands than there are profile-level
 estimands, so it is impractical to view all of them. Here we specify
 that we want to return the marginal mean of attribute 1, levels 1 and 3
 at the choice-level.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .att_choose <span class="op">=</span> <span class="st">"att1"</span>, </span>
@@ -286,24 +266,23 @@ at the choice-level.</p>
 <span><span class="va">mm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                .qoi <span class="op">=</span> <span class="va">qoi_2</span>,</span>
 <span>                .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
-<span>                .ignore_position <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span></code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm2</span><span class="op">)</span></span></code></pre></div>
+<span>                .ignore_position <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: mm </span></span>
 <span><span class="co">##  Structure: choice_level </span></span>
 <span><span class="co">##  IRR: Estimated </span></span>
-<span><span class="co">##  Tau: NA </span></span>
+<span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
-<span><span class="co">##   estimand       estimate      se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.402  0.025<span style="text-decoration: underline;">8</span>    0.352     0.453 att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected     <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     att1:level3     </span></span>
+<span><span class="co">##   estimand       estimate     se conf.low conf.high att_level_choose</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.402 0.025<span style="text-decoration: underline;">8</span>    0.352     0.453 att1:level3     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected      0.351 0.040<span style="text-decoration: underline;">8</span>    0.271     0.431 att1:level3     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: att_level_notchoose &lt;chr&gt;</span></span></span></code></pre>
 </div>
 </div>
@@ -316,87 +295,40 @@ rather than the default <code>"mm"</code>.</p>
 <div class="section level4">
 <h4 id="amce-profile-level-all-levels">AMCE (profile-level) – all levels<a class="anchor" aria-label="anchor" href="#amce-profile-level-all-levels"></a>
 </h4>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">amce0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
-<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span></code></pre>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce0</span><span class="op">)</span></span></code></pre></div>
+<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce0</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: amce </span></span>
 <span><span class="co">##  Structure: profile_level </span></span>
 <span><span class="co">##  IRR: Estimated </span></span>
-<span><span class="co">##  Tau: NA </span></span>
+<span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce0</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 34 × 7</span></span></span>
-<span><span class="co">##    estimand         estimate      se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> amce_uncorrected -<span style="color: #BB0000;">0.089</span><span style="color: #BB0000; text-decoration: underline;">9</span>   0.019<span style="text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.127</span>     -<span style="color: #BB0000;">0.052</span><span style="color: #BB0000; text-decoration: underline;">7</span> att1:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> amce_corrected   <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      att1:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> amce_uncorrected -<span style="color: #BB0000;">0.130</span>    0.018<span style="text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.167</span>     -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> amce_corrected   <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> amce_uncorrected  0.034<span style="text-decoration: underline;">8</span>   0.018<span style="text-decoration: underline;">6</span> -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">70</span>    0.071<span style="text-decoration: underline;">3</span> att2:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> amce_corrected   <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      att2:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> amce_uncorrected -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">77</span>  0.018<span style="text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.038</span><span style="color: #BB0000; text-decoration: underline;">6</span>     0.035<span style="text-decoration: underline;">0</span> att2:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> amce_corrected   <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      att2:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> amce_uncorrected  0.024<span style="text-decoration: underline;">0</span>   0.020<span style="text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">9</span>     0.064<span style="text-decoration: underline;">0</span> att3:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> amce_corrected   <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      att3:level2     </span></span>
+<span><span class="co">##    estimand         estimate     se conf.low conf.high att_level_choose</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> amce_uncorrected -<span style="color: #BB0000;">0.089</span><span style="color: #BB0000; text-decoration: underline;">9</span>  0.019<span style="text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.127</span>     -<span style="color: #BB0000;">0.052</span><span style="color: #BB0000; text-decoration: underline;">7</span> att1:level2     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> amce_corrected   -<span style="color: #BB0000;">0.137</span>   0.029<span style="text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.194</span>     -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1:level2     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> amce_uncorrected -<span style="color: #BB0000;">0.130</span>   0.018<span style="text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.167</span>     -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1:level3     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> amce_corrected   -<span style="color: #BB0000;">0.198</span>   0.029<span style="text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.256</span>     -<span style="color: #BB0000;">0.140</span>  att1:level3     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> amce_uncorrected  0.034<span style="text-decoration: underline;">8</span>  0.018<span style="text-decoration: underline;">6</span> -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">70</span>    0.071<span style="text-decoration: underline;">3</span> att2:level2     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> amce_corrected    0.053<span style="text-decoration: underline;">0</span>  0.028<span style="text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">58</span>    0.109  att2:level2     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> amce_uncorrected -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">77</span> 0.018<span style="text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.038</span><span style="color: #BB0000; text-decoration: underline;">6</span>     0.035<span style="text-decoration: underline;">0</span> att2:level3     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> amce_corrected   -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">70</span> 0.028<span style="text-decoration: underline;">6</span> -<span style="color: #BB0000;">0.058</span><span style="color: #BB0000; text-decoration: underline;">9</span>     0.053<span style="text-decoration: underline;">5</span> att2:level3     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> amce_uncorrected  0.024<span style="text-decoration: underline;">0</span>  0.020<span style="text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">9</span>     0.064<span style="text-decoration: underline;">0</span> att3:level2     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> amce_corrected    0.036<span style="text-decoration: underline;">6</span>  0.031<span style="text-decoration: underline;">2</span> -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">6</span>     0.097<span style="text-decoration: underline;">9</span> att3:level2     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 24 more rows</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: att_level_choose_baseline &lt;chr&gt;</span></span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="amce-profile-level-specific-level">AMCE (profile-level) – specific level<a class="anchor" aria-label="anchor" href="#amce-profile-level-specific-level"></a>
 </h4>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
@@ -408,31 +340,30 @@ rather than the default <code>"mm"</code>.</p>
 <span></span>
 <span><span class="va">amce1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                  .qoi <span class="op">=</span> <span class="va">qoi_3</span>,</span>
-<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span></code></pre>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce1</span><span class="op">)</span></span></code></pre></div>
+<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: amce </span></span>
 <span><span class="co">##  Structure: profile_level </span></span>
 <span><span class="co">##  IRR: Estimated </span></span>
-<span><span class="co">##  Tau: NA </span></span>
+<span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
-<span><span class="co">##   estimand         estimate      se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected   -<span style="color: #BB0000;">0.130</span>  0.018<span style="text-decoration: underline;">8</span>   -<span style="color: #BB0000;">0.167</span>   -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected     <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      att1:level3     </span></span>
+<span><span class="co">##   estimand         estimate     se conf.low conf.high att_level_choose</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected   -<span style="color: #BB0000;">0.130</span> 0.018<span style="text-decoration: underline;">8</span>   -<span style="color: #BB0000;">0.167</span>   -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1:level3     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected     -<span style="color: #BB0000;">0.198</span> 0.029<span style="text-decoration: underline;">4</span>   -<span style="color: #BB0000;">0.256</span>   -<span style="color: #BB0000;">0.140</span>  att1:level3     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: att_level_notchoose &lt;chr&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   att_level_choose_baseline &lt;chr&gt;, att_level_notchoose_baseline &lt;chr&gt;</span></span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="amce-profile-level-specific-level-using-the-predicted-irr">AMCE (profile-level) – specific level, using the predicted IRR<a class="anchor" aria-label="anchor" href="#amce-profile-level-specific-level-using-the-predicted-irr"></a>
 </h4>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">amce1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                 .qoi <span class="op">=</span> <span class="va">qoi_3</span>,</span>
 <span>                 .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
@@ -446,7 +377,7 @@ rather than the default <code>"mm"</code>.</p>
 <span><span class="co">##  Tau: 0.1464466 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce1b</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
 <span><span class="co">##   estimand         estimate     se conf.low conf.high att_level_choose</span></span>
@@ -459,7 +390,7 @@ rather than the default <code>"mm"</code>.</p>
 <div class="section level4">
 <h4 id="amce-choice-level-specific-level">AMCE (choice-level) – specific level<a class="anchor" aria-label="anchor" href="#amce-choice-level-specific-level"></a>
 </h4>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
@@ -477,24 +408,23 @@ rather than the default <code>"mm"</code>.</p>
 <span>                  .qoi <span class="op">=</span> <span class="va">qoi_4</span>,</span>
 <span>                  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span>, </span>
-<span>                  .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 1 coefficient  not defined because the design matrix is rank deficient</span></span></code></pre>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce2</span><span class="op">)</span></span></code></pre></div>
+<span>                  .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: amce </span></span>
 <span><span class="co">##  Structure: choice_level </span></span>
 <span><span class="co">##  IRR: Estimated </span></span>
-<span><span class="co">##  Tau: NA </span></span>
+<span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
-<span><span class="co">##   estimand         estimate      se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected  -<span style="color: #BB0000;">0.048</span><span style="color: #BB0000; text-decoration: underline;">4</span>  0.027<span style="text-decoration: underline;">0</span>   -<span style="color: #BB0000;">0.101</span>   0.004<span style="text-decoration: underline;">48</span> att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected    <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       att1:level3     </span></span>
+<span><span class="co">##   estimand         estimate     se conf.low conf.high att_level_choose</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected  -<span style="color: #BB0000;">0.048</span><span style="color: #BB0000; text-decoration: underline;">4</span> 0.027<span style="text-decoration: underline;">0</span>   -<span style="color: #BB0000;">0.101</span>   0.004<span style="text-decoration: underline;">48</span> att1:level3     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected    -<span style="color: #BB0000;">0.073</span><span style="color: #BB0000; text-decoration: underline;">9</span> 0.041<span style="text-decoration: underline;">4</span>   -<span style="color: #BB0000;">0.155</span>   0.007<span style="text-decoration: underline;">27</span> att1:level3     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: att_level_notchoose &lt;chr&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   att_level_choose_baseline &lt;chr&gt;, att_level_notchoose_baseline &lt;chr&gt;</span></span></span></code></pre>
 </div>
