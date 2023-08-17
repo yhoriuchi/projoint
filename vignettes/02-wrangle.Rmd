@@ -24,8 +24,8 @@ library(projoint)
 Let's look at a simple example. We expand all those arguments below for clarity:
 
 ```{r}
-outcomes1 <- paste0("choice", seq(from = 1, to = 8, by = 1))
-outcomes1 <- c(outcomes1, "choice1_repeated_flipped")
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
+outcomes1 <- c(outcomes, "choice1_repeated_flipped")
 out1 <- reshape_projoint(.dataframe = exampleData1, 
                          .idvar = "ResponseId", 
                          .outcomes = outcomes1,
@@ -41,11 +41,10 @@ Let's walk through the arguments we have specified. `.dataframe` is a data frame
 
 #### With the not-flipped repeated tasks
 
-As a slight variation, in some cases the repeated task is *not* flipped -- that is, in the repeated task, the original Profile 1 is still Profile 1, rather than flipping positions to Profile 2. Here we specify that by changing `.flipped` to `FALSE`. In the following we drop the default arguments.
+As a slight variation, in some cases the repeated task is *not* flipped -- that is, in the repeated task, the original Profile 1 is still Profile 1, rather than flipping positions to Profile 2. Here we specify that by changing `.flipped` to `FALSE`. In the following, we drop the default arguments.
 
 ```{r}
-outcomes2 <- paste0("choice", seq(from = 1, to = 8, by = 1))
-outcomes2 <- c(outcomes2, "choice1_repeated_notflipped")
+outcomes2 <- c(outcomes, "choice1_repeated_notflipped")
 out2 <- reshape_projoint(.dataframe = exampleData2, 
                          .outcomes = outcomes2,
                          .repeated = TRUE,
@@ -57,9 +56,8 @@ out2 <- reshape_projoint(.dataframe = exampleData2,
 Or in cases with no repeated task at all, we set `.repeated` to `FALSE` and  `.flipped` to `NULL`. Don't worry, we can still correct for measurement error using an extrapolation method; see our third vignette for details.
 
 ```{r}
-outcomes3 <- paste0("choice", seq(from = 1, to = 8, by = 1))
 out3 <- reshape_projoint(.dataframe = exampleData3, 
-                         .outcomes = outcomes3,
+                         .outcomes = outcomes,
                          .repeated = FALSE)
 ```
 
@@ -72,20 +70,10 @@ You can see the difference by comparing the results of `reshape_projoint` when `
 
 ```{r}
 fill_FALSE <- reshape_projoint(.dataframe = exampleData1, 
-                               .idvar = "ResponseId", 
                                .outcomes = outcomes1,
-                               .outcomes_ids = c("A", "B"),
-                               .alphabet = "K", 
-                               .repeated = TRUE,
-                               .flipped = TRUE, 
                                .fill = FALSE)
 fill_TRUE <- reshape_projoint(.dataframe = exampleData1, 
-                              .idvar = "ResponseId", 
                               .outcomes = outcomes1,
-                              .outcomes_ids = c("A", "B"),
-                              .alphabet = "K", 
-                              .repeated = TRUE,
-                              .flipped = TRUE, 
                               .fill = TRUE)
 ```
 Looking only at a subset of the variables, we can see that the first data frame includes the values for the `agree` variable (whether the same profile was chosen or not) only for the repeated task. The second data frame fills the missing values for the other non-repeated tasks.
