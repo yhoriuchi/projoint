@@ -25,15 +25,11 @@
 #' head(exampleData1)
 #'
 #' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-#' outcomes <- c(outcomes, "choice1_repeated_flipped")
+#' 
+#' outcomes1 <- c(outcomes, "choice1_repeated_flipped")
 #' reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData1, 
-#'   .idvar = "ResponseId", 
-#'   .outcomes = outcomes,
-#'   .outcomes_ids = c("A", "B"),
-#'   .alphabet = "K", 
-#'   .repeated = TRUE,
-#'   .flipped = TRUE)
+#'   .outcomes = outcomes1)
 #'   
 #' tau1 <- predict_tau(reshaped_data)
 #' tau1
@@ -42,15 +38,10 @@
 #' data("exampleData2")
 #' head(exampleData2)
 #'
-#' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-#' outcomes <- c(outcomes, "choice1_repeated_notflipped")
+#' outcomes2 <- c(outcomes, "choice1_repeated_notflipped")
 #' reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData2, 
-#'   .idvar = "ResponseId", 
-#'   .outcomes = outcomes,
-#'   .outcomes_ids = c("A", "B"),
-#'   .alphabet = "K", 
-#'   .repeated = TRUE,
+#'   .outcomes = outcomes2,
 #'   .flipped = FALSE)
 #'   
 #' tau2 <- predict_tau(reshaped_data)
@@ -60,14 +51,9 @@
 #' data("exampleData3")
 #' head(exampleData3)
 #'
-#' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-#' outcomes <- c(outcomes)
 #' reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData3, 
-#'   .idvar = "ResponseId", 
 #'   .outcomes = outcomes,
-#'   .outcomes_ids = c("A", "B"),
-#'   .alphabet = "K", 
 #'   .repeated = FALSE)
 #'   
 #' tau3 <- predict_tau(reshaped_data)

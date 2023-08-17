@@ -33,6 +33,7 @@ out1 <- reshape_projoint(.dataframe = exampleData1,
                          .alphabet = "K", 
                          .repeated = TRUE,
                          .flipped = TRUE, 
+                         .covariates = NULL,
                          .fill = FALSE)
 ```
 
@@ -40,19 +41,15 @@ Let's walk through the arguments we have specified. `.dataframe` is a data frame
 
 #### With the not-flipped repeated tasks
 
-As a slight variation, in some cases the repeated task is *not* flipped -- that is, in the repeated task, the original Profile 1 is still Profile 1, rather than flipping positions to Profile 2. Here we specify that by changing `.flipped` to `FALSE`.
+As a slight variation, in some cases the repeated task is *not* flipped -- that is, in the repeated task, the original Profile 1 is still Profile 1, rather than flipping positions to Profile 2. Here we specify that by changing `.flipped` to `FALSE`. In the following we drop the default arguments.
 
 ```{r}
 outcomes2 <- paste0("choice", seq(from = 1, to = 8, by = 1))
 outcomes2 <- c(outcomes2, "choice1_repeated_notflipped")
 out2 <- reshape_projoint(.dataframe = exampleData2, 
-                         .idvar = "ResponseId", 
                          .outcomes = outcomes2,
-                         .outcomes_ids = c("A", "B"),
-                         .alphabet = "K", 
                          .repeated = TRUE,
-                         .flipped = FALSE,
-                         .fill = FALSE)
+                         .flipped = FALSE)
 ```
 
 #### Without the repeated tasks
@@ -62,13 +59,8 @@ Or in cases with no repeated task at all, we set `.repeated` to `FALSE` and  `.f
 ```{r}
 outcomes3 <- paste0("choice", seq(from = 1, to = 8, by = 1))
 out3 <- reshape_projoint(.dataframe = exampleData3, 
-                         .idvar = "ResponseId", 
                          .outcomes = outcomes3,
-                         .outcomes_ids = c("A", "B"),
-                         .alphabet = "K", 
-                         .repeated = FALSE,
-                         .flipped = NULL,
-                         .fill = FALSE)
+                         .repeated = FALSE)
 ```
 
 

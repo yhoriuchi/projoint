@@ -8,20 +8,19 @@
 #' @import rlang
 #' @import tidyselect
 #' @param .dataframe A data frame, preferably from \code{\link{read_Qualtrics}}
-#' @param .idvar A character identifying the column name containing respondent IDs
+#' @param .idvar "ResponseId" (default): a character identifying the column name containing respondent
 #' @param .outcomes A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.
-#' @param .outcomes_ids A vector identifying the possibilities for the outcome variables -- e.g., \code{c("Candidate A", "Candidate B")}
-#' @param .alphabet The letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics, the default is \code{F}.
-#' @param .repeated TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.
-#' @param .flipped TRUE if the profiles of the repeated task are flipped (recommended)
-#' @param .covariates A character vector identifying respondents' covariates used for subgroup analysis
-#' @param .fill A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).
+#' @param .outcomes_ids c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")
+#' @param .alphabet "K" (default): a letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics.
+#' @param .repeated TRUE (default) if there is a repeated task (recommended). The repeated task should be the same as the first task.
+#' @param .flipped TRUE (default) if the profiles of the repeated task are flipped (recommended)
+#' @param .covariates NULL (default): a character vector identifying respondents' covariates used for subgroup analysis
+#' @param .fill FALSE (default): A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).
 #' @return A projoint object of class `projoint_data` ready to pass to `projoint()`.
 #' @return A projoint object of class \code{\link{projoint_data}} ready to pass to \code{\link{projoint}}.
 #' @export
 #' @examples
 #' library(projoint)
-#' library(stringr)
 #' 
 #' data("exampleData1")
 #' head(exampleData1)
@@ -33,22 +32,16 @@
 #' # Reshape the data
 #' reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData1, 
-#'   .idvar = "ResponseId", 
-#'   .outcomes = outcomes,
-#'   .outcomes_ids = c("A", "B"),
-#'   .alphabet = "K", 
-#'   .repeated = TRUE,
-#'   .flipped = TRUE, 
-#'   .fill = FALSE)
+#'   .outcomes = outcomes)
 
 reshape_projoint <- function(
     .dataframe, 
-    .idvar, 
-    .outcomes, # This should include the repeated task if .repeated == TRUE
-    .outcomes_ids = c("1", "2"),
-    .alphabet = "F", 
-    .repeated = FALSE,
-    .flipped = NULL,
+    .idvar = "ResponseId", 
+    .outcomes, 
+    .outcomes_ids = c("A", "B"),
+    .alphabet = "K", 
+    .repeated = TRUE,
+    .flipped = TRUE,
     .covariates = NULL,
     .fill = FALSE
 ){
@@ -87,14 +80,6 @@ reshape_projoint <- function(
     stop("The .repeated_task argument must be either TRUE or FALSE.")
   }
   
-  # check the consistency between .repeated and .flipped
-  if (.repeated == FALSE & !is.null(.flipped)){
-    stop("Error: The .flipped argument should be NULL if the .repeated argument is FALSE.")
-  } 
-  if (.repeated == TRUE & !is.logical(.flipped)){
-    stop("Error: The .flipped argument should be logical if the .repeated argument is TRUE.")
-  }
-
   # check the .fill argument
   if(!is.logical(.fill)){
     stop("The .fill argument must be either TRUE or FALSE.")

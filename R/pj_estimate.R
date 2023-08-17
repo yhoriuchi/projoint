@@ -32,33 +32,6 @@
 #' @param .se_type_2 the standard error type to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)
 #' @return A data frame of estimates
 
-# .data <- df
-# .structure = "choice_level"
-# .estimand = "mm"
-# 
-# .att_choose = "att1"
-# .lev_choose = "level2"
-# .att_notchoose = "att2"
-# .lev_notchoose = "level1"
-# 
-# .att_choose_b = "att1" 
-# .lev_choose_b = "level3"
-# .att_notchoose_b = "att1" 
-# .lev_notchoose_b ="level1"
-# 
-# .se_method = "analytical"
-# .irr = NULL
-# .remove_ties = TRUE
-# .ignore_position = FALSE
-# .n_sims = NULL
-# .n_boot = NULL
-# .weights_1 = NULL
-# .clusters_1 = NULL
-# .se_type_1 = "classical"
-# .weights_2 = NULL
-# .clusters_2 = NULL
-# .se_type_2 = "classical"
-
 pj_estimate <- function(
     .data,
     .structure = "profile_level",
@@ -91,10 +64,10 @@ pj_estimate <- function(
   estimand  <- rlang::arg_match0(.estimand, c("mm", "amce"))
   se_method <- rlang::arg_match0(.se_method, c("analytical", "simulation", "bootstrap"))
   
-  if (is.null(.att_choose)){
+  if (structure == "choice_level" & is.null(.att_choose)){
     stop("The .att_choose argument must be specified.")
   }
-  if (is.null(.lev_choose)){
+  if (structure == "choice_level" & is.null(.lev_choose)){
     stop("The .att_choose argument must be specified.")
   }
   
@@ -284,16 +257,16 @@ pj_estimate <- function(
           
           temp2 <- temp1$data_for_estimand %>% 
             dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) %>% 
             dplyr::select(-matches("_\\d$"))
           
         } else{
           
           temp2 <- temp1$data_for_estimand %>% 
             dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) %>% 
             dplyr::select(-matches("_\\d$"))
           
         }
@@ -305,8 +278,8 @@ pj_estimate <- function(
           temp2 <- temp1$data_for_estimand %>% 
             dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) %>% 
             dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) %>% 
             dplyr::select(-matches("_\\d$"))
           
         } else{
@@ -315,8 +288,8 @@ pj_estimate <- function(
             dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) %>% 
             
             dplyr::mutate(selected = selected_2, 
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
+                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) %>% 
             dplyr::select(-matches("_\\d$"))
           
         }
@@ -529,7 +502,8 @@ pj_estimate <- function(
                                    weights = .weights_1, 
                                    clusters = .clusters_1,
                                    se_type = .se_type_1,
-                                   data = data_for_irr) %>% tidy()
+                                   data = data_for_irr) %>% 
+      estimatr::tidy()
     
     irr     <- reg_irr$estimate[1]
     var_irr <- reg_irr$std.error[1]^2 
@@ -557,7 +531,8 @@ pj_estimate <- function(
                                    weights = .weights_2, 
                                    clusters = .clusters_2,
                                    se_type = .se_type_2,
-                                   data = data_for_estimand) %>% tidy()
+                                   data = data_for_estimand) %>% 
+      estimatr::tidy()
     
     # the critical t-value
     critical_t <- abs((reg_mm$conf.low[1] - reg_mm$estimate[1]) / reg_mm$std.error[1])
@@ -573,7 +548,8 @@ pj_estimate <- function(
                                      weights = .weights_2, 
                                      clusters = .clusters_2,
                                      se_type = .se_type_2,
-                                     data = data_for_estimand) %>% tidy()
+                                     data = data_for_estimand) %>% 
+      estimatr::tidy()
     
     # the critical t-value
     critical_t <- abs((reg_amce$conf.low[2] - reg_amce$estimate[2]) / reg_amce$std.error[2])
@@ -716,13 +692,15 @@ pj_estimate <- function(
                                        weights = .weights_1, 
                                        clusters = .clusters_1,
                                        se_type = .se_type_1,
-                                       data = bs_sample_1) %>% tidy()
+                                       data = bs_sample_1) %>% 
+          estimatr::tidy()
         
         reg_mm  <- estimatr::lm_robust(selected ~ 1, 
                                        weights = .weights_2, 
                                        clusters = .clusters_2,
                                        se_type = .se_type_2,
-                                       data = bs_sample_2) %>% tidy()
+                                       data = bs_sample_2) %>% 
+          estimatr::tidy()
         
         # calculate the means
         mm_uncorrected <-  reg_mm$estimate[1]
@@ -850,14 +828,15 @@ pj_estimate <- function(
                                        weights = .weights_1, 
                                        clusters = .clusters_1,
                                        se_type = .se_type_1,
-                                       data = bs_sample_1) %>% tidy()
+                                       data = bs_sample_1) %>% 
+          estimatr::tidy()
         
         reg_amce  <- estimatr::lm_robust(selected ~ x, 
                                          weights = .weights_2, 
                                          clusters = .clusters_2,
                                          se_type = .se_type_2,
-                                         bs_sample_2) %>% tidy()
-        
+                                         bs_sample_2) %>% 
+          estimatr::tidy()        
         
         # calculate the means
         amce_uncorrected <-  reg_amce$estimate[2]

@@ -6,12 +6,12 @@
 \usage{
 reshape_projoint(
   .dataframe,
-  .idvar,
+  .idvar = "ResponseId",
   .outcomes,
-  .outcomes_ids = c("1", "2"),
-  .alphabet = "F",
-  .repeated = FALSE,
-  .flipped = NULL,
+  .outcomes_ids = c("A", "B"),
+  .alphabet = "K",
+  .repeated = TRUE,
+  .flipped = TRUE,
   .covariates = NULL,
   .fill = FALSE
 )
@@ -19,21 +19,21 @@ reshape_projoint(
 \arguments{
 \item{.dataframe}{A data frame, preferably from \code{\link{read_Qualtrics}}}
 
-\item{.idvar}{A character identifying the column name containing respondent IDs}
+\item{.idvar}{"ResponseId" (default): a character identifying the column name containing respondent}
 
 \item{.outcomes}{A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.}
 
-\item{.outcomes_ids}{A vector identifying the possibilities for the outcome variables -- e.g., \code{c("Candidate A", "Candidate B")}}
+\item{.outcomes_ids}{c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")}
 
-\item{.alphabet}{The letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics, the default is \code{F}.}
+\item{.alphabet}{"K" (default): a letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics.}
 
-\item{.repeated}{TRUE if there is a repeated task (recommended). The repeated task should be the same as the first task.}
+\item{.repeated}{TRUE (default) if there is a repeated task (recommended). The repeated task should be the same as the first task.}
 
-\item{.flipped}{TRUE if the profiles of the repeated task are flipped (recommended)}
+\item{.flipped}{TRUE (default) if the profiles of the repeated task are flipped (recommended)}
 
-\item{.covariates}{A character vector identifying respondents' covariates used for subgroup analysis}
+\item{.covariates}{NULL (default): a character vector identifying respondents' covariates used for subgroup analysis}
 
-\item{.fill}{A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).}
+\item{.fill}{FALSE (default): A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).}
 }
 \value{
 A projoint object of class `projoint_data` ready to pass to `projoint()`.
@@ -45,7 +45,6 @@ This function takes a data frame, preferably from \code{\link{read_Qualtrics}}, 
 }
 \examples{
 library(projoint)
-library(stringr)
 
 data("exampleData1")
 head(exampleData1)
@@ -57,11 +56,5 @@ outcomes <- c(outcomes, "choice1_repeated_flipped")
 # Reshape the data
 reshaped_data <- reshape_projoint(
   .dataframe = exampleData1, 
-  .idvar = "ResponseId", 
-  .outcomes = outcomes,
-  .outcomes_ids = c("A", "B"),
-  .alphabet = "K", 
-  .repeated = TRUE,
-  .flipped = TRUE, 
-  .fill = FALSE)
+  .outcomes = outcomes)
 }

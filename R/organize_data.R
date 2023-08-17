@@ -15,26 +15,6 @@
 #' @param .remove_ties TRUE if you want to remove ties for the attribute of interest (in profile-level analysis)
 #' @keywords internal
 
-
-# .dataframe <- df@data
-# .remove_ties <- TRUE # must be logical
-# 
-# # Profile-level, MM
-# # Example: Probability of choosing Level 3 of Attribute 1 (when the other profile is one of the other levels of the same attribute)
-# .structure      <- "profile_level"
-# .att_choose     <- "att1" # must be length==1
-# .lev_choose     <- "level3" # must be length==1
-# .att_notchoose  <- NULL # must be null
-# .lev_notchoose  <- NULL # must be null
-# 
-# # Choice-level, MM
-# # Example: Probability of choosing Level 3 of Attribute 1 when the other profile is Level 3 of Attribute 1. 
-# .structure      <- "choice_level"
-# .att_choose     <- "att1" # must be length==1
-# .lev_choose     <- "level3" # must be length>=1
-# .att_notchoose  <- "att2" # must be length==1
-# .lev_notchoose  <- c("level1", "level2") # must be length>=1
-
 organize_data <- function(
     .dataframe,
     .structure,
@@ -116,9 +96,11 @@ organize_data <- function(
     # specify the attributes and levels of interest
     attlev_choose   <- stringr::str_c(.att_choose,  ":", .lev_choose)
     
+    att_choose <- rlang::sym(.att_choose)
+    
     # keep relevant rows only
     out2 <- out1 <- .dataframe %>% 
-      dplyr::mutate(qoi_choose = !!rlang::sym(.att_choose)) %>% 
+      dplyr::mutate(qoi_choose = !!att_choose) %>% 
       dplyr::filter(qoi_choose %in% c(attlev_choose)) %>% 
       dplyr::select(-matches("att\\d+$"))
     
@@ -126,7 +108,7 @@ organize_data <- function(
       
       out2 <- out1 %>% 
         dplyr::group_by(id, task) %>% 
-        dplyr::mutate(ties = n() - 1) %>% 
+        dplyr::mutate(ties = dplyr::n() - 1) %>% 
         dplyr::ungroup() %>% 
         dplyr::filter(ties == 0) %>% 
         dplyr::select(-ties)
@@ -178,47 +160,7 @@ organize_data <- function(
     
     out <- out3
   }
-  
-  # organize the data frame -------------------------------------------------
-  
-  # keep relevant rows only
-  # out2 <- .dataframe %>% 
-  #   dplyr::rename(att = !!rlang::sym(.attribute)) %>% 
-  #   dplyr::filter(att %in% c(att_levels))
-  # 
-  # if (structure == "profile_level"){
-  #   
-  #   if (.remove_ties == TRUE){
-  #     
-  #     out2 <- out2 %>% 
-  #       dplyr::group_by(id, task) %>% 
-  #       dplyr::mutate(ties = n() - 1) %>% 
-  #       dplyr::ungroup() %>% 
-  #       dplyr::filter(ties == 0) %>% 
-  #       dplyr::select(-ties)
-  #     
-  #   }
-  #   
-  # } else if (structure == "choice_level"){
-  #   
-  #   out2 <- out2 %>% 
-  #     
-  #     # pivot the data frame
-  #     tidyr::pivot_wider(id_cols = c(id, task, agree), 
-  #                        names_from = profile,
-  #                        values_from = c(att, selected)) %>% 
-  #     
-  #     # keep relevant rows only
-  #     dplyr::filter(att_1 == att_levels[1] & att_2 == att_levels[2]) %>% 
-  #     
-  #     # make "selected"
-  #     dplyr::mutate(selected = selected_2) %>% 
-  #     
-  #     # add a column to record the levels of interest
-  #     dplyr::mutate(att = str_c(att_levels, collapse = ", "))
-  #   
-  # }
-  
+
   # Keep necessary variables only and return --------------------------------
   
   # data frame to estimate IRR

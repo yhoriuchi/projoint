@@ -40,12 +40,7 @@
 #' 
 #' reshaped_data <- reshape_projoint(
 #'   .dataframe = exampleData1, 
-#'   .idvar = "ResponseId", 
-#'   .outcomes = outcomes,
-#'   .outcomes_ids = c("A", "B"),
-#'   .alphabet = "K", 
-#'   .repeated = TRUE,
-#'   .flipped = TRUE)
+#'   .outcomes = outcomes)
 #'
 #' projoint(reshaped_data) 
 
@@ -79,7 +74,6 @@ projoint <- function(
     warning("Both .qoi and .estimand are specified; using the value from .qoi.")
   }
   
-    
   if(.structure == "choice_level" & is.null(.ignore_position)){
     .ignore_position = TRUE
   }
@@ -127,14 +121,12 @@ projoint <- function(
   
 }
 
-
 #' @param x A \code{\link{projoint_results}} object
 #' @param ... Optional arguments; currently none accepted
 #' @export
 #' @rdname projoint
 
 print.projoint_results <- function(x, ...) {
-  #  ## What should we put here?
   cat("[A projoint output]\n", 
       "Estimand:", x@estimand, "\n",
       "Structure:", x@structure, "\n",
@@ -142,11 +134,7 @@ print.projoint_results <- function(x, ...) {
       "Tau:", x@tau, "\n",
       "Remove ties:", x@remove_ties, "\n",
       "SE methods:", x@se_method)
-  # Tau and whether it's estimated or assumed
-  # Some details about the data set
-  # No results
 }
-
 
 #' @param object A \code{\link{projoint_results}} object
 #' @param ... Optional arguments; currently none accepted
@@ -154,14 +142,7 @@ print.projoint_results <- function(x, ...) {
 #' @rdname projoint
 
 summary.projoint_results <- function(object, ...) {
-  ## What should we put here?
-  # ests <- object@estimates
-  # labs <- object@labels
-  # left_join(ests, 
-  #           labs, 
-  #           by = c("att_level_choose" = "level_id"))
   object@estimates
-  
 }
 
 

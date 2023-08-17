@@ -94,10 +94,12 @@ projoint_level <- function(
     
     out <- NULL
     
+    i <- 1
+    
     for (i in seq_along(attribute_levels)){
       
-      attribute <- str_extract(attribute_levels[i], "^.+(?=:)")
-      level     <- str_extract(attribute_levels[i], "(?<=:).+$")
+      attribute <- stringr::str_extract(attribute_levels[i], "^.+(?=:)")
+      level     <- stringr::str_extract(attribute_levels[i], "(?<=:).+$")
       
       if (estimand == "mm"){
         
@@ -126,7 +128,7 @@ projoint_level <- function(
                              .weights_2 = NULL,
                              .clusters_2 = NULL,
                              .se_type_2 = "classical") %>% 
-          dplyr::mutate(att_level_choose = str_c(str_c(attribute, level, sep = ":"), collapse = " or "))
+          dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute, level, sep = ":"), collapse = " or "))
         
       } else {
         
@@ -155,8 +157,8 @@ projoint_level <- function(
                              .weights_2 = NULL,
                              .clusters_2 = NULL,
                              .se_type_2 = "classical") %>% 
-          dplyr::mutate(att_level_choose = str_c(str_c(attribute, level, sep = ":"), collapse = " or "),
-                        att_level_choose_baseline = str_c(str_c(attribute, "level1", sep = ":"), collapse = " or "),
+          dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute, level, sep = ":"), collapse = " or "),
+                        att_level_choose_baseline = stringr::str_c(stringr::str_c(attribute, "level1", sep = ":"), collapse = " or "),
           )
         
       }
@@ -216,16 +218,16 @@ projoint_level <- function(
     if (estimand == "mm"){
       
       out <- temp %>% 
-        dplyr::mutate(att_level_choose = str_c(str_c(attribute_of_interest, levels_of_interest, sep = ":"), collapse = " or "),
-                      att_level_notchoose = str_c(str_c(attribute_of_interest_0, levels_of_interest_0, sep = ":"), collapse = " or "))
+        dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute_of_interest, levels_of_interest, sep = ":"), collapse = " or "),
+                      att_level_notchoose = stringr::str_c(stringr::str_c(attribute_of_interest_0, levels_of_interest_0, sep = ":"), collapse = " or "))
       
     } else{
       
       out <- temp %>% 
-        dplyr::mutate(att_level_choose = str_c(str_c(attribute_of_interest, levels_of_interest, sep = ":"), collapse = " or "),
-                      att_level_notchoose = str_c(str_c(attribute_of_interest_0, levels_of_interest_0, sep = ":"), collapse = " or "),
-                      att_level_choose_baseline = str_c(str_c(attribute_of_interest_baseline, levels_of_interest_baseline, sep = ":"), collapse = " or "),
-                      att_level_notchoose_baseline = str_c(str_c(attribute_of_interest_0_baseline, levels_of_interest_0_baseline, sep = ":"), collapse = " or "))
+        dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute_of_interest, levels_of_interest, sep = ":"), collapse = " or "),
+                      att_level_notchoose = stringr::str_c(stringr::str_c(attribute_of_interest_0, levels_of_interest_0, sep = ":"), collapse = " or "),
+                      att_level_choose_baseline = stringr::str_c(stringr::str_c(attribute_of_interest_baseline, levels_of_interest_baseline, sep = ":"), collapse = " or "),
+                      att_level_notchoose_baseline = stringr::str_c(stringr::str_c(attribute_of_interest_0_baseline, levels_of_interest_0_baseline, sep = ":"), collapse = " or "))
       
     }
     
@@ -241,7 +243,7 @@ projoint_level <- function(
   # return estimates --------------------------------------------------------
   
   if (!is.null(.irr)){
-    irr <- str_c("Assumed (", .irr, ")")
+    irr <- stringr::str_c("Assumed (", .irr, ")")
   } else{
     irr <- "Estimated" 
   }

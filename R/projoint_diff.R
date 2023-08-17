@@ -133,7 +133,7 @@ projoint_diff <- function(
   # return estimates --------------------------------------------------------
   
   if (is.null(.irr)){
-    irr <- str_c("Assumed (", .irr, ")")
+    irr <- stringr::str_c("Assumed (", .irr, ")")
   } else{
     irr <- "Estimated" 
   }
