@@ -30,7 +30,7 @@ The PHP randomizer must be hosted by a server. The following is an example hoste
 
 ### 1.2 Modify your Javascript or PHP randomizer
 
-To add some additional constraints, such as removing ties between two profiles, you need to revise your PHP scripts or Javascript manually. In the future release of this package, we will add additional feature to make this step easier. For now, we recommend you use other resources, including [Open AI's GPT-4](https://openai.com/gpt-4)), to learn how to modify your code. The above PHP example has the following manually added component at the end so that the race of one profile (candidate) is always "White" and another is always "Black," "Asian," or "Hispanic." 
+To add some additional constraints, such as removing ties between two profiles, you need to revise your PHP scripts or Javascript manually. In the future release of this package, we will add additional features to make this step easier. For now, we recommend you use other resources, including [Open AI's GPT-4](https://openai.com/gpt-4)), to learn how to modify your code. The above PHP example has the following manually added component at the end so that the race of one profile (candidate) is always "White" and another is always "Black," "Asian," or "Hispanic." 
 
 ```{r, eval=FALSE} 
 
