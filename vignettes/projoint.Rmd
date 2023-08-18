@@ -49,10 +49,10 @@ Next, we will use `reshape_projoint()` to prepare the data set for the main func
 ```{r, eval=TRUE}
 reshaped_data <-  reshape_projoint(
   .dataframe = dat, 
-  .idvar = "ResponseId", 
   .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
   .outcomes_ids = c("A", "B"),
   .alphabet = "K", 
+  .idvar = "ResponseId", 
   .repeated = TRUE,
   .flipped = TRUE)
 
