@@ -8,10 +8,10 @@
 #' @import rlang
 #' @import tidyselect
 #' @param .dataframe A data frame, preferably from \code{\link{read_Qualtrics}}
-#' @param .idvar "ResponseId" (default): a character identifying the column name containing respondent
 #' @param .outcomes A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.
 #' @param .outcomes_ids c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")
 #' @param .alphabet "K" (default): a letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics.
+#' @param .idvar "ResponseId" (default): a character identifying the column name containing respondent
 #' @param .repeated TRUE (default) if there is a repeated task (recommended). The repeated task should be the same as the first task.
 #' @param .flipped TRUE (default) if the profiles of the repeated task are flipped (recommended)
 #' @param .covariates NULL (default): a character vector identifying respondents' covariates used for subgroup analysis
@@ -36,10 +36,10 @@
 
 reshape_projoint <- function(
     .dataframe, 
-    .idvar = "ResponseId", 
     .outcomes, 
     .outcomes_ids = c("A", "B"),
     .alphabet = "K", 
+    .idvar = "ResponseId", 
     .repeated = TRUE,
     .flipped = TRUE,
     .covariates = NULL,
