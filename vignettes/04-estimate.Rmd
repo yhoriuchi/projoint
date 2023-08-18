@@ -23,7 +23,7 @@ out1 <- reshape_projoint(exampleData1, outcomes)
 
 ### 4.2 Why do we recommend you use IDs? 
 
-To estimate and visualize the quantities of your interest using our package (at least in the current version), you need to set the attributes and levels using the IDs, such as `att1` and `level2`, rather than their actual labels, such as "Housing Cost" (for `att1`) and "15% of pre-tax income" (for `level1` of `att1`). We think that this approach is prone to error because some applications may include foreign characters (e.g., 2-byte Japanese characters) or special characters. Sometimes, your design may include the same levels for more than one attribute; for example, "Teaching quality" = {"High", "Low"} and "Research quality" = {"High", "Low")). To avoid any possible strange result, we use the unique identiers for each attribute-level. 
+To estimate and visualize the quantities of your interest using our package (at least in the current version), you need to set the attributes and levels using the IDs, such as `att1` and `level2`, rather than their actual labels, such as "Housing Cost" (for `att1`) and "15% of pre-tax income" (for `level1` of `att1`). We think that this approach is prone to error because some applications may include foreign characters (e.g., 2-byte Japanese characters) or special characters. Sometimes, your design may include the same levels for more than one attribute; for example, "Teaching quality" = {"High", "Low"} and "Research quality" = {"High", "Low")). To avoid any possible strange result, we use the unique identifiers for each attribute-level. 
 
 To check which IDs correspond to which attributes and levels, you can type the following line in your script:
 ```{r}
