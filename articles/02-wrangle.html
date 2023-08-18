@@ -96,10 +96,10 @@ for clarity:</p>
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcomes1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
 <span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span>
-<span>                         .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
 <span>                         .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
 <span>                         .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
 <span>                         .alphabet <span class="op">=</span> <span class="st">"K"</span>, </span>
+<span>                         .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>, </span>
 <span>                         .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                         .flipped <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                         .covariates <span class="op">=</span> <span class="cn">NULL</span>,</span>
