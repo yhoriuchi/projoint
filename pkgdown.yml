@@ -9,10 +9,11 @@ articles:
   05-visualize: 05-visualize.html
   06-compare: 06-compare.html
   07-explore: 07-explore.html
+  Introducing Projoint: Introducing Projoint.html
   correction: correction.html
   projoint: projoint.html
   structure: structure.html
-last_built: 2023-08-18T17:45Z
+last_built: 2023-08-18T19:45Z
 urls:
   reference: https://yhoriuchi.github.io/projoint/reference
   article: https://yhoriuchi.github.io/projoint/articles
