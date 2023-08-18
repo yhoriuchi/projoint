@@ -41,30 +41,14 @@ df <- exampleData1 %>%
 
 df_0 <- df %>% 
   filter(white == 0) %>% 
-  reshape_projoint(.idvar = "ResponseId", 
-                   .outcomes = outcomes,
-                   .outcomes_ids = c("A", "B"),
-                   .alphabet = "K", 
-                   .repeated = TRUE,
-                   .flipped = TRUE)
+  reshape_projoint(outcomes)
 
 df_1 <- df %>% 
   filter(white == 1) %>% 
-  reshape_projoint(.idvar = "ResponseId", 
-                   .outcomes = outcomes,
-                   .outcomes_ids = c("A", "B"),
-                   .alphabet = "K", 
-                   .repeated = TRUE,
-                   .flipped = TRUE)
+  reshape_projoint(outcomes)
 
 df_d <- df %>% 
-  reshape_projoint(.idvar = "ResponseId", 
-                   .outcomes = outcomes,
-                   .outcomes_ids = c("A", "B"),
-                   .alphabet = "K", 
-                   .repeated = TRUE,
-                   .flipped = TRUE, 
-                   .covariates = "white") 
+  reshape_projoint(outcomes, .covariates = "white") 
 ```
 
 Then, add and re-order the labels (see [2.3 Arrange the order and labels of attributes and levels](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#arrange-the-order-and-labels-of-attributes-and-levels})).
@@ -146,30 +130,15 @@ We encourage users of our package to make custom figures based on the estimates 
 
 df_D <- exampleData1 %>% 
   filter(party_1 == "Democrat") %>% 
-  reshape_projoint(.idvar = "ResponseId", 
-                   .outcomes = outcomes,
-                   .outcomes_ids = c("A", "B"),
-                   .alphabet = "K", 
-                   .repeated = TRUE,
-                   .flipped = TRUE)
+  reshape_projoint(outcomes)
 
 df_R <- exampleData1 %>% 
   filter(party_1 == "Republican") %>% 
-  reshape_projoint(.idvar = "ResponseId", 
-                   .outcomes = outcomes,
-                   .outcomes_ids = c("A", "B"),
-                   .alphabet = "K", 
-                   .repeated = TRUE,
-                   .flipped = TRUE)
+  reshape_projoint(outcomes)
 
 df_0 <- exampleData1 %>% 
   filter(party_1 %in% c("Something else", "Independent")) %>% 
-  reshape_projoint(.idvar = "ResponseId", 
-                   .outcomes = outcomes,
-                   .outcomes_ids = c("A", "B"),
-                   .alphabet = "K", 
-                   .repeated = TRUE,
-                   .flipped = TRUE)
+  reshape_projoint(outcomes)
 
 qoi <- set_qoi(
   .structure = "choice_level",
@@ -180,9 +149,9 @@ qoi <- set_qoi(
   .lev_notchoose = "level1", # 30% Democrat, 70% Republican
 )
 
-out_D <- projoint(df_D, qoi, .structure = "choice_level", .ignore_position = TRUE)
-out_R <- projoint(df_R, qoi, .structure = "choice_level", .ignore_position = TRUE)
-out_0 <- projoint(df_0, qoi, .structure = "choice_level", .ignore_position = TRUE)
+out_D <- projoint(df_D, qoi)
+out_R <- projoint(df_R, qoi)
+out_0 <- projoint(df_0, qoi)
 
 out_merged <- bind_rows(
   out_D@estimates %>% mutate(party = "Democrat"),
