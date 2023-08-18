@@ -46,7 +46,7 @@ Our framework and methods can be found in this paper:
 * Katherine Clayton, Yusaku Horiuchi, Aaron R. Kaufman, Gary King, and Mayya Komisarchik. “Correcting Measurement Error Bias in Conjoint Survey Experiments”. Working Paper. [[Paper](https://gking.harvard.edu/conjointE)]
   + **Abstract:** Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many causal effects from a single randomized experiment. Unfortunately, by their ability to mirror complicated real-world choices, these designs often generate substantial measurement errors and thus bias. We replicate both the data collection and analysis from eight prominent conjoint studies, all of which closely reproduce published results, and show that a large proportion of observed variation in answers to conjoint questions is effectively random noise. We then discover a common empirical pattern in how measurement error appears in conjoint studies and, with it, introduce an easy-to-use statistical method to correct the bias.
 
-### Projoint Community
+### Join Our Projoint Community
 
 We encourage you to join our Projoint Community by making a GitHub account, subscribing to our [Announcements](https://github.com/yhoriuchi/projoint/discussions/categories/announcements), and actively joining [Discussions](https://github.com/yhoriuchi/projoint/discussions). We encourage you to post questions, suggest for improvement, and share your research findings using our software. For any problem you find, please report your issue to [Issues](https://github.com/yhoriuchi/projoint/issues). 
 
