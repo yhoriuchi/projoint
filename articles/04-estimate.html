@@ -198,13 +198,9 @@ in <code><a href="../reference/projoint.html">projoint()</a></code> are dropped 
 <span>  .lev_choose <span class="op">=</span> <span class="st">"level1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
-<span>                .qoi <span class="op">=</span> <span class="va">qoi_1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_1): Both .qoi and .structure are</span></span>
-<span><span class="co">## specified; using the value from .qoi.</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_1): Both .qoi and .estimand are</span></span>
-<span><span class="co">## specified; using the value from .qoi.</span></span></code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm1</span><span class="op">)</span></span></code></pre></div>
+<span>                .qoi <span class="op">=</span> <span class="va">qoi_1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: mm </span></span>
 <span><span class="co">##  Structure: profile_level </span></span>
@@ -212,7 +208,7 @@ in <code><a href="../reference/projoint.html">projoint()</a></code> are dropped 
 <span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
 <span><span class="co">##   estimand       estimate     se conf.low conf.high att_level_choose</span></span>
@@ -231,16 +227,12 @@ specify the value based on prior knowledge. In the following, we use
 0.75, which is most likely IRR we find in our test data sets. The
 default arguments for both <code><a href="../reference/set_qoi.html">set_qoi()</a></code> and
 <code><a href="../reference/projoint.html">projoint()</a></code> are dropped hereafter.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                 .qoi <span class="op">=</span> <span class="va">qoi_1</span>,</span>
-<span>                 .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_1, .irr = 0.75): Both .qoi and</span></span>
-<span><span class="co">## .structure are specified; using the value from .qoi.</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_1, .irr = 0.75): Both .qoi and</span></span>
-<span><span class="co">## .estimand are specified; using the value from .qoi.</span></span></code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm1b</span><span class="op">)</span></span></code></pre></div>
+<span>                 .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm1b</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: mm </span></span>
 <span><span class="co">##  Structure: profile_level </span></span>
@@ -248,7 +240,7 @@ default arguments for both <code><a href="../reference/set_qoi.html">set_qoi()</
 <span><span class="co">##  Tau: 0.1464466 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm1b</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
 <span><span class="co">##   estimand       estimate     se conf.low conf.high att_level_choose</span></span>
@@ -266,7 +258,7 @@ exponentially more choice-level estimands than there are profile-level
 estimands, so it is impractical to view all of them. Here we specify
 that we want to return the marginal mean of attribute 1, levels 1 and 3
 at the choice-level.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .att_choose <span class="op">=</span> <span class="st">"att1"</span>, </span>
@@ -278,13 +270,9 @@ at the choice-level.</p>
 <span><span class="va">mm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                .qoi <span class="op">=</span> <span class="va">qoi_2</span>,</span>
 <span>                .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
-<span>                .ignore_position <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_2, .structure = "choice_level", :</span></span>
-<span><span class="co">## Both .qoi and .structure are specified; using the value from .qoi.</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_2, .structure = "choice_level", :</span></span>
-<span><span class="co">## Both .qoi and .estimand are specified; using the value from .qoi.</span></span></code></pre>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm2</span><span class="op">)</span></span></code></pre></div>
+<span>                .ignore_position <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: mm </span></span>
 <span><span class="co">##  Structure: choice_level </span></span>
@@ -292,7 +280,7 @@ at the choice-level.</p>
 <span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
 <span><span class="co">##   estimand       estimate     se conf.low conf.high att_level_choose</span></span>
@@ -311,7 +299,7 @@ rather than the default <code>"mm"</code>.</p>
 <div class="section level4">
 <h4 id="amce-profile-level-all-levels">AMCE (profile-level) – all levels<a class="anchor" aria-label="anchor" href="#amce-profile-level-all-levels"></a>
 </h4>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">amce0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
 <span></span>
@@ -323,7 +311,7 @@ rather than the default <code>"mm"</code>.</p>
 <span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce0</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 34 × 7</span></span></span>
 <span><span class="co">##    estimand         estimate     se conf.low conf.high att_level_choose</span></span>
@@ -344,7 +332,7 @@ rather than the default <code>"mm"</code>.</p>
 <div class="section level4">
 <h4 id="amce-profile-level-specific-level">AMCE (profile-level) – specific level<a class="anchor" aria-label="anchor" href="#amce-profile-level-specific-level"></a>
 </h4>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
@@ -356,13 +344,9 @@ rather than the default <code>"mm"</code>.</p>
 <span></span>
 <span><span class="va">amce1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                  .qoi <span class="op">=</span> <span class="va">qoi_3</span>,</span>
-<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_3, .estimand = "amce"): Both .qoi</span></span>
-<span><span class="co">## and .structure are specified; using the value from .qoi.</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_3, .estimand = "amce"): Both .qoi</span></span>
-<span><span class="co">## and .estimand are specified; using the value from .qoi.</span></span></code></pre>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce1</span><span class="op">)</span></span></code></pre></div>
+<span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: amce </span></span>
 <span><span class="co">##  Structure: profile_level </span></span>
@@ -370,7 +354,7 @@ rather than the default <code>"mm"</code>.</p>
 <span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
 <span><span class="co">##   estimand         estimate     se conf.low conf.high att_level_choose</span></span>
@@ -383,17 +367,13 @@ rather than the default <code>"mm"</code>.</p>
 <div class="section level4">
 <h4 id="amce-profile-level-specific-level-using-the-predicted-irr">AMCE (profile-level) – specific level, using the predicted IRR<a class="anchor" aria-label="anchor" href="#amce-profile-level-specific-level-using-the-predicted-irr"></a>
 </h4>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">amce1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1</span>,</span>
 <span>                 .qoi <span class="op">=</span> <span class="va">qoi_3</span>,</span>
 <span>                 .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
-<span>                 .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_3, .estimand = "amce", .irr =</span></span>
-<span><span class="co">## 0.75): Both .qoi and .structure are specified; using the value from .qoi.</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_3, .estimand = "amce", .irr =</span></span>
-<span><span class="co">## 0.75): Both .qoi and .estimand are specified; using the value from .qoi.</span></span></code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce1b</span><span class="op">)</span></span></code></pre></div>
+<span>                 .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce1b</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: amce </span></span>
 <span><span class="co">##  Structure: profile_level </span></span>
@@ -401,7 +381,7 @@ rather than the default <code>"mm"</code>.</p>
 <span><span class="co">##  Tau: 0.1464466 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce1b</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
 <span><span class="co">##   estimand         estimate     se conf.low conf.high att_level_choose</span></span>
@@ -414,7 +394,7 @@ rather than the default <code>"mm"</code>.</p>
 <div class="section level4">
 <h4 id="amce-choice-level-specific-level">AMCE (choice-level) – specific level<a class="anchor" aria-label="anchor" href="#amce-choice-level-specific-level"></a>
 </h4>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
@@ -432,13 +412,9 @@ rather than the default <code>"mm"</code>.</p>
 <span>                  .qoi <span class="op">=</span> <span class="va">qoi_4</span>,</span>
 <span>                  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>                  .estimand <span class="op">=</span> <span class="st">"amce"</span>, </span>
-<span>                  .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_4, .structure = "choice_level", :</span></span>
-<span><span class="co">## Both .qoi and .structure are specified; using the value from .qoi.</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in projoint(.data = out1, .qoi = qoi_4, .structure = "choice_level", :</span></span>
-<span><span class="co">## Both .qoi and .estimand are specified; using the value from .qoi.</span></span></code></pre>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce2</span><span class="op">)</span></span></code></pre></div>
+<span>                  .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [A projoint output]</span></span>
 <span><span class="co">##  Estimand: amce </span></span>
 <span><span class="co">##  Structure: choice_level </span></span>
@@ -446,7 +422,7 @@ rather than the default <code>"mm"</code>.</p>
 <span><span class="co">##  Tau: 0.1721281 </span></span>
 <span><span class="co">##  Remove ties: TRUE </span></span>
 <span><span class="co">##  SE methods: analytical</span></span></code></pre>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
 <span><span class="co">##   estimand         estimate     se conf.low conf.high att_level_choose</span></span>
