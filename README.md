@@ -24,16 +24,18 @@ devtools::install_github("yhoriuchi/projoint")
 library(projoint)
 
 # Reshape data for conjoint analysis
-data <- reshape_projoint(.dataframe = exampleData1, 
-                         .outcomes = c(paste0("choice", 1:8),
-                                     # choice in the repeated task
-                                     "choice1_repeated_flipped"))
+# This example includes the repeated task.
+data <- reshape_projoint(exampleData1, 
+                         c(paste0("choice", 1:8), "choice1_repeated_flipped"))
 
 # Run conjoint analysis
 output <- projoint(data)
 
 # Make a figure
 plot(output)
+
+# Show the estimated quantities of interest
+summary(output)
 
 ```
 
