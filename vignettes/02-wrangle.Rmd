@@ -27,10 +27,10 @@ Let's look at a simple example. We expand all those arguments below for clarity:
 outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
 outcomes1 <- c(outcomes, "choice1_repeated_flipped")
 out1 <- reshape_projoint(.dataframe = exampleData1, 
-                         .idvar = "ResponseId", 
                          .outcomes = outcomes1,
                          .outcomes_ids = c("A", "B"),
                          .alphabet = "K", 
+                         .idvar = "ResponseId", 
                          .repeated = TRUE,
                          .flipped = TRUE, 
                          .covariates = NULL,

@@ -6,10 +6,10 @@
 \usage{
 reshape_projoint(
   .dataframe,
-  .idvar = "ResponseId",
   .outcomes,
   .outcomes_ids = c("A", "B"),
   .alphabet = "K",
+  .idvar = "ResponseId",
   .repeated = TRUE,
   .flipped = TRUE,
   .covariates = NULL,
@@ -19,13 +19,13 @@ reshape_projoint(
 \arguments{
 \item{.dataframe}{A data frame, preferably from \code{\link{read_Qualtrics}}}
 
-\item{.idvar}{"ResponseId" (default): a character identifying the column name containing respondent}
-
 \item{.outcomes}{A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.}
 
 \item{.outcomes_ids}{c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")}
 
 \item{.alphabet}{"K" (default): a letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics.}
+
+\item{.idvar}{"ResponseId" (default): a character identifying the column name containing respondent}
 
 \item{.repeated}{TRUE (default) if there is a repeated task (recommended). The repeated task should be the same as the first task.}
 
