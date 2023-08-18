@@ -88,16 +88,18 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Reshape data for conjoint analysis</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span>.dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span>
-<span>                         .outcomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>,</span>
-<span>                                     <span class="co"># choice in the repeated task</span></span>
-<span>                                     <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># This example includes the repeated task.</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">exampleData1</span>, </span>
+<span>                         <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Run conjoint analysis</span></span>
 <span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Make a figure</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Show the estimated quantities of interest</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="relevant-article">Relevant Article<a class="anchor" aria-label="anchor" href="#relevant-article"></a>
