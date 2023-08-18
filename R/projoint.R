@@ -1,7 +1,7 @@
 #' Analyze a conjoint data set and correct for measurement error
 #'
 #' This main function analyzes a conjoint data set and produces measurement error-corrected estimates of either marginal means or average marginal component effects, ready for plotting.
-#' It  accepts a `projoint_data` object, and optionally a `projoint_qoi` object for users who wish to specify more complex quantities of interest.
+#' It  accepts a \code{\link{projoint_data}} object, and optionally a \code{\link{projoint_qoi}} object for users who wish to specify more complex quantities of interest.
 #'
 #' @import dplyr
 #' @import rlang
@@ -66,12 +66,12 @@ projoint <- function(
   
   if(!is.null(.structure) & !is.null(.qoi)){
     .structure = .qoi@structure
-    warning("Both .qoi and .structure are specified; using the value from .qoi.")
+    #warning("Both .qoi and .structure are specified; using the value from .qoi.")
   }
 
   if(!is.null(.estimand) & !is.null(.qoi)){
     .estimand = .qoi@estimand
-    warning("Both .qoi and .estimand are specified; using the value from .qoi.")
+    #warning("Both .qoi and .estimand are specified; using the value from .qoi.")
   }
   
   if(.structure == "choice_level" & is.null(.ignore_position)){
