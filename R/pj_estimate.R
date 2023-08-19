@@ -231,7 +231,7 @@ pj_estimate <- function(
   selected <- NULL
   selected_1 <- NULL
   selected_2 <- NULL
-
+  
   # Organize data -----------------------------------------------------------
   
   if (estimand == "mm"){
@@ -563,13 +563,16 @@ pj_estimate <- function(
   
   # Keep the observations with both "selected" and "agree"
   
-  if (is.null(irr)){
-    data_for_cov <- data_for_estimand %>% 
-      dplyr::filter(!is.na(agree))
-  } else{
-    data_for_cov <- data_for_estimand
-  }
-
+  data_for_cov <- data_for_estimand %>% 
+    dplyr::filter(!is.na(agree))
+  
+  # if (is.null(irr)){
+  #   data_for_cov <- data_for_estimand %>% 
+  #     dplyr::filter(!is.na(agree))
+  # } else{
+  #   data_for_cov <- data_for_estimand
+  # }
+  
   if (estimand == "mm"){
     
     if (is.null(.irr)){
