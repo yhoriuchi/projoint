@@ -84,7 +84,9 @@ make_projoint_data <- function(
                     "profile" = .profile_var,
                     all_of(.attribute_vars),
                     "selected" = .selected_var) %>% 
-      rlang::set_names(pull(variable_names))
+      rlang::set_names(pull(variable_names)) %>% 
+      mutate(selected_repeated = NA,
+             agree = NA)
     
   } else{
     
