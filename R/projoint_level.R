@@ -122,12 +122,12 @@ projoint_level <- function(
                              .ignore_position,
                              .n_sims,
                              .n_boot,
-                             .weights_1 = NULL,
-                             .clusters_1 = NULL,
-                             .se_type_1 = "classical",
-                             .weights_2 = NULL,
-                             .clusters_2 = NULL,
-                             .se_type_2 = "classical") %>% 
+                             .weights_1,
+                             .clusters_1,
+                             .se_type_1,
+                             .weights_2,
+                             .clusters_2,
+                             .se_type_2) %>% 
           dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute, level, sep = ":"), collapse = " or "))
         
       } else {
@@ -151,12 +151,12 @@ projoint_level <- function(
                              .ignore_position,
                              .n_sims,
                              .n_boot,
-                             .weights_1 = NULL,
-                             .clusters_1 = NULL,
-                             .se_type_1 = "classical",
-                             .weights_2 = NULL,
-                             .clusters_2 = NULL,
-                             .se_type_2 = "classical") %>% 
+                             .weights_1,
+                             .clusters_1,
+                             .se_type_1,
+                             .weights_2,
+                             .clusters_2,
+                             .se_type_2) %>% 
           dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute, level, sep = ":"), collapse = " or "),
                         att_level_choose_baseline = stringr::str_c(stringr::str_c(attribute, "level1", sep = ":"), collapse = " or "),
           )
@@ -207,12 +207,12 @@ projoint_level <- function(
                         .ignore_position,
                         .n_sims,
                         .n_boot,
-                        .weights_1 = NULL,
-                        .clusters_1 = NULL,
-                        .se_type_1 = "classical",
-                        .weights_2 = NULL,
-                        .clusters_2 = NULL,
-                        .se_type_2 = "classical")
+                        .weights_1,
+                        .clusters_1,
+                        .se_type_1,
+                        .weights_2,
+                        .clusters_2,
+                        .se_type_2)
     
     
     if (estimand == "mm"){
