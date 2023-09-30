@@ -6,22 +6,22 @@
 \usage{
 projoint_diff(
   .data,
-  .qoi = NULL,
+  .qoi,
   .by_var,
-  .structure = "profile_level",
-  .estimand = "mm",
-  .se_method = "analytical",
-  .irr = NULL,
-  .remove_ties = TRUE,
-  .ignore_position = NULL,
-  .n_sims = NULL,
-  .n_boot = NULL,
-  .weights_1 = NULL,
-  .clusters_1 = NULL,
-  .se_type_1 = "classical",
-  .weights_2 = NULL,
-  .clusters_2 = NULL,
-  .se_type_2 = "classical"
+  .structure,
+  .estimand,
+  .se_method,
+  .irr,
+  .remove_ties,
+  .ignore_position,
+  .n_sims,
+  .n_boot,
+  .weights_1,
+  .clusters_1,
+  .se_type_1,
+  .weights_2,
+  .clusters_2,
+  .se_type_2
 )
 }
 \arguments{
