@@ -1,4 +1,4 @@
-pandoc: 2.19.2
+pandoc: 3.1.11
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
@@ -13,7 +13,7 @@ articles:
   correction: correction.html
   projoint: projoint.html
   structure: structure.html
-last_built: 2024-02-02T14:51Z
+last_built: 2024-03-14T21:31Z
 urls:
   reference: https://yhoriuchi.github.io/projoint/reference
   article: https://yhoriuchi.github.io/projoint/articles
