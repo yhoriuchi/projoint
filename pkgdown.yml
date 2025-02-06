@@ -1,20 +1,19 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  01-setup: 01-setup.html
-  02-wrangle: 02-wrangle.html
-  03-predict: 03-predict.html
-  04-estimate: 04-estimate.html
-  05-visualize: 05-visualize.html
-  06-compare: 06-compare.html
-  07-explore: 07-explore.html
-  Introducing Projoint: Introducing Projoint.html
+  compare: compare.html
   correction: correction.html
+  estimate: estimate.html
+  explore: explore.html
+  Introducing-Projoint: Introducing-Projoint.html
+  predict: predict.html
   projoint: projoint.html
+  setup: setup.html
   structure: structure.html
-last_built: 2024-03-14T21:31Z
+  visualize: visualize.html
+  wrangle: wrangle.html
+last_built: 2025-02-06T04:45Z
 urls:
   reference: https://yhoriuchi.github.io/projoint/reference
   article: https://yhoriuchi.github.io/projoint/articles
-
