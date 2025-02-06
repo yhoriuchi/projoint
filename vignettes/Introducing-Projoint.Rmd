@@ -2,7 +2,7 @@
 title: "Introducing Projoint"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introducing-Projoint}
+  %\VignetteIndexEntry{Introducing Projoint}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
