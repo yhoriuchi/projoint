@@ -12,11 +12,11 @@
 ^CODE_OF_CONDUCT\.md$
 ^doc$
 ^Meta$
-^inst/doc/
 ^doc/
 ^doc/.*\.Rmd$
 ^doc/.*\.R$
 ^doc/.*\.html$
+^vignettes/\.install_exclude$
 
 
 

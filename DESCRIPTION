@@ -35,7 +35,3 @@ Depends:
     R (>= 2.10)
 LazyData: true
 VignetteBuilder: knitr
-<<<<<<< HEAD
-=======
-
->>>>>>> ec335e62e18a0614914c42a039096e00bbd21da9
