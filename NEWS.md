@@ -1,3 +1,3 @@
-# projoint (development version)
+# projoint 0.0.0 (YYYY-MM-DD)
 
-* To be written
+Initial release

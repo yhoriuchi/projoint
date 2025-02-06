@@ -7,7 +7,7 @@
 #' \describe{
 #'   \item{id}{Unique respondent ID}
 #'   \item{task}{Task number}
-#'   \item{profile}{Profile number = {1,2}}
+#'   \item{profile}{Profile number = \{1,2\}}
 #'   \item{selected}{Whether or not a profile was selected}
 #'   \item{selected_repeated}{Whether or not a profile was selected in the repeated task}
 #'   \item{School Quality, ... Type of Place}{attributes}
