@@ -33,6 +33,12 @@ dat <- read_Qualtrics("data/mummolo_nall_replication.csv")
 ```
 
 ```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+<<<<<<< HEAD
+library(projoint)
+data_file <- system.file("extdata", "mummolo_nall_replication_cleaned.csv", package = "projoint")
+if (data_file == "") stop("File not found!")
+dat <- read_Qualtrics(data_file)
+=======
 library(projoint)  # Ensure package functions are available
 installed_file_path <- system.file("extdata", "mummolo_nall_replication_cleaned.csv", package = "projoint")
 print(installed_file_path)  # Debugging: Print file path
@@ -45,6 +51,7 @@ if (!file.exists(installed_file_path)) {
 
 dat <- projoint::read_Qualtrics(installed_file_path)  # Explicitly use projoint:: to ensure function is found
 
+>>>>>>> ec335e62e18a0614914c42a039096e00bbd21da9
 ```
 
 After reading the Qualtrics data into R, you perhaps need to add a few more lines to clean your data -- e.g., removing incomplete responses, filtering out respondents who failed to pass the attention check questions, some responses that Qualtrics flagged as possible bots, etc. Then, your data frame (more specifically, tibble) should look like the following. Each row corresponds to each respondent. 

@@ -1,0 +1,184 @@
+---
+title: "6. Compare MMs or AMCEs between the subgroups"
+output: rmarkdown::html_vignette
+description: >
+  How to visualze the differences in the marginal means (MMs) or average marginal component effects (AMCEs)
+vignette: >
+  %\VignetteIndexEntry{6. Compare MMs or AMCEs between the subgroups}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+A key quantity of interest in conjoint tasks is whether estimates (MMs or AMCEs) differ across sub-populations. These subgroup comparisons are especially susceptible to IRR-induced measurement error bias. In the following, we present some sample codes so that researchers and adopt-and-modify them flexibly.
+
+### 6.1 Load the projoint package. 
+
+Also load some additional packages required for this vignette
+
+```{r, warning=FALSE, message=FALSE}
+library(projoint)
+library(dplyr)
+library(ggplot2)
+```
+
+### 6.2 Profile-level analysis
+
+#### Read and Wrangle data
+
+To begin, define the outcome questions in the original dataset. 
+
+```{r}
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- c(outcomes, "choice1_repeated_flipped")
+```
+
+Let's make three data frames -- the first data frame for the baseline group (in this example, respondents who did not report their race as "white"); he second data frame for the comparison group (in this example, respondents who reported their race as "white"), and the third data frame for both groups. Note that the `.covariates` argument should be specified in the `reshape_conjoint()` function for the third group.
+
+```{r}
+# Pre-processing
+df <- exampleData1 %>% 
+  mutate(white = ifelse(race == "White", 1, 0))
+
+df_0 <- df %>% 
+  filter(white == 0) %>% 
+  reshape_projoint(outcomes)
+
+df_1 <- df %>% 
+  filter(white == 1) %>% 
+  reshape_projoint(outcomes)
+
+df_d <- df %>% 
+  reshape_projoint(outcomes, .covariates = "white") 
+```
+
+Then, add and re-order the labels (see [2.3 Arrange the order and labels of attributes and levels](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#arrange-the-order-and-labels-of-attributes-and-levels})).
+
+```{r, eval=FALSE}
+df_0 <- read_labels(df_0, "temp/labels_arranged.csv")
+df_1 <- read_labels(df_1, "temp/labels_arranged.csv")
+df_d <- read_labels(df_d, "temp/labels_arranged.csv")
+```
+
+```{r, echo = FALSE}
+data_file <- system.file("extdata", "labels_arranged.csv", package = "projoint")
+if (data_file == "") {
+  stop("File not found!")
+}
+
+df_0 <- read_labels(df_0, data_file)
+df_1 <- read_labels(df_1, data_file)
+df_d <- read_labels(df_d, data_file)
+```
+
+#### Estimate MMs or AMCEs and the difference in the estimates
+
+For each of the three data frames, estimate the MMs, AMCEs, or the differences in these estimates. The following example estimate profile-level marginal means (default).
+```{r}
+out_0 <- projoint(df_0)
+out_1 <- projoint(df_1)
+out_d <- projoint(df_d, .by_var = "white")
+```
+
+Importantly, if your conjoint design includes the repeated task, the `projoint()` function applied to each subgroup will estimate IRR for the corresponding subgroup. The output of `out_d` includes the data for these differences
+```{r}
+out_d@estimates
+```
+
+You can also check `tau` for each subgroup:
+```{r}
+out_d@tau
+```
+Then, make and save three ggplot objects.
+
+```{r}
+plot_0 <- plot(out_0)
+plot_1 <- plot(out_1)
+plot_d <- plot(out_d, .by_var = TRUE)
+```
+
+#### Visualize subgroup differences
+
+Then, make a plot using the `patchwork` package. Researchers can add/modify layers of each ggplot. The default horizontal axis label is "Difference" if `.by_var = TRUE` is specified in the `plot()` function.
+
+```{r, fig.height=8, fig.width=8}
+g_0 <- plot_0 +
+  coord_cartesian(xlim = c(0.2, 0.8)) +
+  scale_x_continuous(breaks = c(0.3, 0.5, 0.7)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(title = "Non-white", 
+       x = "AMCE")
+
+g_1 <- plot_1 + 
+  coord_cartesian(xlim = c(0.2, 0.8)) +
+  scale_x_continuous(breaks = c(0.3, 0.5, 0.7)) +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(title = "White",
+       x = "AMCE")
+
+g_d <- plot_d + 
+  coord_cartesian(xlim = c(-0.4, 0.4)) +
+  scale_x_continuous(breaks = c(-0.25, 0, 0.25)) +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(title = "Difference")
+
+library(patchwork)
+g_0 + g_1 + g_d 
+```
+
+### 6.3 Choice-level analysis
+
+We encourage users of our package to make custom figures based on the estimates of your choice-level analysis. The following is just one example.
+
+```{r, fig.height=4, fig.width=8}
+
+df_D <- exampleData1 %>% 
+  filter(party_1 == "Democrat") %>% 
+  reshape_projoint(outcomes)
+
+df_R <- exampleData1 %>% 
+  filter(party_1 == "Republican") %>% 
+  reshape_projoint(outcomes)
+
+df_0 <- exampleData1 %>% 
+  filter(party_1 %in% c("Something else", "Independent")) %>% 
+  reshape_projoint(outcomes)
+
+qoi <- set_qoi(
+  .structure = "choice_level",
+  .estimand = "mm",
+  .att_choose = "att2", # Presidential Vote (2020)
+  .lev_choose = "level3", # 70% Democrat, 30% Republican 
+  .att_notchoose = "att2", 
+  .lev_notchoose = "level1", # 30% Democrat, 70% Republican
+)
+
+out_D <- projoint(df_D, qoi)
+out_R <- projoint(df_R, qoi)
+out_0 <- projoint(df_0, qoi)
+
+out_merged <- bind_rows(
+  out_D@estimates %>% mutate(party = "Democrat"),
+  out_R@estimates %>% mutate(party = "Republican"),
+  out_0@estimates %>% mutate(party = "Independent")
+) %>% 
+  filter(estimand == "mm_corrected")
+
+ggplot(out_merged, 
+       aes(y = party,
+           x = estimate)) +
+  geom_vline(xintercept = 0.5,
+             linetype = "dashed", 
+             color = "gray") +
+  geom_pointrange(aes(xmin = conf.low,
+                      xmax = conf.high)) +
+  geom_text(aes(label = format(round(estimate, digits = 2), nsmall = 2)),
+            vjust = -1) +
+  labs(y = NULL,
+       x = "Choice-level marginal mean", 
+       title = "Choose an area with 70% Democrat\n as opposed to an area with 30% Democrat") +
+  theme_classic()
+
+
+```

@@ -26,9 +26,15 @@ make_projoint_data(
 
 \item{.profile_var}{A character identifying the name of a column containing profile numbers IDs (default: "profile")}
 
+<<<<<<< HEAD
+\item{.selected_var}{A character identifying the name of a column containing each dichotomous response (0 or 1) for each task (default: "selected")}
+
+\item{.selected_repeated_var}{A character identifying the name of a column containing each dichotomous response (0 or 1) for the repeated task (default: NULL)}
+=======
 \item{.selected_var}{A character identifying the name of a column containing each dichotomous response (\{0, 1\}) for each task (default: "selected")}
 
 \item{.selected_repeated_var}{A character identifying the name of a column containing each dichotomous response (\{0, 1\}) for the repeated task (default: NULL)}
+>>>>>>> ec335e62e18a0614914c42a039096e00bbd21da9
 
 \item{.fill}{A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).}
 }

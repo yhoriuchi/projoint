@@ -1,0 +1,50 @@
+---
+title: "3. Predict the intra-respondent reliability (IRR)"
+output: rmarkdown::html_vignette
+description: >
+  How to predict intra-respondent reliability without a repeated task
+vignette: >
+  %\VignetteIndexEntry{3. Predict the intra-respondent reliability (IRR)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+We use two methods to estimate intra-respondent reliability (IRR). The first-best method requires researchers to add a repeated task to their conjoint survey, but is the most reliable. The second method, which uses linear extrapolation, does not require a repeated task but is noisier. If no repeated task is specified, we can use the `predict_tau` function to perform the extrapolation method and estimate IRR.
+
+### 3.1 Load the projoint package
+
+```{r}
+library(projoint)
+```
+
+### 3.2 Predict IRR based on the extrapolation method
+
+As before, start by reading your Qualtrics file and reshaping it using `reshape_projoint()`. See [2.2 Read and wrangle data, with the flipped repeated tasks](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#read-and-wrangle-data). Since we already did that, we'll skip right ahead and load in the "out1_arranged" object from before. (See [2.5 Arrange the order and labels of attributes and levels](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#arrange-the-order-and-labels-of-attributes-and-levels). 
+
+```{r}
+data(out1_arranged)
+```
+
+We pass this data set to the `predict_tau` function, which both calculates IRR and produces a figure showing the extrapolation method visually (see [2.3 Arrange the order and labels of attributes and levels](https://yhoriuchi.github.io/projoint/articles/02-wrangle.html#arrange-the-order-and-labels-of-attributes-and-levels})).
+
+```{r}
+predicted_irr <- predict_tau(out1_arranged)
+```
+
+This `projoint_tau` object, created by `predict_tau`, can be explored using the usual tools. The `print` method explains that this estimate of tau was produced via extrapolation rather than assumed or calculated using a repeated task and presents that estimate:
+
+```{r}
+print(predicted_irr)
+```
+
+The `summary` method returns a tibble of IRR as the profiles become more dissimilar. When `x=7`, in this example, all attributes are different between the two profiles and we see that IRR is 0.503. We extrapolate to `x=0`, which is the IRR when both profiles are identical:
+
+```{r}
+summary(predicted_irr)
+```
+
+And the `plot` method renders a plot showing the extrapolated value of tau:
+
+```{r, fig.height=4, fig.width=8}
+plot(predicted_irr)
+```

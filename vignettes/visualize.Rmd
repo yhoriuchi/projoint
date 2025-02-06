@@ -1,0 +1,84 @@
+---
+title: "5. Visualize MMs or AMCEs"
+output: rmarkdown::html_vignette
+description: >
+  How to visualze the marginal means (MMs) or average marginal component effects (AMCEs)
+vignette: >
+  %\VignetteIndexEntry{5. Visualize MMs or AMCEs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The `projoint` package features a set of tools for producing publication-ready figures from conjoint analyses.
+
+### 5.1 Load the projoint package and the other necessary package
+
+```{r}
+library(projoint)
+library(ggplot2)
+```
+
+### 5.2 Profile-level analysis
+
+#### Estimate MMs and AMCEs.
+
+```{r}
+mm   <- projoint(out1_arranged) 
+amce <- projoint(out1_arranged, .estimand = "amce")
+```
+
+#### Visualize MMs and AMCEs
+
+By default, most researchers should prefer to view the corrected estimates of either MMs or AMCEs. Researchers can, however, choose to instead visualize the uncorrected estimates, or to view both together.
+
+```{r, fig.height=8, fig.width=8}
+plot(mm)
+plot(mm, .estimates = "uncorrected")
+plot(mm, .estimates = "both")
+```
+
+```{r, fig.height=8, fig.width=8}
+plot(amce)
+plot(amce, .estimates = "uncorrected")
+plot(amce, .estimates = "both")
+```
+
+### 5.3 Choice-level analysis
+
+To undertake choice-level analysis, you first need to specify your quantity of interest using `set_qoi()`.
+```{r}
+qoi_mm <- set_qoi(.structure = "choice_level", 
+                  .att_choose = "att1", 
+                  .lev_choose = "level1", 
+                  .att_notchoose = "att1", 
+                  .lev_notchoose = "level3")
+```
+You can then estimate the choice-level marginal means:
+```{r, fig.height=4, fig.width=8}
+choice_mm <- projoint(.data = out1_arranged, 
+                      .structure = "choice_level", 
+                      .qoi = qoi_mm, 
+                      .ignore_position = TRUE)
+
+print(choice_mm)
+summary(choice_mm)
+plot(choice_mm)
+```
+
+Since there are not many estimates, we encourage your to make plots based on the objectives of your research. The default plot for the choice-level marginal means is a basic ggplot object, which compares the marginal mean for each of the two options. The sum of the two percentages is 100, and thus you may think that redundant information is presented in this figure. But we think this figure is an effective way to show the results of a head-to-head (choice-level) comparison.
+
+You can polish by adding some layers :
+```{r, fig.height=4, fig.width=8}
+plot(choice_mm,
+     .labels = c("15% of pre-tax income", 
+                 "30% of pre-tax income")) +
+  labs(y = "Marginal mean",
+       x = "Housing Cost") +
+  coord_cartesian(ylim = c(0, 1)) +
+  geom_hline(yintercept = 0.5, 
+             linetype = "dashed", 
+             color = "darkgray")
+
+```
+
+<span style="color:red">Note: The current version of the `projoint` package does not have a function to plot choice-level average marginal component effects. Stay tuned!</span> 

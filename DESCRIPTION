@@ -1,7 +1,7 @@
 Package: projoint
 Type: Package
 Title: The One Stop Conjoint Shop
-Version: 0.4.1
+Version: 0.4.2
 Authors@R: c(person("Yusaku", "Horiuchi", email = "yusaku.horiuchi@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0295-4089")),
              person("Aaron", "Kaufman", email = "aaronkaufman@nyu.edu", role = c("aut"), comment = c(ORCID = "0000-0003-3688-0428")))
 Description: Analyzes data sets generated from conjoint experiments, correcting for measurement error.
@@ -35,4 +35,7 @@ Depends:
     R (>= 2.10)
 LazyData: true
 VignetteBuilder: knitr
+<<<<<<< HEAD
+=======
 
+>>>>>>> ec335e62e18a0614914c42a039096e00bbd21da9

@@ -10,7 +10,11 @@ A data frame with 6,400 rows and 14 columns:
 \describe{
   \item{id}{Unique respondent ID}
   \item{task}{Task number}
+<<<<<<< HEAD
+  \item{profile}{Profile number = 1 or 2}
+=======
   \item{profile}{Profile number = \{1,2\}}
+>>>>>>> ec335e62e18a0614914c42a039096e00bbd21da9
   \item{selected}{Whether or not a profile was selected}
   \item{selected_repeated}{Whether or not a profile was selected in the repeated task}
   \item{School Quality, ... Type of Place}{attributes}

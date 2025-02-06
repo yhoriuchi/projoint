@@ -1,0 +1,193 @@
+---
+title: "4. Estimate corrected MMs or AMCEs"
+output: rmarkdown::html_vignette
+description: >
+  How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs)
+vignette: >
+  %\VignetteIndexEntry{4. Estimate corrected MMs or AMCEs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Due to IRR-induced measurement error, default MMs and AMCEs in conjoint analysis are biased. By default, `projoint` produces bias-corrected estimates automatically. 
+
+### 4.1 Load the projoint package and set up the data
+
+```{r}
+library(projoint)
+
+outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
+outcomes <- c(outcomes, "choice1_repeated_flipped")
+out1 <- reshape_projoint(exampleData1, outcomes)
+```
+
+### 4.2 Why do we recommend you use IDs? 
+
+To estimate and visualize the quantities of your interest using our package (at least in the current version), you need to set the attributes and levels using the IDs, such as `att1` and `level2`, rather than their actual labels, such as "Housing Cost" (for `att1`) and "15% of pre-tax income" (for `level1` of `att1`). We think that this approach is prone to error because some applications may include foreign characters (e.g., 2-byte Japanese characters) or special characters. Sometimes, your design may include the same levels for more than one attribute; for example, "Teaching quality" = {"High", "Low"} and "Research quality" = {"High", "Low")). To avoid any possible strange result, we use the unique identifiers for each attribute-level. 
+
+To check which IDs correspond to which attributes and levels, you can type the following line in your script:
+```{r}
+out1@labels
+```
+You can also `save_labels()` and save a CSV file for your reference.
+
+
+### 4.3 Estimate MMs
+
+There are two main setups for which `projoint` can produce estimates. The profile-level is the most common approach in the literature, while the choice-level is more flexible and powerful.
+
+#### MM (profile-level) -- all levels
+
+The default method in `projoint` is to estimate marginal means (MMs) at the profile-level. If you run `projoint(out1)`, it will conduct this analysis. We expand all those arguments below for clarity:
+
+```{r}
+mm0 <- projoint(.data = out1,
+                .qoi = NULL,
+                .by_var = NULL,
+                .structure = "profile_level",
+                .estimand = "mm",
+                .se_method = "analytical",
+                .irr = NULL, 
+                .remove_ties = TRUE,
+                .ignore_position = NULL,
+                .n_sims = NULL,
+                .n_boot = NULL,
+                .weights_1 = NULL,
+                .clusters_1 = NULL,
+                .se_type_1 = "classical",
+                .weights_2 = NULL,
+                .clusters_2 = NULL,
+                .se_type_2 = "classical")
+
+print(mm0)
+summary(mm0)
+
+```
+
+#### MM (profile-level) -- specific level
+
+However, it is also possible to specify the precise attributes, and attribute levels, of interest using the `set_qoi` function as below. The `set_qoi` function is the main way for users to specify more complex estimands in conjoint analysis. Al arguments for `qoi()` are expanded for clarity, but the default arguments in `projoint()` are dropped for simplicity:
+
+```{r}
+qoi_1 <- set_qoi(
+  .structure = "profile_level",
+  .estimand = "mm",
+  .att_choose = "att1", 
+  .lev_choose = "level1")
+
+mm1 <- projoint(.data = out1,
+                .qoi = qoi_1)
+
+print(mm1)
+summary(mm1)
+
+```
+
+#### MM (profile-level) -- specific level, using the predicted IRR
+
+If your conjoint survey design does not include the recommended repeated task, you can use the specific value for `.irr`, which you can estimate using the `predict_tau()` function or specify the value based on prior knowledge. In the following, we use 0.75, which is most likely IRR we find in our test data sets. The default arguments for both `set_qoi()` and `projoint()` are dropped hereafter.
+
+```{r}
+mm1b <- projoint(.data = out1,
+                 .qoi = qoi_1,
+                 .irr = 0.75)
+
+print(mm1b)
+summary(mm1b)
+
+```
+
+
+#### MM (choice-level) -- specific level
+
+As soon as users wish to switch from profile-level to choice-level analysis, the `set_qoi` function is required. There are exponentially more choice-level estimands than there are profile-level estimands, so it is impractical to view all of them. Here we specify that we want to return the marginal mean of attribute 1, levels 1 and 3 at the choice-level.
+
+```{r}
+qoi_2 <- set_qoi(
+  .structure = "choice_level",
+  .att_choose = "att1", 
+  .lev_choose = "level3",
+  .att_notchoose = "att1", 
+  .lev_notchoose = "level1"
+) 
+
+mm2 <- projoint(.data = out1,
+                .qoi = qoi_2,
+                .structure = "choice_level",
+                .ignore_position = FALSE)
+
+print(mm2)
+summary(mm2)
+
+```
+
+### 4.4 Estimate AMCEs
+
+Note that we can replicate all above analyses using the AMCE instead of the MM just by specifying that the `.estimand = "amce"` rather than the default `"mm"`. 
+
+#### AMCE (profile-level) -- all levels
+```{r}
+amce0 <- projoint(.data = out1,
+                  .estimand = "amce")
+
+print(amce0)
+summary(amce0)
+
+```
+
+#### AMCE (profile-level) -- specific level
+```{r}
+qoi_3 <- set_qoi(
+  .structure = "profile_level",
+  .estimand = "amce",
+  .att_choose = "att1", 
+  .lev_choose = "level3",
+  .att_choose_b = "att1",
+  .lev_choose_b = "level1"
+)
+
+amce1 <- projoint(.data = out1,
+                  .qoi = qoi_3,
+                  .estimand = "amce")
+
+print(amce1)
+summary(amce1)
+```
+
+#### AMCE (profile-level) -- specific level, using the predicted IRR
+
+```{r}
+amce1b <- projoint(.data = out1,
+                 .qoi = qoi_3,
+                 .estimand = "amce",
+                 .irr = 0.75)
+
+print(amce1b)
+summary(amce1b)
+```
+
+
+#### AMCE (choice-level) -- specific level
+```{r}
+qoi_4 <- set_qoi(
+  .structure = "choice_level",
+  .estimand = "amce",
+  .att_choose = "att1", 
+  .lev_choose = "level3",
+  .att_notchoose = "att1", 
+  .lev_notchoose = "level1",
+  .att_choose_b = "att1", 
+  .lev_choose_b = "level2",
+  .att_notchoose_b = "att1", 
+  .lev_notchoose_b = "level1"
+)
+
+amce2 <- projoint(.data = out1,
+                  .qoi = qoi_4,
+                  .structure = "choice_level",
+                  .estimand = "amce", 
+                  .ignore_position = TRUE)
+
+print(amce2)
+summary(amce2)
+```
