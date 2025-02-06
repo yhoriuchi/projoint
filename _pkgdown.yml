@@ -44,15 +44,15 @@ articles:
 - title: Guides
   desc: "How to use this software package"
   contents:
-  - 01-setup
-  - 02-wrangle
-  - 03-predict
-  - 04-estimate
-  - 05-visualize
-  - 06-compare
-  - 07-explore
+  - setup
+  - wrangle
+  - predict
+  - estimate
+  - visualize
+  - compare
+  - explore
 - title: Blog Posts
   desc: "New Insights and Community Notes"
   contents:
-   - Introducing Projoint
+   - Introducing-Projoint
   
