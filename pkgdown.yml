@@ -2,18 +2,15 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  compare: compare.html
-  correction: correction.html
-  estimate: estimate.html
+  analyze: analyze.html
+  correct: correct.html
+  design: design.html
   explore: explore.html
-  Introducing-Projoint: Introducing-Projoint.html
-  predict: predict.html
-  projoint: projoint.html
-  setup: setup.html
+  read: read.html
   structure: structure.html
   visualize: visualize.html
   wrangle: wrangle.html
-last_built: 2025-04-20T01:24Z
+last_built: 2025-04-20T12:00Z
 urls:
   reference: https://yhoriuchi.github.io/projoint/reference
   article: https://yhoriuchi.github.io/projoint/articles

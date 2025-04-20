@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,9 +15,8 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/projoint.html">Get started</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -35,18 +34,12 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>Given an output from <code><a href="projoint_data-class.html">projoint_data</a></code>, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR).</p>
+    <p>Given an output from <code><a href="projoint_data.html">projoint_data</a></code>, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR).</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">predict_tau</span><span class="op">(</span><span class="va">.data</span>, .title <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'projoint_tau'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'projoint_tau'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">predict_tau</span><span class="op">(</span><span class="va">.data</span>, .title <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -54,133 +47,24 @@
 
 
 <dl><dt id="arg--data">.data<a class="anchor" aria-label="anchor" href="#arg--data"></a></dt>
-<dd><p>A <code><a href="projoint_data-class.html">projoint_data</a></code> object, outputted from <code><a href="reshape_projoint.html">reshape_projoint</a></code></p></dd>
+<dd><p>A <code><a href="projoint_data.html">projoint_data</a></code> object, outputted from <code><a href="reshape_projoint.html">reshape_projoint</a></code></p></dd>
 
 
 <dt id="arg--title">.title<a class="anchor" aria-label="anchor" href="#arg--title"></a></dt>
 <dd><p>The title of a figure</p></dd>
 
-
-<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An object of class <code><a href="projoint_tau-class.html">projoint_tau</a></code> derived from <code>predict_tau</code></p></dd>
-
-
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Optional arguments; currently none accepted</p></dd>
-
-
-<dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>An object of class <code><a href="projoint_tau-class.html">projoint_tau</a></code> derived from <code>predict_tau</code></p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code><a href="projoint_tau-class.html">projoint_tau</a></code> object containing the estimate of tau and a figure visualizing the extrapolation method.</p>
-<p>A tibble showing IRR as profile similarity changes. The value of <code>predicted</code> when <code>x=0</code> is the estimated IRR.</p>
+    <p>A <code><a href="projoint_tau.html">projoint_tau</a></code> object containing the estimate of tau and a figure visualizing the extrapolation method.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Example 1: repeated, flipped task</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"exampleData1"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">exampleData1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 185</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ResponseId      choice1_repeated_fli…¹ choice1 choice2 choice3 choice4 choice5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> R_1M3TDihZzq9z… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> R_3HtXzkcSSlfi… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> R_yjYj0jtOY98X… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> R_1dKd05O6FTOV… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> R_1otDp642wWYl… Community A            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> R_2BnD3fuJMRKZ… Community A            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ abbreviated name: ¹​choice1_repeated_flipped</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 178 more variables: choice6 &lt;chr&gt;, choice7 &lt;chr&gt;, choice8 &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   race &lt;chr&gt;, party_1 &lt;chr&gt;, party_2 &lt;chr&gt;, party_3 &lt;chr&gt;, party_4 &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ideology &lt;chr&gt;, honesty &lt;chr&gt;, `K-1-1` &lt;chr&gt;, `K-1-1-1` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-2` &lt;chr&gt;, `K-1-1-2` &lt;chr&gt;, `K-1-3` &lt;chr&gt;, `K-1-1-3` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-4` &lt;chr&gt;, `K-1-1-4` &lt;chr&gt;, `K-1-5` &lt;chr&gt;, `K-1-1-5` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-6` &lt;chr&gt;, `K-1-1-6` &lt;chr&gt;, `K-1-7` &lt;chr&gt;, `K-1-1-7` &lt;chr&gt;, …</span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">8</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">outcomes1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">reshaped_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .dataframe <span class="op">=</span> <span class="va">exampleData1</span>, </span></span>
-<span class="r-in"><span>  .outcomes <span class="op">=</span> <span class="va">outcomes1</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  </span></span>
-<span class="r-in"><span><span class="va">tau1</span> <span class="op">&lt;-</span> <span class="fu">predict_tau</span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tau1</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Tau estimated using the extrapolation method: 0.743"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Example 2: repeated, unflipped task</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"exampleData2"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">exampleData2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 185</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ResponseId      choice1_repeated_not…¹ choice1 choice2 choice3 choice4 choice5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> R_1M3TDihZzq9z… Community A            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> R_3HtXzkcSSlfi… Community A            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> R_yjYj0jtOY98X… Community A            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> R_1dKd05O6FTOV… Community A            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> R_1otDp642wWYl… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> R_2BnD3fuJMRKZ… Community B            Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ abbreviated name: ¹​choice1_repeated_notflipped</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 178 more variables: choice6 &lt;chr&gt;, choice7 &lt;chr&gt;, choice8 &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   race &lt;chr&gt;, party_1 &lt;chr&gt;, party_2 &lt;chr&gt;, party_3 &lt;chr&gt;, party_4 &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ideology &lt;chr&gt;, honesty &lt;chr&gt;, `K-1-1` &lt;chr&gt;, `K-1-1-1` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-2` &lt;chr&gt;, `K-1-1-2` &lt;chr&gt;, `K-1-3` &lt;chr&gt;, `K-1-1-3` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-4` &lt;chr&gt;, `K-1-1-4` &lt;chr&gt;, `K-1-5` &lt;chr&gt;, `K-1-1-5` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-6` &lt;chr&gt;, `K-1-1-6` &lt;chr&gt;, `K-1-7` &lt;chr&gt;, `K-1-1-7` &lt;chr&gt;, …</span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">outcomes2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_notflipped"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">reshaped_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .dataframe <span class="op">=</span> <span class="va">exampleData2</span>, </span></span>
-<span class="r-in"><span>  .outcomes <span class="op">=</span> <span class="va">outcomes2</span>,</span></span>
-<span class="r-in"><span>  .flipped <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  </span></span>
-<span class="r-in"><span><span class="va">tau2</span> <span class="op">&lt;-</span> <span class="fu">predict_tau</span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tau2</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Tau estimated using the extrapolation method: 0.743"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Example 3: no repeated task</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"exampleData3"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">exampleData3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 184</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ResponseId     choice1 choice2 choice3 choice4 choice5 choice6 choice7 choice8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> R_1M3TDihZzq9… Commun… Commun… Commun… Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> R_3HtXzkcSSlf… Commun… Commun… Commun… Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> R_yjYj0jtOY98… Commun… Commun… Commun… Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> R_1dKd05O6FTO… Commun… Commun… Commun… Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> R_1otDp642wWY… Commun… Commun… Commun… Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> R_2BnD3fuJMRK… Commun… Commun… Commun… Commun… Commun… Commun… Commun… Commun…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 175 more variables: race &lt;chr&gt;, party_1 &lt;chr&gt;, party_2 &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   party_3 &lt;chr&gt;, party_4 &lt;chr&gt;, ideology &lt;chr&gt;, honesty &lt;chr&gt;, `K-1-1` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-1-1` &lt;chr&gt;, `K-1-2` &lt;chr&gt;, `K-1-1-2` &lt;chr&gt;, `K-1-3` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-1-3` &lt;chr&gt;, `K-1-4` &lt;chr&gt;, `K-1-1-4` &lt;chr&gt;, `K-1-5` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-1-5` &lt;chr&gt;, `K-1-6` &lt;chr&gt;, `K-1-1-6` &lt;chr&gt;, `K-1-7` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-1-7` &lt;chr&gt;, `K-1-2-1` &lt;chr&gt;, `K-1-2-2` &lt;chr&gt;, `K-1-2-3` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `K-1-2-4` &lt;chr&gt;, `K-1-2-5` &lt;chr&gt;, `K-1-2-6` &lt;chr&gt;, `K-1-2-7` &lt;chr&gt;, …</span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">reshaped_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .dataframe <span class="op">=</span> <span class="va">exampleData3</span>, </span></span>
-<span class="r-in"><span>  .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span></span>
-<span class="r-in"><span>  .repeated <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  </span></span>
-<span class="r-in"><span><span class="va">tau3</span> <span class="op">&lt;-</span> <span class="fu">predict_tau</span><span class="op">(</span><span class="va">reshaped_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tau3</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Tau estimated using the extrapolation method: 0.743"</span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Yusaku Horiuchi, Aaron Kaufman.</p>
+  <p>Developed by Yusaku Horiuchi, Aaron Kaufman, Gary King.</p>
 </div>
 
 <div class="pkgdown-footer-right">

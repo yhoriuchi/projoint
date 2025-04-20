@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,9 +15,8 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/projoint.html">Get started</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -43,7 +42,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reshape_projoint</span><span class="op">(</span></span>
 <span>  <span class="va">.dataframe</span>,</span>
 <span>  <span class="va">.outcomes</span>,</span>
-<span>  .outcomes_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>  .choice_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
 <span>  .alphabet <span class="op">=</span> <span class="st">"K"</span>,</span>
 <span>  .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>,</span>
 <span>  .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -65,7 +64,7 @@
 <dd><p>A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.</p></dd>
 
 
-<dt id="arg--outcomes-ids">.outcomes_ids<a class="anchor" aria-label="anchor" href="#arg--outcomes-ids"></a></dt>
+<dt id="arg--choice-labels">.choice_labels<a class="anchor" aria-label="anchor" href="#arg--choice-labels"></a></dt>
 <dd><p>c("A", "B") (default): a vector identifying the possibilities for the outcome variables – e.g., c("Candidate A", "Candidate B")</p></dd>
 
 
@@ -96,7 +95,7 @@
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A projoint object of class `projoint_data` ready to pass to `projoint()`.</p>
-<p>A projoint object of class <code><a href="projoint_data-class.html">projoint_data</a></code> ready to pass to <code><a href="projoint.html">projoint</a></code>.</p>
+<p>A projoint object of class <code><a href="projoint_data.html">projoint_data</a></code> ready to pass to <code><a href="projoint.html">projoint</a></code>.</p>
     </div>
 
     <div class="section level2">
@@ -137,7 +136,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Yusaku Horiuchi, Aaron Kaufman.</p>
+  <p>Developed by Yusaku Horiuchi, Aaron Kaufman, Gary King.</p>
 </div>
 
 <div class="pkgdown-footer-right">

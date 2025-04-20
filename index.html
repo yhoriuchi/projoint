@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,9 +31,8 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="articles/projoint.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -47,81 +46,88 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="section">
-<img src="reference/figures/projoint.png" align="center" width="150" height="150"><a class="anchor" aria-label="anchor" href="#section"></a>
-</h1></div>
-</div>
-<div class="section level1">
-<h1 id="projoint">projoint<a class="anchor" aria-label="anchor" href="#projoint"></a>
-</h1>
-<div class="section level2">
-<h2 id="the-one-stop-conjoint-shop">The One-Stop Conjoint Shop<a class="anchor" aria-label="anchor" href="#the-one-stop-conjoint-shop"></a>
-</h2>
+  <main id="main" class="col-md-9"><p align="center">
+<img src="reference/figures/projoint.png" width="150" height="150"></p>
+<p align="center">
+<a href="https://github.com/yhoriuchi/projoint/actions/workflows/R-CMD-check.yaml" class="external-link"> <img src="https://github.com/yhoriuchi/projoint/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://CRAN.R-project.org/package=projoint" class="external-link"> <img src="https://www.r-pkg.org/badges/version/projoint" alt="CRAN Status"></a> <a href="https://cran.r-project.org/package=projoint" class="external-link"> <img src="https://cranlogs.r-pkg.org/badges/grand-total/projoint" alt="Downloads"></a>
+</p>
+<p align="center" style="font-size: 32px;">
+<b>🛠️ The One-Stop Conjoint Shop: projoint</b>
+</p>
 <hr>
-<p><strong>projoint</strong> is a general-purpose R package for conjoint analysis. It produces more reliable estimates of all relevant quantities of interest, after correcting measurement error bias and other problems discussed in the literature. Furthermore, it also implements a more general framework than other approaches, so that researchers can answer a much wider range of substantively important questions.</p>
-<div class="section level3">
-<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h3>
-<p>You can install the development version of <strong>projoint</strong> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p><strong>projoint</strong> is a general-purpose R package for conjoint analysis.</p>
+<ul>
+<li>Produces <strong>more reliable estimates</strong> of key quantities of interest by <strong>correcting measurement error bias</strong>.</li>
+<li>Encourages users to undertake <strong>choice-level</strong> analysis alongside traditional profile-level analysis.</li>
+</ul>
+<hr>
+<div class="section level2">
+<h2 id="id_-installation">🔧 Installation<a class="anchor" aria-label="anchor" href="#id_-installation"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<code class="sourceCode R"><span><span class="co"># Install the development version from GitHub</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"yhoriuchi/projoint"</span><span class="op">)</span></span></code></pre></div>
+<hr>
 </div>
-<div class="section level3">
-<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h3>
+<div class="section level2">
+<h2 id="id_-quick-start">🚀 Quick Start<a class="anchor" aria-label="anchor" href="#id_-quick-start"></a>
+</h2>
+<details><summary style="font-size: 18px;"><b>Design</b> your survey correctly
+</summary><p>Begin with the <a href="https://projoint.aaronrkaufman.com/" class="external-link">Projoint Survey Designer</a> and export surveys formatted for Qualtrics.</p>
+</details><details><summary style="font-size: 18px;"><b>Read</b> the results into R
+</summary><p>Load your <strong>survey responses</strong> into R:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load the projoint package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Reshape data for conjoint analysis</span></span>
-<span><span class="co"># This example includes the repeated task.</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">exampleData1</span>, </span>
-<span>                         <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Run conjoint analysis</span></span>
-<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Make a figure</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Show the estimated quantities of interest</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_Qualtrics.html">read_Qualtrics</a></span><span class="op">(</span><span class="st">"your_file.csv"</span><span class="op">)</span></span></code></pre></div>
+</details><details><summary style="font-size: 18px;"><b>Wrangle</b> the data into structured form
+</summary><p>Prepare the data for analysis:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
+<span>  .dataframe <span class="op">=</span> <span class="va">dat</span>,</span>
+<span>  .outcomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</details><details><summary style="font-size: 18px;"><b>Analyze</b> with automatic measurement error correction
+</summary><p>Estimate Marginal Means (MMs) or Average Marginal Component Effects (AMCEs) with correction for measurement error:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
+</details><details><summary style="font-size: 18px;"><b>Visualize</b> your results
+</summary><p>Visualize your results easily:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
+</details><hr>
 </div>
-<div class="section level3">
-<h3 id="relevant-article">Relevant Article<a class="anchor" aria-label="anchor" href="#relevant-article"></a>
-</h3>
-<p>Our framework and methods can be found in this paper:</p>
-<ul>
-<li>Katherine Clayton, Yusaku Horiuchi, Aaron R. Kaufman, Gary King, and Mayya Komisarchik. “Correcting Measurement Error Bias in Conjoint Survey Experiments”. [<a href="https://gking.harvard.edu/conjointE" class="external-link">Working Paper</a>]
-<ul>
-<li>
-<strong>Abstract:</strong> Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many causal effects from a single randomized experiment. Unfortunately, by their ability to mirror complicated real-world choices, these designs often generate substantial measurement errors and thus bias. We replicate both the data collection and analysis from eight prominent conjoint studies, all of which closely reproduce published results, and show that a large proportion of observed variation in answers to conjoint questions is effectively random noise. We then discover a common empirical pattern in how measurement error appears in conjoint studies and, with it, introduce an easy-to-use statistical method to correct the bias.</li>
-</ul>
-</li>
-</ul>
+<div class="section level2">
+<h2 id="id_-methodological-background">📘 Methodological Background<a class="anchor" aria-label="anchor" href="#id_-methodological-background"></a>
+</h2>
+<p>The framework and methods behind <strong>projoint</strong> are detailed in:</p>
+<blockquote>
+<p><strong>Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).</strong><br><em>Correcting Measurement Error Bias in Conjoint Survey Experiments.</em><br><em>Forthcoming, American Journal of Political Science.</em> <a href="https://gking.harvard.edu/conjointE" class="external-link">Pre-Print Available</a></p>
+</blockquote>
+<p><a href="doc/projoint_citation.bib">👉 Download BibTeX Reference</a></p>
+<hr>
 </div>
-<div class="section level3">
-<h3 id="join-our-projoint-community">Join Our Projoint Community<a class="anchor" aria-label="anchor" href="#join-our-projoint-community"></a>
-</h3>
-<p>We encourage you to join our Projoint Community by making a GitHub account, subscribing to our <a href="https://github.com/yhoriuchi/projoint/discussions/categories/announcements" class="external-link">Announcements</a>, and actively joining <a href="https://github.com/yhoriuchi/projoint/discussions" class="external-link">Discussions</a>. We encourage you to post questions, suggest for improvement, and share your research findings using our software. For any problem you find, please report your issue to <a href="https://github.com/yhoriuchi/projoint/issues" class="external-link">Issues</a>.</p>
-</div>
-<div class="section level3">
-<h3 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
-</h3>
+<div class="section level2">
+<h2 id="id_-notes--limitations">📋 Notes &amp; Limitations<a class="anchor" aria-label="anchor" href="#id_-notes--limitations"></a>
+</h2>
 <ul>
-<li><p>The current version assumes that the outcome variable is a binary forced choice.</p></li>
-<li>
-<p>This package is still under construction. Forthcoming features include the following:</p>
-<ul>
-<li>Allow researchers to use weights for features and for respondents.</li>
-<li>Allow researchers to use other outcome variables, such as rating.</li>
-</ul>
-</li>
+<li>Supports <strong>binary forced-choice</strong> outcomes only (for now).</li>
+<li>Package is under <strong>active development</strong>.</li>
 </ul>
 </div>
-</div>
+<div class="section level2">
+<h2 id="id_-upcoming-features">📦 Upcoming Features<a class="anchor" aria-label="anchor" href="#id_-upcoming-features"></a>
+</h2>
+<ul>
+<li>Weighted estimation for features and respondents</li>
+<li>Support for non-binary outcomes (ratings, rankings)</li>
+<li>Advanced visualization for choice-level effects</li>
+</ul>
+<hr>
+<p align="center" style="font-size: 18px;">
+✨ Thank you for using projoint! ✨
+</p>
 </div>
 
   </main><aside class="col-md-3"><div class="license">
@@ -146,6 +152,7 @@
 <ul class="list-unstyled">
 <li>Yusaku Horiuchi <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-0295-4089" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Aaron Kaufman <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3688-0428" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Gary King <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8605-0784" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -156,7 +163,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Yusaku Horiuchi, Aaron Kaufman.</p>
+  <p>Developed by Yusaku Horiuchi, Aaron Kaufman, Gary King.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,9 +15,8 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/projoint.html">Get started</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -33,9 +32,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="data-sets">Data sets<a class="anchor" aria-label="anchor" href="#data-sets"></a></h2>
+      <h2 id="-data-sets">📦 Data Sets<a class="anchor" aria-label="anchor" href="#-data-sets"></a></h2>
 
-      <div class="section-desc"><p>Example data sets</p></div>
+      <div class="section-desc"><p>Example data sets to get started quickly</p></div>
 
 
     </div><div class="section level2">
@@ -54,29 +53,29 @@
           <code><a href="exampleData2.html">exampleData2</a></code>
 
         </dt>
-        <dd>Projoint Example Data Set 2: Building Conjoint with a Repeated, Unflipped Task</dd>
+        <dd>Projoint Example Data Set 2: Building Conjoint with a Repeated, Non-Flipped Task</dd>
       </dl><dl><dt>
 
           <code><a href="exampleData3.html">exampleData3</a></code>
 
         </dt>
-        <dd>Projoint Example Data Set 3: Building Conjoint without a Repeated Task</dd>
+        <dd>Projoint Example Data Set 3: Building Conjoint with No Repeated Task</dd>
       </dl><dl><dt>
 
           <code><a href="out1_arranged.html">out1_arranged</a></code>
 
         </dt>
-        <dd>Reorganized Projoint Example Data Set 1</dd>
+        <dd>Example Output: Manually Rearranged Labels</dd>
       </dl><dl><dt>
 
           <code><a href="exampleData1_labelled_tibble.html">exampleData1_labelled_tibble</a></code>
 
         </dt>
-        <dd>Projoint Example Data Set 1: "labelled tibble"</dd>
+        <dd>Projoint Example Data Set 1: "Labelled Tibble"</dd>
       </dl></div><div class="section level2">
-      <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a></h2>
+      <h2 id="-setup">🔧 Setup<a class="anchor" aria-label="anchor" href="#-setup"></a></h2>
 
-      <div class="section-desc"><p>Read in and clean data</p></div>
+      <div class="section-desc"><p>Functions to read, clean, and structure data</p></div>
 
 
     </div><div class="section level2">
@@ -121,9 +120,9 @@
         </dt>
         <dd>Set the quantities of interest</dd>
       </dl></div><div class="section level2">
-      <h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a></h2>
+      <h2 id="-analysis">📊 Analysis<a class="anchor" aria-label="anchor" href="#-analysis"></a></h2>
 
-      <div class="section-desc"><p>Estimates conjoint quantities of interest</p></div>
+      <div class="section-desc"><p>Core estimation methods</p></div>
 
 
     </div><div class="section level2">
@@ -133,20 +132,20 @@
 
       <dl><dt>
 
-          <code><a href="predict_tau.html">predict_tau()</a></code> <code><a href="predict_tau.html">print(<i>&lt;projoint_tau&gt;</i>)</a></code> <code><a href="predict_tau.html">summary(<i>&lt;projoint_tau&gt;</i>)</a></code>
+          <code><a href="predict_tau.html">predict_tau()</a></code>
 
         </dt>
         <dd>Estimate tau when there is no repeated task.</dd>
       </dl><dl><dt>
 
-          <code><a href="projoint.html">projoint()</a></code> <code><a href="projoint.html">print(<i>&lt;projoint_results&gt;</i>)</a></code> <code><a href="projoint.html">summary(<i>&lt;projoint_results&gt;</i>)</a></code>
+          <code><a href="projoint.html">projoint()</a></code>
 
         </dt>
-        <dd>Analyze a conjoint data set and correct for measurement error</dd>
+        <dd>Analyze a Conjoint Data Set with Measurement Error Correction</dd>
       </dl></div><div class="section level2">
-      <h2 id="visualize">Visualize<a class="anchor" aria-label="anchor" href="#visualize"></a></h2>
+      <h2 id="-visualization">🎨 Visualization<a class="anchor" aria-label="anchor" href="#-visualization"></a></h2>
 
-      <div class="section-desc"><p>Produce plots</p></div>
+      <div class="section-desc"><p>Functions to visualize profile- and choice-level results</p></div>
 
 
     </div><div class="section level2">
@@ -159,7 +158,7 @@
           <code><a href="plot.projoint_results.html">plot(<i>&lt;projoint_results&gt;</i>)</a></code>
 
         </dt>
-        <dd>Plot all MMs or AMCEs</dd>
+        <dd>Plot Marginal Means (MMs) or AMCEs from projoint Results</dd>
       </dl><dl><dt>
 
           <code><a href="plot.projoint_tau.html">plot(<i>&lt;projoint_tau&gt;</i>)</a></code>
@@ -172,7 +171,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Yusaku Horiuchi, Aaron Kaufman.</p>
+  <p>Developed by Yusaku Horiuchi, Aaron Kaufman, Gary King.</p>
 </div>
 
 <div class="pkgdown-footer-right">
