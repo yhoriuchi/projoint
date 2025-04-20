@@ -1,12 +1,18 @@
 Package: projoint
 Type: Package
 Title: The One Stop Conjoint Shop
-Version: 0.4.2
-Authors@R: c(person("Yusaku", "Horiuchi", email = "yusaku.horiuchi@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0295-4089")),
-             person("Aaron", "Kaufman", email = "aaronkaufman@nyu.edu", role = c("aut"), comment = c(ORCID = "0000-0003-3688-0428")))
+Version: 0.2.0
+Date: 2025-04-20
+Authors@R: c(
+  person("Yusaku", "Horiuchi", email = "yusaku.horiuchi@gmail.com", role = c("aut", "cre"),
+         comment = c(ORCID = "0000-0003-0295-4089")),
+  person("Aaron", "Kaufman", email = "aaronkaufman@nyu.edu", role = "aut",
+         comment = c(ORCID = "0000-0003-3688-0428")),
+  person("Gary", "King", email = "king@harvard.edu", role = "aut",
+         comment = c(ORCID = "0000-0002-8605-0784")))
 Description: Analyzes data sets generated from conjoint experiments, correcting for measurement error.
 Imports:
-    dplyr (>= 1.1.2), 
+    dplyr (>= 1.1.2),
     readr,
     rlang,
     tidyr,
@@ -19,19 +25,23 @@ Imports:
     tibble,
     methods,
     MASS,
-    forcats
+    glue,
+    forcats,
+    scales
+Suggests:
+     tidyverse,
+    knitr,
+    rmarkdown,
+    downloadthis,
+    patchwork,
+    testthat (>= 3.0.0),
+    DiagrammeR
+VignetteBuilder: knitr
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.3.2
-Suggests: 
-    knitr,
-    downloadthis,
-    rmarkdown,
-    testthat (>= 3.0.0),
-    patchwork
 Config/testthat/edition: 3
 URL: https://yhoriuchi.github.io/projoint/
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5)
 LazyData: true
-VignetteBuilder: knitr

@@ -3,9 +3,33 @@ url: https://yhoriuchi.github.io/projoint/
 template:
   bootstrap: 5
 
+navbar:
+  structure:
+    left:
+      - articles
+      - reference
+      - news
+
+articles:
+- title: 📚 Getting Started
+  desc: "Fundamental concepts before using projoint"
+  contents:
+  - structure
+  - correct
+
+- title: 🚀 Step-by-Step Tutorials
+  desc: "Learn how to design, wrangle, analyze, and visualize conjoint experiments"
+  contents:
+  - design       # Step 1: Survey Design
+  - read         # Step 2: Importing Qualtrics Data
+  - wrangle      # Step 2: Data Wrangling
+  - analyze      # Step 4: Estimating MMs or AMCEs
+  - visualize    # Step 5: Visualizing Results
+  - explore      # Step 6: Furthr exploration
+
 reference:
-- title: Data sets
-  desc: Example data sets
+- title: 📦 Data Sets
+  desc: Example data sets to get started quickly
   contents:
   - exampleData1
   - exampleData2
@@ -13,8 +37,8 @@ reference:
   - out1_arranged
   - exampleData1_labelled_tibble
 
-- title: Setup
-  desc: Read in and clean data
+- title: 🔧 Setup
+  desc: Functions to read, clean, and structure data
   contents:
   - read_Qualtrics
   - read_labels
@@ -23,36 +47,14 @@ reference:
   - save_labels
   - set_qoi
 
-- title: Analysis
-  desc: Estimates conjoint quantities of interest
+- title: 📊 Analysis
+  desc: Core estimation methods
   contents:
   - predict_tau
   - projoint
 
-- title: Visualize
-  desc: Produce plots
+- title: 🎨 Visualization
+  desc: Functions to visualize profile- and choice-level results
   contents:
   - plot.projoint_results
   - plot.projoint_tau
-
-articles:
-- title: Recommendations
-  desc: "Best practices in conjoint analysis"
-  contents:
-  - structure
-  - correction
-- title: Guides
-  desc: "How to use this software package"
-  contents:
-  - setup
-  - wrangle
-  - predict
-  - estimate
-  - visualize
-  - compare
-  - explore
-- title: Blog Posts
-  desc: "New Insights and Community Notes"
-  contents:
-   - Introducing-Projoint
-  

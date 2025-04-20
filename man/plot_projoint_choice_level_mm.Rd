@@ -2,34 +2,61 @@
 % Please edit documentation in R/plot_projoint_choice_level_mm.R
 \name{plot_projoint_choice_level_mm}
 \alias{plot_projoint_choice_level_mm}
-\title{Plot all "profile-level" MMs or AMCEs}
+\title{Plot all "choice-level" MMs}
 \usage{
 plot_projoint_choice_level_mm(
   x,
+  .type = c("bar", "pointrange"),
   .estimates = "corrected",
   .labels = NULL,
   .base_size = 12,
   .base_family = "",
+  .show_attribute = FALSE,
+  .xtitle = "Choice-level marginal mean",
+  .remove_xaxis = FALSE,
+  .xlim = c(0, 1),
+  .hjust_left = 1,
+  .hjust_right = 0,
+  .title_size = 11,
+  .plot.margin = c(0, 3, 0, 3),
   ...
 )
 }
 \arguments{
-\item{x}{A \code{\link{projoint_results}} object}
+\item{x}{A \code{\link{projoint_results}} object.}
 
-\item{.estimates}{The estimates to be plotted, either \code{"corrected"} (default) or \code{"uncorrected"}}
+\item{.type}{Type of plot: \code{"bar"} (default) or \code{"pointrange"}.}
 
-\item{.labels}{A character vector for the x-axis labels}
+\item{.estimates}{Which estimates to plot: \code{"corrected"} (default) or \code{"uncorrected"}.}
 
-\item{.base_size}{base font size, given in pts.}
+\item{.labels}{A character vector for x-axis labels (optional).}
 
-\item{.base_family}{base font family}
+\item{.base_size}{Base font size.}
 
-\item{...}{Additional optional arguments}
+\item{.base_family}{Base font family.}
+
+\item{.show_attribute}{Logical; show attribute as plot title (for pointrange type).}
+
+\item{.xtitle}{X-axis title (for pointrange type).}
+
+\item{.remove_xaxis}{Logical; remove x-axis (for pointrange type).}
+
+\item{.xlim}{Limits of x-axis (for pointrange type).}
+
+\item{.hjust_left}{Justification for left text (for pointrange type).}
+
+\item{.hjust_right}{Justification for right text (for pointrange type).}
+
+\item{.title_size}{Size of title text (for pointrange type).}
+
+\item{.plot.margin}{Plot margins (for pointrange type).}
+
+\item{...}{Additional arguments (currently unused).}
 }
 \value{
-A \code{ggplot} object
+A ggplot object.
 }
 \description{
-This method produces profile-level MM or AMCE plots given a \code{\link{projoint_results}} object, the output from the \code{\link{projoint}} function. The structure must be profile-level to use this function.
+This function produces choice-level MM plots given a \code{\link{projoint_results}} object, the output from the \code{\link{projoint}} function.
 }
 \keyword{internal}

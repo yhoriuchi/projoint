@@ -15,10 +15,3 @@ A data frame suitable for \code{\link{reshape_projoint}}
 \description{
 Read and re-format a Qualtrics csv (choice text)
 }
-\examples{
-library(projoint)
-
-# Not run:
-# dat <- read_Qualtrics("mummolo_nall_replication_cleaned.csv")
-# head(dat)
-}

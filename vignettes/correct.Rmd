@@ -1,0 +1,62 @@
+---
+title: "Correct Measurement-Error Bias"
+output: rmarkdown::html_vignette
+description: >
+  Why should you identify and correct measurement error bias in conjoint analysis?
+vignette: >
+  %\VignetteIndexEntry{Correct Measurement-Error Bias}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## **Why Correct for Measurement Error?**
+
+In conjoint experiments, **measurement error** is pervasive but often overlooked.Respondents may:
+
+- Misread attributes
+- Misunderstand levels
+- Click randomly
+- Forget information across tasks
+
+As a result, even if a respondent has **true preferences**, their recorded choices are often **noisy reflections** of those preferences. This **random error** introduces a severe **bias toward zero** — meaning **estimated effects are systematically too small**.
+
+---
+
+## **The Consequences of Ignoring Measurement Error**
+
+| Without Correction             | With Correction                  |
+|:--------------------------------|:----------------------------------|
+| Underestimates true preference differences | Reveals true magnitude of effects |
+| Falsely suggests indifference | Recovers meaningful trade-offs |
+| Misleads theory building and application | Provides accurate, unbiased insights |
+
+---
+
+## **How projoint Corrects for Measurement Error**
+
+- **Estimates the intra-respondent reliability (IRR)** using a repeated task
+- **Adjusts marginal means (MMs) and average marginal component effects (AMCEs)** accordingly
+- **Provides corrected estimates** that are closer to respondents’ true underlying preferences
+
+✅ No additional respondent burden (just one repeated task)  
+✅ Minimal survey design changes  
+✅ Massive improvements in accuracy
+
+---
+
+## **Key Takeaway**
+
+> 🧠 Measurement error systematically *biases* results.  
+> 
+> 🔥 Correcting for measurement error reveals true preferences, sharper trade-offs, and prevents misleading inferences.
+
+---
+
+## 📚 Key Reference
+
+- **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).**  
+  *Correcting Measurement Error Bias in Conjoint Survey Experiments.*  
+  _Forthcoming, American Journal of Political Science._  
+  [Pre-Print Available](https://gking.harvard.edu/conjointE)
+
+---

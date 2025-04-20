@@ -45,7 +45,7 @@ plot_projoint_profile_level <- function(
     stop("The x argument must be of class `projoint_results` from the `projoint` function.")
   }
   
-  .estimand = x@estimand
+  .estimand = x$estimand
   
   if (.by_var == FALSE){
     
@@ -81,17 +81,17 @@ plot_projoint_profile_level <- function(
   # initial data wrangling --------------------------------------------------
   
   out1 <- dplyr::left_join(
-    x@estimates %>% 
+    x$estimates %>% 
       dplyr::mutate(level_id = att_level_choose,
                     estimates = case_when(str_detect(estimand, "uncorrected") ~ "uncorrected",
                                           str_detect(estimand, "corrected") ~ "corrected")) %>%
       dplyr::select(-estimand),
-    x@labels %>% 
+    x$labels %>% 
       dplyr::select(attribute, level, level_id),
     by = join_by(level_id)
   )
   
-  attributes <-  x@labels %>% 
+  attributes <-  x$labels %>% 
     dplyr::select(attribute, level_id) %>%
     dplyr::mutate(level_id = str_replace_all(level_id, "\\d+$", "0")) %>% 
     dplyr::distinct()
@@ -106,7 +106,7 @@ plot_projoint_profile_level <- function(
     
   } else if (.estimand == "amce"){
     
-    levels1 <- x@labels %>% 
+    levels1 <- x$labels %>% 
       dplyr::select(attribute, level, level_id) %>% 
       dplyr::filter(str_detect(level_id, "level1$"))
     

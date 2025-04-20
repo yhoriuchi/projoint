@@ -90,11 +90,9 @@ projoint_level <- function(
   
   if (is.null(.qoi)){
     
-    attribute_levels <- .data@labels$level_id
+    attribute_levels <- .data$labels$level_id
     
     out <- NULL
-    
-    i <- 1
     
     for (i in seq_along(attribute_levels)){
       
@@ -127,7 +125,7 @@ projoint_level <- function(
                              .se_type_1,
                              .weights_2,
                              .clusters_2,
-                             .se_type_2) %>% 
+                             .se_type_2) |> 
           dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute, level, sep = ":"), collapse = " or "))
         
       } else {
@@ -156,7 +154,7 @@ projoint_level <- function(
                              .se_type_1,
                              .weights_2,
                              .clusters_2,
-                             .se_type_2) %>% 
+                             .se_type_2) |> 
           dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute, level, sep = ":"), collapse = " or "),
                         att_level_choose_baseline = stringr::str_c(stringr::str_c(attribute, "level1", sep = ":"), collapse = " or "),
           )
@@ -169,24 +167,24 @@ projoint_level <- function(
     
     if (estimand == "amce"){
       
-      out <- out %>% 
+      out <- out |> 
         dplyr::filter(att_level_choose != att_level_choose_baseline)
       
     }
     
   } else{
     
-    attribute_of_interest  <- .qoi@attribute_of_interest
-    levels_of_interest     <- .qoi@levels_of_interest
+    attribute_of_interest  <- .qoi$attribute_of_interest
+    levels_of_interest     <- .qoi$levels_of_interest
     
-    attribute_of_interest_0  <- .qoi@attribute_of_interest_0
-    levels_of_interest_0     <- .qoi@levels_of_interest_0
+    attribute_of_interest_0  <- .qoi$attribute_of_interest_0
+    levels_of_interest_0     <- .qoi$levels_of_interest_0
     
-    attribute_of_interest_baseline <- .qoi@attribute_of_interest_baseline
-    levels_of_interest_baseline     <- .qoi@levels_of_interest_baseline
+    attribute_of_interest_baseline <- .qoi$attribute_of_interest_baseline
+    levels_of_interest_baseline     <- .qoi$levels_of_interest_baseline
     
-    attribute_of_interest_0_baseline <- .qoi@attribute_of_interest_0_baseline
-    levels_of_interest_0_baseline     <- .qoi@levels_of_interest_0_baseline
+    attribute_of_interest_0_baseline <- .qoi$attribute_of_interest_0_baseline
+    levels_of_interest_0_baseline     <- .qoi$levels_of_interest_0_baseline
     
     temp <- pj_estimate(.data,
                         .structure = structure,
@@ -217,13 +215,13 @@ projoint_level <- function(
     
     if (estimand == "mm"){
       
-      out <- temp %>% 
+      out <- temp |> 
         dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute_of_interest, levels_of_interest, sep = ":"), collapse = " or "),
                       att_level_notchoose = stringr::str_c(stringr::str_c(attribute_of_interest_0, levels_of_interest_0, sep = ":"), collapse = " or "))
       
     } else{
       
-      out <- temp %>% 
+      out <- temp |> 
         dplyr::mutate(att_level_choose = stringr::str_c(stringr::str_c(attribute_of_interest, levels_of_interest, sep = ":"), collapse = " or "),
                       att_level_notchoose = stringr::str_c(stringr::str_c(attribute_of_interest_0, levels_of_interest_0, sep = ":"), collapse = " or "),
                       att_level_choose_baseline = stringr::str_c(stringr::str_c(attribute_of_interest_baseline, levels_of_interest_baseline, sep = ":"), collapse = " or "),
@@ -236,9 +234,9 @@ projoint_level <- function(
   
   # return(out)
   tau <- unique(out$tau)
-  estimates <- out %>% 
-    dplyr::select(-tau) %>% 
-    as_tibble()
+  estimates <- out |> 
+    dplyr::select(-tau) |> 
+    dplyr::as_tibble()
   
   # return estimates --------------------------------------------------------
   
@@ -251,89 +249,91 @@ projoint_level <- function(
   if (.estimand == "mm"){
     
     if(is.null(.qoi)){
-      projoint_results("estimand" = .estimand,
-                       "structure" = .structure,
-                       "estimates" = estimates, 
-                       "se_method" = .se_method,
-                       "irr" = irr,
-                       "tau" = tau,
-                       "remove_ties" = .remove_ties,
-                       "ignore_position" = .ignore_position,
-                       "attribute_of_interest" = "all",
-                       "levels_of_interest" = "all",
-                       "attribute_of_interest_0" = NULL,
-                       "levels_of_interest_0" = NULL,
-                       "attribute_of_interest_baseline" = NULL,
-                       "levels_of_interest_baseline" = NULL,
-                       "attribute_of_interest_0_baseline" = NULL,
-                       "levels_of_interest_0_baseline" = NULL,
-                       labels = .data@labels,
-                       data = .data@data) %>%
-        return()
+      return(
+        projoint_results("estimand" = .estimand,
+                         "structure" = .structure,
+                         "estimates" = estimates, 
+                         "se_method" = .se_method,
+                         "irr" = irr,
+                         "tau" = tau,
+                         "remove_ties" = .remove_ties,
+                         "ignore_position" = .ignore_position,
+                         "attribute_of_interest" = "all",
+                         "levels_of_interest" = "all",
+                         "attribute_of_interest_0" = NULL,
+                         "levels_of_interest_0" = NULL,
+                         "attribute_of_interest_baseline" = NULL,
+                         "levels_of_interest_baseline" = NULL,
+                         "attribute_of_interest_0_baseline" = NULL,
+                         "levels_of_interest_0_baseline" = NULL,
+                         labels = .data$labels,
+                         data = .data$data)
+      )
     } else {
-      projoint_results("estimand" = .estimand,
-                       "structure" = .structure,
-                       "estimates" = estimates, 
-                       "se_method" = .se_method,
-                       "irr" = irr,
-                       "tau" = tau,
-                       "remove_ties" = .remove_ties,
-                       "ignore_position" = .ignore_position,
-                       "attribute_of_interest" = .qoi@attribute_of_interest,
-                       "levels_of_interest" = .qoi@levels_of_interest,
-                       "attribute_of_interest_0" = .qoi@attribute_of_interest_0,
-                       "levels_of_interest_0" = .qoi@levels_of_interest_0,
-                       "attribute_of_interest_baseline" = NULL,
-                       "levels_of_interest_baseline" = NULL,
-                       "attribute_of_interest_0_baseline" = NULL,
-                       "levels_of_interest_0_baseline" = NULL,
-                       labels = .data@labels,
-                       data = .data@data) %>%
-        return()
+      return(projoint_results("estimand" = .estimand,
+                              "structure" = .structure,
+                              "estimates" = estimates, 
+                              "se_method" = .se_method,
+                              "irr" = irr,
+                              "tau" = tau,
+                              "remove_ties" = .remove_ties,
+                              "ignore_position" = .ignore_position,
+                              "attribute_of_interest" = .qoi$attribute_of_interest,
+                              "levels_of_interest" = .qoi$levels_of_interest,
+                              "attribute_of_interest_0" = .qoi$attribute_of_interest_0,
+                              "levels_of_interest_0" = .qoi$levels_of_interest_0,
+                              "attribute_of_interest_baseline" = NULL,
+                              "levels_of_interest_baseline" = NULL,
+                              "attribute_of_interest_0_baseline" = NULL,
+                              "levels_of_interest_0_baseline" = NULL,
+                              labels = .data$labels,
+                              data = .data$data)
+      )
     }
     
   } else {
     
     if(is.null(.qoi)){
-      projoint_results("estimand" = .estimand,
-                       "structure" = .structure,
-                       "estimates" = estimates, 
-                       "se_method" = .se_method,
-                       "irr" = irr,
-                       "tau" = tau,
-                       "remove_ties" = .remove_ties,
-                       "ignore_position" = .ignore_position,
-                       "attribute_of_interest" = "all",
-                       "levels_of_interest" = "all except level1",
-                       "attribute_of_interest_0" = NULL,
-                       "levels_of_interest_0" = NULL,
-                       "attribute_of_interest_baseline" = "all",
-                       "levels_of_interest_baseline" = "level1",
-                       "attribute_of_interest_0_baseline" = NULL,
-                       "levels_of_interest_0_baseline" = NULL,
-                       labels = .data@labels,
-                       data = .data@data) %>%
-        return()
+      return(projoint_results("estimand" = .estimand,
+                              "structure" = .structure,
+                              "estimates" = estimates, 
+                              "se_method" = .se_method,
+                              "irr" = irr,
+                              "tau" = tau,
+                              "remove_ties" = .remove_ties,
+                              "ignore_position" = .ignore_position,
+                              "attribute_of_interest" = "all",
+                              "levels_of_interest" = "all except level1",
+                              "attribute_of_interest_0" = NULL,
+                              "levels_of_interest_0" = NULL,
+                              "attribute_of_interest_baseline" = "all",
+                              "levels_of_interest_baseline" = "level1",
+                              "attribute_of_interest_0_baseline" = NULL,
+                              "levels_of_interest_0_baseline" = NULL,
+                              labels = .data$labels,
+                              data = .data$data)
+      )
+      
     } else {
-      projoint_results("estimand" = .estimand,
-                       "structure" = .structure,
-                       "estimates" = estimates, 
-                       "se_method" = .se_method,
-                       "irr" = irr,
-                       "tau" = tau,
-                       "remove_ties" = .remove_ties,
-                       "ignore_position" = .ignore_position,
-                       "attribute_of_interest" = .qoi@attribute_of_interest,
-                       "levels_of_interest" = .qoi@levels_of_interest,
-                       "attribute_of_interest_0" = .qoi@attribute_of_interest_0,
-                       "levels_of_interest_0" = .qoi@levels_of_interest_0,
-                       "attribute_of_interest_baseline" = .qoi@attribute_of_interest_baseline,
-                       "levels_of_interest_baseline" = .qoi@levels_of_interest_baseline,
-                       "attribute_of_interest_0_baseline" = .qoi@attribute_of_interest_0_baseline,
-                       "levels_of_interest_0_baseline" = .qoi@levels_of_interest_0_baseline,
-                       labels = .data@labels,
-                       data = .data@data) %>%
-        return()
+      return(projoint_results("estimand" = .estimand,
+                              "structure" = .structure,
+                              "estimates" = estimates, 
+                              "se_method" = .se_method,
+                              "irr" = irr,
+                              "tau" = tau,
+                              "remove_ties" = .remove_ties,
+                              "ignore_position" = .ignore_position,
+                              "attribute_of_interest" = .qoi$attribute_of_interest,
+                              "levels_of_interest" = .qoi$levels_of_interest,
+                              "attribute_of_interest_0" = .qoi$attribute_of_interest_0,
+                              "levels_of_interest_0" = .qoi$levels_of_interest_0,
+                              "attribute_of_interest_baseline" = .qoi$attribute_of_interest_baseline,
+                              "levels_of_interest_baseline" = .qoi$levels_of_interest_baseline,
+                              "attribute_of_interest_0_baseline" = .qoi$attribute_of_interest_0_baseline,
+                              "levels_of_interest_0_baseline" = .qoi$levels_of_interest_0_baseline,
+                              labels = .data$labels,
+                              data = .data$data)
+      )
     }
     
   }

@@ -109,7 +109,7 @@ make_projoint_data <- function(
   # make "labels" data frame
   labels <- data %>% 
     dplyr::select(contains("att")) %>%
-    pivot_longer(names_to = "attribute_id", values_to = "level", cols = 1:ncol(.)) %>% 
+    pivot_longer(names_to = "attribute_id", values_to = "level", cols = everything()) %>% 
     distinct() %>% 
     dplyr::arrange(attribute_id, level) %>% 
     dplyr::group_by(attribute_id) %>% 
@@ -129,11 +129,13 @@ make_projoint_data <- function(
       dplyr::select(level, level_id) %>% 
       rlang::set_names(c(.attribute_id, "level_id"))
     
-    data <- data %>% 
-      
-      dplyr::left_join(temp) %>% 
-      dplyr::select(-all_of(.attribute_id)) %>% 
-      dplyr::rename({{var_quo}} := level_id)
+    suppressMessages(
+      data <- data %>% 
+        
+        dplyr::left_join(temp) %>% 
+        dplyr::select(-all_of(.attribute_id)) %>% 
+        dplyr::rename({{var_quo}} := level_id)
+    )
     
     
   }

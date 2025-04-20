@@ -1,12 +1,75 @@
 ---
-title: "Consider choice-level analysis"
+title: "Choice-Level Analysis"
 output: rmarkdown::html_vignette
 description: >
-  What's the difference between profile-level analysis and choice-level analysis?
+  Why choice-level analysis offers deeper insights compared to standard profile-level analysis.
 vignette: >
-  %\VignetteIndexEntry{Consider choice-level analysis}
+  %\VignetteIndexEntry{Choice-Level Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-To be written
+## **Why Choice-Level Analysis?**
+
+In traditional conjoint analysis, researchers typically estimate **profile-level** quantities, treating each profile independently. This approach has become the standard, particularly after the influential work of Hainmueller, Hopkins, and Yamamoto (2014).
+
+However, **profile-level analysis can systematically miss how people actually make decisions**.
+
+**Key Issues:**
+
+- When individuals compare two profiles side-by-side (as in most conjoint tasks), their evaluations are often **psychologically influenced by the alternative**.
+- Profile-level quantities like AMCEs may be **biased toward indifference**, masking the **true tradeoffs** that respondents are making.
+
+Thus, **analyzing profiles independently** — without considering the context of comparison — can **distort** our understanding of decision-making.
+
+---
+
+## **Why Move to Choice-Level Analysis?**
+
+**Choice-level analysis** models the decision **between two profiles**, not the evaluation of a single profile.
+
+This approach better reflects:
+
+- How people make real-world tradeoffs (e.g., choosing between candidates, products, policies)
+- How comparative contexts influence judgments (e.g., assimilation, contrast effects)
+
+Instead of estimating the probability of selecting a standalone profile, choice-level analysis estimates **the likelihood of choosing one profile over another**, given their attributes.
+
+✅ **Better matches real-world behavior**  
+✅ **Explicitly captures comparative decision-making**  
+✅ **Reveals true tradeoffs and feature prioritization**
+
+---
+
+## **Summary**
+
+| Profile-Level Analysis | Choice-Level Analysis |
+|:-----------------------|:----------------------|
+| Treats profiles independently | Models the decision between profiles |
+| Ignores comparative psychology | Captures influence of side-by-side comparisons |
+| May blur or bias tradeoffs | Highlights real tradeoffs |
+| Easier but can be misleading | Slightly more complex but much more informative |
+
+---
+
+## **Key Takeaway**
+
+> 🔎 If your conjoint design presents two profiles for comparison, **choice-level analysis is essential for valid and insightful inference**.  
+> 
+> 📈 It provides **deeper insights**, **more accurate estimates**, and a **closer reflection of real-world decision-making**.
+
+
+---
+
+## 📚 **References**
+
+- **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).**  
+  *Correcting Measurement Error Bias in Conjoint Survey Experiments.*  
+  _Forthcoming, American Journal of Political Science._  
+  [Pre-Print Available](https://gking.harvard.edu/conjointE)
+
+- **Horiuchi and Johnson (2025).**  
+  *Advancing Conjoint Analysis: Delving Further into Profile Comparisons.*  
+  _Work-in-progress._  
+
+---

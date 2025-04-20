@@ -1,0 +1,211 @@
+---
+title: "Analyze Your Conjiont Data"
+output: rmarkdown::html_vignette
+description: >
+  How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary.
+vignette: >
+  %\VignetteIndexEntry{Analyze Your Conjiont Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(projoint)
+```
+
+## 🎯 Estimate Corrected MMs or AMCEs
+
+In conjoint analysis, default MMs and AMCEs can be **biased** due to measurement error from intra-respondent variability.
+
+**projoint** corrects for this bias automatically.
+
+---
+
+## 📦 Load Data Example
+
+```{r}
+outcomes <- paste0("choice", 1:8)
+outcomes <- c(outcomes, "choice1_repeated_flipped")
+out1 <- reshape_projoint(exampleData1, outcomes)
+```
+
+---
+
+## 🛠️ Why Use IDs (e.g., `att1`, `level1`)?
+
+We recommend working with **attribute IDs** rather than actual text labels because:
+
+- Safer against special characters, languages, or typos
+- Allows **multiple attributes** to have identical labels (e.g., "High" for both "Teaching Quality" and "Research Quality")
+
+Check attribute-level mappings:
+
+```{r}
+out1$labels
+```
+
+You can also save these labels for easier editing:
+
+```r
+save_labels(out1, "labels.csv")
+```
+
+---
+
+## 📈 Estimate Marginal Means (MMs)
+
+<details><summary><b>Estimate Profile-Level MMs (All Levels)</b></summary>
+
+```{r}
+mm0 <- projoint(out1, .structure = "profile_level", .estimand = "mm")
+print(mm0)
+summary(mm0)
+```
+
+</details>
+
+<details><summary><b>Estimate Profile-Level MMs (Specific Level)</b></summary>
+
+```{r}
+qoi_1 <- set_qoi(
+  .structure = "profile_level",
+  .estimand = "mm",
+  .att_choose = "att1",
+  .lev_choose = "level1"
+)
+
+mm1 <- projoint(out1, .qoi = qoi_1)
+print(mm1)
+summary(mm1)
+```
+
+</details>
+
+<details><summary><b>Estimate Profile-Level MMs (Specific Level, Manual IRR)</b></summary>
+
+```{r}
+mm1b <- projoint(out1, .qoi = qoi_1, .irr = 0.75)
+print(mm1b)
+summary(mm1b)
+```
+
+</details>
+
+<details><summary><b>Estimate Choice-Level MMs (Specific Level)</b></summary>
+
+```{r}
+qoi_2 <- set_qoi(
+  .structure = "choice_level",
+  .att_choose = "att1",
+  .lev_choose = "level3",
+  .att_notchoose = "att1",
+  .lev_notchoose = "level1"
+)
+
+mm2 <- projoint(out1, .qoi = qoi_2, .ignore_position = FALSE)
+print(mm2)
+summary(mm2)
+```
+
+</details>
+
+---
+
+## 📉 Estimate AMCEs
+
+<details><summary><b>Estimate Profile-Level AMCEs (All Levels)</b></summary>
+
+```{r}
+amce0 <- projoint(out1, .structure = "profile_level", .estimand = "amce")
+print(amce0)
+summary(amce0)
+```
+
+</details>
+
+<details><summary><b>Estimate Profile-Level AMCEs (Specific Level)</b></summary>
+
+```{r}
+qoi_3 <- set_qoi(
+  .structure = "profile_level",
+  .estimand = "amce",
+  .att_choose = "att1",
+  .lev_choose = "level3",
+  .att_choose_b = "att1",
+  .lev_choose_b = "level1"
+)
+
+amce1 <- projoint(out1, .qoi = qoi_3)
+print(amce1)
+summary(amce1)
+```
+
+</details>
+
+<details><summary><b>Estimate Profile-Level AMCEs (Specific Level, Manual IRR)</b></summary>
+
+```{r}
+amce1b <- projoint(out1, .qoi = qoi_3, .irr = 0.75)
+print(amce1b)
+summary(amce1b)
+```
+
+</details>
+
+<details><summary><b>Estimate Choice-Level AMCEs (Specific Level)</b></summary>
+
+```{r}
+qoi_4 <- set_qoi(
+  .structure = "choice_level",
+  .estimand = "amce",
+  .att_choose = "att1",
+  .lev_choose = "level3",
+  .att_notchoose = "att1",
+  .lev_notchoose = "level1",
+  .att_choose_b = "att1",
+  .lev_choose_b = "level2",
+  .att_notchoose_b = "att1",
+  .lev_notchoose_b = "level1"
+)
+
+amce2 <- projoint(out1, .qoi = qoi_4, .ignore_position = TRUE)
+print(amce2)
+summary(amce2)
+```
+
+</details>
+
+---
+
+## 🔎 Predict Intra-Respondent Reliability (IRR)
+
+If your design does **not** include a repeated task, you can estimate IRR using extrapolation.
+
+<details><summary><b>Predict IRR Using `predict_tau()`</b></summary>
+
+```{r}
+data(out1_arranged)
+predicted_irr <- predict_tau(out1_arranged)
+
+print(predicted_irr)
+summary(predicted_irr)
+plot(predicted_irr)
+```
+
+</details>
+
+---
+
+## 🌟 Key Tip
+
+Use `.by_var` **only** when comparing **profile-level MMs** between two groups (e.g., Democrats vs. Republicans).
+
+---
+
+## 🌟 What's Next?
+
+You should **visualize** your findings!
+
+➡️ Continue to: [Visualize Your Results](visualize.html)
+
+---

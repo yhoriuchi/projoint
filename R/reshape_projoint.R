@@ -9,7 +9,7 @@
 #' @import tidyselect
 #' @param .dataframe A data frame, preferably from \code{\link{read_Qualtrics}}
 #' @param .outcomes A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.
-#' @param .outcomes_ids c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")
+#' @param .choice_labels c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")
 #' @param .alphabet "K" (default): a letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics.
 #' @param .idvar "ResponseId" (default): a character identifying the column name containing respondent
 #' @param .repeated TRUE (default) if there is a repeated task (recommended). The repeated task should be the same as the first task.
@@ -37,7 +37,7 @@
 reshape_projoint <- function(
     .dataframe, 
     .outcomes, 
-    .outcomes_ids = c("A", "B"),
+    .choice_labels = c("A", "B"),
     .alphabet = "K", 
     .idvar = "ResponseId", 
     .repeated = TRUE,
@@ -67,17 +67,16 @@ reshape_projoint <- function(
   n_tasks_all <- length(.outcomes)
   
   # number of tasks (excluding the repeated task)
-  if (.repeated == FALSE){
-    n_tasks <- n_tasks_all
-  } else if (.repeated == TRUE){
+  # number of tasks (excluding the repeated task)
+  if (.repeated == TRUE){
     n_tasks <- n_tasks_all - 1
-  } else{
-    print("Error: .repeated must be logical.")
+  } else {
+    n_tasks <- n_tasks_all
   }
 
   # repeated_task recommended
   if(!is.logical(.repeated)){
-    stop("The .repeated_task argument must be either TRUE or FALSE.")
+    stop("The .repeated argument must be either TRUE or FALSE.")
   }
   
   # check the .fill argument
@@ -122,7 +121,7 @@ reshape_projoint <- function(
                                      by = c("id", "task", "attribute"),
                                      multiple = "all") %>%
     dplyr::select(-all_of("attribute")) %>%
-    dplyr::mutate_at(c("task", "profile"), .funs = as.numeric) %>%
+    dplyr::mutate(across(c(task, profile), as.numeric)) %>%
     dplyr::rename("attribute" = attribute_name,
                   "level" = level_name) %>%
     dplyr::filter(task <= n_tasks)
@@ -168,8 +167,8 @@ reshape_projoint <- function(
   # further cleaning of the response data frame
   response_cleaned <- responses %>%
     dplyr::mutate(selected = str_extract(response, ".$"),
-                  selected = dplyr::case_when(selected == .outcomes_ids[1] ~ 1,
-                                              selected == .outcomes_ids[2] ~ 2)) %>%
+                  selected = dplyr::case_when(selected == .choice_labels[1] ~ 1,
+                                              selected == .choice_labels[2] ~ 2)) %>%
     dplyr::select(-response, -outcome_qnum)
   
   # data frame excluding the repeated task
@@ -221,7 +220,7 @@ reshape_projoint <- function(
 
   out_final_before_fill <- out %>% 
     dplyr::left_join(covariates, by = "id") %>% 
-    dplyr::mutate_if(is.character, as.factor) %>%
+    dplyr::mutate(across(where(is.character), as.factor)) %>%
     dplyr::mutate(id = as.character(id)) %>%
     dplyr::as_tibble()
 
@@ -239,8 +238,7 @@ reshape_projoint <- function(
   
   
   # return the data frame and the variable labels as a list
-  out2 <- projoint_data("labels" = labels, 
-                        "data" = out_final)
-  return(out2)
-  
+  return(projoint_data("labels" = labels, 
+                        "data" = out_final))
+
 }

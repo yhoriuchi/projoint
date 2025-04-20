@@ -8,30 +8,6 @@
 #' @param .filename The name of a CSV file to be saved
 #' @return None
 #' @export
-#' @examples
-#' library(projoint)
-#' library(readr)
-#' 
-#' data("exampleData1")
-#' head(exampleData1)
-#'
-#' # Write outcome column names
-#' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-#' outcomes <- c(outcomes, "choice1_repeated_flipped")
-#' 
-#' # Reshape the data
-#' reshaped_data <- reshape_projoint(
-#'   .dataframe = exampleData1, 
-#'   .idvar = "ResponseId", 
-#'   .outcomes = outcomes,
-#'   .outcomes_ids = c("A", "B"),
-#'   .alphabet = "K", 
-#'   .repeated = TRUE,
-#'   .flipped = TRUE)
-#' 
-#' # Not Run: Save a CSV file
-#' # save_labels(reshaped_data, "data-raw/labels_original.csv")
-
 save_labels <- function(
     .data,
     .filename
@@ -40,10 +16,11 @@ save_labels <- function(
   level_id <- NULL
   attribute <- NULL
   level <- NULL
-
-  .data@labels %>% 
-    dplyr::select(level_id, attribute, level) %>% 
-    dplyr::arrange(level_id) %>% 
-    dplyr::mutate(order = row_number()) %>%
+  
+  (.data$labels %>% 
+      dplyr::select(level_id, attribute, level) %>% 
+      dplyr::arrange(level_id) %>% 
+      dplyr::mutate(order = row_number())
+  )%>%
     readr::write_csv(.filename)
 }  

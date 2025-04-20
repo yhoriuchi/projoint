@@ -1,59 +1,122 @@
-# <img src="man/figures/projoint.png" align="center" width="150" height="150" />
+<p align="center">
+  <img src="man/figures/projoint.png" width="150" height="150" />
+</p>
 
-# projoint
+<p align="center">
+  <a href="https://github.com/yhoriuchi/projoint/actions/workflows/R-CMD-check.yaml">
+    <img src="https://github.com/yhoriuchi/projoint/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check" />
+  </a>
+  <a href="https://CRAN.R-project.org/package=projoint">
+    <img src="https://www.r-pkg.org/badges/version/projoint" alt="CRAN Status" />
+  </a>
+  <a href="https://cran.r-project.org/package=projoint">
+    <img src="https://cranlogs.r-pkg.org/badges/grand-total/projoint" alt="Downloads" />
+  </a>
+</p>
 
-## The One-Stop Conjoint Shop
+<p align="center" style="font-size: 32px;"><b>🛠️ The One-Stop Conjoint Shop: projoint</b></p>
 
 ---
 
-**projoint** is a general-purpose R package for conjoint analysis. It produces more reliable estimates of all relevant quantities of interest, after correcting measurement error bias and other problems discussed in the literature. Furthermore, it also implements a more general framework than other approaches, so that researchers can answer a much wider range of substantively important questions.
+**projoint** is a general-purpose R package for conjoint analysis. 
 
-### Installation
+- Produces **more reliable estimates** of key quantities of interest by **correcting measurement error bias**.
+- Encourages users to undertake **choice-level** analysis alongside traditional profile-level analysis.
 
-You can install the development version of **projoint** from [GitHub](https://github.com/) with:
+---
 
-``` r
-# install.packages("devtools")
+## 🔧 Installation
+
+```r
+# Install the development version from GitHub
 devtools::install_github("yhoriuchi/projoint")
 ```
 
-### Example
+---
 
-``` r
-# Load the projoint package
+## 🚀 Quick Start
+
+<details>
+<summary style="font-size: 18px;"><b>Design</b> your survey correctly</summary>
+
+Begin with the [Projoint Survey Designer](https://projoint.aaronrkaufman.com/) and export surveys formatted for Qualtrics.
+
+</details>
+<details>
+
+<summary style="font-size: 18px;"><b>Read</b> the results into R</summary>
+
+Load your **survey responses** into R:
+
+```r
 library(projoint)
-
-# Reshape data for conjoint analysis
-# This example includes the repeated task.
-data <- reshape_projoint(exampleData1, 
-                         c(paste0("choice", 1:8), "choice1_repeated_flipped"))
-
-# Run conjoint analysis
-output <- projoint(data)
-
-# Make a figure
-plot(output)
-
-# Show the estimated quantities of interest
-summary(output)
-
+dat <- read_Qualtrics("your_file.csv")
 ```
+</details>
 
-### Relevant Article
+<details>
+<summary style="font-size: 18px;"><b>Wrangle</b> the data into structured form</summary>
 
-Our framework and methods can be found in this paper:
+Prepare the data for analysis:
 
-* Katherine Clayton, Yusaku Horiuchi, Aaron R. Kaufman, Gary King, and Mayya Komisarchik. “Correcting Measurement Error Bias in Conjoint Survey Experiments”. [[Working Paper](https://gking.harvard.edu/conjointE)]
-  + **Abstract:** Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many causal effects from a single randomized experiment. Unfortunately, by their ability to mirror complicated real-world choices, these designs often generate substantial measurement errors and thus bias. We replicate both the data collection and analysis from eight prominent conjoint studies, all of which closely reproduce published results, and show that a large proportion of observed variation in answers to conjoint questions is effectively random noise. We then discover a common empirical pattern in how measurement error appears in conjoint studies and, with it, introduce an easy-to-use statistical method to correct the bias.
+```r
+dat <- reshape_projoint(
+  .dataframe = dat,
+  .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped")
+)
+```
+</details>
 
-### Join Our Projoint Community
+<details>
+<summary style="font-size: 18px;"><b>Analyze</b> with automatic measurement error correction</summary>
 
-We encourage you to join our Projoint Community by making a GitHub account, subscribing to our [Announcements](https://github.com/yhoriuchi/projoint/discussions/categories/announcements), and actively joining [Discussions](https://github.com/yhoriuchi/projoint/discussions). We encourage you to post questions, suggest for improvement, and share your research findings using our software. For any problem you find, please report your issue to [Issues](https://github.com/yhoriuchi/projoint/issues). 
+Estimate Marginal Means (MMs) or Average Marginal Component Effects (AMCEs) with correction for measurement error:
 
-### Notes
+```r
+output <- projoint(dat)
+print(output)
+summary(output)
+```
+</details>
 
-* The current version assumes that the outcome variable is a binary forced choice.
+<details>
+<summary style="font-size: 18px;"><b>Visualize</b> your results</summary>
 
-* This package is still under construction. Forthcoming features include the following:
-  + Allow researchers to use weights for features and for respondents.
-  + Allow researchers to use other outcome variables, such as rating.
+Visualize your results easily:
+
+```r
+plot(output)
+```
+</details>
+
+---
+
+## 📘 Methodological Background
+
+The framework and methods behind **projoint** are detailed in:
+
+> **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).**  
+> *Correcting Measurement Error Bias in Conjoint Survey Experiments.*  
+> _Forthcoming, American Journal of Political Science._
+> [Pre-Print Available](https://gking.harvard.edu/conjointE)
+
+[👉 Download BibTeX Reference](doc/projoint_citation.bib)
+
+---
+
+## 📋 Notes & Limitations
+
+- Supports **binary forced-choice** outcomes only (for now).
+- Package is under **active development**.
+
+## 📦 Upcoming Features
+
+- Weighted estimation for features and respondents
+- Support for non-binary outcomes (ratings, rankings)
+- Advanced visualization for choice-level effects
+
+
+---
+
+<p align="center" style="font-size: 18px;">✨ Thank you for using projoint! ✨</p>
+

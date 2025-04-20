@@ -67,11 +67,11 @@ projoint_diff <- function(
   
   # estimate QoIs by subgroups ----------------------------------------------
   
-  subgroup1 <- .data@data %>% filter(.data[[.by_var]] == 1)
-  subgroup0 <- .data@data %>% filter(.data[[.by_var]] == 0)
+  subgroup1 <- .data$data %>% filter(.data[[.by_var]] == 1)
+  subgroup0 <- .data$data %>% filter(.data[[.by_var]] == 0)
   
-  data1 <-  projoint_data("labels" = .data@labels, "data" = subgroup1)
-  data0 <-  projoint_data("labels" = .data@labels, "data" = subgroup0)
+  data1 <-  projoint_data("labels" = .data$labels, "data" = subgroup1)
+  data0 <-  projoint_data("labels" = .data$labels, "data" = subgroup0)
   
   out1 <- projoint_level(.data = data1,
                          .qoi,
@@ -109,13 +109,13 @@ projoint_diff <- function(
   
   # prepare to return the estimates -----------------------------------------
   
-  estimate1 <- out1@estimates %>% 
+  estimate1 <- out1$estimates %>% 
     dplyr::select(estimand, att_level_choose,
                   "estimate_1" = estimate,
                   "se_1" = se) %>% 
-    dplyr::mutate(tau = out1@tau)
+    dplyr::mutate(tau = out1$tau)
   
-  estimate0 <- out0@estimates %>% 
+  estimate0 <- out0$estimates %>% 
     dplyr::select(estimand, att_level_choose,
                   "estimate_0" = estimate,
                   "se_0" = se)
@@ -127,17 +127,16 @@ projoint_diff <- function(
            conf.low = estimate - 1.96 * se,
            conf.high = estimate + 1.96 * se) 
   
-  tau <- data.frame("tau1" = out1@tau,
-                    "tau0" = out0@tau)
+  tau <- mean(c(out1$tau, out0$tau))
 
   # return estimates --------------------------------------------------------
   
   if (is.null(.irr)){
+    irr <- "Estimated"
+  } else {
     irr <- stringr::str_c("Assumed (", .irr, ")")
-  } else{
-    irr <- "Estimated" 
   }
-  
+
   if (.estimand == "mm"){
     
     if(is.null(.qoi)){
@@ -157,8 +156,8 @@ projoint_diff <- function(
                        "levels_of_interest_baseline" = NULL,
                        "attribute_of_interest_0_baseline" = NULL,
                        "levels_of_interest_0_baseline" = NULL,
-                       labels = .data@labels,
-                       data = .data@data) %>%
+                       labels = .data$labels,
+                       data = .data$data) %>%
         return()
     } else {
       projoint_results("estimand" = .estimand,
@@ -169,16 +168,16 @@ projoint_diff <- function(
                        "tau" = tau,
                        "remove_ties" = .remove_ties,
                        "ignore_position" = .ignore_position,
-                       "attribute_of_interest" = .qoi@attribute_of_interest,
-                       "levels_of_interest" = .qoi@levels_of_interest,
-                       "attribute_of_interest_0" = .qoi@attribute_of_interest_0,
-                       "levels_of_interest_0" = .qoi@levels_of_interest_0,
+                       "attribute_of_interest" = .qoi$attribute_of_interest,
+                       "levels_of_interest" = .qoi$levels_of_interest,
+                       "attribute_of_interest_0" = .qoi$attribute_of_interest_0,
+                       "levels_of_interest_0" = .qoi$levels_of_interest_0,
                        "attribute_of_interest_baseline" = NULL,
                        "levels_of_interest_baseline" = NULL,
                        "attribute_of_interest_0_baseline" = NULL,
                        "levels_of_interest_0_baseline" = NULL,
-                       labels = .data@labels,
-                       data = .data@data) %>%
+                       labels = .data$labels,
+                       data = .data$data) %>%
         return()
     }
     
@@ -201,8 +200,8 @@ projoint_diff <- function(
                        "levels_of_interest_baseline" = "level1",
                        "attribute_of_interest_0_baseline" = NULL,
                        "levels_of_interest_0_baseline" = NULL,
-                       labels = .data@labels,
-                       data = .data@data) %>%
+                       labels = .data$labels,
+                       data = .data$data) %>%
         return()
     } else {
       projoint_results("estimand" = .estimand,
@@ -213,16 +212,16 @@ projoint_diff <- function(
                        "tau" = tau,
                        "remove_ties" = .remove_ties,
                        "ignore_position" = .ignore_position,
-                       "attribute_of_interest" = .qoi@attribute_of_interest,
-                       "levels_of_interest" = .qoi@levels_of_interest,
-                       "attribute_of_interest_0" = .qoi@attribute_of_interest_0,
-                       "levels_of_interest_0" = .qoi@levels_of_interest_0,
-                       "attribute_of_interest_baseline" = .qoi@attribute_of_interest_baseline,
-                       "levels_of_interest_baseline" = .qoi@levels_of_interest_baseline,
-                       "attribute_of_interest_0_baseline" = .qoi@attribute_of_interest_0_baseline,
-                       "levels_of_interest_0_baseline" = .qoi@levels_of_interest_0_baseline,
-                       labels = .data@labels,
-                       data = .data@data) %>%
+                       "attribute_of_interest" = .qoi$attribute_of_interest,
+                       "levels_of_interest" = .qoi$levels_of_interest,
+                       "attribute_of_interest_0" = .qoi$attribute_of_interest_0,
+                       "levels_of_interest_0" = .qoi$levels_of_interest_0,
+                       "attribute_of_interest_baseline" = .qoi$attribute_of_interest_baseline,
+                       "levels_of_interest_baseline" = .qoi$levels_of_interest_baseline,
+                       "attribute_of_interest_0_baseline" = .qoi$attribute_of_interest_0_baseline,
+                       "levels_of_interest_0_baseline" = .qoi$levels_of_interest_0_baseline,
+                       labels = .data$labels,
+                       data = .data$data) %>%
         return()
     }
     

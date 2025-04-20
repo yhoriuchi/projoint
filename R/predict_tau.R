@@ -16,49 +16,6 @@
 #' @param .title The title of a figure
 #' @return A \code{\link{projoint_tau}} object containing the estimate of tau and a figure visualizing the extrapolation method.
 #' @export
-#' @examples
-#' library(projoint)
-#' library(stringr)
-#' 
-#' ## Example 1: repeated, flipped task
-#' data("exampleData1")
-#' head(exampleData1)
-#'
-#' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-#' 
-#' outcomes1 <- c(outcomes, "choice1_repeated_flipped")
-#' reshaped_data <- reshape_projoint(
-#'   .dataframe = exampleData1, 
-#'   .outcomes = outcomes1)
-#'   
-#' tau1 <- predict_tau(reshaped_data)
-#' tau1
-#' 
-#' ## Example 2: repeated, unflipped task
-#' data("exampleData2")
-#' head(exampleData2)
-#'
-#' outcomes2 <- c(outcomes, "choice1_repeated_notflipped")
-#' reshaped_data <- reshape_projoint(
-#'   .dataframe = exampleData2, 
-#'   .outcomes = outcomes2,
-#'   .flipped = FALSE)
-#'   
-#' tau2 <- predict_tau(reshaped_data)
-#' tau2
-#' 
-#' ## Example 3: no repeated task
-#' data("exampleData3")
-#' head(exampleData3)
-#'
-#' reshaped_data <- reshape_projoint(
-#'   .dataframe = exampleData3, 
-#'   .outcomes = outcomes,
-#'   .repeated = FALSE)
-#'   
-#' tau3 <- predict_tau(reshaped_data)
-#' tau3
-
 predict_tau <- function(
     .data,
     .title = NULL
@@ -70,7 +27,7 @@ predict_tau <- function(
   
   # data frame
   
-  .dataframe <- .data@data
+  .dataframe <- .data$data
   
   # bind variables locally to the function
 
@@ -259,30 +216,4 @@ predict_tau <- function(
   
   return(out)
   
-}
-
-
-
-
-#' @param x An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}
-#' @param ... Optional arguments; currently none accepted
-#' @export
-#' @rdname predict_tau
-
-print.projoint_tau <- function(x, ...) {
- ## What should we put here?
-   # Function call
-  print(paste("Tau estimated using the extrapolation method:", as.character(round(x@irr$predicted[1],3))))
-   # Some details about the data set
-   # No results
-}
-
-#' @param object An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}
-#' @param ... Optional arguments; currently none accepted
-#' @export
-#' @return A tibble showing IRR as profile similarity changes. The value of \code{predicted} when \code{x=0} is the estimated IRR.
-#' @rdname predict_tau
-
-summary.projoint_tau <- function(object, ...) {
-  object@irr  
 }

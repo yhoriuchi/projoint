@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.projoint_results.R
 \name{plot.projoint_results}
 \alias{plot.projoint_results}
-\title{Plot all MMs or AMCEs}
+\title{Plot Marginal Means (MMs) or AMCEs from projoint Results}
 \usage{
 \method{plot}{projoint_results}(
   x,
@@ -11,27 +11,66 @@
   .labels = NULL,
   .base_size = 12,
   .base_family = "",
+  .type = c("bar", "pointrange"),
+  .show_attribute = FALSE,
+  .xtitle = "Choice-level marginal mean",
+  .remove_xaxis = FALSE,
+  .xlim = c(0, 1),
+  .hjust_left = 1,
+  .hjust_right = 0,
+  .title_size = 11,
+  .plot.margin = c(0, 3, 0, 3),
   ...
 )
 }
 \arguments{
-\item{x}{A \code{\link{projoint_results}} object}
+\item{x}{A `projoint_results` object, typically created by `projoint()`.}
 
-\item{.estimates}{The estimates to be plotted, either \code{"corrected"} (default), \code{"uncorrected"}, or \code{"both"}}
+\item{.estimates}{Character. Which estimates to plot: `"corrected"` (default), `"uncorrected"`, or `"both"`.}
 
-\item{.by_var}{(only if the structure is profile-level) \code{TRUE} to plot the difference in estimates between the two subgroups, \code{FALSE} (default) otherwise}
+\item{.by_var}{Logical. (Profile-level only) Whether to plot subgroup differences. Default is `FALSE`.}
 
-\item{.labels}{(only if the structure is choice-level) A chaarcter vector for the x-axis labels}
+\item{.labels}{Character vector. (Choice-level only) Custom x-axis labels for bar or point-range plots.}
 
-\item{.base_size}{base font size, given in pts.}
+\item{.base_size}{Numeric. Base font size for plot text. Default is 12.}
 
-\item{.base_family}{base font family}
+\item{.base_family}{Character. Base font family for plot text. Default is "" (system default).}
 
-\item{...}{Additional optional arguments}
+\item{.type}{Character. (Choice-level only) Type of plot: `"bar"` (default) or `"pointrange"`.}
+
+\item{.show_attribute}{Logical. (Choice-level only) Whether to display the attribute name as a plot title. Default is `FALSE`.}
+
+\item{.xtitle}{Character. (Choice-level only) X-axis label text. Default is `"Choice-level marginal mean"`.}
+
+\item{.remove_xaxis}{Logical. (Choice-level only) Whether to remove x-axis labels and ticks. Default is `FALSE`.}
+
+\item{.xlim}{Numeric vector of length 2. (Choice-level only) X-axis limits. Default is `c(0, 1)`.}
+
+\item{.hjust_left}{Numeric. (Choice-level only) Horizontal adjustment for the left-side label. Default is 1.}
+
+\item{.hjust_right}{Numeric. (Choice-level only) Horizontal adjustment for the right-side label. Default is 0.}
+
+\item{.title_size}{Numeric. (Choice-level only) Font size for the plot title if `.show_attribute = TRUE`. Default is 11.}
+
+\item{.plot.margin}{Numeric vector of length 4. (Choice-level only) Margins around the plot in centimeters. Default is `c(0, 3, 0, 3)`.}
+
+\item{...}{Additional arguments passed to underlying plotting functions.}
 }
 \value{
-A \code{ggplot} object
+A `ggplot2` object.
 }
 \description{
-This method produces MM or AMCE plots given a \code{\link{projoint_results}} object, the output from the \code{\link{projoint}} function.
+This function creates publication-ready plots based on the output from `projoint()`.
+It supports both profile-level and choice-level analyses, with tailored plotting options.
+}
+\details{
+For **profile-level results**, only `.by_var`, `.base_size`, and `.base_family` are relevant.
+
+For **choice-level results**, only `.type`, `.labels`, `.show_attribute`, `.xtitle`, `.remove_xaxis`,
+`.xlim`, `.hjust_left`, `.hjust_right`, `.title_size`, and `.plot.margin` are relevant.
+
+If irrelevant arguments are provided for a given structure, a warning will be issued and the arguments will be ignored.
+}
+\seealso{
+[projoint()], [projoint_results], [plot_projoint_profile_level()], [plot_projoint_choice_level()]
 }

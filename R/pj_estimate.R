@@ -242,7 +242,7 @@ pj_estimate <- function(
       attlev_choose    <- stringr::str_c(.att_choose,  ":", .lev_choose)
       attlev_notchoose <- stringr::str_c(.att_notchoose,  ":", .lev_notchoose)
       
-      temp1 <- organize_data(.dataframe = .data@data,
+      temp1 <- organize_data(.dataframe = .data$data,
                              .structure = structure,
                              .estimand = estimand,
                              .remove_ties,
@@ -255,18 +255,18 @@ pj_estimate <- function(
         
         if (.att_choose == .att_notchoose){
           
-          temp2 <- temp1$data_for_estimand %>% 
+          temp2 <- temp1$data_for_estimand |> 
             dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
                           qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         } else{
           
-          temp2 <- temp1$data_for_estimand %>% 
+          temp2 <- temp1$data_for_estimand |> 
             dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
                           qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         }
@@ -275,28 +275,28 @@ pj_estimate <- function(
         
         if (.att_choose == .att_notchoose){
           
-          temp2 <- temp1$data_for_estimand %>% 
-            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) %>% 
+          temp2 <- temp1$data_for_estimand |> 
+            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) |> 
             dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
                           qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         } else{
           
-          temp2 <- temp1$data_for_estimand %>% 
-            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) %>% 
+          temp2 <- temp1$data_for_estimand |> 
+            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) |> 
             
             dplyr::mutate(selected = selected_2, 
                           qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         }
       }
       
       # data to estimate irr
-      data_for_irr <- temp1$data_for_irr %>% 
+      data_for_irr <- temp1$data_for_irr |> 
         distinct()
       
       # data to estimate QoI
@@ -304,7 +304,7 @@ pj_estimate <- function(
       
     } else {
       
-      .list <- organize_data(.dataframe = .data@data,
+      .list <- organize_data(.dataframe = .data$data,
                              .structure = structure,
                              .estimand = estimand,
                              .remove_ties,
@@ -330,7 +330,7 @@ pj_estimate <- function(
       attlev_choose    <- stringr::str_c(.att_choose,  ":", .lev_choose)
       attlev_notchoose <- stringr::str_c(.att_notchoose,  ":", .lev_notchoose)
       
-      temp1 <- organize_data(.dataframe = .data@data,
+      temp1 <- organize_data(.dataframe = .data$data,
                              .structure = structure,
                              .estimand = estimand,
                              .remove_ties,
@@ -343,18 +343,18 @@ pj_estimate <- function(
         
         if (.att_choose == .att_notchoose){
           
-          temp2 <- temp1$data_for_estimand %>% 
+          temp2 <- temp1$data_for_estimand |> 
             dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
                           qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         } else{
           
-          temp2 <- temp1$data_for_estimand %>% 
+          temp2 <- temp1$data_for_estimand |> 
             dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
                           qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         }
@@ -363,20 +363,20 @@ pj_estimate <- function(
         
         if (.att_choose == .att_notchoose){
           
-          temp2 <- temp1$data_for_estimand %>% 
-            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) %>% 
+          temp2 <- temp1$data_for_estimand |> 
+            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) |> 
             dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
                           qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         } else{
           
-          temp2 <- temp1$data_for_estimand %>% 
-            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) %>% 
+          temp2 <- temp1$data_for_estimand |> 
+            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) |> 
             dplyr::mutate(selected = selected_2, 
                           qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         }
@@ -389,7 +389,7 @@ pj_estimate <- function(
       attlev_choose_b    <- stringr::str_c(.att_choose_b,  ":", .lev_choose_b)
       attlev_notchoose_b <- stringr::str_c(.att_notchoose_b,  ":", .lev_notchoose_b)
       
-      temp1_b <- organize_data(.dataframe = .data@data,
+      temp1_b <- organize_data(.dataframe = .data$data,
                                .structure = structure,
                                .estimand = estimand,
                                .remove_ties,
@@ -402,18 +402,18 @@ pj_estimate <- function(
         
         if (.att_choose_b == .att_notchoose_b){
           
-          temp2_b <- temp1_b$data_for_estimand %>% 
+          temp2_b <- temp1_b$data_for_estimand |> 
             dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
                           qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         } else{
           
-          temp2_b <- temp1_b$data_for_estimand %>% 
+          temp2_b <- temp1_b$data_for_estimand |> 
             dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
                           qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         }
@@ -422,21 +422,21 @@ pj_estimate <- function(
         
         if (.att_choose_b == .att_notchoose_b){
           
-          temp2_b <- temp1_b$data_for_estimand %>% 
-            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) %>% 
+          temp2_b <- temp1_b$data_for_estimand |> 
+            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) |> 
             dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
                           qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         } else{
           
-          temp2_b <- temp1_b$data_for_estimand %>% 
-            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) %>% 
+          temp2_b <- temp1_b$data_for_estimand |> 
+            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) |> 
             
             dplyr::mutate(selected = selected_2, 
                           qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) %>% 
+                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
             dplyr::select(-matches("_\\d$"))
           
         }
@@ -448,18 +448,18 @@ pj_estimate <- function(
       data_for_irr <- bind_rows(
         temp1$data_for_irr,
         temp1_b$data_for_irr
-      ) %>%
+      ) |>
         distinct()
       
       # merge data to estimate mm or amce
       data_for_estimand <- bind_rows(
-        temp2 %>% mutate(x = 1),
-        temp2_b %>% mutate(x = 0)
+        temp2 |> mutate(x = 1),
+        temp2_b |> mutate(x = 0)
       )
       
     } else {
       
-      temp1 <- organize_data(.dataframe = .data@data,
+      temp1 <- organize_data(.dataframe = .data$data,
                              .structure = structure,
                              .estimand = estimand,
                              .remove_ties,
@@ -467,7 +467,7 @@ pj_estimate <- function(
                              .lev_choose,
                              .att_notchoose,
                              .lev_notchoose)
-      temp1_b <- organize_data(.dataframe = .data@data,
+      temp1_b <- organize_data(.dataframe = .data$data,
                                .structure = structure,
                                .estimand = estimand,
                                .remove_ties,
@@ -480,13 +480,13 @@ pj_estimate <- function(
       data_for_irr <- bind_rows(
         temp1$data_for_irr,
         temp1_b$data_for_irr
-      ) %>%
+      ) |>
         distinct()
       
       # merge data to estimate mm or amce
       data_for_estimand <- bind_rows(
-        temp1$data_for_estimand %>% mutate(x = 1),
-        temp1_b$data_for_estimand %>% mutate(x = 0)
+        temp1$data_for_estimand |> mutate(x = 1),
+        temp1_b$data_for_estimand |> mutate(x = 0)
       )
       
     }
@@ -494,24 +494,84 @@ pj_estimate <- function(
   }
   
   # Estimate or specify tau -------------------------------------------------
+  # 
+  # if (is.null(.irr)){
+  #   
+  #   # run intercept-only regression models
+  #   reg_irr <- estimatr::lm_robust(agree ~ 1, 
+  #                                  weights = .weights_1, 
+  #                                  clusters = .clusters_1,
+  #                                  se_type = .se_type_1,
+  #                                  data = data_for_irr) |> 
+  #     estimatr::tidy()
+  #   
+  #   irr     <- reg_irr$estimate[1]
+  # 
+  #   # Clip IRR to [0.5, 1]
+  #   if (irr < 0.5 || irr > 1) {
+  #     warning("Estimated IRR was outside [0.5, 1] and was clipped.")
+  #   }
+  #   irr <- min(max(irr, 0.5), 1)
+  # 
+  #   var_irr <- reg_irr$std.error[1]^2 
+  #   
+  #   tau     <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
+  #   var_tau <- 0.25 * (2 * irr - 1)^(-1) * var_irr
+  #   
+  # } else if (!is.null(.irr) & !is.numeric(.irr)){
+  #   
+  #   stop(".irr should be numeric.")
+  #   
+  # } else {
+  #   
+  #   irr <- .irr
+  #   tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
+  #   var_tau <- 0
+  #   
+  # }
   
-  if (is.null(.irr)){
+  # Estimate or specify tau -------------------------------------------------
+  
+  if (is.null(.irr)) {
     
-    # run intercept-only regression models
-    reg_irr <- estimatr::lm_robust(agree ~ 1, 
-                                   weights = .weights_1, 
-                                   clusters = .clusters_1,
-                                   se_type = .se_type_1,
-                                   data = data_for_irr) %>% 
-      estimatr::tidy()
+    reg_irr <- estimatr::lm_robust(
+      agree ~ 1,
+      weights = .weights_1,
+      clusters = .clusters_1,
+      se_type = .se_type_1,
+      data = data_for_irr
+    ) |> estimatr::tidy()
     
-    irr     <- reg_irr$estimate[1]
-    var_irr <- reg_irr$std.error[1]^2 
+    irr_raw <- reg_irr$estimate[1]
     
-    tau     <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
-    var_tau <- 0.25 * (2 * irr - 1)^(-1) * var_irr
+    if (is.na(irr_raw)) {
+      warning("Estimated IRR is NA. Using fallback IRR = 0.75.")
+      irr <- 0.75
+    } else {
+      irr <- irr_raw
+      if (irr < 0.5 || irr > 1) {
+        warning(glue::glue("Estimated IRR was {round(irr_raw, 3)} and clipped to [0.5, 1]."))
+      }
+      irr <- min(max(irr, 0.5), 1)
+    }
     
-  } else if (!is.null(.irr) & !is.numeric(.irr)){
+    var_irr <- reg_irr$std.error[1]^2
+    
+    tau     <- if (irr >= 1 - 1e-8) {
+      0
+    } else if (irr <= 1e-8) {
+      0.5
+    } else {
+      (1 - sqrt(1 - 2 * (1 - irr))) / 2
+    }
+    
+    var_tau <- if (irr >= 1 - 1e-8 || irr <= 1e-8) {
+      0
+    } else {
+      0.25 * (2 * irr - 1)^(-1) * var_irr
+    }
+    
+  } else if (!is.null(.irr) & !is.numeric(.irr)) {
     
     stop(".irr should be numeric.")
     
@@ -523,6 +583,7 @@ pj_estimate <- function(
     
   }
   
+  
   # Estimate MM or AMCE (uncorrected) ---------------------------------------
   
   if (estimand == "mm"){
@@ -531,7 +592,7 @@ pj_estimate <- function(
                                    weights = .weights_2, 
                                    clusters = .clusters_2,
                                    se_type = .se_type_2,
-                                   data = data_for_estimand) %>% 
+                                   data = data_for_estimand) |> 
       estimatr::tidy()
     
     # the critical t-value
@@ -548,7 +609,7 @@ pj_estimate <- function(
                                      weights = .weights_2, 
                                      clusters = .clusters_2,
                                      se_type = .se_type_2,
-                                     data = data_for_estimand) %>% 
+                                     data = data_for_estimand) |> 
       estimatr::tidy()
     
     # the critical t-value
@@ -563,11 +624,11 @@ pj_estimate <- function(
   
   # Keep the observations with both "selected" and "agree"
   
-  data_for_cov <- data_for_estimand %>% 
+  data_for_cov <- data_for_estimand |> 
     dplyr::filter(!is.na(agree))
   
   # if (is.null(irr)){
-  #   data_for_cov <- data_for_estimand %>% 
+  #   data_for_cov <- data_for_estimand |> 
   #     dplyr::filter(!is.na(agree))
   # } else{
   #   data_for_cov <- data_for_estimand
@@ -591,8 +652,8 @@ pj_estimate <- function(
   
   if (estimand == "amce") {
     
-    d_cov0 <- data_for_cov %>% filter(x == 0)
-    d_cov1 <- data_for_cov %>% filter(x == 1)
+    d_cov0 <- data_for_cov |> filter(x == 0)
+    d_cov1 <- data_for_cov |> filter(x == 1)
     
     if (is.null(.irr)){
       
@@ -634,7 +695,7 @@ pj_estimate <- function(
       output <- data.frame("estimand" = c("mm_uncorrected", "mm_corrected"),
                            "estimate" = c(mm_uncorrected, mm_corrected),
                            "se" = c(sqrt(var_uncorrected_mm),
-                                    sqrt(var_corrected_mm))) %>% 
+                                    sqrt(var_corrected_mm))) |> 
         dplyr::mutate("conf.low" = estimate - critical_t * se,
                       "conf.high" = estimate + critical_t * se,
                       "tau" = tau)
@@ -653,8 +714,8 @@ pj_estimate <- function(
       # run simulation
       sim_mm   <- as.data.frame(MASS::mvrnorm(.n_sims, 
                                               c(mm_uncorrected, tau), 
-                                              vcov_mm_tau)) %>%
-        rlang::set_names(c("mm_uncorrected", "tau")) %>%
+                                              vcov_mm_tau)) |>
+        rlang::set_names(c("mm_uncorrected", "tau")) |>
         
         # corrected the estimate
         dplyr::mutate(mm_corrected = (mm_uncorrected - tau) / (1 - 2 * tau))
@@ -662,7 +723,7 @@ pj_estimate <- function(
       # return
       output <- data.frame("estimand" = c("mm_uncorrected", "mm_corrected"),
                            "estimate" = c(mm_uncorrected, mean(sim_mm$mm_corrected)),
-                           "se" = c(sqrt(var_uncorrected_mm), sd(sim_mm$mm_corrected))) %>% 
+                           "se" = c(sqrt(var_uncorrected_mm), sd(sim_mm$mm_corrected))) |> 
         dplyr::mutate("conf.low" = estimate - critical_t * se,
                       "conf.high" = estimate + critical_t * se,
                       "tau" = tau)
@@ -685,11 +746,11 @@ pj_estimate <- function(
         id_2 <- sample(IDs_2, length(IDs_2), replace = TRUE)
         
         # generate a bootstrapped data frame
-        bs_sample_1 <- data.frame(id = id_1) %>% 
+        bs_sample_1 <- data.frame(id = id_1) |> 
           dplyr::left_join(data_for_irr, 
                            by = "id", 
                            relationship = "many-to-many")
-        bs_sample_2 <- data.frame(id = id_2) %>% 
+        bs_sample_2 <- data.frame(id = id_2) |> 
           dplyr::left_join(data_for_estimand, 
                            by = "id", 
                            relationship = "many-to-many")
@@ -699,14 +760,14 @@ pj_estimate <- function(
                                        weights = .weights_1, 
                                        clusters = .clusters_1,
                                        se_type = .se_type_1,
-                                       data = bs_sample_1) %>% 
+                                       data = bs_sample_1) |> 
           estimatr::tidy()
         
         reg_mm  <- estimatr::lm_robust(selected ~ 1, 
                                        weights = .weights_2, 
                                        clusters = .clusters_2,
                                        se_type = .se_type_2,
-                                       data = bs_sample_2) %>% 
+                                       data = bs_sample_2) |> 
           estimatr::tidy()
         
         # calculate the means
@@ -737,10 +798,10 @@ pj_estimate <- function(
       
       # return
       output <- data.frame("estimand" = c("mm_uncorrected", "mm_corrected"),
-                           "estimate" = c(mean(out %>% filter(estimand == "mm_uncorrected") %>% pull(estimate)), 
-                                          mean(out %>% filter(estimand == "mm_corrected") %>% pull(estimate))),
-                           "se"       = c(sd(out %>% filter(estimand == "mm_uncorrected") %>% pull(estimate)), 
-                                          sd(out %>% filter(estimand == "mm_corrected") %>% pull(estimate)))) %>% 
+                           "estimate" = c(mean(out |> filter(estimand == "mm_uncorrected") |> pull(estimate)), 
+                                          mean(out |> filter(estimand == "mm_corrected") |> pull(estimate))),
+                           "se"       = c(sd(out |> filter(estimand == "mm_uncorrected") |> pull(estimate)), 
+                                          sd(out |> filter(estimand == "mm_corrected") |> pull(estimate)))) |> 
         dplyr::mutate("conf.low" = estimate - critical_t * se,
                       "conf.high" = estimate + critical_t * se,
                       "tau" = tau)
@@ -770,7 +831,7 @@ pj_estimate <- function(
       output <- data.frame("estimand" = c("amce_uncorrected", "amce_corrected"),
                            "estimate" = c(amce_uncorrected, amce_corrected),
                            "se" = c(sqrt(var_uncorrected_amce),
-                                    sqrt(var_corrected_amce))) %>% 
+                                    sqrt(var_corrected_amce))) |> 
         dplyr::mutate("conf.low" = estimate - critical_t * se,
                       "conf.high" = estimate + critical_t * se,
                       "tau" = tau)
@@ -789,8 +850,8 @@ pj_estimate <- function(
       # run simulation
       sim_amce   <- as.data.frame(MASS::mvrnorm(.n_sims, 
                                                 c(amce_uncorrected, tau), 
-                                                vcov_amce_tau)) %>%
-        rlang::set_names(c("amce_uncorrected", "tau")) %>%
+                                                vcov_amce_tau)) |>
+        rlang::set_names(c("amce_uncorrected", "tau")) |>
         
         # corrected the estimate
         dplyr::mutate(amce_corrected = amce_uncorrected / (1 - 2 * tau))
@@ -798,7 +859,7 @@ pj_estimate <- function(
       # return
       output <- data.frame("estimand" = c("amce_uncorrected", "amce_corrected"),
                            "estimate" = c(amce_uncorrected, mean(sim_amce$amce_corrected)),
-                           "se" = c(sqrt(var_uncorrected_amce), sd(sim_amce$amce_corrected))) %>% 
+                           "se" = c(sqrt(var_uncorrected_amce), sd(sim_amce$amce_corrected))) |> 
         dplyr::mutate("conf.low" = estimate - critical_t * se,
                       "conf.high" = estimate + critical_t * se,
                       "tau" = tau)
@@ -821,11 +882,11 @@ pj_estimate <- function(
         id_2 <- sample(IDs_2, length(IDs_2), replace = TRUE)
         
         # generate a bootstrapped data frame
-        bs_sample_1 <- data.frame(id = id_1) %>% 
+        bs_sample_1 <- data.frame(id = id_1) |> 
           dplyr::left_join(data_for_irr, 
                            by = "id", 
                            relationship = "many-to-many")
-        bs_sample_2 <- data.frame(id = id_2) %>% 
+        bs_sample_2 <- data.frame(id = id_2) |> 
           dplyr::left_join(data_for_estimand, 
                            by = "id", 
                            relationship = "many-to-many")
@@ -835,14 +896,14 @@ pj_estimate <- function(
                                        weights = .weights_1, 
                                        clusters = .clusters_1,
                                        se_type = .se_type_1,
-                                       data = bs_sample_1) %>% 
+                                       data = bs_sample_1) |> 
           estimatr::tidy()
         
         reg_amce  <- estimatr::lm_robust(selected ~ x, 
                                          weights = .weights_2, 
                                          clusters = .clusters_2,
                                          se_type = .se_type_2,
-                                         bs_sample_2) %>% 
+                                         bs_sample_2) |> 
           estimatr::tidy()        
         
         # calculate the means
@@ -872,10 +933,10 @@ pj_estimate <- function(
       
       # return
       output <- data.frame("estimand" = c("amce_uncorrected", "amce_corrected"),
-                           "estimate" = c(mean(out %>% filter(estimand == "amce_uncorrected") %>% pull(estimate)), 
-                                          mean(out %>% filter(estimand == "amce_corrected") %>% pull(estimate))),
-                           "se"       = c(sd(out %>% filter(estimand == "amce_uncorrected") %>% pull(estimate)), 
-                                          sd(out %>% filter(estimand == "amce_corrected") %>% pull(estimate)))) %>% 
+                           "estimate" = c(mean(out |> filter(estimand == "amce_uncorrected") |> pull(estimate)), 
+                                          mean(out |> filter(estimand == "amce_corrected") |> pull(estimate))),
+                           "se"       = c(sd(out |> filter(estimand == "amce_uncorrected") |> pull(estimate)), 
+                                          sd(out |> filter(estimand == "amce_corrected") |> pull(estimate)))) |> 
         dplyr::mutate("conf.low" = estimate - critical_t * se,
                       "conf.high" = estimate + critical_t * se,
                       "tau" = tau)

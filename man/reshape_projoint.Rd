@@ -7,7 +7,7 @@
 reshape_projoint(
   .dataframe,
   .outcomes,
-  .outcomes_ids = c("A", "B"),
+  .choice_labels = c("A", "B"),
   .alphabet = "K",
   .idvar = "ResponseId",
   .repeated = TRUE,
@@ -21,7 +21,7 @@ reshape_projoint(
 
 \item{.outcomes}{A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.}
 
-\item{.outcomes_ids}{c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")}
+\item{.choice_labels}{c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")}
 
 \item{.alphabet}{"K" (default): a letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics.}
 

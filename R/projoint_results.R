@@ -1,25 +1,16 @@
-#' Class generators for \code{projoint_results}
-#' @importFrom methods is
-#' @importFrom methods new
+#' Create a projoint_results Object
+#'
+#' This function creates a \code{projoint_results} S3 object containing estimation results and metadata.
+#' It is used internally by \code{\link{projoint}}.
+#'
+#' @param ... Named elements including estimates, labels, structure, estimand, irr, tau, and settings.
+#'
+#' @return An object of class \code{projoint_results}.
+#'
 #' @keywords internal
-#' @param slots Takes 16 slots. See documentation for \code{\link{projoint}}.
-#' @param contains Inherits slots from \code{\link{projoint_data}}
-
-projoint_results <- setClass("projoint_results",
-                             slots = c("estimand",
-                                       "structure",
-                                       "estimates",
-                                       "se_method",
-                                       "irr",
-                                       "tau",
-                                       "remove_ties",
-                                       "ignore_position",
-                                       "attribute_of_interest",
-                                       "levels_of_interest",
-                                       "attribute_of_interest_0",
-                                       "levels_of_interest_0",
-                                       "attribute_of_interest_baseline",
-                                       "levels_of_interest_baseline",
-                                       "attribute_of_interest_0_baseline",
-                                       "levels_of_interest_0_baseline"),
-                             contains = c("projoint_data"))
+projoint_results <- function(...) {
+  structure(
+    list(...),
+    class = "projoint_results"
+  )
+}

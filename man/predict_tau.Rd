@@ -2,75 +2,18 @@
 % Please edit documentation in R/predict_tau.R
 \name{predict_tau}
 \alias{predict_tau}
-\alias{print.projoint_tau}
-\alias{summary.projoint_tau}
 \title{Estimate tau when there is no repeated task.}
 \usage{
 predict_tau(.data, .title = NULL)
-
-\method{print}{projoint_tau}(x, ...)
-
-\method{summary}{projoint_tau}(object, ...)
 }
 \arguments{
 \item{.data}{A \code{\link{projoint_data}} object, outputted from \code{\link{reshape_projoint}}}
 
 \item{.title}{The title of a figure}
-
-\item{x}{An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}}
-
-\item{...}{Optional arguments; currently none accepted}
-
-\item{object}{An object of class \code{\link{projoint_tau}} derived from \code{\link{predict_tau}}}
 }
 \value{
 A \code{\link{projoint_tau}} object containing the estimate of tau and a figure visualizing the extrapolation method.
-
-A tibble showing IRR as profile similarity changes. The value of \code{predicted} when \code{x=0} is the estimated IRR.
 }
 \description{
 Given an output from \code{\link{projoint_data}}, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR).
-}
-\examples{
-library(projoint)
-library(stringr)
-
-## Example 1: repeated, flipped task
-data("exampleData1")
-head(exampleData1)
-
-outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-
-outcomes1 <- c(outcomes, "choice1_repeated_flipped")
-reshaped_data <- reshape_projoint(
-  .dataframe = exampleData1, 
-  .outcomes = outcomes1)
-  
-tau1 <- predict_tau(reshaped_data)
-tau1
-
-## Example 2: repeated, unflipped task
-data("exampleData2")
-head(exampleData2)
-
-outcomes2 <- c(outcomes, "choice1_repeated_notflipped")
-reshaped_data <- reshape_projoint(
-  .dataframe = exampleData2, 
-  .outcomes = outcomes2,
-  .flipped = FALSE)
-  
-tau2 <- predict_tau(reshaped_data)
-tau2
-
-## Example 3: no repeated task
-data("exampleData3")
-head(exampleData3)
-
-reshaped_data <- reshape_projoint(
-  .dataframe = exampleData3, 
-  .outcomes = outcomes,
-  .repeated = FALSE)
-  
-tau3 <- predict_tau(reshaped_data)
-tau3
 }

@@ -1,0 +1,67 @@
+---
+title: "Read Your Qualtrics Data"
+output: rmarkdown::html_vignette
+description: >
+  How to read survey data from Qualtrics for conjoint analysis.
+vignette: >
+  %\VignetteIndexEntry{Read Your Qualtrics Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(projoint)
+```
+
+## 📥 Read Your Data
+
+Before reshaping or analyzing your conjoint survey data, you first need to **import it into R**.  In **projoint**, use the `read_Qualtrics()` function to quickly read properly formatted Qualtrics files.
+
+---
+
+## 🚀 Quick Workflow
+
+<summary><b>Export your survey responses from Qualtrics</b></summary>
+
+When exporting from Qualtrics:
+
+- Click **"Download Data"**.
+- Choose **CSV** format.
+- Critically, select **"Use choice text"** instead of coded values.
+
+⚡ If you skip "Use choice text," your conjoint data may not load properly!
+
+<summary><b>Load essential packages</b></summary>
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(projoint)
+```
+
+<summary><b>Read your CSV file into R using `read_Qualtrics()`</b></summary>
+
+```r
+# Example: If your file is located in a "data" folder
+data <- read_Qualtrics("data/your_file.csv")
+```
+Or, if using an example bundled with **projoint**:
+
+```{r, eval=TRUE, echo=FALSE}
+data <- read_Qualtrics(
+  system.file("extdata", "mummolo_nall_replication.csv", package = "projoint")
+)
+```
+
+```{r}
+data
+```
+
+---
+
+## 🌟 What's Next?
+
+Now that your data is loaded, you're ready to **wrangle** it into the correct format for analysis!
+
+➡️ Continue to: [Wrangle Your Data](wrangle.html)
+
+---

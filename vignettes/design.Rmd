@@ -1,0 +1,149 @@
+---
+title: "Design Your Survey"
+output: rmarkdown::html_vignette
+description: >
+  How to set up your Qualtrics survey
+vignette: >
+  %\VignetteIndexEntry{Design Your Survey}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Projoint Survey Design Tool (Recommended)
+
+We strongly recommend using our [Projoint Survey Design Tool](https://projoint.aaronrkaufman.com/). You can easily: 
+
+- Set up attributes and levels
+- Randomize attributes and levels with weights
+- Add cross-attributes *and* cross-profile constraints
+- Automatically create a repeated task for intra-respondent reliability (IRR) estimation
+- Generate test responses for checking your design
+- 🚀 <span style="color:DarkOrange"><b>Export your survey directly for Qualtrics (in QDF format)</b></span> ✅
+
+---
+
+## Conjoint Survey Design Tool (FYI Only)
+
+<details>
+<summary><b>Designing a conjoint survey was challenging in the past...</b></summary>
+
+### 1 Generate a JavaScript or PHP randomizer
+
+Many researchers used Anton Strezhnev's **Conjoint Survey Design Tool** (Link: [conjointSDT](https://github.com/astrezhnev/conjointsdt/)).  
+Strezhnev’s guide to designing and implementing conjoint surveys in Qualtrics is excellent.
+
+In short, researchers use ConjointSDT to produce a JavaScript or PHP randomizer.
+
+#### JavaScript
+
+The JavaScript randomizer can be inserted into the first screen of your Qualtrics survey using **Edit Question JavaScript**. Example screenshot:  
+
+![](../man/figures/embedded_js.png){#id .class width=80% height=80%}
+
+- Example JavaScript: [Download here](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/example.js)
+
+The JavaScript runs internally within Qualtrics and generates *embedded fields* for each conjoint task.  
+For example:
+
+- `"K-1-1-7"` = value for the 7th attribute, first profile, first task
+- `"K-5-2-5"` = value for the 5th attribute, second profile, fifth task
+
+#### PHP
+
+Alternatively, the PHP randomizer must be hosted externally.
+
+Example hosted on our server:  
+https://www.horiuchi.org/php/ACHR_Modified_2.php  
+(PHP file [here](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/ACHR_Modified_2.php))
+
+This method was used in:  
+[Agadjanian, Carey, Horiuchi, and Ryan (2023)](https://www.nowpublishers.com/article/Details/QJPS-21119)
+
+---
+
+### 2 Modify your JavaScript or PHP randomizer
+
+You may want to add constraints — for example, **prevent ties** between profiles.  
+To do this, you can manually modify your JavaScript or PHP.
+
+In the future, **projoint** will offer easier ways to add constraints!  
+Until then, resources like [OpenAI’s GPT-4](https://openai.com/gpt-4) can help you edit scripts.
+
+Example PHP snippet ensuring racial balance between profiles:
+
+```php
+$treat_profile_one = "B-" . (string)$p . "-1-" . (string)$treat_number;
+$treat_profile_two = "B-" . (string)$p . "-2-" . (string)$treat_number;
+$cond1 = $returnarray[$treat_profile_one] == "White" && $returnarray[$treat_profile_two] == $type;
+$cond2 = $returnarray[$treat_profile_two] == "White" && $returnarray[$treat_profile_one] == $type;
+
+if ($cond1 or $cond2) {
+  $complete = True;
+}
+```
+
+If you have good examples of manual constraints, please email [Yusaku Horiuchi](mailto:yusaku.horiuchi@gmail.com)!
+
+---
+
+### 3 Add conjoint tables with embedded fields in Qualtrics
+
+After generating the randomizer, you must create **HTML tables** displaying embedded fields for each task.
+
+Example of the first task:
+
+![](../man/figures/screenshot_first.png){#id .class width=80% height=80%}
+
+- Example HTML file: [task_first.html](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/task_first.html)
+
+Each conjoint study typically includes **5-10 tasks**.
+
+The embedded fields update across tasks:  
+e.g., `"K-1..."` for Task 1, `"K-2..."` for Task 2, and so on.
+
+---
+
+#### Adding a repeated task (recommended!)
+
+It’s easy to create a **repeated task** for intra-respondent reliability (IRR) estimation:
+
+- Copy the HTML for Task 1 later into the survey (e.g., after Task 5)
+- **Flip** Profile 1 and Profile 2 (swap embedded field digits)
+
+Example repeated task:
+
+![](../man/figures/screenshot_last.png){#id .class width=80% height=80%}
+
+- Example HTML: [task_repeated.html](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/task_repeated.html)
+
+---
+
+### 4 Sample Qualtrics survey template
+
+We provide a full **Qualtrics QSF file** ready to use!
+
+```{r, echo=FALSE}
+library(downloadthis)
+download_link(
+  link = "https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/CHKKK_Mummolo_and_Nall_full_replication_W1_Lucid_-_August_2021.qsf",
+  button_label = "Download QSF file",
+  button_type = "danger",
+  has_icon = TRUE,
+  icon = "fa fa-save",
+  self_contained = FALSE
+)
+```
+
+This file recreates a standard conjoint survey setup based on Mummolo and Nall (2017).
+
+</details>
+
+---
+
+## 🌟 What's Next?
+
+Now that your survey is properly designed, you're ready to **collect responses** using Qualtrics and **load the data** into R!
+
+➡️ Continue to: [Read Your Qualtrics Data](read.html)
+
+---

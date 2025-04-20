@@ -7,7 +7,7 @@
 read_labels(.data, .filename)
 }
 \arguments{
-\item{.data}{A `projoint_data` object}
+\item{.data}{A \code{\link{projoint_data}} object}
 
 \item{.filename}{The name of a revised CSV file, originally derived from \code{\link{save_labels}}, after manual arrangement}
 }
@@ -18,31 +18,4 @@ A projoint object of class \code{\link{projoint_data}} ready to pass to \code{\l
 For users interested in reordering the attributes and levels of their conjoint data set.
 First save the existing order to a CSV using \code{\link{save_labels}}, then manually reorder them in the CSV.
 Finally, use this function to read in the modified CSV and automatically apply the new order to the existing \code{\link{projoint_data}}.
-}
-\examples{
-library(projoint)
-library(readr)
-
-data("exampleData1")
-head(exampleData1)
-
-# Write outcome column names
-outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-outcomes <- c(outcomes, "choice1_repeated_flipped")
-
-# Reshape the data
-reshaped_data <- reshape_projoint(
-  .dataframe = exampleData1, 
-  .idvar = "ResponseId", 
-  .outcomes = outcomes,
-  .outcomes_ids = c("A", "B"),
-  .alphabet = "K", 
-  .repeated = TRUE,
-  .flipped = TRUE)
-  
-# Save a CSV file (Not Run)
-# save_labels(reshaped_data, "data-raw/labels_original.csv")
-
-# Not Run: Read a revised CSV file
-# reshaped_data_arranged <- read_labels(reshaped_data, "data-raw/labels_arranged.csv")
 }

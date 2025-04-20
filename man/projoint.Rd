@@ -2,15 +2,13 @@
 % Please edit documentation in R/projoint.R
 \name{projoint}
 \alias{projoint}
-\alias{print.projoint_results}
-\alias{summary.projoint_results}
-\title{Analyze a conjoint data set and correct for measurement error}
+\title{Analyze a Conjoint Data Set with Measurement Error Correction}
 \usage{
 projoint(
   .data,
   .qoi = NULL,
   .by_var = NULL,
-  .structure = "profile_level",
+  .structure = "choice_level",
   .estimand = "mm",
   .se_method = "analytical",
   .irr = NULL,
@@ -25,72 +23,58 @@ projoint(
   .clusters_2 = NULL,
   .se_type_2 = "classical"
 )
-
-\method{print}{projoint_results}(x, ...)
-
-\method{summary}{projoint_results}(object, ...)
 }
 \arguments{
-\item{.data}{A \code{\link{projoint_data}} object}
+\item{.data}{A \code{\link{projoint_data}} object created by \code{reshape_projoint()} or \code{make_projoint_data()}.}
 
-\item{.qoi}{A \code{\link{projoint_qoi}} object. If \code{NULL}, defaults to producing all MMs and all AMCEs.}
+\item{.qoi}{Optional. A \code{\link{projoint_qoi}} object if targeting custom quantities of interest.}
 
-\item{.by_var}{A dichotomous variable (character) used for subgroup analysis}
+\item{.by_var}{Character. Optional. A dichotomous variable for subgroup analysis (e.g., Republican vs Democrat).
+Only available for **profile-level** analysis. Ignored for choice-level analysis.}
 
-\item{.structure}{Either \code{"profile_level"} (default) or \code{"choice_level"}. If \code{.qoi} is set, the value of \code{structure} from \code{.qoi} overrides this value.}
+\item{.structure}{Character. Either \code{"profile_level"} (default) or \code{"choice_level"}.
+If \code{.qoi} is supplied, the structure specified there overrides this.}
 
-\item{.estimand}{Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect. If \code{.qoi} is set, the value of \code{estimand} from \code{.qoi} overrides this value.}
+\item{.estimand}{Character. Either \code{"mm"} (marginal mean) or \code{"amce"} (average marginal component effect).
+If \code{.qoi} is supplied, the estimand specified there overrides this.}
 
-\item{.se_method}{By default, \code{c("analytic", "simulation", "bootstrap")} description}
+\item{.se_method}{Character. Standard error method: \code{"analytical"} (default), \code{"simulation"}, or \code{"bootstrap"}.}
 
-\item{.irr}{\code{NULL} (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value}
+\item{.irr}{Numeric or \code{NULL} (default). If \code{NULL}, IRR is estimated from repeated tasks; otherwise, user-supplied IRR.}
 
-\item{.remove_ties}{Logical: should ties be removed before estimation? Defaults to \code{TRUE}.}
+\item{.remove_ties}{Logical. Should ties in choice data be removed before estimation? Defaults to \code{TRUE}.}
 
-\item{.ignore_position}{NULL (default) if \code{.structure = "choice_level"}. Set to TRUE if you ignore the position of profile (left or right); FALSE if the relative positioning of profiles matters for analysis. If  \code{.structure = "choice_level"} and this argument is \code{NULL}, it is automatically reset to \code{TRUE}.}
+\item{.ignore_position}{Logical. Only for choice-level analysis. Should the position of profiles (left/right) be ignored? Default is \code{TRUE}.}
 
-\item{.n_sims}{The number of simulations. Relevant only if \code{.se_method == "simulation"}}
+\item{.n_sims}{Integer. Required if \code{.se_method = "simulation"}. Number of simulation draws.}
 
-\item{.n_boot}{The number of bootstrapped samples. Relevant only if \code{.se_method == "bootstrap"}}
+\item{.n_boot}{Integer. Required if \code{.se_method = "bootstrap"}. Number of bootstrap samples.}
 
-\item{.weights_1}{the weight to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
+\item{.weights_1, }{.clusters_1, .se_type_1 Arguments passed to \code{\link[estimatr]{lm_robust}} when estimating IRR.}
 
-\item{.clusters_1}{the clusters to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
+\item{.clusters_1}{Cluster ID variable for IRR estimation. Passed to \code{lm_robust()}. Default is \code{NULL}.}
 
-\item{.se_type_1}{the standard error type to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)}
+\item{.se_type_1}{Standard error type for IRR estimation. Passed to \code{lm_robust()}. Default is \code{"classical"}.}
 
-\item{.weights_2}{the weight to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
+\item{.weights_2, }{.clusters_2, .se_type_2 Arguments passed to \code{\link[estimatr]{lm_robust}} when estimating MMs or AMCEs.}
 
-\item{.clusters_2}{the clusters to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
+\item{.clusters_2}{Cluster ID variable for MM/AMCE estimation. Passed to \code{lm_robust()}. Default is \code{NULL}.}
 
-\item{.se_type_2}{the standard error type to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)}
-
-\item{x}{A \code{\link{projoint_results}} object}
-
-\item{...}{Optional arguments; currently none accepted}
-
-\item{object}{A \code{\link{projoint_results}} object}
+\item{.se_type_2}{Standard error type for MM/AMCE estimation. Passed to \code{lm_robust()}. Default is \code{"classical"}.}
 }
 \value{
-A \code{\link{projoint_results}} object
+A \code{\link{projoint_results}} object containing estimated quantities, ready for plotting or further analysis.
 }
 \description{
-This main function analyzes a conjoint data set and produces measurement error-corrected estimates of either marginal means or average marginal component effects, ready for plotting.
-It  accepts a \code{\link{projoint_data}} object, and optionally a \code{\link{projoint_qoi}} object for users who wish to specify more complex quantities of interest.
+This function analyzes a conjoint data set and produces corrected estimates
+of either marginal means (MMs) or average marginal component effects (AMCEs),
+ready for plotting. It corrects for intra-respondent reliability (IRR) bias
+and accounts for repeated tasks if available.
 }
-\examples{
-
-library(projoint)
-
-data("exampleData1")
-head(exampleData1)
-
-outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-outcomes <- c(outcomes, "choice1_repeated_flipped")
-
-reshaped_data <- reshape_projoint(
-  .dataframe = exampleData1, 
-  .outcomes = outcomes)
-
-projoint(reshaped_data) 
+\details{
+Most users simply provide a \code{\link{projoint_data}} object.
+Advanced users can also specify quantities of interest using \code{\link{projoint_qoi}}.
+}
+\seealso{
+\code{\link{reshape_projoint}}, \code{\link{projoint_qoi}}, \code{\link{plot.projoint_results}}
 }
