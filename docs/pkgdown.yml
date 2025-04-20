@@ -1,0 +1,16 @@
+pandoc: '3.2'
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  analyze: analyze.html
+  correct: correct.html
+  design: design.html
+  explore: explore.html
+  read: read.html
+  structure: structure.html
+  visualize: visualize.html
+  wrangle: wrangle.html
+last_built: 2025-04-20T11:49Z
+urls:
+  reference: https://yhoriuchi.github.io/projoint/reference
+  article: https://yhoriuchi.github.io/projoint/articles
