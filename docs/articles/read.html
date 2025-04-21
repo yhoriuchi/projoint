@@ -66,36 +66,37 @@
 <div class="section level2">
 <h2 id="read-your-data">📥 Read Your Data<a class="anchor" aria-label="anchor" href="#read-your-data"></a>
 </h2>
-<p>Before reshaping or analyzing your conjoint survey data, you first
-need to <strong>import it into R</strong>. In <strong>projoint</strong>,
-use the <code><a href="../reference/read_Qualtrics.html">read_Qualtrics()</a></code> function to quickly read properly
-formatted Qualtrics files.</p>
+<p>Before you can reshape or analyze your conjoint survey data, you
+first need to <strong>import it into R</strong>. In
+<strong>projoint</strong>, use the <code><a href="../reference/read_Qualtrics.html">read_Qualtrics()</a></code>
+function to quickly read properly formatted Qualtrics files.</p>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="quick-workflow">🚀 Quick Workflow<a class="anchor" aria-label="anchor" href="#quick-workflow"></a>
 </h2>
-<summary><b>Export your survey responses from Qualtrics</b>
+<details><summary><b>1. Export your survey responses from Qualtrics</b>
 </summary><p>When exporting from Qualtrics:</p>
 <ul>
 <li>Click <strong>“Download Data”</strong>.</li>
 <li>Choose <strong>CSV</strong> format.</li>
-<li>Critically, select <strong>“Use choice text”</strong> instead of
+<li>Critically, select <strong>“Use choice text”</strong> rather than
 coded values.</li>
 </ul>
-<p>⚡ If you skip “Use choice text,” your conjoint data may not load
-properly!</p>
-<summary><b>Load essential packages</b>
+⚡ If you skip selecting “Use choice text,” your conjoint data may fail
+to load properly!
+</details><details><summary><b>2. Load essential packages</b>
 </summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></code></pre></div>
-<summary><b>Read your CSV file into R using <code>read_Qualtrics()</code></b>
+</details><details><summary><b>3. Read your CSV file into R using <code>read_Qualtrics()</code></b>
 </summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example: If your file is located in a "data" folder</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_Qualtrics.html">read_Qualtrics</a></span><span class="op">(</span><span class="st">"data/your_file.csv"</span><span class="op">)</span></span></code></pre></div>
 <p>Or, if using an example bundled with <strong>projoint</strong>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Inspect the imported data:</span></span>
+<span><span class="va">data</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 518 × 218</span></span></span>
 <span><span class="co">##    StartDate           EndDate             Status     Progress</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -116,7 +117,7 @@ properly!</p>
 <span><span class="co">## <span style="color: #949494;">#   Q2.3 &lt;chr&gt;, Q2.4 &lt;chr&gt;, Q2.5 &lt;chr&gt;, Q2.6 &lt;chr&gt;, Q2.7 &lt;chr&gt;, Q2.8 &lt;chr&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   Q2.9 &lt;chr&gt;, Q3.1 &lt;chr&gt;, Q4.2 &lt;chr&gt;, Q4.3 &lt;chr&gt;, Q4.4 &lt;chr&gt;, Q4.5 &lt;chr&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   Q4.6 &lt;chr&gt;, Q4.7 &lt;chr&gt;, Q4.8 &lt;chr&gt;, Q4.9 &lt;chr&gt;, Q5.1 &lt;chr&gt;, Q6.1 &lt;chr&gt;, …</span></span></span></code></pre>
-<hr>
+</details><hr>
 </div>
 <div class="section level2">
 <h2 id="whats-next">🌟 What’s Next?<a class="anchor" aria-label="anchor" href="#whats-next"></a>

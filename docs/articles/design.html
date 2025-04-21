@@ -11,9 +11,9 @@
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Design Your Survey">
-<meta name="description" content="How to set up your Qualtrics survey
+<meta name="description" content="Learn how to set up your conjoint survey in Qualtrics, with or without the Projoint Survey Design Tool.
 ">
-<meta property="og:description" content="How to set up your Qualtrics survey
+<meta property="og:description" content="Learn how to set up your conjoint survey in Qualtrics, with or without the Projoint Survey Design Tool.
 ">
 </head>
 <body>
@@ -63,7 +63,8 @@
     
     
 <div class="section level2">
-<h2 id="projoint-survey-design-tool-recommended">Projoint Survey Design Tool (Recommended)<a class="anchor" aria-label="anchor" href="#projoint-survey-design-tool-recommended"></a>
+<h2 id="set-up-your-survey-using-the-projoint-survey-design-tool-recommended">Set Up Your Survey Using the Projoint Survey Design Tool
+(Recommended)<a class="anchor" aria-label="anchor" href="#set-up-your-survey-using-the-projoint-survey-design-tool-recommended"></a>
 </h2>
 <p>We strongly recommend using our <a href="https://projoint.aaronrkaufman.com/" class="external-link">Projoint Survey Design
 Tool</a>. You can easily:</p>
@@ -82,16 +83,14 @@ Qualtrics (in QDF format)</b></span> ✅</li>
 <div class="section level2">
 <h2 id="conjoint-survey-design-tool-fyi-only">Conjoint Survey Design Tool (FYI Only)<a class="anchor" aria-label="anchor" href="#conjoint-survey-design-tool-fyi-only"></a>
 </h2>
-<details><summary><b>Designing a conjoint survey was challenging in the past…</b>
+<details><summary>
+Why Designing Conjoint Surveys Was Challenging in the Past
 </summary><div class="section level3">
-<h3 id="generate-a-javascript-or-php-randomizer">1 Generate a JavaScript or PHP randomizer<a class="anchor" aria-label="anchor" href="#generate-a-javascript-or-php-randomizer"></a>
+<h3 id="generate-a-javascript-or-php-randomizer">1. Generate a JavaScript or PHP randomizer<a class="anchor" aria-label="anchor" href="#generate-a-javascript-or-php-randomizer"></a>
 </h3>
-<p>Many researchers used Anton Strezhnev’s <strong>Conjoint Survey
-Design Tool</strong> (Link: <a href="https://github.com/astrezhnev/conjointsdt/" class="external-link">conjointSDT</a>).<br>
-Strezhnev’s guide to designing and implementing conjoint surveys in
-Qualtrics is excellent.</p>
-<p>In short, researchers use ConjointSDT to produce a JavaScript or PHP
-randomizer.</p>
+<p>Many researchers use Anton Strezhnev’s <strong>Conjoint Survey Design
+Tool</strong> (Link: <a href="https://github.com/astrezhnev/conjointsdt/" class="external-link">conjointSDT</a>) to
+produce a JavaScript or PHP randomizer.</p>
 <div class="section level4">
 <h4 id="javascript">JavaScript<a class="anchor" aria-label="anchor" href="#javascript"></a>
 </h4>
@@ -128,7 +127,7 @@ Carey, Horiuchi, and Ryan (2023)</a></p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="modify-your-javascript-or-php-randomizer">2 Modify your JavaScript or PHP randomizer<a class="anchor" aria-label="anchor" href="#modify-your-javascript-or-php-randomizer"></a>
+<h3 id="modify-your-javascript-or-php-randomizer">2. Modify your JavaScript or PHP randomizer<a class="anchor" aria-label="anchor" href="#modify-your-javascript-or-php-randomizer"></a>
 </h3>
 <p>You may want to add constraints — for example, <strong>prevent
 ties</strong> between profiles.<br>
@@ -150,7 +149,7 @@ GPT-4</a> can help you edit scripts.</p>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="add-conjoint-tables-with-embedded-fields-in-qualtrics">3 Add conjoint tables with embedded fields in Qualtrics<a class="anchor" aria-label="anchor" href="#add-conjoint-tables-with-embedded-fields-in-qualtrics"></a>
+<h3 id="add-conjoint-tables-with-embedded-fields-in-qualtrics">3. Add conjoint tables with embedded fields in Qualtrics<a class="anchor" aria-label="anchor" href="#add-conjoint-tables-with-embedded-fields-in-qualtrics"></a>
 </h3>
 <p>After generating the randomizer, you must create <strong>HTML
 tables</strong> displaying embedded fields for each task.</p>
@@ -175,8 +174,8 @@ intra-respondent reliability (IRR) estimation:</p>
 <li>Copy the HTML for Task 1 later into the survey (e.g., after Task
 5)</li>
 <li>
-<strong>Flip</strong> Profile 1 and Profile 2 (swap embedded field
-digits)</li>
+<strong>Flip</strong> Profile 1 and Profile 2 (swap the embedded
+field digits)</li>
 </ul>
 <p>Example repeated task:</p>
 <p><img src="../reference/figures/screenshot_last.png" id="id" class="class" style="width:80.0%;height:80.0%"></p>
@@ -188,7 +187,7 @@ digits)</li>
 </div>
 </div>
 <div class="section level3">
-<h3 id="sample-qualtrics-survey-template">4 Sample Qualtrics survey template<a class="anchor" aria-label="anchor" href="#sample-qualtrics-survey-template"></a>
+<h3 id="sample-qualtrics-survey-template">4. Sample Qualtrics survey template<a class="anchor" aria-label="anchor" href="#sample-qualtrics-survey-template"></a>
 </h3>
 <p>We provide a full <strong>Qualtrics QSF file</strong> ready to
 use!</p>
@@ -206,7 +205,7 @@ and Nall (2017).</p>
 <h2 id="whats-next">🌟 What’s Next?<a class="anchor" aria-label="anchor" href="#whats-next"></a>
 </h2>
 <p>Now that your survey is properly designed, you’re ready to collect
-responses using Qualtrics and load the data into R!</p>
+responses in Qualtrics and import the data into R!</p>
 <p>➡️ <strong>Continue to:</strong> <a href="read.html">Read Your
 Qualtrics Data</a><br>
 🏠 <strong>Home:</strong> <a href="index.html">Home</a></p>

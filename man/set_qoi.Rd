@@ -5,7 +5,7 @@
 \title{Set the quantities of interest}
 \usage{
 set_qoi(
-  .structure = "profile_level",
+  .structure = "choice_level",
   .estimand = "mm",
   .att_choose,
   .lev_choose,
@@ -18,7 +18,7 @@ set_qoi(
 )
 }
 \arguments{
-\item{.structure}{Either \code{"profile_level"} or \code{"choice_level"}}
+\item{.structure}{Either \code{"choice_level"} (default) or \code{"profile_level"}}
 
 \item{.estimand}{Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect}
 

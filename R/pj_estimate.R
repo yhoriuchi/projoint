@@ -1,36 +1,55 @@
-#' Estimate and correct MMs or AMCEs
+#' Estimate and Correct Marginal Means (MMs) or Average Marginal Component Effects (AMCEs)
 #'
-#' This is the internal function used to calculate and correct marginal means or average marginal component effects of a conjoint design.
+#' Internal function to estimate and correct MMs or AMCEs from a conjoint experiment, adjusting for measurement error bias. 
 #'
+#' @keywords internal
 #' @import dplyr
 #' @import rlang
 #' @import estimatr
 #' @importFrom MASS mvrnorm
-#' @keywords internal
-#' @param .data A \code{\link{projoint_data}} object
-#' @param .structure Either \code{"profile_level"} (default) or \code{"choice_level"} 
-#' @param .estimand Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect
-#' @param .att_choose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}).
-#' @param .lev_choose  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis
-#' @param .att_notchoose A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{not chosen}). This argument should be specified only if the \code{.structure} argument is \code{"choice-level"}.
-#' @param .lev_notchoose  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels \strong{not chosen}). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the \code{.structure} argument is \code{"choice-level"}.
-#' @param .att_choose_b [baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}).
-#' @param .lev_choose_b  [baseline for AMCE] A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels \strong{chosen}). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis
-#' @param .att_notchoose_b [baseline for AMCE] A character column name identifying the attribute of interest (i.e., for the attribute-level or attribute-levels \strong{not chosen*}). This argument should be specified only if the \code{.structure} argument is \code{"choice-level"}.
-#' @param .lev_notchoose_b [baseline for AMCE]  A character vector identifying the level or levels of interest (i.e., for the attribute-level or attribute-levels \strong{not chosen}). Its length should be 1 for profile-level analysis and 1+ for choice-level analysis. This argument should be specified only if the \code{.structure} argument is \code{"choice-level"}.
-#' @param .se_method By default, \code{c("analytic", "simulation", "bootstrap")} description
-#' @param .irr \code{NULL} (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value
-#' @param .remove_ties Logical: should ties be removed before estimation? Defaults to \code{TRUE}.
-#' @param .ignore_position \code{TRUE} (default) if you ignore the location of profile (left or right). Relevant only if analyzed at the choice level
-#' @param .n_sims The number of simulations. Relevant only if \code{.se_method == "simulation"} 
-#' @param .n_boot The number of bootstrapped samples. Relevant only if \code{.se_method == "bootstrap"}
-#' @param .weights_1 the weight to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)
-#' @param .clusters_1 the clusters to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)
-#' @param .se_type_1 the standard error type to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)
-#' @param .weights_2 the weight to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)
-#' @param .clusters_2 the clusters to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)
-#' @param .se_type_2 the standard error type to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)
-#' @return A data frame of estimates
+#'
+#' @param .data A \code{\link{projoint_data}} object produced by \code{reshape_projoint()} or \code{make_projoint_data()}.
+#' @param .structure Either \code{"profile_level"} (default) or \code{"choice_level"}.
+#' @param .estimand Either \code{"mm"} (marginal mean) or \code{"amce"} (average marginal component effect).
+#' @param .att_choose A character string specifying the attribute of interest (for the level(s) chosen).
+#' @param .lev_choose A character vector specifying the level(s) of interest (for the level(s) chosen). Length 1 for profile-level analysis; 1+ for choice-level analysis.
+#' @param .att_notchoose A character string specifying the attribute of interest (for the level(s) not chosen). Required only for \code{choice_level}.
+#' @param .lev_notchoose A character vector specifying the level(s) not chosen. Required only for \code{choice_level}.
+#' @param .att_choose_b (AMCE only) A character string specifying the baseline attribute for comparison.
+#' @param .lev_choose_b (AMCE only) A character vector specifying the baseline level(s) for comparison.
+#' @param .att_notchoose_b (AMCE only, choice-level only) A character string specifying the baseline attribute for the not-chosen profile.
+#' @param .lev_notchoose_b (AMCE only, choice-level only) A character vector specifying the baseline level(s) for the not-chosen profile.
+#' @param .se_method Method for standard error estimation: one of \code{"analytical"} (default), \code{"simulation"}, or \code{"bootstrap"}.
+#' @param .irr Numeric scalar specifying intra-respondent reliability (IRR). If \code{NULL} (default), it is estimated from repeated tasks.
+#' @param .remove_ties Logical; whether to remove ties before estimation (default is \code{TRUE}).
+#' @param .ignore_position Logical; if \code{TRUE} (default), profile position (left/right) is ignored. Only relevant for \code{choice_level}.
+#' @param .n_sims Number of simulations to run if \code{se_method = "simulation"}.
+#' @param .n_boot Number of bootstrap replications if \code{se_method = "bootstrap"}.
+#'
+#' @param .weights_1 (Optional) Bare (unquoted) name of a column specifying weights for IRR estimation (see \code{\link[estimatr]{lm_robust}}). Defaults to \code{NULL}.
+#' @param .clusters_1 (Optional) Bare (unquoted) name of a column specifying clusters for IRR estimation. Defaults to \code{NULL}.
+#' @param .se_type_1 Standard error type for IRR estimation; passed to \code{lm_robust()}. Default is \code{"classical"}.
+#'
+#' @param .weights_2 (Optional) Bare (unquoted) name of a column specifying weights for MM or AMCE estimation. Defaults to \code{NULL}.
+#' @param .clusters_2 (Optional) Bare (unquoted) name of a column specifying clusters for MM or AMCE estimation. Defaults to \code{NULL}.
+#' @param .se_type_2 Standard error type for MM or AMCE estimation; passed to \code{lm_robust()}. Default is \code{"classical"}.
+#'
+#' @return A data frame containing corrected and uncorrected estimates, standard errors, confidence intervals, and tau values.
+#'
+#' @details
+#' 
+#' For weighting and clustering:
+#' \itemize{
+#'   \item \strong{Bare names} must be provided (e.g., \code{weight_var} not \code{"weight_var"}).
+#'   \item If unspecified, estimation proceeds without weights or clustering.
+#' }
+#' 
+#' For marginal mean (MM) estimation, the outcome is the probability of selecting a profile or profile feature.
+#' For AMCE estimation, the outcome is the change in probability associated with a change in feature level.
+#'
+#' The function automatically applies measurement error correction based on estimated or user-specified intra-respondent reliability (IRR).
+#'
+#' @seealso \code{\link{reshape_projoint}}, \code{\link{make_projoint_data}}, \code{\link{set_qoi}}, \code{\link{projoint}}
 
 pj_estimate <- function(
     .data,
@@ -188,25 +207,34 @@ pj_estimate <- function(
   }
   
   if(.se_method == "simulation" & is.null(.n_sims)){
-    stop("Specify the .n_sims arguement for simulation")
+    stop("Specify the .n_sims argument for simulation")
   }
   
   if(.se_method != "simulation" & !is.null(.n_sims)){
-    stop("You cannot specify the .n_sims arguement for analytical derivation or bootstrapping")
+    stop("You cannot specify the .n_sims argument for analytical derivation or bootstrapping")
   }
   
   if(.se_method == "bootstrap" & is.null(.n_boot)){
-    stop("Specify the .n_boot arguement for bootstrapping")
+    stop("Specify the .n_boot argument for bootstrapping")
   }
   
   if(.se_method != "bootstrap" & !is.null(.n_boot)){
-    stop("You cannot specify the .n_boot arguement for analytical derivation or simulation")
+    stop("You cannot specify the .n_boot argument for analytical derivation or simulation")
   }
   
   if (.structure == "choice_level" & .estimand == "mm" & .remove_ties == FALSE){
     stop("The .remove_ties argument should be TRUE to estimate choice-level MMs.")
   }
   
+  
+  # Evaluate weights and clusters -------------------------------------------
+  
+  clusters1_quo <- rlang::enquo(.clusters_1)
+  weights1_quo <- rlang::enquo(.weights_1)
+  
+  clusters2_quo <- rlang::enquo(.clusters_2)
+  weights2_quo <- rlang::enquo(.weights_2)
+
   # bind variables locally to the function ----------------------------------
   
   id <- NULL
@@ -297,7 +325,7 @@ pj_estimate <- function(
       
       # data to estimate irr
       data_for_irr <- temp1$data_for_irr |> 
-        distinct()
+        dplyr::distinct()
       
       # data to estimate QoI
       data_for_estimand <- temp2
@@ -494,50 +522,13 @@ pj_estimate <- function(
   }
   
   # Estimate or specify tau -------------------------------------------------
-  # 
-  # if (is.null(.irr)){
-  #   
-  #   # run intercept-only regression models
-  #   reg_irr <- estimatr::lm_robust(agree ~ 1, 
-  #                                  weights = .weights_1, 
-  #                                  clusters = .clusters_1,
-  #                                  se_type = .se_type_1,
-  #                                  data = data_for_irr) |> 
-  #     estimatr::tidy()
-  #   
-  #   irr     <- reg_irr$estimate[1]
-  # 
-  #   # Clip IRR to [0.5, 1]
-  #   if (irr < 0.5 || irr > 1) {
-  #     warning("Estimated IRR was outside [0.5, 1] and was clipped.")
-  #   }
-  #   irr <- min(max(irr, 0.5), 1)
-  # 
-  #   var_irr <- reg_irr$std.error[1]^2 
-  #   
-  #   tau     <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
-  #   var_tau <- 0.25 * (2 * irr - 1)^(-1) * var_irr
-  #   
-  # } else if (!is.null(.irr) & !is.numeric(.irr)){
-  #   
-  #   stop(".irr should be numeric.")
-  #   
-  # } else {
-  #   
-  #   irr <- .irr
-  #   tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
-  #   var_tau <- 0
-  #   
-  # }
-  
-  # Estimate or specify tau -------------------------------------------------
   
   if (is.null(.irr)) {
     
     reg_irr <- estimatr::lm_robust(
       agree ~ 1,
-      weights = .weights_1,
-      clusters = .clusters_1,
+      weights  = if (!rlang::quo_is_null(weights1_quo)) rlang::eval_tidy(weights1_quo, data_for_irr) else NULL,
+      clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, data_for_irr) else NULL,
       se_type = .se_type_1,
       data = data_for_irr
     ) |> estimatr::tidy()
@@ -588,11 +579,13 @@ pj_estimate <- function(
   
   if (estimand == "mm"){
     
-    reg_mm  <- estimatr::lm_robust(selected ~ 1, 
-                                   weights = .weights_2, 
-                                   clusters = .clusters_2,
-                                   se_type = .se_type_2,
-                                   data = data_for_estimand) |> 
+    reg_mm <- estimatr::lm_robust(
+      selected ~ 1,
+      weights  = if (!rlang::quo_is_null(weights2_quo)) rlang::eval_tidy(weights2_quo, data_for_estimand) else NULL,
+      clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL,
+      se_type = .se_type_2,
+      data = data_for_estimand
+    ) |> 
       estimatr::tidy()
     
     # the critical t-value
@@ -605,11 +598,13 @@ pj_estimate <- function(
   
   if (estimand == "amce") {
     
-    reg_amce  <- estimatr::lm_robust(selected ~ x, 
-                                     weights = .weights_2, 
-                                     clusters = .clusters_2,
-                                     se_type = .se_type_2,
-                                     data = data_for_estimand) |> 
+    reg_amce  <- estimatr::lm_robust(
+      selected ~ x, 
+      weights  = if (!rlang::quo_is_null(weights2_quo)) rlang::eval_tidy(weights2_quo, data_for_estimand) else NULL,
+      clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL,
+      se_type = .se_type_2,
+      data = data_for_estimand
+    ) |> 
       estimatr::tidy()
     
     # the critical t-value
@@ -757,15 +752,15 @@ pj_estimate <- function(
         
         # run intercept-only regression models
         reg_irr <- estimatr::lm_robust(agree ~ 1, 
-                                       weights = .weights_1, 
-                                       clusters = .clusters_1,
+                                       weights  = if (!rlang::quo_is_null(weights1_quo)) rlang::eval_tidy(weights1_quo, bs_sample_1) else NULL,
+                                       clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
                                        se_type = .se_type_1,
                                        data = bs_sample_1) |> 
           estimatr::tidy()
         
         reg_mm  <- estimatr::lm_robust(selected ~ 1, 
-                                       weights = .weights_2, 
-                                       clusters = .clusters_2,
+                                       weights  = if (!rlang::quo_is_null(weights2_quo)) rlang::eval_tidy(weights2_quo, bs_sample_2) else NULL,
+                                       clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, bs_sample_2) else NULL,
                                        se_type = .se_type_2,
                                        data = bs_sample_2) |> 
           estimatr::tidy()
@@ -893,15 +888,15 @@ pj_estimate <- function(
         
         # run intercept-only regression models
         reg_irr <- estimatr::lm_robust(agree ~ 1, 
-                                       weights = .weights_1, 
-                                       clusters = .clusters_1,
+                                       weights  = if (!rlang::quo_is_null(weights1_quo)) rlang::eval_tidy(weights1_quo, bs_sample_1) else NULL,
+                                       clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
                                        se_type = .se_type_1,
                                        data = bs_sample_1) |> 
           estimatr::tidy()
         
-        reg_amce  <- estimatr::lm_robust(selected ~ x, 
-                                         weights = .weights_2, 
-                                         clusters = .clusters_2,
+        reg_amce <- estimatr::lm_robust(selected ~ x, 
+                                         weights  = if (!rlang::quo_is_null(weights2_quo)) rlang::eval_tidy(weights2_quo, bs_sample_2) else NULL,
+                                         clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, bs_sample_2) else NULL,
                                          se_type = .se_type_2,
                                          bs_sample_2) |> 
           estimatr::tidy()        

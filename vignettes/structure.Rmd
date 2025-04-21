@@ -9,39 +9,42 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## **Why Choice-Level Analysis?**
+## **Why Choice-Level Analysis?**.  
 
-In traditional conjoint analysis, researchers typically estimate **profile-level** quantities, treating each profile independently. This approach has become the standard, particularly after the influential work of Hainmueller, Hopkins, and Yamamoto (2014). Their method rests on an important assumption: that each profile is *independently* generated. 
-
-However, **profile-level analysis can systematically miss how people actually make decisions**. 
+- In traditional conjoint analysis, researchers typically estimate **profile-level** quantities, treating each profile independently — an approach that became the standard following the influential work of Hainmueller, Hopkins, and Yamamoto (2014). Their method rests on an important assumption: that each profile is *independently* generated.  
+- However, **profile-level analysis can systematically miss how people actually make decisions**. 
 
 **Key Issues:**
 
-- Profile-level quantities like AMCEs, which require the assumption of independently generated profiles and disregard the context of comparison, prevent researchers from examining many questions that (implicitly or explicitly) assume dependence between profiles. Consider the following examples from potential political science research: <details>
-  
-  - Compare candidates from two parties: Candidates should always differ between the two profiles
-  - Compare policy proposals with the status quo: One profile is always fixed, while another is randomly generated.
-  - Compare trade-offs: The two profiles are specifically designed based on the research question (e.g., Do Asian Democrats vote for an Asian Republican or a White Democrat?)
-  - Compare candidate electability: The sum of the two percentages should be 100.
-  - Compare two candidates' policy differences: The left-leaning candidate’s policies (attributes) should always be positioned on the left.
+- Profile-level quantities like AMCEs, which require the assumption of independently generated profiles and disregard the context of comparison, prevent researchers from investigating many questions that (implicitly or explicitly) assume dependence between profiles.
 
+- **Examples** of choice-level research questions
+<details>
+
+  - Do voters choose a **white** candidate over a **non-white** candidate?  
+    - The levels (white vs. Asian, Black, Hispanic) always differ between profiles. 
+  - Do **Asian Democrat respondents** prefer an **Asian Republican** over a **white Democrat**?  
+    - The two profiles are specifically designed based on multiple attributes.  
+  - Do voters care about candidate electability?  
+    - The sum of the two percentages should be 100.
+  - Do voters prefer a **status quo** option over a **policy proposal**?
+    - One profile is always fixed, while another varies across tasks.
+  - How much do voters prefer **extreme left-leaning** or **extreme right-leaning** policies?
+    - The left-leaning (right-leaning) candidate’s policies (attributes) should always be positioned consistently on the left (right).
 
 </details>
 
-- When individuals compare two profiles side-by-side (as in most conjoint tasks), their evaluations are often **psychologically influenced by the alternative** (See the Horiuchi-Johnson paper).
+- When individuals compare two profiles side-by-side (as in most conjoint tasks), their evaluations are often **psychologically influenced by the alternative** (See Horiuchi and Johnson 2025).
 
 ---
 
 ## **Why Move to Choice-Level Analysis?**
 
-**Choice-level analysis** models the decision **between two profiles**, not the evaluation of a single profile.
-
-This approach better reflects:
-
-- How people make real-world tradeoffs (e.g., choosing between candidates, products, policies)
-- How comparative contexts influence judgments (e.g., assimilation, contrast effects)
-
-Rather than estimating the probability of selecting a standalone profile, choice-level analysis estimates **the probability of choosing one profile over another**, conditional on both the attributes of interest and other attributes.
+- **Choice-level analysis** models the decision **between two profiles**, not the evaluation of a single profile.
+- This approach more closely mirrors:
+  - How people make real-world tradeoffs (e.g., choosing between candidates, products, policies)
+  - How comparative contexts shape judgments (e.g., assimilation, contrast effects)
+- Rather than estimating the probability of selecting a standalone profile, choice-level analysis estimates **the probability of choosing one profile over another**, conditional on both the attributes of interest and other attributes.
 
 ✅ **Better matches real-world behavior**  
 ✅ **Explicitly captures comparative decision-making**  
@@ -56,7 +59,7 @@ Rather than estimating the probability of selecting a standalone profile, choice
 | Treats profiles independently | Models the decision between profiles |
 | Ignores comparative psychology | Captures influence of side-by-side comparisons |
 | May blur or bias tradeoffs | Highlights real tradeoffs |
-| Easier but can be misleading | Slightly more complex but much more informative |
+| Can be misleading | Much more informative |
 
 ---
 
@@ -66,18 +69,16 @@ Rather than estimating the probability of selecting a standalone profile, choice
 > 
 > 📈 It provides **deeper insights**, **more accurate estimates**, and a **closer reflection of actual decision-making**.
 
-
 ---
 
 ## 📚 **References**
 
 - **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).**  
-  *Correcting Measurement Error Bias in Conjoint Survey Experiments.*  
+  "Correcting Measurement Error Bias in Conjoint Survey Experiments."  
   _Forthcoming, American Journal of Political Science._  
   [Pre-Print Available](https://gking.harvard.edu/conjointE)
-
 - **Horiuchi and Johnson (2025).**  
-  *Advancing Conjoint Analysis: Delving Further into Profile Comparisons.*  
+  "Advancing Conjoint Analysis: Delving Further into Profile Comparisons."  
   _Work-in-progress._  
 
 

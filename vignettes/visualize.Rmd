@@ -9,58 +9,41 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r fig-setup, include=FALSE}
+# Global default settings for all figures
+knitr::opts_chunk$set(
+  fig.width = 7,
+  fig.height = 5,
+  fig.align = "center",
+  dpi = 300  # Optional: high-resolution plots
+)
+
+# Helper functions for special figure sizes
+narrow_fig <- function() list(fig.width = 5, fig.height = 4)
+wide_fig <- function() list(fig.width = 8, fig.height = 5)
+tall_fig <- function() list(fig.width = 6, fig.height = 7)
+```
+
+```{r, echo=FALSE}
 library(projoint)
 library(ggplot2)
 ```
 
-#@ 🎨 Visualize MMs or AMCEs
+## 🎨 Visualize MMs or AMCEs
 
 The **projoint** package provides ready-to-publish plotting tools for conjoint analysis results.
-
----
-
-#### 📈 Profile-Level Analysis
-
-<details>
-<summary><b>Estimate MMs and AMCEs</b></summary>
-
-```{r}
-# Estimate profile-level MMs and AMCEs
-mm   <- projoint(out1_arranged, .structure = "profile_level") 
-amce <- projoint(out1_arranged, .structure = "profile_level", .estimand = "amce")
-```
-</details>
-
-<details>
-<summary><b>Visualize MMs and AMCEs</b></summary>
-
-```{r, fig.height=8, fig.width=8}
-# Plotting profile-level MMs
-plot(mm)
-plot(mm, .estimates = "uncorrected")
-plot(mm, .estimates = "both")
-
-# Plotting profile-level AMCEs
-plot(amce)
-plot(amce, .estimates = "uncorrected")
-plot(amce, .estimates = "both")
-```
-
-</details>
 
 ---
 
 ### ⚖️ Choice-Level Analysis
 
 <details>
-<summary><b>Estimate choice-level MMs</b></summary>
+<summary><b>Estimate</b></summary>
 
-Specify your quantity of interest:
-
+- Specify your quantity of interest:
 ```{r}
 qoi_mm <- set_qoi(
-  .structure = "choice_level", 
+  .structure = "choice_level", # default
   .att_choose = "att1", 
   .lev_choose = "level1", 
   .att_notchoose = "att1", 
@@ -68,26 +51,25 @@ qoi_mm <- set_qoi(
 )
 ```
 
-Estimate choice-level MMs:
-
-```{r, fig.height=4, fig.width=8}
+- Estimate
+```{r}
 choice_mm <- projoint(
   .data = out1_arranged, 
   .qoi = qoi_mm, 
   .ignore_position = TRUE
 )
-
-print(choice_mm)
-summary(choice_mm)
-plot(choice_mm)
 ```
-
 </details>
 
 <details>
-<summary><b>Polish your choice-level plots</b></summary>
+<summary><b>Visualize (Levels) </b></summary>
 
-```{r, fig.height=4, fig.width=8}
+```{r}
+plot(choice_mm)
+```
+
+You can polish it using ggplot codes:
+```{r}
 plot(choice_mm,
      .labels = c("15% of pre-tax income", "30% of pre-tax income")) +
   labs(y = "Marginal mean",
@@ -99,15 +81,45 @@ plot(choice_mm,
 </details>
 
 <details>
-<summary><b>Plot the difference in marginal means</b></summary>
+<summary><b>Visualize (Differences)</b></summary>
 
-```{r, fig.height=4, fig.width=8}
+```{r}
 plot(choice_mm, .type = "pointrange")
 ```
 </details>
 
 <span style="color:DarkRed"><b>Note:</b></span> The current version of **projoint** supports plotting choice-level MMs only.  
 Support for **choice-level AMCEs** will be available in future updates!
+
+### 📈 Profile-Level Analysis
+
+<details>
+<summary><b>Estimate</b></summary>
+
+```{r}
+mm   <- projoint(out1_arranged, .structure = "profile_level") 
+amce <- projoint(out1_arranged, .structure = "profile_level", .estimand = "amce")
+```
+
+</details>
+
+<details>
+<summary><b>Visualize</b></summary>
+
+- Marginal Means
+```{r}
+plot(mm)
+plot(mm, .estimates = "uncorrected")
+plot(mm, .estimates = "both")
+```
+- AMCEs
+```{r}
+plot(amce)
+plot(amce, .estimates = "uncorrected")
+plot(amce, .estimates = "both")
+```
+
+</details>
 
 ---
 

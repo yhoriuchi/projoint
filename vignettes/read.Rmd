@@ -15,30 +15,34 @@ library(projoint)
 
 ## 📥 Read Your Data
 
-Before reshaping or analyzing your conjoint survey data, you first need to **import it into R**.  In **projoint**, use the `read_Qualtrics()` function to quickly read properly formatted Qualtrics files.
+Before you can reshape or analyze your conjoint survey data, you first need to **import it into R**.  In **projoint**, use the `read_Qualtrics()` function to quickly read properly formatted Qualtrics files.
 
 ---
 
 ## 🚀 Quick Workflow
 
-<summary><b>Export your survey responses from Qualtrics</b></summary>
+<details>
+<summary><b>1. Export your survey responses from Qualtrics</b></summary>
 
 When exporting from Qualtrics:
 
 - Click **"Download Data"**.
 - Choose **CSV** format.
-- Critically, select **"Use choice text"** instead of coded values.
+- Critically, select **"Use choice text"** rather than coded values.
 
-⚡ If you skip "Use choice text," your conjoint data may not load properly!
+⚡ If you skip selecting "Use choice text," your conjoint data may fail to load properly!
+</details>
 
-<summary><b>Load essential packages</b></summary>
-
+<details>
+<summary><b>2. Load essential packages</b></summary>
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(projoint)
 ```
+</details>
 
-<summary><b>Read your CSV file into R using `read_Qualtrics()`</b></summary>
+<details>
+<summary><b>3. Read your CSV file into R using `read_Qualtrics()`</b></summary>
 
 ```r
 # Example: If your file is located in a "data" folder
@@ -53,9 +57,10 @@ data <- read_Qualtrics(
 ```
 
 ```{r}
+# Inspect the imported data:
 data
 ```
-
+</details>
 ---
 
 ## 🌟 What's Next?

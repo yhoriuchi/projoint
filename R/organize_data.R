@@ -56,7 +56,7 @@ organize_data <- function(
   structure  <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
   
   if ((is.null(.remove_ties) | !is.logical(.remove_ties))){
-    stop("The .remove_ties argumet must be logical.")
+    stop("The .remove_ties argument must be logical.")
   }
   
   if (structure == "profile_level"){
@@ -159,15 +159,24 @@ organize_data <- function(
     
     out <- out3
   }
-
+  
   # Keep necessary variables only and return --------------------------------
   
   # data frame to estimate IRR
+  # data1 <- .dataframe |> 
+  #   dplyr::select(id, agree) |> 
+  #   dplyr::filter(!is.na(agree)) |> 
+  #   dplyr::distinct() |> 
+  #   tibble::as_tibble()
+  
   data1 <- .dataframe |> 
-    dplyr::select(id, agree) |> 
     dplyr::filter(!is.na(agree)) |> 
-    dplyr::distinct() |> 
+    dplyr::group_by(id) |> 
+    dplyr::slice(1) |>  # take first occurrence per respondent
+    dplyr::ungroup() |> 
+    dplyr::select(id, agree, matches("my_weight|my_cluster|^weights?$|^clusters?$")) |> 
     tibble::as_tibble()
+  
   
   # data frame to estimate MM or AMCE
   data2 <- out

@@ -9,21 +9,36 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r fig-setup, include=FALSE}
+# Global default settings for all figures
+knitr::opts_chunk$set(
+  fig.width = 7,
+  fig.height = 5,
+  fig.align = "center",
+  dpi = 300  # Optional: high-resolution plots
+)
+
+# Helper functions for special figure sizes
+narrow_fig <- function() list(fig.width = 5, fig.height = 4)
+wide_fig <- function() list(fig.width = 8, fig.height = 5)
+tall_fig <- function() list(fig.width = 6, fig.height = 7)
+
+# Load libraries
 library(projoint)
 ```
 
 ## 🛠️ Wrangle Your Data
 
-Most of the work in conjoint analysis is correctly preparing your data. In **projoint**, the `reshape_projoint()` function makes it simple!
+Preparing your data correctly is one of the most important steps in conjoint analysis. Fortunately, the `reshape_projoint()` function in **projoint** makes this easy.
 
 ---
 
 ## 🚀 Quick Workflow
 
-<summary><b>Reshape Your Data</b></summary>
+<details>
+<summary><b>1. Reshape Your Data</b></summary>
 
-#### Example: Flipped Repeated Task
+### Example (Flipped Repeated Task)
 
 ```{r}
 outcomes <- paste0("choice", 1:8)
@@ -51,7 +66,7 @@ out1 <- reshape_projoint(
 </details>
 
 <details>
-<summary><b>Variations: Repeated vs. Non-Repeated</b></summary>
+<summary><b>2. Variations: Repeated vs. Non-Repeated</b></summary>
 
 **Not-Flipped Repeated Task**
 
@@ -78,7 +93,7 @@ out3 <- reshape_projoint(
 </details>
 
 <details>
-<summary><b>The `.fill` Argument: Should You Use It?</b></summary>
+<summary><b>3. The `.fill` Argument: Should You Use It?</b></summary>
 
 Use `.fill = TRUE` to "fill" missing values based on IRR agreement.
 
@@ -105,13 +120,13 @@ fill_TRUE$data[selected_vars]
 ```
 
 **Tip:**  
-- `.fill = TRUE` is useful for small sample or subgroup analysis.  
-- `.fill = FALSE` (default) is safer if unsure.
+- Use `.fill = TRUE` for small-sample or subgroup analysis (helps increase power).  
+- Use `.fill = FALSE` (default) when in doubt for safer estimates.
 
 </details>
 
 <details>
-<summary><b>What If Your Data Is Already Clean?</b></summary>
+<summary><b>4. What If Your Data Is Already Clean?</b></summary>
 
 If you already have a clean dataset, use `make_projoint_data()`:
 
@@ -142,7 +157,7 @@ out4
 </details>
 
 <details>
-<summary><b>Arranging Attribute and Level Labels</b></summary>
+<summary><b>5. Arranging Attribute and Level Labels</b></summary>
 
 To reorder or relabel attributes:
 
@@ -158,24 +173,19 @@ save_labels(out1, "temp/labels_original.csv")
 
 ```{r, eval=FALSE}
 out1_arranged <- read_labels(out1, "temp/labels_arranged.csv")
-```
-
-Internal example:
-
-```{r, echo=FALSE}
 data_file <- system.file("extdata", "labels_arranged.csv", package = "projoint")
 if (data_file == "") stop("File not found!")
 out1_arranged <- read_labels(out1, data_file)
 ```
 
-Compare:
+Compare using our example:
 
-```{r, fig.height=8, fig.width=8}
+```{r}
 mm <- projoint(out1, .structure = "profile_level", .estimand = "mm")
 plot(mm)
 ```
 
-```{r, fig.height=8, fig.width=8}
+```{r}
 mm <- projoint(out1_arranged, .structure = "profile_level", .estimand = "mm")
 plot(mm)
 ```

@@ -2,14 +2,14 @@
 title: "Design Your Survey"
 output: rmarkdown::html_vignette
 description: >
-  How to set up your Qualtrics survey
+  Learn how to set up your conjoint survey in Qualtrics, with or without the Projoint Survey Design Tool.
 vignette: >
   %\VignetteIndexEntry{Design Your Survey}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-## Projoint Survey Design Tool (Recommended)
+## Set Up Your Survey Using the Projoint Survey Design Tool (Recommended)
 
 We strongly recommend using our [Projoint Survey Design Tool](https://projoint.aaronrkaufman.com/). You can easily: 
 
@@ -25,14 +25,11 @@ We strongly recommend using our [Projoint Survey Design Tool](https://projoint.a
 ## Conjoint Survey Design Tool (FYI Only)
 
 <details>
-<summary><b>Designing a conjoint survey was challenging in the past...</b></summary>
+<summary>Why Designing Conjoint Surveys Was Challenging in the Past</summary>
 
-### 1 Generate a JavaScript or PHP randomizer
+### 1. Generate a JavaScript or PHP randomizer
 
-Many researchers used Anton Strezhnev's **Conjoint Survey Design Tool** (Link: [conjointSDT](https://github.com/astrezhnev/conjointsdt/)).  
-Strezhnev’s guide to designing and implementing conjoint surveys in Qualtrics is excellent.
-
-In short, researchers use ConjointSDT to produce a JavaScript or PHP randomizer.
+Many researchers use Anton Strezhnev's **Conjoint Survey Design Tool** (Link: [conjointSDT](https://github.com/astrezhnev/conjointsdt/)) to produce a JavaScript or PHP randomizer.
 
 #### JavaScript
 
@@ -61,7 +58,7 @@ This method was used in:
 
 ---
 
-### 2 Modify your JavaScript or PHP randomizer
+### 2. Modify your JavaScript or PHP randomizer
 
 You may want to add constraints — for example, **prevent ties** between profiles.  
 To do this, you can manually modify your JavaScript or PHP.
@@ -86,7 +83,7 @@ If you have good examples of manual constraints, please email [Yusaku Horiuchi](
 
 ---
 
-### 3 Add conjoint tables with embedded fields in Qualtrics
+### 3. Add conjoint tables with embedded fields in Qualtrics
 
 After generating the randomizer, you must create **HTML tables** displaying embedded fields for each task.
 
@@ -108,7 +105,7 @@ e.g., `"K-1..."` for Task 1, `"K-2..."` for Task 2, and so on.
 It’s easy to create a **repeated task** for intra-respondent reliability (IRR) estimation:
 
 - Copy the HTML for Task 1 later into the survey (e.g., after Task 5)
-- **Flip** Profile 1 and Profile 2 (swap embedded field digits)
+- **Flip** Profile 1 and Profile 2 (swap the embedded field digits)
 
 Example repeated task:
 
@@ -118,7 +115,7 @@ Example repeated task:
 
 ---
 
-### 4 Sample Qualtrics survey template
+### 4. Sample Qualtrics survey template
 
 We provide a full **Qualtrics QSF file** ready to use!
 
@@ -142,7 +139,7 @@ This file recreates a standard conjoint survey setup based on Mummolo and Nall (
 
 ## 🌟 What's Next?
 
-Now that your survey is properly designed, you’re ready to collect responses using Qualtrics and load the data into R!
+Now that your survey is properly designed, you’re ready to collect responses in Qualtrics and import the data into R!
 
 ➡️ **Continue to:** [Read Your Qualtrics Data](read.html)  
 🏠 **Home:** [Home](index.html)

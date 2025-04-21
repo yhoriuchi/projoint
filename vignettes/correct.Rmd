@@ -2,7 +2,7 @@
 title: "Correct Measurement-Error Bias"
 output: rmarkdown::html_vignette
 description: >
-  Why should you identify and correct measurement error bias in conjoint analysis?
+  Why you should identify and correct measurement error bias in conjoint analysis
 vignette: >
   %\VignetteIndexEntry{Correct Measurement-Error Bias}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,14 +11,14 @@ vignette: >
 
 ## **Why Correct for Measurement Error?**
 
-In conjoint experiments, **measurement error** is pervasive but often overlooked.Respondents may:
-
-- Misread attributes
-- Misunderstand levels
-- Click randomly
-- Forget information across tasks
-
-As a result, even if a respondent has **true preferences**, their recorded choices are often **noisy reflections** of those preferences. This **random error** introduces a severe **bias toward zero** — meaning **estimated effects are systematically too small**.
+- In conjoint experiments, **measurement error** is pervasive but often overlooked.  
+- Respondents may:
+  - Misread attributes
+  - Misunderstand levels
+  - Click randomly
+  - Forget information across tasks
+- As a result, respondents' recorded choices often refelect random noise.   
+- This **random error** leads to attenuate **true prefernces** (or true effects).  
 
 ---
 
@@ -26,7 +26,7 @@ As a result, even if a respondent has **true preferences**, their recorded choic
 
 | Without Correction             | With Correction                  |
 |:--------------------------------|:----------------------------------|
-| Underestimates true preference differences | Reveals true magnitude of effects |
+| Underestimates true preferences | Provides more accurate preferences |
 | Falsely suggests indifference | Recovers meaningful trade-offs |
 | Misleads theory building and application | Provides accurate, unbiased insights |
 
@@ -34,9 +34,10 @@ As a result, even if a respondent has **true preferences**, their recorded choic
 
 ## **How projoint Corrects for Measurement Error**
 
-- **Estimates the intra-respondent reliability (IRR)** using a repeated task
+- **Estimates the intra-respondent reliability (IRR)** based on responses to a repeated task
 - **Adjusts marginal means (MMs) and average marginal component effects (AMCEs)** accordingly
-- **Provides corrected estimates** that are closer to respondents’ true underlying preferences
+- **Provides corrected estimates** that better reflect respondents’ true preferences
+- Corrected estimates reveal the true magnitude of effects, **improving both theoretical and applied inferences** in political science, marketing, and other fields.
 
 ✅ No additional respondent burden (just one repeated task)  
 ✅ Minimal survey design changes  
@@ -55,7 +56,7 @@ As a result, even if a respondent has **true preferences**, their recorded choic
 ## 📚 Key Reference
 
 - **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).**  
-  *Correcting Measurement Error Bias in Conjoint Survey Experiments.*  
+  "Correcting Measurement Error Bias in Conjoint Survey Experiments."  
   _Forthcoming, American Journal of Political Science._  
   [Pre-Print Available](https://gking.harvard.edu/conjointE)
 
