@@ -98,15 +98,27 @@ plot(choice_mm,
 
 </details>
 
+<details>
+<summary><b>Plot the difference in marginal means</b></summary>
+
+```{r, fig.height=4, fig.width=8}
+plot(choice_mm, .type = "pointrange")
+```
+</details>
+
 <span style="color:DarkRed"><b>Note:</b></span> The current version of **projoint** supports plotting choice-level MMs only.  
 Support for **choice-level AMCEs** will be available in future updates!
 
 ---
 
-## 🌟 That's It!
+## 🌟 What's Next?
 
-You are now ready to create clean, informative plots for both profile-level and choice-level conjoint results!
+Now that you can visualize your results, you’re ready to explore differences across subgroups and other additional analyses!
 
-➡️ Continue to explore more advanced visualization options in the [function reference](../reference/index.html).
+➡️ **Continue to:** [Explore Additional Analyses](explore.html)  
+⬅️ **Back to:** [Analyze Your Conjoint Data](analyze.html)  
+🏠 **Home:** [Home](index.html)
+
+
 
 ---

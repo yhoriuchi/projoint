@@ -6,7 +6,7 @@
 \usage{
 plot_projoint_choice_level_mm(
   x,
-  .type = c("bar", "pointrange"),
+  .type = "pointrange",
   .estimates = "corrected",
   .labels = NULL,
   .base_size = 12,

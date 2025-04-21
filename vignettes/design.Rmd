@@ -142,8 +142,9 @@ This file recreates a standard conjoint survey setup based on Mummolo and Nall (
 
 ## 🌟 What's Next?
 
-Now that your survey is properly designed, you're ready to **collect responses** using Qualtrics and **load the data** into R!
+Now that your survey is properly designed, you’re ready to collect responses using Qualtrics and load the data into R!
 
-➡️ Continue to: [Read Your Qualtrics Data](read.html)
+➡️ **Continue to:** [Read Your Qualtrics Data](read.html)  
+🏠 **Home:** [Home](index.html)
 
 ---

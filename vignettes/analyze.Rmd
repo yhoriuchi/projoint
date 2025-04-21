@@ -204,8 +204,11 @@ Use `.by_var` **only** when comparing **profile-level MMs** between two groups (
 
 ## 🌟 What's Next?
 
-You should **visualize** your findings!
+Now that you have estimated key quantities, you’re ready to visualize your results clearly and effectively!
 
-➡️ Continue to: [Visualize Your Results](visualize.html)
+➡️ **Continue to:** [Visualize Your Results](visualize.html)  
+⬅️ **Back to:** [Wrangle Your Data](wrangle.html)  
+🏠 **Home:** [Home](index.html)
+
 
 ---

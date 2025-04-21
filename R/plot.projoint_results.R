@@ -29,8 +29,7 @@
 #' If irrelevant arguments are provided for a given structure, a warning will be issued and the arguments will be ignored.
 #'
 #' @return A `ggplot2` object.
-#' @seealso [projoint()], [projoint_results], [plot_projoint_profile_level()], [plot_projoint_choice_level()]
-#'
+#' @seealso [projoint()], [projoint_results], [plot_projoint_profile_level()], [plot_projoint_choice_level_mm()]
 #' @export
 plot.projoint_results <- function(
     x, 
@@ -57,15 +56,19 @@ plot.projoint_results <- function(
     stop("The `x` argument must be a `projoint_results` object, output from `projoint()`.")
   }
   
-  .type <- match.arg(.type)
   .estimand <- x$estimand
   .structure <- x$structure
   
+  .structure <- match.arg(.structure, choices = c("profile_level", "choice_level"))
+  .estimand <- match.arg(.estimand, choices = c("mm", "amce"))
+  
+  
   if (.structure == "profile_level") {
+  
+    .estimates <- match.arg(.estimates, choices = c("corrected", "uncorrected", "both"))
     
     irrelevant_args <- c()
     
-    if (!missing(.type) && .type != "bar") irrelevant_args <- c(irrelevant_args, ".type")
     if (!missing(.show_attribute) && .show_attribute != FALSE) irrelevant_args <- c(irrelevant_args, ".show_attribute")
     if (!missing(.xtitle) && .xtitle != "Choice-level marginal mean") irrelevant_args <- c(irrelevant_args, ".xtitle")
     if (!missing(.remove_xaxis) && .remove_xaxis != FALSE) irrelevant_args <- c(irrelevant_args, ".remove_xaxis")
@@ -88,7 +91,15 @@ plot.projoint_results <- function(
       ...
     )
     
-  } else if (.structure == "choice_level" && .estimand == "mm") {
+  } else {
+    
+    if (.estimand != "mm") {
+      stop("Currently, plotting is only supported for `choice_level` structure and `mm` estimand. Stay tuned!")
+    }
+    
+    .estimates <- match.arg(.estimates, choices = c("corrected", "uncorrected"))
+    
+    .type <- match.arg(.type)
     
     irrelevant_args <- c()
     
@@ -97,8 +108,7 @@ plot.projoint_results <- function(
     if (length(irrelevant_args) > 0) {
       warning("The following arguments are ignored for choice-level plots: ", paste(irrelevant_args, collapse = ", "))
     }
-    
-    
+
     out <- plot_projoint_choice_level_mm(
       x = x,
       .type = .type,
@@ -117,11 +127,7 @@ plot.projoint_results <- function(
       ...
     )
     
-  } else {
-    
-    stop("Currently, plotting is not supported for choice-level AMCEs. Stay tuned!")
-    
-  }
+  } 
   
   return(out)
 }

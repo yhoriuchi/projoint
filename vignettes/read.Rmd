@@ -60,8 +60,11 @@ data
 
 ## 🌟 What's Next?
 
-Now that your data is loaded, you're ready to **wrangle** it into the correct format for analysis!
+Now that your data is loaded, you’re ready to wrangle it into the correct format for analysis!
 
-➡️ Continue to: [Wrangle Your Data](wrangle.html)
+➡️ **Continue to:** [Wrangle Your Data](wrangle.html)  
+⬅️ **Back to:** [Design Your Survey](design.html)  
+🏠 **Home:** [Home](index.html)
+
 
 ---

@@ -186,9 +186,11 @@ plot(mm)
 
 ## 🌟 What's Next?
 
-Now that your data is wangled, you're ready to **analyze** your data to answer your questions!
+Now that your data is properly structured, you’re ready to estimate Marginal Means (MMs) or AMCEs!
 
-➡️ Continue to: [Analyze Your Data](analyze.html)
+➡️ **Continue to:** [Analyze Your Conjoint Data](analyze.html)  
+⬅️ **Back to:** [Read Your Qualtrics Data](read.html)  
+🏠 **Home:** [Home](index.html)
 
 ---
 

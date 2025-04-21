@@ -179,14 +179,19 @@ ggplot(out_merged, aes(y = party, x = estimate)) +
 
 ---
 
+## 🌟 What's Next?
+
+Congratulations! You’ve completed the step-by-step tutorial for using `projoint`.  
+You can now explore your own data, compare subgroups, and publish your findings!
+
+Unlock richer insights using **projoint**! 🚀
+
+⬅️ **Back to:** [Visualize Your Results](visualize.html)  
+🏠 **Home:** [Home](index.html)
+
+
 ## 🎯 Final Takeaway
 
-> With **choice-level analysis**, you can:
->
-> - Study **realistic trade-offs** between competing factors
-> - **Combine levels** flexibly
-> - **Compare subgroups** at both profile- and choice-levels
->
-> Unlock richer insights using **projoint**! 🚀
+
 
 ---

@@ -11,16 +11,24 @@ vignette: >
 
 ## **Why Choice-Level Analysis?**
 
-In traditional conjoint analysis, researchers typically estimate **profile-level** quantities, treating each profile independently. This approach has become the standard, particularly after the influential work of Hainmueller, Hopkins, and Yamamoto (2014).
+In traditional conjoint analysis, researchers typically estimate **profile-level** quantities, treating each profile independently. This approach has become the standard, particularly after the influential work of Hainmueller, Hopkins, and Yamamoto (2014). Their method rests on an important assumption: that each profile is *independently* generated. 
 
-However, **profile-level analysis can systematically miss how people actually make decisions**.
+However, **profile-level analysis can systematically miss how people actually make decisions**. 
 
 **Key Issues:**
 
-- When individuals compare two profiles side-by-side (as in most conjoint tasks), their evaluations are often **psychologically influenced by the alternative**.
-- Profile-level quantities like AMCEs may be **biased toward indifference**, masking the **true tradeoffs** that respondents are making.
+- Profile-level quantities like AMCEs, which require the assumption of independently generated profiles and disregard the context of comparison, prevent researchers from examining many questions that (implicitly or explicitly) assume dependence between profiles. Consider the following examples from potential political science research: <details>
+  
+  - Compare candidates from two parties: Candidates should always differ between the two profiles
+  - Compare policy proposals with the status quo: One profile is always fixed, while another is randomly generated.
+  - Compare trade-offs: The two profiles are specifically designed based on the research question (e.g., Do Asian Democrats vote for an Asian Republican or a White Democrat?)
+  - Compare candidate electability: The sum of the two percentages should be 100.
+  - Compare two candidates' policy differences: The left-leaning candidate’s policies (attributes) should always be positioned on the left.
 
-Thus, **analyzing profiles independently** — without considering the context of comparison — can **distort** our understanding of decision-making.
+
+</details>
+
+- When individuals compare two profiles side-by-side (as in most conjoint tasks), their evaluations are often **psychologically influenced by the alternative** (See the Horiuchi-Johnson paper).
 
 ---
 
@@ -33,7 +41,7 @@ This approach better reflects:
 - How people make real-world tradeoffs (e.g., choosing between candidates, products, policies)
 - How comparative contexts influence judgments (e.g., assimilation, contrast effects)
 
-Instead of estimating the probability of selecting a standalone profile, choice-level analysis estimates **the likelihood of choosing one profile over another**, given their attributes.
+Rather than estimating the probability of selecting a standalone profile, choice-level analysis estimates **the probability of choosing one profile over another**, conditional on both the attributes of interest and other attributes.
 
 ✅ **Better matches real-world behavior**  
 ✅ **Explicitly captures comparative decision-making**  
@@ -56,7 +64,7 @@ Instead of estimating the probability of selecting a standalone profile, choice-
 
 > 🔎 If your conjoint design presents two profiles for comparison, **choice-level analysis is essential for valid and insightful inference**.  
 > 
-> 📈 It provides **deeper insights**, **more accurate estimates**, and a **closer reflection of real-world decision-making**.
+> 📈 It provides **deeper insights**, **more accurate estimates**, and a **closer reflection of actual decision-making**.
 
 
 ---
@@ -72,4 +80,5 @@ Instead of estimating the probability of selecting a standalone profile, choice-
   *Advancing Conjoint Analysis: Delving Further into Profile Comparisons.*  
   _Work-in-progress._  
 
----
+
+

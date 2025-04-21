@@ -72,5 +72,5 @@ For **choice-level results**, only `.type`, `.labels`, `.show_attribute`, `.xtit
 If irrelevant arguments are provided for a given structure, a warning will be issued and the arguments will be ignored.
 }
 \seealso{
-[projoint()], [projoint_results], [plot_projoint_profile_level()], [plot_projoint_choice_level()]
+[projoint()], [projoint_results], [plot_projoint_profile_level()], [plot_projoint_choice_level_mm()]
 }

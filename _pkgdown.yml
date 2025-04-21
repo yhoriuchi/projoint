@@ -25,7 +25,7 @@ articles:
   - wrangle      # Step 2: Data Wrangling
   - analyze      # Step 4: Estimating MMs or AMCEs
   - visualize    # Step 5: Visualizing Results
-  - explore      # Step 6: Furthr exploration
+  - explore      # Step 6: Further exploration
 
 reference:
 - title: 📦 Data Sets
@@ -58,3 +58,4 @@ reference:
   contents:
   - plot.projoint_results
   - plot.projoint_tau
+  

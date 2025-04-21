@@ -27,7 +27,7 @@
 #' @export
 plot_projoint_choice_level_mm <- function(
     x,
-    .type = c("bar", "pointrange"),
+    .type = "pointrange",
     .estimates = "corrected",
     .labels = NULL,
     .base_size = 12,
@@ -42,17 +42,16 @@ plot_projoint_choice_level_mm <- function(
     .plot.margin = c(0, 3, 0, 3),
     ...
 ) {
+  
   # Validation
+  
   if (!inherits(x, "projoint_results")) {
     stop("Input `x` must be a `projoint_results` object.")
   }
   
-  .type <- match.arg(.type) # Validate type is bar or pointrange
-  
-  if (!.estimates %in% c("corrected", "uncorrected")) {
-    stop(".estimates must be either 'corrected' or 'uncorrected'.")
-  }
-  
+  .type <- match.arg(.type, choices = c("bar", "pointrange"))
+  .estimates <- match.arg(.estimates, choices = c("corrected", "uncorrected"))
+
   if (.type == "bar") {
     
     # Variables
@@ -96,10 +95,13 @@ plot_projoint_choice_level_mm <- function(
     out <- x$estimates %>%
       dplyr::filter(estimand == "mm_corrected") %>%
       dplyr::select(-estimand) %>%
-      dplyr::left_join(x$labels, by = c("att_level_choose" = "level_id")) %>%
-      dplyr::rename(level1 = level) %>%
-      dplyr::left_join(x$labels, by = c("att_level_notchoose" = "level_id")) %>%
-      dplyr::rename(level0 = level)
+      dplyr::left_join(x$labels %>% dplyr::select(level_id, level, attribute), 
+                       by = c("att_level_choose" = "level_id")) %>%
+      dplyr::rename(level1 = level, attribute1 = attribute) %>%
+      dplyr::left_join(x$labels %>% dplyr::select(level_id, level, attribute), 
+                       by = c("att_level_notchoose" = "level_id")) %>%
+      dplyr::rename(level0 = level, attribute0 = attribute)
+    
     
     if (nrow(out) != 1) {
       stop("This plotting function expects only one attribute-level pair at a time.")
@@ -119,12 +121,14 @@ plot_projoint_choice_level_mm <- function(
       ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 4)(.xlim)) +
       ggplot2::labs(y = NULL, x = NULL) +
       ggplot2::coord_cartesian(xlim = .xlim, clip = "off") +
-      ggplot2::theme_minimal(base_size = .base_size, base_family = .base_family) +
+      ggthemes::theme_few(base_size = .base_size, base_family = .base_family) %+replace%
       ggplot2::theme(
+        axis.text.x = ggplot2::element_text(size = .base_size, color = "black", hjust = .5, vjust = 1),
         axis.text.y = ggplot2::element_blank(),
         axis.ticks.y = ggplot2::element_blank(),
         plot.margin = grid::unit(.plot.margin, "cm")
       )
+    
     
     if (.show_attribute) {
       g <- g +
