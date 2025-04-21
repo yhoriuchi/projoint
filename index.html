@@ -55,29 +55,38 @@
 <b>🛠️ The One-Stop Conjoint Shop: projoint</b>
 </p>
 <hr>
-<p><strong>projoint</strong> is a general-purpose R package for conjoint analysis. It produces <strong>more reliable estimates</strong> of many under explored quantities of interest (based questions explicitly about <strong>choices</strong>) by <strong>correcting measurement error bias</strong>.</p>
-<details><summary><b>Understand how projoint structures conjoint data</b>
-</summary><p>The <strong>projoint</strong> package can organize survey data into two levels:</p>
+<p><strong>projoint</strong> is a general-purpose R package for conjoint analysis. It produces <strong>more reliable estimates</strong> of the quantities of interest based on questions explicitly about survey respondents’ <strong>choices between two options</strong>.</p>
+<details><summary>
+Understand how projoint <b>structures</b> conjoint data
+</summary><ul>
+<li>The <strong>projoint</strong> package can organize survey data into two levels:
 <ul>
-<li><p><strong>Choice-level</strong> (RECOMMENDED): Each choice respondents make between profiles</p></li>
-<li><p><strong>Profile-level</strong>: Each profile shown to respondents, including its attributes and levels</p></li>
+<li>
+<strong>Choice-level</strong> (RECOMMENDED): Each choice respondents make between profiles</li>
+<li>
+<strong>Profile-level</strong>: Each profile shown to respondents, including its attributes and levels</li>
 </ul>
-<p><a href="https://yhoriuchi.github.io/projoint/articles/structure.html">Learn more about data structure requirements</a></p>
-</details><details><summary><b>Understand how projoint corrects measurement error bias</b>
-</summary><p>Traditional conjoint analyses assume perfect reliability in respondent choices. However, respondents often make mistakes or respond inconsistently. <strong>projoint</strong> introduces a correction for this measurement error:</p>
+</li>
+<li><a href="https://yhoriuchi.github.io/projoint/articles/structure.html">Learn more about data structure requirements</a></li>
+</ul></details><details><summary>
+Understand how projoint <b>corrects</b> measurement error bias
+</summary><ul>
+<li>Traditional conjoint analyses assume perfect reliability in respondent choices. However, respondents often make mistakes or respond inconsistently. <strong>projoint</strong> introduces a correction for this measurement error:
 <ul>
-<li><p>It estimates an Inter-Rater Reliability (IRR) metric based on repeated tasks.</p></li>
-<li><p>It adjusts Marginal Means (MMs) and Average Marginal Component Effects (AMCEs) accordingly.</p></li>
-<li><p>The correction ensures more accurate inference, especially when response instability is nontrivial.</p></li>
+<li>It estimates an Inter-Rater Reliability (IRR) metric based on repeated tasks.</li>
+<li>It adjusts Marginal Means (MMs) and Average Marginal Component Effects (AMCEs) accordingly.</li>
+<li>The correction ensures more accurate inference, especially when response instability is nontrivial.</li>
 </ul>
-<p><a href="https://yhoriuchi.github.io/projoint/articles/correct.html">Learn more about the correction methodology</a></p>
-</details><hr>
+</li>
+<li><a href="https://yhoriuchi.github.io/projoint/articles/correct.html">Learn more about the correction methodology</a></li>
+</ul></details><hr>
 <div class="section level2">
 <h2 id="id_-installation">🔧 Installation<a class="anchor" aria-label="anchor" href="#id_-installation"></a>
 </h2>
-<details><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install the development version from GitHub</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"yhoriuchi/projoint"</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Install the development version from GitHub
+</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"yhoriuchi/projoint"</span><span class="op">)</span></span></code></pre></div>
 </details><hr>
 </div>
 <div class="section level2">
@@ -85,8 +94,8 @@
 </h2>
 <details><summary style="font-size: 18px;"><b>Design</b> your survey correctly
 </summary><ul>
-<li><p>Begin with the <a href="https://projoint.aaronrkaufman.com/" class="external-link">Projoint Survey Designer</a> and export surveys formatted for Qualtrics.</p></li>
-<li><p>Follow the <a href="https://yhoriuchi.github.io/projoint/articles/design.html">step-by-step guide</a> to learn how to set up your Qualtrics survey.</p></li>
+<li>Begin with the <a href="https://projoint.aaronrkaufman.com/" class="external-link">Projoint Survey Designer</a> and export surveys formatted for Qualtrics.</li>
+<li>Follow the <a href="https://yhoriuchi.github.io/projoint/articles/design.html">step-by-step guide</a> to learn how to set up your Qualtrics survey.</li>
 </ul></details><details><summary style="font-size: 18px;"><b>Read</b> the results into R
 </summary><ul>
 <li>Load your <strong>survey responses</strong> into R:</li>
@@ -127,35 +136,35 @@
 <li>Follow the <a href="https://yhoriuchi.github.io/projoint/articles/visualize.html">step-by-step guide</a> to learn how to visualize the marginal means (MMs) or average marginal component effects (AMCEs).</li>
 </ul></details><details><summary style="font-size: 18px;"><b>Explore</b> and compare further
 </summary><ul>
-<li><p>Estimate additional quantities of interest and explore subgroup comparisons using choice-level analysis.</p></li>
-<li><p>Follow the <a href="https://yhoriuchi.github.io/projoint/articles/explore.html">step-by-step guide</a> to learn how to estimate under-investigated quantities of interest and compare subgroups using choice-level analysis.</p></li>
+<li>Estimate additional quantities of interest and explore subgroup comparisons using choice-level analysis.</li>
+<li>Follow the <a href="https://yhoriuchi.github.io/projoint/articles/explore.html">step-by-step guide</a> to learn how to estimate under-investigated quantities of interest and compare subgroups using choice-level analysis.</li>
 </ul></details><hr>
 </div>
 <div class="section level2">
 <h2 id="id_-methodological-background">📘 Methodological Background<a class="anchor" aria-label="anchor" href="#id_-methodological-background"></a>
 </h2>
-<details><p>The framework and methods behind <strong>projoint</strong> are detailed in:</p>
-<blockquote>
-<p>Katherine Clayton, Yusaku Horiuchi, Aaron R. Kaufman, Gary King, and Mayya Komisarchik. Forthcoming. <em>“Correcting Measurement Error Bias in Conjoint Survey Experiments.”</em> <em>American Journal of Political Science</em>. Available at <a href="https://tinyurl.com/24btw3dq" class="external-link uri">https://tinyurl.com/24btw3dq</a></p>
-</blockquote>
-<p><a href="doc/projoint_citation.bib">👉 Download BibTeX Reference</a></p>
-</details><hr>
+<details><ul>
+<li>
+<strong>Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).</strong><br>
+“Correcting Measurement Error Bias in Conjoint Survey Experiments.”<br><em>Forthcoming, American Journal of Political Science.</em><br><a href="https://gking.harvard.edu/conjointE" class="external-link">Pre-Print Available</a>
+</li>
+<li><a href="doc/projoint_citation.bib">👉 Download BibTeX Reference</a></li>
+</ul></details>
 </div>
 <div class="section level2">
 <h2 id="id_-notes--limitations">📋 Notes &amp; Limitations<a class="anchor" aria-label="anchor" href="#id_-notes--limitations"></a>
 </h2>
 <details><ul>
-<li><p>Supports <strong>binary forced-choice</strong> outcomes only (for now).</p></li>
-<li><p>Package is under <strong>active development</strong>.</p></li>
+<li>Supports <strong>binary forced-choice</strong> outcomes only (for now).</li>
+<li>Package is under <strong>active development</strong>.</li>
 </ul></details>
 </div>
 <div class="section level2">
 <h2 id="id_-upcoming-features">📦 Upcoming Features<a class="anchor" aria-label="anchor" href="#id_-upcoming-features"></a>
 </h2>
 <details><ul>
-<li><p>Weighted estimation for features and respondents</p></li>
-<li><p>Support for non-binary outcomes (ratings, rankings)</p></li>
-<li><p>Advanced visualization for choice-level effects</p></li>
+<li>Weighted estimation for features and respondents</li>
+<li>Support for non-binary outcomes (ratings, rankings)</li>
 </ul></details><hr>
 <p align="center" style="font-size: 18px;">
 ✨ Thank you for using projoint! ✨
