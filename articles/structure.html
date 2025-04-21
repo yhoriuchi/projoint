@@ -70,21 +70,40 @@
 <p>In traditional conjoint analysis, researchers typically estimate
 <strong>profile-level</strong> quantities, treating each profile
 independently. This approach has become the standard, particularly after
-the influential work of Hainmueller, Hopkins, and Yamamoto (2014).</p>
+the influential work of Hainmueller, Hopkins, and Yamamoto (2014). Their
+method rests on an important assumption: that each profile is
+<em>independently</em> generated.</p>
 <p>However, <strong>profile-level analysis can systematically miss how
 people actually make decisions</strong>.</p>
 <p><strong>Key Issues:</strong></p>
 <ul>
+<li>Profile-level quantities like AMCEs, which require the assumption of
+independently generated profiles and disregard the context of
+comparison, prevent researchers from examining many questions that
+(implicitly or explicitly) assume dependence between profiles. Consider
+the following examples from potential political science research:
+<details><ul>
+<li>Compare candidates from two parties: Candidates should always differ
+between the two profiles</li>
+<li>Compare policy proposals with the status quo: One profile is always
+fixed, while another is randomly generated.</li>
+<li>Compare trade-offs: The two profiles are specifically designed based
+on the research question (e.g., Do Asian Democrats vote for an Asian
+Republican or a White Democrat?)</li>
+<li>Compare candidate electability: The sum of the two percentages
+should be 100.</li>
+<li>Compare two candidates’ policy differences: The left-leaning
+candidate’s policies (attributes) should always be positioned on the
+left.</li>
+</ul></details>
+</li>
+</ul>
+<ul>
 <li>When individuals compare two profiles side-by-side (as in most
 conjoint tasks), their evaluations are often <strong>psychologically
-influenced by the alternative</strong>.</li>
-<li>Profile-level quantities like AMCEs may be <strong>biased toward
-indifference</strong>, masking the <strong>true tradeoffs</strong> that
-respondents are making.</li>
+influenced by the alternative</strong> (See the Horiuchi-Johnson
+paper).</li>
 </ul>
-<p>Thus, <strong>analyzing profiles independently</strong> — without
-considering the context of comparison — can <strong>distort</strong> our
-understanding of decision-making.</p>
 <hr>
 </div>
 <div class="section level2">
@@ -101,9 +120,10 @@ candidates, products, policies)</li>
 <li>How comparative contexts influence judgments (e.g., assimilation,
 contrast effects)</li>
 </ul>
-<p>Instead of estimating the probability of selecting a standalone
-profile, choice-level analysis estimates <strong>the likelihood of
-choosing one profile over another</strong>, given their attributes.</p>
+<p>Rather than estimating the probability of selecting a standalone
+profile, choice-level analysis estimates <strong>the probability of
+choosing one profile over another</strong>, conditional on both the
+attributes of interest and other attributes.</p>
 <p>✅ <strong>Better matches real-world behavior</strong><br>
 ✅ <strong>Explicitly captures comparative
 decision-making</strong><br>
@@ -154,8 +174,8 @@ prioritization</strong></p>
 <strong>choice-level analysis is essential for valid and insightful
 inference</strong>.</p>
 <p>📈 It provides <strong>deeper insights</strong>, <strong>more
-accurate estimates</strong>, and a <strong>closer reflection of
-real-world decision-making</strong>.</p>
+accurate estimates</strong>, and a <strong>closer reflection of actual
+decision-making</strong>.</p>
 </blockquote>
 <hr>
 </div>
@@ -170,7 +190,6 @@ Available</a></p></li>
 <li><p><strong>Horiuchi and Johnson (2025).</strong><br><em>Advancing Conjoint Analysis: Delving Further into Profile
 Comparisons.</em><br><em>Work-in-progress.</em></p></li>
 </ul>
-<hr>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
