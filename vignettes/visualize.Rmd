@@ -12,8 +12,8 @@ vignette: >
 ```{r fig-setup, include=FALSE}
 # Global default settings for all figures
 knitr::opts_chunk$set(
-  fig.width = 7,
-  fig.height = 5,
+  fig.width = 6,
+  fig.height = 3,
   fig.align = "center",
   dpi = 300  # Optional: high-resolution plots
 )
@@ -64,26 +64,15 @@ choice_mm <- projoint(
 <details>
 <summary><b>Visualize (Levels) </b></summary>
 
-```{r}
+```{r, fig.width = 6, fig.height = 3}
 plot(choice_mm)
 ```
-
-You can polish it using ggplot codes:
-```{r}
-plot(choice_mm,
-     .labels = c("15% of pre-tax income", "30% of pre-tax income")) +
-  labs(y = "Marginal mean",
-       x = "Housing Cost") +
-  coord_cartesian(ylim = c(0, 1)) +
-  geom_hline(yintercept = 0.5, linetype = "dashed", color = "darkgray")
-```
-
 </details>
 
 <details>
 <summary><b>Visualize (Differences)</b></summary>
 
-```{r}
+```{r, , fig.width = 6, fig.height = 3}
 plot(choice_mm, .type = "pointrange")
 ```
 </details>
@@ -107,16 +96,12 @@ amce <- projoint(out1_arranged, .structure = "profile_level", .estimand = "amce"
 <summary><b>Visualize</b></summary>
 
 - Marginal Means
-```{r}
+```{r, fig.width = 6, fig.height = 6}
 plot(mm)
-plot(mm, .estimates = "uncorrected")
-plot(mm, .estimates = "both")
 ```
 - AMCEs
-```{r}
+```{r, fig.width = 6, fig.height = 6}
 plot(amce)
-plot(amce, .estimates = "uncorrected")
-plot(amce, .estimates = "both")
 ```
 
 </details>

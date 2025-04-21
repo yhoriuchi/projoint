@@ -9,16 +9,10 @@ plot_projoint_choice_level_mm(
   .type = "pointrange",
   .estimates = "corrected",
   .labels = NULL,
-  .base_size = 12,
-  .base_family = "",
-  .show_attribute = FALSE,
-  .xtitle = "Choice-level marginal mean",
+  .show_attribute = TRUE,
   .remove_xaxis = FALSE,
   .xlim = c(0, 1),
-  .hjust_left = 1,
-  .hjust_right = 0,
-  .title_size = 11,
-  .plot.margin = c(0, 3, 0, 3),
+  .plot.margin = NULL,
   ...
 )
 }
@@ -31,23 +25,11 @@ plot_projoint_choice_level_mm(
 
 \item{.labels}{A character vector for x-axis labels (optional).}
 
-\item{.base_size}{Base font size.}
-
-\item{.base_family}{Base font family.}
-
 \item{.show_attribute}{Logical; show attribute as plot title (for pointrange type).}
-
-\item{.xtitle}{X-axis title (for pointrange type).}
 
 \item{.remove_xaxis}{Logical; remove x-axis (for pointrange type).}
 
 \item{.xlim}{Limits of x-axis (for pointrange type).}
-
-\item{.hjust_left}{Justification for left text (for pointrange type).}
-
-\item{.hjust_right}{Justification for right text (for pointrange type).}
-
-\item{.title_size}{Size of title text (for pointrange type).}
 
 \item{.plot.margin}{Plot margins (for pointrange type).}
 

@@ -11,12 +11,8 @@
 #' @param .base_family Character. Base font family for plot text. Default is "" (system default).
 #' @param .type Character. (Choice-level only) Type of plot: `"bar"` (default) or `"pointrange"`.
 #' @param .show_attribute Logical. (Choice-level only) Whether to display the attribute name as a plot title. Default is `FALSE`.
-#' @param .xtitle Character. (Choice-level only) X-axis label text. Default is `"Choice-level marginal mean"`.
 #' @param .remove_xaxis Logical. (Choice-level only) Whether to remove x-axis labels and ticks. Default is `FALSE`.
 #' @param .xlim Numeric vector of length 2. (Choice-level only) X-axis limits. Default is `c(0, 1)`.
-#' @param .hjust_left Numeric. (Choice-level only) Horizontal adjustment for the left-side label. Default is 1.
-#' @param .hjust_right Numeric. (Choice-level only) Horizontal adjustment for the right-side label. Default is 0.
-#' @param .title_size Numeric. (Choice-level only) Font size for the plot title if `.show_attribute = TRUE`. Default is 11.
 #' @param .plot.margin Numeric vector of length 4. (Choice-level only) Margins around the plot in centimeters. Default is `c(0, 3, 0, 3)`.
 #' @param ... Additional arguments passed to underlying plotting functions.
 #'
@@ -42,12 +38,8 @@ plot.projoint_results <- function(
     
     .type = c("bar", "pointrange"),
     .show_attribute = FALSE, 
-    .xtitle = "Choice-level marginal mean", 
     .remove_xaxis = FALSE, 
     .xlim = c(0, 1),
-    .hjust_left = 1,
-    .hjust_right = 0,
-    .title_size = 11, 
     .plot.margin = c(0, 3, 0, 3),
     ...
 ) {
@@ -62,7 +54,6 @@ plot.projoint_results <- function(
   .structure <- match.arg(.structure, choices = c("profile_level", "choice_level"))
   .estimand <- match.arg(.estimand, choices = c("mm", "amce"))
   
-  
   if (.structure == "profile_level") {
   
     .estimates <- match.arg(.estimates, choices = c("corrected", "uncorrected", "both"))
@@ -70,12 +61,8 @@ plot.projoint_results <- function(
     irrelevant_args <- c()
     
     if (!missing(.show_attribute) && .show_attribute != FALSE) irrelevant_args <- c(irrelevant_args, ".show_attribute")
-    if (!missing(.xtitle) && .xtitle != "Choice-level marginal mean") irrelevant_args <- c(irrelevant_args, ".xtitle")
     if (!missing(.remove_xaxis) && .remove_xaxis != FALSE) irrelevant_args <- c(irrelevant_args, ".remove_xaxis")
     if (!missing(.xlim) && !identical(.xlim, c(0, 1))) irrelevant_args <- c(irrelevant_args, ".xlim")
-    if (!missing(.hjust_left) && .hjust_left != 1) irrelevant_args <- c(irrelevant_args, ".hjust_left")
-    if (!missing(.hjust_right) && .hjust_right != 0) irrelevant_args <- c(irrelevant_args, ".hjust_right")
-    if (!missing(.title_size) && .title_size != 11) irrelevant_args <- c(irrelevant_args, ".title_size")
     if (!missing(.plot.margin) && !identical(.plot.margin, c(0, 3, 0, 3))) irrelevant_args <- c(irrelevant_args, ".plot.margin")
     
     if (length(irrelevant_args) > 0) {
@@ -114,15 +101,9 @@ plot.projoint_results <- function(
       .type = .type,
       .estimates = .estimates,
       .labels = .labels,
-      .base_size = .base_size,
-      .base_family = .base_family,
       .show_attribute = .show_attribute, 
-      .xtitle = .xtitle, 
       .remove_xaxis = .remove_xaxis, 
       .xlim = .xlim,
-      .hjust_left = .hjust_left,
-      .hjust_right = .hjust_right,
-      .title_size = .title_size, 
       .plot.margin = .plot.margin,
       ...
     )

@@ -13,12 +13,8 @@
   .base_family = "",
   .type = c("bar", "pointrange"),
   .show_attribute = FALSE,
-  .xtitle = "Choice-level marginal mean",
   .remove_xaxis = FALSE,
   .xlim = c(0, 1),
-  .hjust_left = 1,
-  .hjust_right = 0,
-  .title_size = 11,
   .plot.margin = c(0, 3, 0, 3),
   ...
 )
@@ -40,17 +36,9 @@
 
 \item{.show_attribute}{Logical. (Choice-level only) Whether to display the attribute name as a plot title. Default is `FALSE`.}
 
-\item{.xtitle}{Character. (Choice-level only) X-axis label text. Default is `"Choice-level marginal mean"`.}
-
 \item{.remove_xaxis}{Logical. (Choice-level only) Whether to remove x-axis labels and ticks. Default is `FALSE`.}
 
 \item{.xlim}{Numeric vector of length 2. (Choice-level only) X-axis limits. Default is `c(0, 1)`.}
-
-\item{.hjust_left}{Numeric. (Choice-level only) Horizontal adjustment for the left-side label. Default is 1.}
-
-\item{.hjust_right}{Numeric. (Choice-level only) Horizontal adjustment for the right-side label. Default is 0.}
-
-\item{.title_size}{Numeric. (Choice-level only) Font size for the plot title if `.show_attribute = TRUE`. Default is 11.}
 
 \item{.plot.margin}{Numeric vector of length 4. (Choice-level only) Margins around the plot in centimeters. Default is `c(0, 3, 0, 3)`.}
 

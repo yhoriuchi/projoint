@@ -10,3 +10,4 @@ devtools::check()
 
 unlink("docs", recursive = TRUE)  # Delete docs folder
 pkgdown::build_site(new_process = TRUE, install = TRUE)
+
