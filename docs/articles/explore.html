@@ -81,18 +81,18 @@ effectively.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out1_arranged</span><span class="op">$</span><span class="va">labels</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
-<span><span class="co">##    attribute                level                        attribute_id level_id  </span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> Housing Cost             15% of pre-tax income        att1         att1:leve…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Housing Cost             30% of pre-tax income        att1         att1:leve…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Housing Cost             40% of pre-tax income        att1         att1:leve…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Presidential Vote (2020) 50% Democrat, 50% Republican att2         att2:leve…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> Presidential Vote (2020) 30% Democrat, 70% Republican att2         att2:leve…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Presidential Vote (2020) 70% Democrat, 30% Republican att2         att2:leve…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Racial Composition       50% White, 50% Nonwhite      att3         att3:leve…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Racial Composition       75% White, 25% Nonwhite      att3         att3:leve…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> Racial Composition       90% White, 10% Nonwhite      att3         att3:leve…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> Racial Composition       96% White, 4% Nonwhite       att3         att3:leve…</span></span>
+<span><span class="co">##    attribute                     level                   attribute_id level_id  </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> Housing Cost (Pre-tax Income) 15%                     att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Housing Cost (Pre-tax Income) 30%                     att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Housing Cost (Pre-tax Income) 40%                     att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Presidential Vote (2020)      50% Dem, 50% Rep        att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> Presidential Vote (2020)      30% Dem, 70% Rep        att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Presidential Vote (2020)      70% Dem, 30% Rep        att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Racial Composition            50% White, 50% Nonwhite att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Racial Composition            75% White, 25% Nonwhite att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> Racial Composition            90% White, 10% Nonwhite att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> Racial Composition            96% White, 4% Nonwhite  att3         att3:leve…</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
 <hr>
 </div>
@@ -120,6 +120,7 @@ effectively.</p>
 <span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Marginal Mean"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">coord_cartesian</span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.5</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"darkgray"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## The attributes are different between the two levels. Check your setting carefully. The attribute label is not added to the figure.</span></span></code></pre>
 <p><img src="explore_files/figure-html/unnamed-chunk-2-1.png" width="768"></p>
 </details><hr>
 </div>
@@ -127,7 +128,7 @@ effectively.</p>
 <h2 id="explore-compare-multiple-levels-simultaneously">🧩 Explore: Compare Multiple Levels Simultaneously<a class="anchor" aria-label="anchor" href="#explore-compare-multiple-levels-simultaneously"></a>
 </h2>
 <details><summary><b>Example: Urban vs. Suburban Preferences</b>
-</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .att_choose <span class="op">=</span> <span class="st">"att7"</span>,</span>
@@ -154,7 +155,7 @@ effectively.</p>
 </h2>
 <details><summary><b>Profile-Level Subgroup Comparison: White vs. Non-White
 Respondents</b>
-</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">exampleData1</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>white <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">race</span> <span class="op">==</span> <span class="st">"White"</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
@@ -194,7 +195,7 @@ Respondents</b>
 <span>  <span class="fu">theme</span><span class="op">(</span>axis.text.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, plot.title <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="explore_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </details><details><summary><b>Choice-Level Subgroup Comparison: Party Differences</b>
-</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_D</span> <span class="op">&lt;-</span> <span class="va">exampleData1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">party_1</span> <span class="op">==</span> <span class="st">"Democrat"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">outcomes</span><span class="op">)</span></span>
 <span><span class="va">df_R</span> <span class="op">&lt;-</span> <span class="va">exampleData1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">party_1</span> <span class="op">==</span> <span class="st">"Republican"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">outcomes</span><span class="op">)</span></span>
 <span><span class="va">df_0</span> <span class="op">&lt;-</span> <span class="va">exampleData1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">party_1</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Something else"</span>, <span class="st">"Independent"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">outcomes</span><span class="op">)</span></span>

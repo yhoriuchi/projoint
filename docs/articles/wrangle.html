@@ -74,7 +74,8 @@ function in <strong>projoint</strong> makes this easy.</p>
 <div class="section level2">
 <h2 id="quick-workflow">🚀 Quick Workflow<a class="anchor" aria-label="anchor" href="#quick-workflow"></a>
 </h2>
-<details><summary><b>1. Reshape Your Data</b>
+<!-- <details> -->
+<summary><b>1. Reshape Your Data</b>
 </summary><div class="section level3">
 <h3 id="example-flipped-repeated-task">Example (Flipped Repeated Task)<a class="anchor" aria-label="anchor" href="#example-flipped-repeated-task"></a>
 </h3>
@@ -106,10 +107,11 @@ last)</li>
 <code>.repeated</code>, <code>.flipped</code>: If repeated task
 exists and is flipped</li>
 </ul>
-<details><summary><b>2. Variations: Repeated vs. Non-Repeated</b>
+<!-- </details> --><!-- <details> --><summary><b>2. Variations: Repeated vs. Non-Repeated</b>
 </summary><p><strong>Not-Flipped Repeated Task</strong></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outcomes2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_notflipped"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">outcomes2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_notflipped"</span><span class="op">)</span></span>
 <span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
 <span>  .dataframe <span class="op">=</span> <span class="va">exampleData2</span>,</span>
 <span>  .outcomes <span class="op">=</span> <span class="va">outcomes2</span>,</span>
@@ -118,12 +120,15 @@ exists and is flipped</li>
 <span><span class="op">)</span></span></code></pre></div>
 <p><strong>No Repeated Task</strong></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">out3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
 <span>  .dataframe <span class="op">=</span> <span class="va">exampleData3</span>,</span>
 <span>  .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span>
 <span>  .repeated <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-</details><details><summary><b>3. The <code>.fill</code> Argument: Should You Use It?</b>
+<!-- </details> -->
+<!-- <details> -->
+<summary><b>3. The <code>.fill</code> Argument: Should You Use It?</b>
 </summary><p>Use <code>.fill = TRUE</code> to “fill” missing values based on IRR
 agreement.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -177,7 +182,9 @@ agreement.</p>
 (helps increase power).<br>
 - Use <code>.fill = FALSE</code> (default) when in doubt for safer
 estimates.</p>
-</details><details><summary><b>4. What If Your Data Is Already Clean?</b>
+<!-- </details> -->
+<!-- <details> -->
+<summary><b>4. What If Your Data Is Already Clean?</b>
 </summary><p>If you already have a clean dataset, use
 <code><a href="../reference/make_projoint_data.html">make_projoint_data()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -202,7 +209,9 @@ estimates.</p>
 <pre><code><span><span class="co">## &lt;projoint_data&gt;</span></span>
 <span><span class="co">## - data:     6400 rows, 13 columns</span></span>
 <span><span class="co">## - labels:   24 levels, 4 columns</span></span></code></pre>
-</details><details><summary><b>5. Arranging Attribute and Level Labels</b>
+<!-- </details> -->
+<!-- <details> -->
+<summary><b>5. Arranging Attribute and Level Labels</b>
 </summary><p>To reorder or relabel attributes:</p>
 <ol style="list-style-type: decimal">
 <li>Save labels:</li>
@@ -211,14 +220,12 @@ estimates.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/save_labels.html">save_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_original.csv"</span><span class="op">)</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Edit the CSV (change <code>order</code>, label columns; leave
-<code>level_id</code> untouched).</p></li>
+<code>level_id</code> untouched)</p></li>
+<li><p>Save it as “labels_arranged.csv” or something else.</p></li>
 <li><p>Reload labels:</p></li>
 </ol>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out1_arranged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_labels.html">read_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_arranged.csv"</span><span class="op">)</span></span>
-<span><span class="va">data_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"labels_arranged.csv"</span>, package <span class="op">=</span> <span class="st">"projoint"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="va">data_file</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"File not found!"</span><span class="op">)</span></span>
-<span><span class="va">out1_arranged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_labels.html">read_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="va">data_file</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">out1_arranged</span>, package <span class="op">=</span> <span class="st">"projoint"</span><span class="op">)</span></span></code></pre></div>
 <p>Compare using our example:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
@@ -228,9 +235,9 @@ estimates.</p>
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
 <p><img src="wrangle_files/figure-html/unnamed-chunk-11-1.png" width="2100" style="display: block; margin: auto;"></p>
-</details><hr>
+<!-- </details> -->
+<hr>
 </div>
-</details>
 </div>
 <div class="section level2">
 <h2 id="whats-next">🌟 What’s Next?<a class="anchor" aria-label="anchor" href="#whats-next"></a>

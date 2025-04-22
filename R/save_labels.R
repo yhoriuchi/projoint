@@ -13,10 +13,6 @@ save_labels <- function(
     .filename
 ){
   
-  level_id <- NULL
-  attribute <- NULL
-  level <- NULL
-  
   (.data$labels %>% 
       dplyr::select(level_id, attribute, level) %>% 
       dplyr::arrange(level_id) %>% 

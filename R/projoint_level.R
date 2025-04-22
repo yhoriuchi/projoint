@@ -46,15 +46,6 @@ projoint_level <- function(
     .se_type_2
 ){
   
-  # bind variables locally to the function ----------------------------------
-  
-  baseline <- NULL
-  att_level_choose <- NULL
-  att_level_notchoose <- NULL
-  att_level_choose_baseline <- NULL
-  att_level_notchoose_baseline <- NULL
-  irr <- NULL
-  
   # check various settings --------------------------------------------------
   # Also see the checking in pj_estimate()
   

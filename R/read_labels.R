@@ -19,17 +19,6 @@ read_labels <- function(
     .filename
 ){
   
-  # bind variables locally to the function
-  attribute_id <- NULL
-  attribute_id_arranged <- NULL
-  level_id <- NULL
-  level_id_arranged <- NULL
-  value <- NULL
-  name <- NULL
-  attribute <- NULL
-  level <- NULL
-
-    
   labels_arranged <- readr::read_csv(.filename, 
                                      show_col_types = FALSE) %>% 
     dplyr::mutate(attribute_id = stringr::str_extract(level_id, "^.+(?=\\:)"),

@@ -1,23 +1,23 @@
 library(projoint)
 
-outcomes <- paste0("choice" 1:8)
-outcomes <- c(outcomes "choice1_repeated_flipped")
+outcomes <- paste0("choice", 1:8)
+outcomes <- c(outcomes, "choice1_repeated_flipped")
 
 out1_arranged <- reshape_projoint(
-  .dataframe = exampleData1
-  .outcomes = outcomes
-  .repeated = TRUE
-  .flipped = TRUE
+  .dataframe = exampleData1,
+  .outcomes = outcomes,
+  .repeated = TRUE,
+  .flipped = TRUE,
 )
 
 print(data)
 
 qoi_mm <- set_qoi(
-  .structure = "choice_level" # default
-  .att_choose = "att1" 
-  .lev_choose = "level1" 
-  .att_notchoose = "att1" 
-  .lev_notchoose = "level3"
+  .structure = "choice_level" # default,
+  .att_choose = "att1" ,
+  .lev_choose = "level1", 
+  .att_notchoose = "att1", 
+  .lev_notchoose = "level3",
 )
 
 # projoint

@@ -46,23 +46,6 @@ reshape_projoint <- function(
     .fill = FALSE
 ){
   
-  # bind variables locally to the function
-  
-  attribute_name <- NULL
-  level_name <- NULL
-  attribute <- NULL
-  level <- NULL
-  attribute_id <- NULL
-  level_id <- NULL
-  response <- NULL
-  outcome_qnum <- NULL
-  selected <- NULL
-  selected_repeated <- NULL
-  code <- NULL
-  task <- NULL
-  profile <- NULL
-  agree <- NULL
-
   # number of tasks (including the repeated task)
   n_tasks_all <- length(.outcomes)
   

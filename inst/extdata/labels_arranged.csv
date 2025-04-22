@@ -1,10 +1,10 @@
 level_id,attribute,level,order
-att1:level1,Housing Cost,15% of pre-tax income,1
-att1:level2,Housing Cost,30% of pre-tax income,2
-att1:level3,Housing Cost,40% of pre-tax income,3
-att2:level2,Presidential Vote (2020),"50% Democrat, 50% Republican",4
-att2:level1,Presidential Vote (2020),"30% Democrat, 70% Republican",5
-att2:level3,Presidential Vote (2020),"70% Democrat, 30% Republican",6
+att1:level1,Housing Cost (Pre-tax Income),15%,1
+att1:level2,Housing Cost (Pre-tax Income),30%,2
+att1:level3,Housing Cost (Pre-tax Income),40%,3
+att2:level2,Presidential Vote (2020),"50% Dem, 50% Rep",4
+att2:level1,Presidential Vote (2020),"30% Dem, 70% Rep",5
+att2:level3,Presidential Vote (2020),"70% Dem, 30% Rep",6
 att3:level1,Racial Composition,"50% White, 50% Nonwhite",7
 att3:level2,Racial Composition,"75% White, 25% Nonwhite",8
 att3:level3,Racial Composition,"90% White, 10% Nonwhite",9
@@ -15,8 +15,8 @@ att5:level1,Daily Driving Time,10 min,13
 att5:level2,Daily Driving Time,25 min,14
 att5:level3,Daily Driving Time,45 min,15
 att5:level4,Daily Driving Time,75 min,16
-att7:level1,Violent Crime Rate,20% < National Average,17
-att7:level2,Violent Crime Rate,20% > National Average,18
+att7:level1,Violent Crime Rate,20% < National Ave.,17
+att7:level2,Violent Crime Rate,20% > National Ave.,18
 att6:level2,Type of Place,"City, more residential area",19
 att6:level1,Type of Place,"City, downtown area",20
 att6:level3,Type of Place,Rural area,21

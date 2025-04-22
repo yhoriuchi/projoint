@@ -26,31 +26,6 @@ organize_data <- function(
     .lev_notchoose
 ){
   
-  # bind variables locally to the function ----------------------------------
-  
-  id <- NULL
-  selected <- NULL
-  selected_repeated <- NULL
-  selected_1 <- NULL
-  selected_2 <- NULL
-  task <- NULL
-  ties <- NULL
-  agree <- NULL
-  profile <- NULL
-  att <- NULL
-  att_1 <- NULL
-  att_2 <- NULL
-  qoi_choose <- NULL
-  qoi_choose_1 <- NULL
-  qoi_choose_2 <- NULL
-  qoi <- NULL
-  qoi_1 <- NULL
-  qoi_2 <- NULL
-  qoi_notchoose <- NULL
-  qoi_notchoose_1 <- NULL
-  qoi_notchoose_2 <- NULL
-  
-  
   # check various settings --------------------------------------------------
   
   structure  <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))

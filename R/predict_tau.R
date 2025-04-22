@@ -29,33 +29,7 @@ predict_tau <- function(
   
   .dataframe <- .data$data
   
-  # bind variables locally to the function
 
-  id <- NULL
-  task1 <- NULL
-  task2 <- NULL
-  selected <- NULL
-  profile <- NULL
-  task <- NULL
-  y <- NULL
-  att <- NULL
-  task1_y <- NULL
-  task2_y <- NULL
-  t1 <- NULL
-  t2 <- NULL
-  y_same <- NULL
-  x <- NULL
-  estimate <- NULL
-  std.error <- NULL
-  `1` <- NULL
-  `2` <- NULL
-  att_comb <- NULL
-  value <- NULL
-  predict <- NULL
-  aes <- NULL
-  conf.low <- NULL
-  conf.high <- NULL
-  . <- NULL
   
   # the number of attributes
   

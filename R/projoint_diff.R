@@ -48,23 +48,6 @@ projoint_diff <- function(
     .se_type_2
 ){
   
-  # bind variables locally to the function ----------------------------------
-  
-  estimand <- NULL
-  attribute <- NULL
-  level <- NULL
-  estimate <- NULL
-  estimate_1 <- NULL
-  estimate_0 <- NULL
-  se <- NULL
-  se_1 <- NULL
-  se_0 <- NULL
-  att_level_choose <- NULL
-  att_level_notchoose <- NULL
-  att_level_choose_baseline <- NULL
-  att_level_notchoose_baseline <- NULL
-  irr <- NULL
-  
   # estimate QoIs by subgroups ----------------------------------------------
   
   subgroup1 <- .data$data %>% filter(.data[[.by_var]] == 1)

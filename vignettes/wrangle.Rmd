@@ -25,6 +25,12 @@ tall_fig <- function() list(fig.width = 6, fig.height = 7)
 
 # Load libraries
 library(projoint)
+data(exampleData1, package = "projoint")
+data(exampleData2, package = "projoint")
+data(exampleData3, package = "projoint")
+data(exampleData1_labelled_tibble, package = "projoint")
+data(out1_arranged, package = "projoint")
+
 ```
 
 ## 🛠️ Wrangle Your Data
@@ -35,12 +41,12 @@ Preparing your data correctly is one of the most important steps in conjoint ana
 
 ## 🚀 Quick Workflow
 
-<details>
+<!-- <details> -->
 <summary><b>1. Reshape Your Data</b></summary>
 
 ### Example (Flipped Repeated Task)
 
-```{r}
+```{r, error=TRUE}
 outcomes <- paste0("choice", 1:8)
 outcomes1 <- c(outcomes, "choice1_repeated_flipped")
 
@@ -63,14 +69,16 @@ out1 <- reshape_projoint(
 - `.alphabet`: Variable prefix ("K")
 - `.repeated`, `.flipped`: If repeated task exists and is flipped
 
-</details>
 
-<details>
+<!-- </details> -->
+
+<!-- <details> -->
 <summary><b>2. Variations: Repeated vs. Non-Repeated</b></summary>
 
 **Not-Flipped Repeated Task**
 
 ```{r}
+outcomes <- paste0("choice", 1:8)
 outcomes2 <- c(outcomes, "choice1_repeated_notflipped")
 out2 <- reshape_projoint(
   .dataframe = exampleData2,
@@ -83,6 +91,7 @@ out2 <- reshape_projoint(
 **No Repeated Task**
 
 ```{r}
+outcomes <- paste0("choice", 1:8)
 out3 <- reshape_projoint(
   .dataframe = exampleData3,
   .outcomes = outcomes,
@@ -90,9 +99,9 @@ out3 <- reshape_projoint(
 )
 ```
 
-</details>
+<!-- </details> -->
 
-<details>
+<!-- <details> -->
 <summary><b>3. The `.fill` Argument: Should You Use It?</b></summary>
 
 Use `.fill = TRUE` to "fill" missing values based on IRR agreement.
@@ -123,9 +132,10 @@ fill_TRUE$data[selected_vars]
 - Use `.fill = TRUE` for small-sample or subgroup analysis (helps increase power).  
 - Use `.fill = FALSE` (default) when in doubt for safer estimates.
 
-</details>
+<!-- </details> -->
 
-<details>
+
+<!-- <details> -->
 <summary><b>4. What If Your Data Is Already Clean?</b></summary>
 
 If you already have a clean dataset, use `make_projoint_data()`:
@@ -154,9 +164,10 @@ Preview:
 out4
 ```
 
-</details>
+<!-- </details> -->
 
-<details>
+
+<!-- <details> -->
 <summary><b>5. Arranging Attribute and Level Labels</b></summary>
 
 To reorder or relabel attributes:
@@ -167,15 +178,14 @@ To reorder or relabel attributes:
 save_labels(out1, "temp/labels_original.csv")
 ```
 
-2. Edit the CSV (change `order`, label columns; leave `level_id` untouched).
+2. Edit the CSV (change `order`, label columns; leave `level_id` untouched)
 
-3. Reload labels:
+3. Save it as "labels_arranged.csv" or something else.
+
+4. Reload labels:
 
 ```{r, eval=FALSE}
-out1_arranged <- read_labels(out1, "temp/labels_arranged.csv")
-data_file <- system.file("extdata", "labels_arranged.csv", package = "projoint")
-if (data_file == "") stop("File not found!")
-out1_arranged <- read_labels(out1, data_file)
+data(out1_arranged, package = "projoint")
 ```
 
 Compare using our example:
@@ -190,7 +200,7 @@ mm <- projoint(out1_arranged, .structure = "profile_level", .estimand = "mm")
 plot(mm)
 ```
 
-</details>
+<!-- </details> -->
 
 ---
 

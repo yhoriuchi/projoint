@@ -26,18 +26,6 @@ make_projoint_data <- function(
     .selected_repeated_var = NULL, 
     .fill = FALSE){
   
-  # bind variables locally to the function
-  
-  . <- NULL
-  attribute <- NULL
-  attribute_id <- NULL
-  level <- NULL
-  level_id <- NULL
-  selected <- NULL
-  selected_repeated <- NULL
-  agree <- NULL
-  task <- NULL
-  
   # check
   
   if (!is.data.frame(.dataframe)){

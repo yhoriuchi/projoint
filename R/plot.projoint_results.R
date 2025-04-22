@@ -37,7 +37,7 @@ plot.projoint_results <- function(
     .base_family = "",
     
     .type = c("bar", "pointrange"),
-    .show_attribute = FALSE, 
+    .show_attribute = TRUE, 
     .remove_xaxis = FALSE, 
     .xlim = c(0, 1),
     .plot.margin = c(0, 3, 0, 3),

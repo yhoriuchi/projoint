@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_projoint_choice_level_mm.R
 \name{plot_projoint_choice_level_mm}
 \alias{plot_projoint_choice_level_mm}
-\title{Plot all "choice-level" MMs}
+\title{Plot Choice-Level Marginal Means (MMs)}
 \usage{
 plot_projoint_choice_level_mm(
   x,
@@ -12,33 +12,42 @@ plot_projoint_choice_level_mm(
   .show_attribute = TRUE,
   .remove_xaxis = FALSE,
   .xlim = c(0, 1),
-  .plot.margin = NULL,
+  .plot.margin = c(top = 1, left = 2, bottom = 1, right = 2),
   ...
 )
 }
 \arguments{
-\item{x}{A \code{\link{projoint_results}} object.}
+\item{x}{A \code{\link{projoint_results}} object. This is the output from the \code{projoint()} function.}
 
-\item{.type}{Type of plot: \code{"bar"} (default) or \code{"pointrange"}.}
+\item{.type}{Type of plot to produce. Either \code{"bar"} (default) for bar plots or \code{"pointrange"} for a horizontal point-range plot.}
 
-\item{.estimates}{Which estimates to plot: \code{"corrected"} (default) or \code{"uncorrected"}.}
+\item{.estimates}{Which estimates to plot. Options are \code{"corrected"} (default) or \code{"uncorrected"}.}
 
-\item{.labels}{A character vector for x-axis labels (optional).}
+\item{.labels}{A character vector specifying custom labels for the x-axis (optional). If \code{NULL} (default), labels are automatically generated from the data.}
 
-\item{.show_attribute}{Logical; show attribute as plot title (for pointrange type).}
+\item{.show_attribute}{Logical; if \code{TRUE} (default), display the attribute name as the plot title.}
 
-\item{.remove_xaxis}{Logical; remove x-axis (for pointrange type).}
+\item{.remove_xaxis}{Logical; if \code{TRUE}, remove the x-axis elements (ticks, labels, and line). Default is \code{FALSE}.}
 
-\item{.xlim}{Limits of x-axis (for pointrange type).}
+\item{.xlim}{A numeric vector specifying the x-axis limits (default is \code{c(0, 1)}).}
 
-\item{.plot.margin}{Plot margins (for pointrange type).}
+\item{.plot.margin}{A numeric vector specifying plot margins in centimeters, ordered as \code{c(top, left, bottom, right)}. Default is \code{c(1, 2, 1, 2)}. 
+If \code{NULL}, margins are automatically set based on label lengths.}
 
 \item{...}{Additional arguments (currently unused).}
 }
 \value{
-A ggplot object.
+A \code{ggplot2} object.
 }
 \description{
-This function produces choice-level MM plots given a \code{\link{projoint_results}} object, the output from the \code{\link{projoint}} function.
+This function produces a plot of choice-level marginal means (MMs) given a \code{\link{projoint_results}} object, 
+which is the output from the \code{\link{projoint}} function. 
+It supports two types of visualizations: a bar plot and a pointrange plot.
+}
+\details{
+When \code{.type = "pointrange"}, the two attribute levels are automatically positioned slightly outside the [0,1] x-axis range to avoid overlap with confidence intervals. 
+If \code{.labels} is not supplied, the function attempts to extract level labels from the input object.
+
+If the two levels being compared belong to different attributes, a warning message is shown and no title is added.
 }
 \keyword{internal}

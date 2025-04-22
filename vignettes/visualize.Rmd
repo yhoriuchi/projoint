@@ -22,11 +22,14 @@ knitr::opts_chunk$set(
 narrow_fig <- function() list(fig.width = 5, fig.height = 4)
 wide_fig <- function() list(fig.width = 8, fig.height = 5)
 tall_fig <- function() list(fig.width = 6, fig.height = 7)
+
 ```
 
 ```{r, echo=FALSE}
 library(projoint)
 library(ggplot2)
+
+data(out1_arranged, package = "projoint")
 ```
 
 ## 🎨 Visualize MMs or AMCEs

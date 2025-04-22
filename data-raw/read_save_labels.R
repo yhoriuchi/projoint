@@ -10,14 +10,14 @@ outcomes <- c(outcomes, "choice1_repeated_flipped")
 out1 <- reshape_projoint(.dataframe = exampleData1, 
                          .idvar = "ResponseId", 
                          .outcomes = outcomes,
-                         .outcomes_ids = c("A", "B"),
+                         .choice_labels = c("A", "B"),
                          .alphabet = "K", 
                          .repeated = TRUE,
                          .flipped = TRUE, 
                          .fill = TRUE)
 
 save_labels(out1, "data-raw/labels_original.csv")
-out1_arranged <- read_labels(out1, "data-raw/labels_arranged.csv")
+out1_arranged <- read_labels(out1, "inst/extdata/labels_arranged.csv")
 
 # Apply pre-processing...
 usethis::use_data(out1_arranged, overwrite = TRUE)

@@ -1,17 +1,19 @@
 #' @importFrom stats cov
 #' @importFrom stats sd
 #' @importFrom ggplot2 %+replace%
+
 if (getRversion() >= "2.15.1") {
   utils::globalVariables(c(
-    ".",
-    "1",
-    "2",
+    ".", 
+    "1", 
+    "2", 
+    "aes",
     "agree",
     "att",
     "att_1",
     "att_2",
-    "att_level",
     "att_comb",
+    "att_level",
     "att_level_choose",
     "att_level_choose_baseline",
     "att_level_labels",
@@ -25,11 +27,13 @@ if (getRversion() >= "2.15.1") {
     "code",
     "conf.high",
     "conf.low",
-    "estimand",
+    "cov",
+    "cov_mm_tau",
     "estimate",
     "estimate_0",
     "estimate_1",
     "estimates",
+    "estimand",
     "id",
     "irr",
     "level",
@@ -39,6 +43,7 @@ if (getRversion() >= "2.15.1") {
     "name",
     "outcome_qnum",
     "predicted",
+    "predict",
     "profile",
     "projoint_results",
     "qoi",
@@ -51,6 +56,7 @@ if (getRversion() >= "2.15.1") {
     "qoi_notchoose_1",
     "qoi_notchoose_2",
     "response",
+    "sd",
     "se",
     "se_0",
     "se_1",
@@ -66,7 +72,9 @@ if (getRversion() >= "2.15.1") {
     "task2_y",
     "ties",
     "value",
+    "vcov",
     "x",
+    "y",
     "y_same"
   ))
 }

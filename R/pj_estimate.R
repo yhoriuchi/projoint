@@ -235,31 +235,6 @@ pj_estimate <- function(
   clusters2_quo <- rlang::enquo(.clusters_2)
   weights2_quo <- rlang::enquo(.weights_2)
 
-  # bind variables locally to the function ----------------------------------
-  
-  id <- NULL
-  agree <- NULL
-  x <- NULL
-  cov <- NULL
-  vcov <- NULL
-  sd <- NULL
-  estimate <- NULL
-  cov_mm_tau <- NULL
-  reg_tau <- NULL
-  se <- NULL
-  qoi <- NULL
-  qoi_1 <- NULL
-  qoi_2 <- NULL
-  qoi_choose <- NULL
-  qoi_choose_1 <- NULL
-  qoi_choose_2 <- NULL
-  qoi_notchoose <- NULL
-  qoi_notchoose_1 <- NULL
-  qoi_notchoose_2 <- NULL
-  selected <- NULL
-  selected_1 <- NULL
-  selected_2 <- NULL
-  
   # Organize data -----------------------------------------------------------
   
   if (estimand == "mm"){
@@ -621,13 +596,6 @@ pj_estimate <- function(
   
   data_for_cov <- data_for_estimand |> 
     dplyr::filter(!is.na(agree))
-  
-  # if (is.null(irr)){
-  #   data_for_cov <- data_for_estimand |> 
-  #     dplyr::filter(!is.na(agree))
-  # } else{
-  #   data_for_cov <- data_for_estimand
-  # }
   
   if (estimand == "mm"){
     
