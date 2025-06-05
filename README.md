@@ -18,121 +18,110 @@
 
 ---
 
-**projoint** is a general-purpose R package for conjoint analysis. It produces **more reliable estimates** 
-of the quantities of interest based on questions explicitly about survey respondents' **choices between
-two options**.
+Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many causal effects from a single randomized experiment. Unfortunately, by their ability to mirror complicated real-world choices, these designs often generate substantial **measurement error** and thus **bias**.
+
+**projoint** is a general-purpose R package for conjoint analysis. It produces **more reliable estimates** of the quantities of interest based on questions explicitly about survey respondents’ **choices between two options**.<sup><a href="articles/faq.html#what-is-the-history-of-conjoint-analysis-what-is-the-difference-between-profile-level-and-choice-level-data" target="_blank" style="text-decoration: none;">&#9432;</a></sup>
+
+This method can be used not only by researchers at the design stage but also by those already analyzing the data. As we explain, everything necessary to correct the bias in an application can be estimated via a slight modification of the standard conjoint design, a separate survey run afterward, or sometimes without new data collection at all.
 
 <details>
-<summary>Understand how projoint <b>structures</b> conjoint data</summary>
-- The **projoint** package can organize survey data into two levels:
-  - **Choice-level** (RECOMMENDED): Each choice respondents make between profiles
-  - **Profile-level**: Each profile shown to respondents, including its attributes and levels
-- [Learn more about data structure requirements](https://yhoriuchi.github.io/projoint/articles/structure.html)
-</details>
-
-<details>
-<summary>Understand how projoint <b>corrects</b> measurement error bias</summary>
-- Traditional conjoint analyses assume perfect reliability in respondent choices. 
-However, respondents often make mistakes or respond inconsistently. **projoint** introduces a correction for this measurement error:
-  - It estimates an Inter-Rater Reliability (IRR) metric based on repeated tasks.
-  - It adjusts Marginal Means (MMs) and Average Marginal Component Effects (AMCEs) accordingly.
-  - The correction ensures more accurate inference, especially when response instability is nontrivial.
-- [Learn more about the correction methodology](https://yhoriuchi.github.io/projoint/articles/correct.html)
+    <summary>Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">accompanying paper</a> to learn more about our method</summary>
+- **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).**
+“Correcting Measurement Error Bias in Conjoint Survey Experiments.”<br><em>Forthcoming, American Journal of Political Science.</em><br><a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">Pre-Print Available</a>
+- <a href="doc/projoint_citation.bib">👉 Download BibTeX Reference</a>
 </details>
 
 ---
 
-## 🔧 Installation
+## 🚀 Tutorials
 
-<details>
-<summary>Install the development version from GitHub</summary>
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**1. Install** the development version from GitHub</summary>
+Open R (or <a href="https://www.r-project.org/" target="_blank">install R</a> if you do not have it), and run the following command in your coding environment.
 ```r
 devtools::install_github("yhoriuchi/projoint")
 ```
 </details>
 
----
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**2. Design** your survey</summary>
+Online surveys are frequently written with an online software called Qualtrics. Using our web tool, called the <a href="https://projoint.aaronrkaufman.com/" target="_blank" class="external-link">Projoint Survey Designer</a>, you don't need to learn how to write a survey in Qualtrics.  
 
-## 🚀 Quick Start
-
-<details>
-<summary style="font-size: 18px;"><b>Design</b> your survey correctly</summary>
-- Begin with the [Projoint Survey Designer](https://projoint.aaronrkaufman.com/) and export surveys formatted for Qualtrics.
-- Follow the [step-by-step guide](https://yhoriuchi.github.io/projoint/articles/design.html) to learn how to set up your Qualtrics survey.
+* Use the <a href="https://projoint.aaronrkaufman.com/" target="_blank" class="external-link">Projoint Survey Designer</a> and export surveys formatted for Qualtrics.  
+* Follow the <a href="articles/design.html" target="_blank">step-by-step guide</a> to learn how to set up your Qualtrics survey.  
 </details>
 
-<details>
-<summary style="font-size: 18px;"><b>Read</b> the results into R</summary>
-- Load your **survey responses** into R:
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;"><b>3. Field</b> your survey</summary>
+
+* Using the .QSF file export from the Projoint Survey Designer, load your survey into Qualtrics.
+  * Log into your Qualtrics account.
+  * Click "Create a new project"
+  * Under "From scratch" select "Survey" and then "Get started"
+  * Enter a name and under "How do you want to start your survey" select "Import a QSF file"
+  * Click "Choose file" and select your .QSF file.
+  * Click "Create project"
+* You are free to field your Qualtrics survey through online vendors.
+* When you are done fielding your survey, you will now need to export your data from Qualtrics to R.
+  * Click “Download Data”.
+  * Choose CSV format.
+  * Critically, select “Use choice text” rather than coded values.
+</details>
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;"><b>4. Read</b> the results into R and <b>wrangle</b> your data into structured form</summary>
+
+* Load your <strong>survey responses</strong> into R:
 ```r
 library(projoint)
 dat <- read_Qualtrics("your_file.csv")
 ```
-- Follow the [step-by-step guide](https://yhoriuchi.github.io/projoint/articles/read.html) to learn how to read survey data from Qualtrics for conjoint analysis.
-</details>
 
-<details>
-<summary style="font-size: 18px;"><b>Wrangle</b> the data into structured form</summary>
-- Prepare the data for analysis:
+* Prepare the data for analysis:
 ```r
 dat <- reshape_projoint(
   .dataframe = dat,
   .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped")
 )
 ```
-- Follow the [step-by-step guide](https://yhoriuchi.github.io/projoint/articles/wrangle.html) to learn how to read and reshape data for conjoint analysis.
+
+* Follow the <a href="articles/read.html" target="_blank">step-by-step guide</a> to learn how to read and reshape data for conjoint analysis.
 </details>
 
-<details>
-<summary style="font-size: 18px;"><b>Analyze</b> with automatic measurement error correction</summary>
-- Estimate Marginal Means (MMs) or Average Marginal Component Effects (AMCEs) with correction for measurement error:
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;"><b>5. Analyze</b> and <b>visualize</b> important <b>Quantities of Interest</b></summary>
+
+* Estimate Marginal Means (MMs) or Average Marginal Component Effects (AMCEs) with correction for measurement error:
 ```r
 output <- projoint(dat)
 print(output)
 summary(output)
 ```
-- Follow the [step-by-step guide](https://yhoriuchi.github.io/projoint/articles/analyze.html) to learn how to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary.
-</details>
 
-<details>
-<summary style="font-size: 18px;"><b>Visualize</b> your results</summary>
-- Visualize your results easily:
+* Visualize your results easily:
 ```r
 plot(output)
 ```
-- Follow the [step-by-step guide](https://yhoriuchi.github.io/projoint/articles/visualize.html) to learn how to visualize the marginal means (MMs) or average marginal component effects (AMCEs).
-</details>
 
-<details>
-<summary style="font-size: 18px;"><b>Explore</b> and compare further</summary>
-- Estimate additional quantities of interest and explore subgroup comparisons using choice-level analysis.
-- Follow the [step-by-step guide](https://yhoriuchi.github.io/projoint/articles/explore.html) to learn how to estimate under-investigated quantities of interest and compare subgroups using choice-level analysis.
+* Estimate additional quantities of interest and explore subgroup comparisons using choice-level analysis.
+* Follow the <a href="articles/analyze.html" target="_blank">step-by-step guide</a> to learn how to:
+  * Estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary.
+  * Visualize the marginal means (MMs) or average marginal component effects (AMCEs).
+  * Estimate under-investigated quantities of interest and compare subgroups using choice-level analysis.
 </details>
 
 ---
 
-## 📘 Methodological Background
-
-<details>
-- **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).**  
-  "Correcting Measurement Error Bias in Conjoint Survey Experiments."  
-  _Forthcoming, American Journal of Political Science._  
-  [Pre-Print Available](https://gking.harvard.edu/conjointE)
-- [👉 Download BibTeX Reference](doc/projoint_citation.bib)
-</details>
-
-## 📋 Notes & Limitations
-
-<details>
-- Supports **binary forced-choice** outcomes only (for now).
-- Package is under **active development**.
-</details>
-
 ## 📦 Upcoming Features
 
-<details>
+<details style="margin-left: 25px; margin-bottom: 5px">
 - Weighted estimation for features and respondents
 - Support for non-binary outcomes (ratings, rankings)
+</details>
+
+<details style="margin-left: 25px; margin-bottom: 5px">
+    <summary>Contact</summary>
+For comments and suggestions, please open an issue on the <a href="https://github.com/yhoriuchi/projoint/issues" target="_blank">Github repository</a>.
 </details>
 
 ---

@@ -1,16 +1,19 @@
 ---
-title: "Analyze Your Conjoint Data"
+title: "Analyze and Visualize Important QOIs"
 output: rmarkdown::html_vignette
 description: >
-  How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary.
+  How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary. Visualize these and other QOIs of interest.
 vignette: >
-  %\VignetteIndexEntry{Analyze Your Conjoint Data}
+  %\VignetteIndexEntry{Analyze and Visualize Important QOIs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
 library(projoint)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
 ```
 
 ## 🎯 Estimate Corrected MMs or AMCEs
@@ -18,6 +21,8 @@ library(projoint)
 In conjoint analysis, default MMs and AMCEs can be **biased** due to measurement error from intra-respondent variability.
 
 **projoint** corrects for this bias automatically.
+
+The following instructions apply to choice-level data. What if you have profile-level data?<sup><a href="faq.html#what-if-i-have-profile-level-data" target="_blank" style="text-decoration: none;">&#9432;</a></sup> Our <a href="faq.html" target="_blank">FAQ Page</a> has instructions to estimate and visualize profile-level QOIs.
 
 ---
 
@@ -74,44 +79,6 @@ summary(mm2)
 ```
 
 </details>
-
-<details><summary><b>Profile-Level MMs (All Levels)</b></summary>
-
-```{r}
-mm0 <- projoint(out1, .structure = "profile_level", .estimand = "mm")
-print(mm0)
-summary(mm0)
-```
-
-</details>
-
-<details><summary><b>Profile-Level MMs (Specific Level)</b></summary>
-
-```{r}
-qoi_1 <- set_qoi(
-  .structure = "profile_level",
-  .estimand = "mm",
-  .att_choose = "att1",
-  .lev_choose = "level1"
-)
-
-mm1 <- projoint(out1, .qoi = qoi_1)
-print(mm1)
-summary(mm1)
-```
-
-</details>
-
-<details><summary><b>Profile-Level MMs (Specific Level, Manual IRR)</b></summary>
-
-```{r}
-mm1b <- projoint(out1, .qoi = qoi_1, .irr = 0.75)
-print(mm1b)
-summary(mm1b)
-```
-
-</details>
-
 ---
 
 ## 📉 Estimate AMCEs
@@ -138,48 +105,6 @@ summary(amce2)
 ```
 
 </details>
-
-
-<details><summary><b>Profile-Level AMCEs (All Levels)</b></summary>
-
-```{r}
-amce0 <- projoint(out1, .structure = "profile_level", .estimand = "amce")
-print(amce0)
-summary(amce0)
-```
-
-</details>
-
-<details><summary><b>Profile-Level AMCEs (Specific Level)</b></summary>
-
-```{r}
-qoi_3 <- set_qoi(
-  .structure = "profile_level",
-  .estimand = "amce",
-  .att_choose = "att1",
-  .lev_choose = "level3",
-  .att_choose_b = "att1",
-  .lev_choose_b = "level1"
-)
-
-amce1 <- projoint(out1, .qoi = qoi_3)
-print(amce1)
-summary(amce1)
-```
-
-</details>
-
-<details><summary><b>Profile-Level AMCEs (Specific Level, Manual IRR)</b></summary>
-
-```{r}
-amce1b <- projoint(out1, .qoi = qoi_3, .irr = 0.75)
-print(amce1b)
-summary(amce1b)
-```
-
-</details>
-
-
 ---
 
 ## 🔎 Predict Intra-Respondent Reliability (IRR)
@@ -198,23 +123,202 @@ plot(predicted_irr)
 ```
 
 </details>
+---
+
+```{r fig-setup, include=FALSE}
+# Global default settings for all figures
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.height = 3,
+  fig.align = "center",
+  dpi = 300  # Optional: high-resolution plots
+)
+
+# Helper functions for special figure sizes
+narrow_fig <- function() list(fig.width = 5, fig.height = 4)
+wide_fig <- function() list(fig.width = 8, fig.height = 5)
+tall_fig <- function() list(fig.width = 6, fig.height = 7)
+
+```
+
+```{r, echo=FALSE}
+library(projoint)
+library(ggplot2)
+
+data(out1_arranged, package = "projoint")
+```
+
+## 🎨 Visualize MMs or AMCEs
+
+The **projoint** package provides ready-to-publish plotting tools for conjoint analysis results.
+
+<span style="color:DarkRed"><b>Note:</b></span> The current version of **projoint** supports plotting choice-level MMs only.  
+Support for **choice-level AMCEs** will be available in future updates!
 
 ---
 
-## 💡 Tip: When to Use `.by_var`
+### ⚖️ Choice-Level Analysis
 
-Use `.by_var` **only** when comparing **profile-level MMs** between two groups (e.g., Democrats vs. Republicans).  
-For AMCEs or choice-level quantities, `.by_var` is not currently supported.
+<details>
+<summary><b>Estimate</b></summary>
+
+- Specify your quantity of interest:
+```{r}
+qoi_mm <- set_qoi(
+  .structure = "choice_level", # default
+  .att_choose = "att1", 
+  .lev_choose = "level1", 
+  .att_notchoose = "att1", 
+  .lev_notchoose = "level3"
+)
+```
+
+- Estimate
+```{r}
+choice_mm <- projoint(
+  .data = out1_arranged, 
+  .qoi = qoi_mm, 
+  .ignore_position = TRUE
+)
+```
+</details>
+
+<details>
+<summary><b>Visualize (Levels) </b></summary>
+
+```{r, fig.width = 6, fig.height = 3}
+plot(choice_mm)
+```
+</details>
+
+<details>
+<summary><b>Visualize (Differences)</b></summary>
+
+```{r, , fig.width = 8, fig.height = 2}
+plot(choice_mm, .type = "pointrange")
+```
+</details>
 
 ---
 
-## 🌟 What's Next?
+## 🌟 Explore and Compare Further
 
-Now that you have estimated key quantities, you’re ready to visualize your results clearly and effectively!
-
-➡️ **Continue to:** [Visualize Your Results](visualize.html)  
-⬅️ **Back to:** [Wrangle Your Data](wrangle.html)  
-🏠 **Home:** [Home](index.html)
-
+Choice-level analysis opens the door to many **new research questions** that traditional profile-level analysis often overlooks.
+This article demonstrates how to estimate **deeper quantities** and **compare subgroups** effectively.
 
 ---
+
+## 📦 Setup
+
+We use the already wrangled and cleaned data `out1_arranged`.
+
+```{r}
+out1_arranged$labels
+```
+
+---
+
+## ⚖️ Explore: Compare Trade-offs Directly
+
+<details><summary><b>Example: Low Housing Costs vs. Low Crime Rates</b></summary>
+
+```{r, fig.height=4, fig.width=8}
+qoi_1 <- set_qoi(
+  .structure = "choice_level",
+  .att_choose = "att1",
+  .lev_choose = "level1",
+  .att_notchoose = "att6",
+  .lev_notchoose = "level2"
+)
+
+mm1 <- projoint(.data = out1_arranged,
+                .qoi = qoi_1,
+                .structure = "choice_level",
+                .ignore_position = TRUE)
+
+plot(mm1,
+     .labels = c("Housing Cost\n(15% of pre-tax income)",
+                 "Violent Crime Rate\n(20% > National Average)")) +
+  labs(y = "Marginal Mean", x = NULL) +
+  coord_cartesian(ylim = c(0, 1)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "darkgray")
+```
+
+</details>
+
+---
+
+## 🧩 Explore: Compare Multiple Levels Simultaneously
+
+<details><summary><b>Example: Urban vs. Suburban Preferences</b></summary>
+
+```{r, fig.height=4, fig.width=8}
+qoi_2 <- set_qoi(
+  .structure = "choice_level",
+  .att_choose = "att7",
+  .lev_choose = c("level2", "level3"),
+  .att_notchoose = "att7",
+  .lev_notchoose = c("level5", "level6")
+)
+
+mm2 <- projoint(.data = out1_arranged,
+                .qoi = qoi_2,
+                .structure = "choice_level",
+                .ignore_position = TRUE)
+
+plot(mm2,
+     .labels = c("City", "Suburban")) +
+  labs(y = "Marginal Mean", x = "Type of Place") +
+  coord_cartesian(ylim = c(0, 1)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "darkgray")
+```
+
+</details>
+
+---
+
+## 📊 Compare: Subgroup Differences
+
+<details><summary><b>Choice-Level Subgroup Comparison: Party Differences</b></summary>
+
+```{r, fig.height=4, fig.width=8}
+df_D <- exampleData1 %>% filter(party_1 == "Democrat") %>% reshape_projoint(outcomes)
+df_R <- exampleData1 %>% filter(party_1 == "Republican") %>% reshape_projoint(outcomes)
+df_0 <- exampleData1 %>% filter(party_1 %in% c("Something else", "Independent")) %>% reshape_projoint(outcomes)
+
+qoi <- set_qoi(
+  .structure = "choice_level",
+  .estimand = "mm",
+  .att_choose = "att2",
+  .lev_choose = "level3",
+  .att_notchoose = "att2",
+  .lev_notchoose = "level1"
+)
+
+out_D <- projoint(df_D, qoi)
+out_R <- projoint(df_R, qoi)
+out_0 <- projoint(df_0, qoi)
+
+out_merged <- bind_rows(
+  out_D$estimates %>% mutate(party = "Democrat"),
+  out_R$estimates %>% mutate(party = "Republican"),
+  out_0$estimates %>% mutate(party = "Independent")
+) %>% filter(estimand == "mm_corrected")
+
+# Plot
+
+ggplot(out_merged, aes(y = party, x = estimate)) +
+  geom_vline(xintercept = 0.5, linetype = "dashed", color = "gray") +
+  geom_pointrange(aes(xmin = conf.low, xmax = conf.high)) +
+  geom_text(aes(label = format(round(estimate, 2), nsmall = 2)), vjust = -1) +
+  labs(y = NULL, x = "Choice-level Marginal Mean",
+       title = "Preference for Democratic-majority areas") +
+  theme_classic()
+```
+
+</details>
+
+---
+ 
+🏠 **Home:** [Home](../index.html)
+

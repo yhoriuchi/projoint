@@ -5,46 +5,59 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Analyze Your Conjoint Data • projoint</title>
+<meta name="description" content="How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary. Visualize these and other QOIs of interest.
+">
+<title>Analyze and Visualize Important QOIs • projoint</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Analyze Your Conjoint Data">
-<meta name="description" content="How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary.
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Analyze and Visualize Important QOIs">
+<meta property="og:description" content="How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary. Visualize these and other QOIs of interest.
 ">
-<meta property="og:description" content="How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary.
-">
+<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
-
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
-
+    
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
+<li class="active nav-item">
+  <a class="nav-link" href="../articles/index.html">Articles</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/faq.html">FAQ</a>
+</li>
       </ul>
-<ul class="navbar-nav">
-<li class="nav-item"><form class="form-inline" role="search">
- <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
-</form></li>
-      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav"></ul>
 </div>
 
-
+    
   </div>
 </nav><div class="container template-article">
 
@@ -53,11 +66,10 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Analyze Your Conjoint Data</h1>
+      <img src="" class="logo" alt=""><h1>Analyze and Visualize Important QOIs</h1>
             
       
-
+      
       <div class="d-none name"><code>analyze.Rmd</code></div>
     </div>
 
@@ -70,6 +82,11 @@
 <strong>biased</strong> due to measurement error from intra-respondent
 variability.</p>
 <p><strong>projoint</strong> corrects for this bias automatically.</p>
+<p>The following instructions apply to choice-level data. What if you
+have profile-level
+data?<sup><a href="faq.html#what-if-i-have-profile-level-data" target="_blank" style="text-decoration: none;">ⓘ</a></sup>
+Our <a href="faq.html" target="_blank">FAQ Page</a> has instructions to
+estimate and visualize profile-level QOIs.</p>
 <hr>
 </div>
 <div class="section level2">
@@ -155,115 +172,13 @@ actual text labels because:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.402 0.025<span style="text-decoration: underline;">8</span>    0.352     0.453 att1:level3     </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected      0.351 0.040<span style="text-decoration: underline;">8</span>    0.271     0.431 att1:level3     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: att_level_notchoose &lt;chr&gt;</span></span></span></code></pre>
-</details><details><summary><b>Profile-Level MMs (All Levels)</b>
-</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mm0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm0</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Projoint results object</span></span>
-<span><span class="co">## -------------------------</span></span>
-<span><span class="co">## Estimand:  mm </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Estimated </span></span>
-<span><span class="co">## Tau:  0.172 </span></span>
-<span><span class="co">## Number of estimates:  48</span></span></code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm0</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Summary of Projoint Estimates</span></span>
-<span><span class="co">## ------------------------------</span></span>
-<span><span class="co">## Estimand:  mm </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Estimated </span></span>
-<span><span class="co">## Tau:  0.172</span></span></code></pre>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 48 × 6</span></span></span>
-<span><span class="co">##    estimand       estimate     se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> mm_corrected      0.614 0.020<span style="text-decoration: underline;">7</span>    0.573     0.654 att1:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> mm_uncorrected    0.485 0.013<span style="text-decoration: underline;">4</span>    0.458     0.511 att1:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> mm_corrected      0.477 0.020<span style="text-decoration: underline;">4</span>    0.437     0.517 att1:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> mm_uncorrected    0.445 0.013<span style="text-decoration: underline;">1</span>    0.419     0.470 att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> mm_corrected      0.416 0.020<span style="text-decoration: underline;">3</span>    0.376     0.455 att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> mm_uncorrected    0.489 0.013<span style="text-decoration: underline;">3</span>    0.463     0.515 att2:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> mm_corrected      0.483 0.020<span style="text-decoration: underline;">2</span>    0.443     0.522 att2:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> mm_uncorrected    0.524 0.013<span style="text-decoration: underline;">0</span>    0.498     0.549 att2:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> mm_corrected      0.536 0.020<span style="text-decoration: underline;">0</span>    0.497     0.575 att2:level2     </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 38 more rows</span></span></span></code></pre>
-</details><details><summary><b>Profile-Level MMs (Specific Level)</b>
-</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">qoi_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
-<span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
-<span>  .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
-<span>  .att_choose <span class="op">=</span> <span class="st">"att1"</span>,</span>
-<span>  .lev_choose <span class="op">=</span> <span class="st">"level1"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">mm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .qoi <span class="op">=</span> <span class="va">qoi_1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Projoint results object</span></span>
-<span><span class="co">## -------------------------</span></span>
-<span><span class="co">## Estimand:  mm </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Estimated </span></span>
-<span><span class="co">## Tau:  0.172 </span></span>
-<span><span class="co">## Number of estimates:  2</span></span></code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Summary of Projoint Estimates</span></span>
-<span><span class="co">## ------------------------------</span></span>
-<span><span class="co">## Estimand:  mm </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Estimated </span></span>
-<span><span class="co">## Tau:  0.172</span></span></code></pre>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
-<span><span class="co">##   estimand       estimate     se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected      0.614 0.020<span style="text-decoration: underline;">7</span>    0.573     0.654 att1:level1     </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: att_level_notchoose &lt;chr&gt;</span></span></span></code></pre>
-</details><details><summary><b>Profile-Level MMs (Specific Level, Manual IRR)</b>
-</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mm1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .qoi <span class="op">=</span> <span class="va">qoi_1</span>, .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mm1b</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Projoint results object</span></span>
-<span><span class="co">## -------------------------</span></span>
-<span><span class="co">## Estimand:  mm </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Assumed (0.75) </span></span>
-<span><span class="co">## Tau:  0.146 </span></span>
-<span><span class="co">## Number of estimates:  2</span></span></code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mm1b</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Summary of Projoint Estimates</span></span>
-<span><span class="co">## ------------------------------</span></span>
-<span><span class="co">## Estimand:  mm </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Assumed (0.75) </span></span>
-<span><span class="co">## Tau:  0.146</span></span></code></pre>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
-<span><span class="co">##   estimand       estimate     se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> mm_uncorrected    0.574 0.013<span style="text-decoration: underline;">4</span>    0.548     0.601 att1:level1     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> mm_corrected      0.605 0.019<span style="text-decoration: underline;">0</span>    0.568     0.643 att1:level1     </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: att_level_notchoose &lt;chr&gt;</span></span></span></code></pre>
 </details><hr>
 </div>
 <div class="section level2">
 <h2 id="estimate-amces">📉 Estimate AMCEs<a class="anchor" aria-label="anchor" href="#estimate-amces"></a>
 </h2>
 <details><summary><b>Choice-Level AMCEs (Specific Level)</b>
-</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
@@ -288,7 +203,7 @@ actual text labels because:</p>
 <span><span class="co">## IRR:  Estimated </span></span>
 <span><span class="co">## Tau:  0.172 </span></span>
 <span><span class="co">## Number of estimates:  2</span></span></code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Summary of Projoint Estimates</span></span>
@@ -305,113 +220,6 @@ actual text labels because:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected    -<span style="color: #BB0000;">0.073</span><span style="color: #BB0000; text-decoration: underline;">9</span> 0.041<span style="text-decoration: underline;">4</span>   -<span style="color: #BB0000;">0.155</span>   0.007<span style="text-decoration: underline;">27</span> att1:level3     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: att_level_notchoose &lt;chr&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   att_level_choose_baseline &lt;chr&gt;, att_level_notchoose_baseline &lt;chr&gt;</span></span></span></code></pre>
-</details><details><summary><b>Profile-Level AMCEs (All Levels)</b>
-</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">amce0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce0</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Projoint results object</span></span>
-<span><span class="co">## -------------------------</span></span>
-<span><span class="co">## Estimand:  amce </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Estimated </span></span>
-<span><span class="co">## Tau:  0.172 </span></span>
-<span><span class="co">## Number of estimates:  34</span></span></code></pre>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce0</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Summary of Projoint Estimates</span></span>
-<span><span class="co">## ------------------------------</span></span>
-<span><span class="co">## Estimand:  amce </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Estimated </span></span>
-<span><span class="co">## Tau:  0.172</span></span></code></pre>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 34 × 7</span></span></span>
-<span><span class="co">##    estimand         estimate     se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> amce_uncorrected -<span style="color: #BB0000;">0.089</span><span style="color: #BB0000; text-decoration: underline;">9</span>  0.019<span style="text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.127</span>     -<span style="color: #BB0000;">0.052</span><span style="color: #BB0000; text-decoration: underline;">7</span> att1:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> amce_corrected   -<span style="color: #BB0000;">0.137</span>   0.029<span style="text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.194</span>     -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> amce_uncorrected -<span style="color: #BB0000;">0.130</span>   0.018<span style="text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.167</span>     -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> amce_corrected   -<span style="color: #BB0000;">0.198</span>   0.029<span style="text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.256</span>     -<span style="color: #BB0000;">0.140</span>  att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> amce_uncorrected  0.034<span style="text-decoration: underline;">8</span>  0.018<span style="text-decoration: underline;">6</span> -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">70</span>    0.071<span style="text-decoration: underline;">3</span> att2:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> amce_corrected    0.053<span style="text-decoration: underline;">0</span>  0.028<span style="text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">58</span>    0.109  att2:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> amce_uncorrected -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">77</span> 0.018<span style="text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.038</span><span style="color: #BB0000; text-decoration: underline;">6</span>     0.035<span style="text-decoration: underline;">0</span> att2:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> amce_corrected   -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">70</span> 0.028<span style="text-decoration: underline;">6</span> -<span style="color: #BB0000;">0.058</span><span style="color: #BB0000; text-decoration: underline;">9</span>     0.053<span style="text-decoration: underline;">5</span> att2:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> amce_uncorrected  0.024<span style="text-decoration: underline;">0</span>  0.020<span style="text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">9</span>     0.064<span style="text-decoration: underline;">0</span> att3:level2     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> amce_corrected    0.036<span style="text-decoration: underline;">6</span>  0.031<span style="text-decoration: underline;">2</span> -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">6</span>     0.097<span style="text-decoration: underline;">9</span> att3:level2     </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 24 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: att_level_choose_baseline &lt;chr&gt;</span></span></span></code></pre>
-</details><details><summary><b>Profile-Level AMCEs (Specific Level)</b>
-</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">qoi_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
-<span>  .structure <span class="op">=</span> <span class="st">"profile_level"</span>,</span>
-<span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
-<span>  .att_choose <span class="op">=</span> <span class="st">"att1"</span>,</span>
-<span>  .lev_choose <span class="op">=</span> <span class="st">"level3"</span>,</span>
-<span>  .att_choose_b <span class="op">=</span> <span class="st">"att1"</span>,</span>
-<span>  .lev_choose_b <span class="op">=</span> <span class="st">"level1"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">amce1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .qoi <span class="op">=</span> <span class="va">qoi_3</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Projoint results object</span></span>
-<span><span class="co">## -------------------------</span></span>
-<span><span class="co">## Estimand:  amce </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Estimated </span></span>
-<span><span class="co">## Tau:  0.172 </span></span>
-<span><span class="co">## Number of estimates:  2</span></span></code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Summary of Projoint Estimates</span></span>
-<span><span class="co">## ------------------------------</span></span>
-<span><span class="co">## Estimand:  amce </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Estimated </span></span>
-<span><span class="co">## Tau:  0.172</span></span></code></pre>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
-<span><span class="co">##   estimand         estimate     se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected   -<span style="color: #BB0000;">0.130</span> 0.018<span style="text-decoration: underline;">8</span>   -<span style="color: #BB0000;">0.167</span>   -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected     -<span style="color: #BB0000;">0.198</span> 0.029<span style="text-decoration: underline;">4</span>   -<span style="color: #BB0000;">0.256</span>   -<span style="color: #BB0000;">0.140</span>  att1:level3     </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: att_level_notchoose &lt;chr&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   att_level_choose_baseline &lt;chr&gt;, att_level_notchoose_baseline &lt;chr&gt;</span></span></span></code></pre>
-</details><details><summary><b>Profile-Level AMCEs (Specific Level, Manual IRR)</b>
-</summary><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">amce1b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .qoi <span class="op">=</span> <span class="va">qoi_3</span>, .irr <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce1b</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Projoint results object</span></span>
-<span><span class="co">## -------------------------</span></span>
-<span><span class="co">## Estimand:  amce </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Assumed (0.75) </span></span>
-<span><span class="co">## Tau:  0.146 </span></span>
-<span><span class="co">## Number of estimates:  2</span></span></code></pre>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">amce1b</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Summary of Projoint Estimates</span></span>
-<span><span class="co">## ------------------------------</span></span>
-<span><span class="co">## Estimand:  amce </span></span>
-<span><span class="co">## Structure:  profile_level </span></span>
-<span><span class="co">## Standard error method:  analytical </span></span>
-<span><span class="co">## IRR:  Assumed (0.75) </span></span>
-<span><span class="co">## Tau:  0.146</span></span></code></pre>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
-<span><span class="co">##   estimand         estimate     se conf.low conf.high att_level_choose</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> amce_uncorrected   -<span style="color: #BB0000;">0.130</span> 0.018<span style="text-decoration: underline;">8</span>   -<span style="color: #BB0000;">0.167</span>   -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">1</span> att1:level3     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> amce_corrected     -<span style="color: #BB0000;">0.184</span> 0.026<span style="text-decoration: underline;">6</span>   -<span style="color: #BB0000;">0.236</span>   -<span style="color: #BB0000;">0.132</span>  att1:level3     </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: att_level_notchoose &lt;chr&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   att_level_choose_baseline &lt;chr&gt;, att_level_notchoose_baseline &lt;chr&gt;</span></span></span></code></pre>
 </details><hr>
 </div>
 <div class="section level2">
@@ -421,13 +229,13 @@ actual text labels because:</p>
 can <strong>predict</strong> IRR using predict_tau(), based on observed
 respondent behavior.</p>
 <details><summary><b>Predict IRR Using <code>predict_tau()</code></b>
-</summary><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">out1_arranged</span><span class="op">)</span></span>
 <span><span class="va">predicted_irr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predict_tau.html">predict_tau</a></span><span class="op">(</span><span class="va">out1_arranged</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">predicted_irr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Tau estimated using the extrapolation method: 0.743</span></span></code></pre>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">predicted_irr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
 <span><span class="co">##       x predicted</span></span>
@@ -440,53 +248,205 @@ respondent behavior.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">6</span>     5     0.572</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">7</span>     6     0.537</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">8</span>     7     0.503</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predicted_irr</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analyze_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="analyze_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </details><hr>
 </div>
 <div class="section level2">
-<h2 id="tip-when-to-use--by_var">💡 Tip: When to Use <code>.by_var</code><a class="anchor" aria-label="anchor" href="#tip-when-to-use--by_var"></a>
+<h2 id="visualize-mms-or-amces">🎨 Visualize MMs or AMCEs<a class="anchor" aria-label="anchor" href="#visualize-mms-or-amces"></a>
 </h2>
-<p>Use <code>.by_var</code> <strong>only</strong> when comparing
-<strong>profile-level MMs</strong> between two groups (e.g., Democrats
-vs. Republicans).<br>
-For AMCEs or choice-level quantities, <code>.by_var</code> is not
-currently supported.</p>
+<p>The <strong>projoint</strong> package provides ready-to-publish
+plotting tools for conjoint analysis results.</p>
+<p><span style="color:DarkRed"><b>Note:</b></span> The current version
+of <strong>projoint</strong> supports plotting choice-level MMs
+only.<br>
+Support for <strong>choice-level AMCEs</strong> will be available in
+future updates!</p>
+<hr>
+<div class="section level3">
+<h3 id="choice-level-analysis">⚖️ Choice-Level Analysis<a class="anchor" aria-label="anchor" href="#choice-level-analysis"></a>
+</h3>
+<details><summary><b>Estimate</b>
+</summary><ul>
+<li>Specify your quantity of interest:</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">qoi_mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
+<span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>, <span class="co"># default</span></span>
+<span>  .att_choose <span class="op">=</span> <span class="st">"att1"</span>, </span>
+<span>  .lev_choose <span class="op">=</span> <span class="st">"level1"</span>, </span>
+<span>  .att_notchoose <span class="op">=</span> <span class="st">"att1"</span>, </span>
+<span>  .lev_notchoose <span class="op">=</span> <span class="st">"level3"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<ul>
+<li>Estimate</li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">choice_mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span></span>
+<span>  .data <span class="op">=</span> <span class="va">out1_arranged</span>, </span>
+<span>  .qoi <span class="op">=</span> <span class="va">qoi_mm</span>, </span>
+<span>  .ignore_position <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</details><details><summary><b>Visualize (Levels) </b>
+</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">choice_mm</span><span class="op">)</span></span></code></pre></div>
+<img src="analyze_files/figure-html/unnamed-chunk-9-1.png" width="1800" style="display: block; margin: auto;"></details><details><summary><b>Visualize (Differences)</b>
+</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">choice_mm</span>, .type <span class="op">=</span> <span class="st">"pointrange"</span><span class="op">)</span></span></code></pre></div>
+<img src="analyze_files/figure-html/unnamed-chunk-10-1.png" width="2400" style="display: block; margin: auto;"></details><hr>
+</div>
+</div>
+<div class="section level2">
+<h2 id="explore-and-compare-further">🌟 Explore and Compare Further<a class="anchor" aria-label="anchor" href="#explore-and-compare-further"></a>
+</h2>
+<p>Choice-level analysis opens the door to many <strong>new research
+questions</strong> that traditional profile-level analysis often
+overlooks. This article demonstrates how to estimate <strong>deeper
+quantities</strong> and <strong>compare subgroups</strong>
+effectively.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="whats-next">🌟 What’s Next?<a class="anchor" aria-label="anchor" href="#whats-next"></a>
+<h2 id="setup">📦 Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
-<p>Now that you have estimated key quantities, you’re ready to visualize
-your results clearly and effectively!</p>
-<p>➡️ <strong>Continue to:</strong> <a href="visualize.html">Visualize
-Your Results</a><br>
-⬅️ <strong>Back to:</strong> <a href="wrangle.html">Wrangle Your
-Data</a><br>
-🏠 <strong>Home:</strong> <a href="index.html">Home</a></p>
+<p>We use the already wrangled and cleaned data
+<code>out1_arranged</code>.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out1_arranged</span><span class="op">$</span><span class="va">labels</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
+<span><span class="co">##    attribute                     level                   attribute_id level_id  </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> Housing Cost (Pre-tax Income) 15%                     att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Housing Cost (Pre-tax Income) 30%                     att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Housing Cost (Pre-tax Income) 40%                     att1         att1:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Presidential Vote (2020)      50% Dem, 50% Rep        att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> Presidential Vote (2020)      30% Dem, 70% Rep        att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Presidential Vote (2020)      70% Dem, 30% Rep        att2         att2:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Racial Composition            50% White, 50% Nonwhite att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Racial Composition            75% White, 25% Nonwhite att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> Racial Composition            90% White, 10% Nonwhite att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> Racial Composition            96% White, 4% Nonwhite  att3         att3:leve…</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
 <hr>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+<div class="section level2">
+<h2 id="explore-compare-trade-offs-directly">⚖️ Explore: Compare Trade-offs Directly<a class="anchor" aria-label="anchor" href="#explore-compare-trade-offs-directly"></a>
+</h2>
+<details><summary><b>Example: Low Housing Costs vs. Low Crime Rates</b>
+</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">qoi_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
+<span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
+<span>  .att_choose <span class="op">=</span> <span class="st">"att1"</span>,</span>
+<span>  .lev_choose <span class="op">=</span> <span class="st">"level1"</span>,</span>
+<span>  .att_notchoose <span class="op">=</span> <span class="st">"att6"</span>,</span>
+<span>  .lev_notchoose <span class="op">=</span> <span class="st">"level2"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1_arranged</span>,</span>
+<span>                .qoi <span class="op">=</span> <span class="va">qoi_1</span>,</span>
+<span>                .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
+<span>                .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm1</span>,</span>
+<span>     .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Housing Cost\n(15% of pre-tax income)"</span>,</span>
+<span>                 <span class="st">"Violent Crime Rate\n(20% &gt; National Average)"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Marginal Mean"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">coord_cartesian</span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.5</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"darkgray"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## The attributes are different between the two levels. Check your setting carefully. The attribute label is not added to the figure.</span></span></code></pre>
+<p><img src="analyze_files/figure-html/unnamed-chunk-12-1.png" width="2400" style="display: block; margin: auto;"></p>
+</details><hr>
+</div>
+<div class="section level2">
+<h2 id="explore-compare-multiple-levels-simultaneously">🧩 Explore: Compare Multiple Levels Simultaneously<a class="anchor" aria-label="anchor" href="#explore-compare-multiple-levels-simultaneously"></a>
+</h2>
+<details><summary><b>Example: Urban vs. Suburban Preferences</b>
+</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">qoi_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
+<span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
+<span>  .att_choose <span class="op">=</span> <span class="st">"att7"</span>,</span>
+<span>  .lev_choose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level2"</span>, <span class="st">"level3"</span><span class="op">)</span>,</span>
+<span>  .att_notchoose <span class="op">=</span> <span class="st">"att7"</span>,</span>
+<span>  .lev_notchoose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level5"</span>, <span class="st">"level6"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">out1_arranged</span>,</span>
+<span>                .qoi <span class="op">=</span> <span class="va">qoi_2</span>,</span>
+<span>                .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
+<span>                .ignore_position <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm2</span>,</span>
+<span>     .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"City"</span>, <span class="st">"Suburban"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Marginal Mean"</span>, x <span class="op">=</span> <span class="st">"Type of Place"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">coord_cartesian</span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.5</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"darkgray"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analyze_files/figure-html/unnamed-chunk-13-1.png" width="2400" style="display: block; margin: auto;"></p>
+</details><hr>
+</div>
+<div class="section level2">
+<h2 id="compare-subgroup-differences">📊 Compare: Subgroup Differences<a class="anchor" aria-label="anchor" href="#compare-subgroup-differences"></a>
+</h2>
+<details><summary><b>Choice-Level Subgroup Comparison: Party Differences</b>
+</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df_D</span> <span class="op">&lt;-</span> <span class="va">exampleData1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">party_1</span> <span class="op">==</span> <span class="st">"Democrat"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">outcomes</span><span class="op">)</span></span>
+<span><span class="va">df_R</span> <span class="op">&lt;-</span> <span class="va">exampleData1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">party_1</span> <span class="op">==</span> <span class="st">"Republican"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">outcomes</span><span class="op">)</span></span>
+<span><span class="va">df_0</span> <span class="op">&lt;-</span> <span class="va">exampleData1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">party_1</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Something else"</span>, <span class="st">"Independent"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">outcomes</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">qoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
+<span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
+<span>  .estimand <span class="op">=</span> <span class="st">"mm"</span>,</span>
+<span>  .att_choose <span class="op">=</span> <span class="st">"att2"</span>,</span>
+<span>  .lev_choose <span class="op">=</span> <span class="st">"level3"</span>,</span>
+<span>  .att_notchoose <span class="op">=</span> <span class="st">"att2"</span>,</span>
+<span>  .lev_notchoose <span class="op">=</span> <span class="st">"level1"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">out_D</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">df_D</span>, <span class="va">qoi</span><span class="op">)</span></span>
+<span><span class="va">out_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">df_R</span>, <span class="va">qoi</span><span class="op">)</span></span>
+<span><span class="va">out_0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">df_0</span>, <span class="va">qoi</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">out_merged</span> <span class="op">&lt;-</span> <span class="fu">bind_rows</span><span class="op">(</span></span>
+<span>  <span class="va">out_D</span><span class="op">$</span><span class="va">estimates</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>party <span class="op">=</span> <span class="st">"Democrat"</span><span class="op">)</span>,</span>
+<span>  <span class="va">out_R</span><span class="op">$</span><span class="va">estimates</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>party <span class="op">=</span> <span class="st">"Republican"</span><span class="op">)</span>,</span>
+<span>  <span class="va">out_0</span><span class="op">$</span><span class="va">estimates</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>party <span class="op">=</span> <span class="st">"Independent"</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">estimand</span> <span class="op">==</span> <span class="st">"mm_corrected"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot</span></span>
+<span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">out_merged</span>, <span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">party</span>, x <span class="op">=</span> <span class="va">estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0.5</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_pointrange</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">conf.low</span>, xmax <span class="op">=</span> <span class="va">conf.high</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">estimate</span>, <span class="fl">2</span><span class="op">)</span>, nsmall <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, vjust <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"Choice-level Marginal Mean"</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"Preference for Democratic-majority areas"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_classic</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analyze_files/figure-html/unnamed-chunk-14-1.png" width="2400" style="display: block; margin: auto;"></p>
+</details><hr>
+<p>🏠 <strong>Home:</strong> <a href="../index.html">Home</a></p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Yusaku Horiuchi, Aaron Kaufman, Gary King.</p>
+  <p></p>
+<p>Developed by Yusaku Horiuchi, Aaron Kaufman, Gary King.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>
 </div>
 
+  
 
-
-
+  
 
   </body>
 </html>

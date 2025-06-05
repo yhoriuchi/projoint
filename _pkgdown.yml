@@ -9,7 +9,12 @@ navbar:
       - articles
       - reference
       - news
-
+      - faq_page
+  components:
+    faq_page:
+      text: "FAQ"
+      href: articles/faq.html
+        
 articles:
 - title: 📚 Getting Started
   desc: "Fundamental concepts before using projoint"
@@ -20,12 +25,10 @@ articles:
 - title: 🚀 Step-by-Step Tutorials
   desc: "Learn how to design, wrangle, analyze, and visualize conjoint experiments"
   contents:
-  - design       # Step 1: Survey Design
-  - read         # Step 2: Importing Qualtrics Data
-  - wrangle      # Step 2: Data Wrangling
-  - analyze      # Step 4: Estimating MMs or AMCEs
-  - visualize    # Step 5: Visualizing Results
-  - explore      # Step 6: Further exploration
+  - design       # Survey Design
+  - read         # Importing Qualtrics Data & Data Wrangling
+  - analyze      # Estimating and Visualizing QOIs
+  - faq          # Frequently Asked Questions
 
 reference:
 - title: 📦 Data Sets
@@ -58,4 +61,3 @@ reference:
   contents:
   - plot.projoint_results
   - plot.projoint_tau
-  

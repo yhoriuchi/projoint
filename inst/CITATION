@@ -23,11 +23,12 @@ citEntry(
   entry    = "misc",
   title    = "projoint: The One Stop Conjoint Shop",
   author   = c(person("Yusaku", "Horiuchi"), 
-                   person("Aaron", "Kaufman")),
+                   person("Aaron", "Kaufman"),
+                   person("Gary", "King")),
   year     = "2023",
   publisher = "GitHub repository",
   url      = "https://github.com/yhoriuchi/projoint",
-  textVersion = paste("Yusaku Horiuchi and Aaron R. Kaufman (2023).",
+  textVersion = paste("Yusaku Horiuchi, Aaron R. Kaufman, and Gary King (2023).",
         "projoint: The One Stop Conjoint Shop.",
         "URL https://github.com/yhoriuchi/projoint")
 )

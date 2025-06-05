@@ -5,46 +5,59 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Read Your Qualtrics Data • projoint</title>
+<meta name="description" content="Read your Qualtrics data and wrangle it in R.
+">
+<title>Read and Wrangle Your Data • projoint</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Read Your Qualtrics Data">
-<meta name="description" content="How to read survey data from Qualtrics for conjoint analysis.
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Read and Wrangle Your Data">
+<meta property="og:description" content="Read your Qualtrics data and wrangle it in R.
 ">
-<meta property="og:description" content="How to read survey data from Qualtrics for conjoint analysis.
-">
+<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
-
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
-
+    
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
+<li class="active nav-item">
+  <a class="nav-link" href="../articles/index.html">Articles</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/faq.html">FAQ</a>
+</li>
       </ul>
-<ul class="navbar-nav">
-<li class="nav-item"><form class="form-inline" role="search">
- <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
-</form></li>
-      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav"></ul>
 </div>
 
-
+    
   </div>
 </nav><div class="container template-article">
 
@@ -53,11 +66,10 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Read Your Qualtrics Data</h1>
+      <img src="" class="logo" alt=""><h1>Read and Wrangle Your Data</h1>
             
       
-
+      
       <div class="d-none name"><code>read.Rmd</code></div>
     </div>
 
@@ -73,9 +85,9 @@ function to quickly read properly formatted Qualtrics files.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="quick-workflow">🚀 Quick Workflow<a class="anchor" aria-label="anchor" href="#quick-workflow"></a>
+<h2 id="read-workflow">🚀 Read Workflow<a class="anchor" aria-label="anchor" href="#read-workflow"></a>
 </h2>
-<details><summary><b>1. Export your survey responses from Qualtrics</b>
+<details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>1. Export your survey responses from Qualtrics</strong>
 </summary><p>When exporting from Qualtrics:</p>
 <ul>
 <li>Click <strong>“Download Data”</strong>.</li>
@@ -83,13 +95,14 @@ function to quickly read properly formatted Qualtrics files.</p>
 <li>Critically, select <strong>“Use choice text”</strong> rather than
 coded values.</li>
 </ul>
-⚡ If you skip selecting “Use choice text,” your conjoint data may fail
-to load properly!
-</details><details><summary><b>2. Load essential packages</b>
+<p>⚡ If you skip selecting “Use choice text,” your conjoint data may
+fail to load properly!</p>
+</details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>2. Load essential packages</strong>
 </summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yhoriuchi.github.io/projoint/">projoint</a></span><span class="op">)</span></span></code></pre></div>
-</details><details><summary><b>3. Read your CSV file into R using <code>read_Qualtrics()</code></b>
+</details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>3. Read your CSV file into R using
+<code>read_Qualtrics()</code></strong>
 </summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example: If your file is located in a "data" folder</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_Qualtrics.html">read_Qualtrics</a></span><span class="op">(</span><span class="st">"data/your_file.csv"</span><span class="op">)</span></span></code></pre></div>
@@ -120,37 +133,196 @@ to load properly!
 </details><hr>
 </div>
 <div class="section level2">
-<h2 id="whats-next">🌟 What’s Next?<a class="anchor" aria-label="anchor" href="#whats-next"></a>
+<h2 id="wrangle-your-data">🛠️ Wrangle Your Data<a class="anchor" aria-label="anchor" href="#wrangle-your-data"></a>
 </h2>
-<p>Now that your data is loaded, you’re ready to wrangle it into the
-correct format for analysis!</p>
-<p>➡️ <strong>Continue to:</strong> <a href="wrangle.html">Wrangle Your
-Data</a><br>
-⬅️ <strong>Back to:</strong> <a href="design.html">Design Your
-Survey</a><br>
-🏠 <strong>Home:</strong> <a href="index.html">Home</a></p>
+<p>Preparing your data correctly is one of the most important steps in
+conjoint analysis. Fortunately, the <code><a href="../reference/reshape_projoint.html">reshape_projoint()</a></code>
+function in <strong>projoint</strong> makes this easy.</p>
 <hr>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+<div class="section level2">
+<h2 id="wrangle-workflow">🚀 Wrangle Workflow<a class="anchor" aria-label="anchor" href="#wrangle-workflow"></a>
+</h2>
+<details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>1. Reshape Your Data</strong>
+</summary><div class="section level3">
+<h3 id="example-flipped-repeated-task">Example (Flipped Repeated Task)<a class="anchor" aria-label="anchor" href="#example-flipped-repeated-task"></a>
+</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">outcomes1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
+<span>  .dataframe <span class="op">=</span> <span class="va">exampleData1</span>,</span>
+<span>  .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
+<span>  .choice_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>  .alphabet <span class="op">=</span> <span class="st">"K"</span>,</span>
+<span>  .idvar <span class="op">=</span> <span class="st">"ResponseId"</span>,</span>
+<span>  .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .flipped <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><strong>Key Arguments</strong>:</p>
+<ul>
+<li>
+<code>.outcomes</code>: Outcome columns (include repeated task
+last)</li>
+<li>
+<code>.choice_labels</code>: Profile labels (e.g., “A”, “B”)</li>
+<li>
+<code>.idvar</code>: Respondent ID variable</li>
+<li>
+<code>.alphabet</code>: Variable prefix (“K”)</li>
+<li>
+<code>.repeated</code>, <code>.flipped</code>: If repeated task
+exists and is flipped</li>
+</ul>
+</div>
+</details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>2. Variations: Repeated vs. Non-Repeated</strong>
+</summary><p><strong>Not-Flipped Repeated Task</strong></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">outcomes2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_notflipped"</span><span class="op">)</span></span>
+<span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
+<span>  .dataframe <span class="op">=</span> <span class="va">exampleData2</span>,</span>
+<span>  .outcomes <span class="op">=</span> <span class="va">outcomes2</span>,</span>
+<span>  .repeated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .flipped <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><strong>No Repeated Task</strong></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">out3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
+<span>  .dataframe <span class="op">=</span> <span class="va">exampleData3</span>,</span>
+<span>  .outcomes <span class="op">=</span> <span class="va">outcomes</span>,</span>
+<span>  .repeated <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>3. The <code>.fill</code> Argument: Should You Use It?</strong>
+</summary><p>Use <code>.fill = TRUE</code> to “fill” missing values based on IRR
+agreement.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fill_FALSE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
+<span>  .dataframe <span class="op">=</span> <span class="va">exampleData1</span>,</span>
+<span>  .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
+<span>  .fill <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fill_TRUE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span></span>
+<span>  .dataframe <span class="op">=</span> <span class="va">exampleData1</span>,</span>
+<span>  .outcomes <span class="op">=</span> <span class="va">outcomes1</span>,</span>
+<span>  .fill <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Compare:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">selected_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"task"</span>, <span class="st">"profile"</span>, <span class="st">"selected"</span>, <span class="st">"selected_repeated"</span>, <span class="st">"agree"</span><span class="op">)</span></span>
+<span><span class="va">fill_FALSE</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">selected_vars</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6,400 × 6</span></span></span>
+<span><span class="co">##    id                 task profile selected selected_repeated agree</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> R_00zYHdY1te1Qlrz     1       1        1                 1     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> R_00zYHdY1te1Qlrz     1       2        0                 0     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> R_00zYHdY1te1Qlrz     2       1        1                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> R_00zYHdY1te1Qlrz     2       2        0                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> R_00zYHdY1te1Qlrz     3       1        1                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> R_00zYHdY1te1Qlrz     3       2        0                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> R_00zYHdY1te1Qlrz     4       1        0                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> R_00zYHdY1te1Qlrz     4       2        1                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> R_00zYHdY1te1Qlrz     5       1        1                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> R_00zYHdY1te1Qlrz     5       2        0                <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 6,390 more rows</span></span></span></code></pre>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fill_TRUE</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">selected_vars</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6,400 × 6</span></span></span>
+<span><span class="co">##    id                 task profile selected selected_repeated agree</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> R_00zYHdY1te1Qlrz     1       1        1                 1     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> R_00zYHdY1te1Qlrz     1       2        0                 0     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> R_00zYHdY1te1Qlrz     2       1        1                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> R_00zYHdY1te1Qlrz     2       2        0                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> R_00zYHdY1te1Qlrz     3       1        1                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> R_00zYHdY1te1Qlrz     3       2        0                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> R_00zYHdY1te1Qlrz     4       1        0                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> R_00zYHdY1te1Qlrz     4       2        1                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> R_00zYHdY1te1Qlrz     5       1        1                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> R_00zYHdY1te1Qlrz     5       2        0                <span style="color: #BB0000;">NA</span>     1</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 6,390 more rows</span></span></span></code></pre>
+<p><strong>Tip:</strong><br>
+- Use <code>.fill = TRUE</code> for small-sample or subgroup analysis
+(helps increase power).<br>
+- Use <code>.fill = FALSE</code> (default) when in doubt for safer
+estimates.</p>
+</details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>4. What If Your Data Is Already Clean?</strong>
+</summary><p>If you already have a clean dataset, use
+<code><a href="../reference/make_projoint_data.html">make_projoint_data()</a></code>:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_projoint_data.html">make_projoint_data</a></span><span class="op">(</span></span>
+<span>  .dataframe <span class="op">=</span> <span class="va">exampleData1_labelled_tibble</span>,</span>
+<span>  .attribute_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"School Quality"</span>, <span class="st">"Violent Crime Rate (Vs National Rate)"</span>,</span>
+<span>    <span class="st">"Racial Composition"</span>, <span class="st">"Housing Cost"</span>,</span>
+<span>    <span class="st">"Presidential Vote (2020)"</span>, <span class="st">"Total Daily Driving Time for Commuting and Errands"</span>,</span>
+<span>    <span class="st">"Type of Place"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  .id_var <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>  .task_var <span class="op">=</span> <span class="st">"task"</span>,</span>
+<span>  .profile_var <span class="op">=</span> <span class="st">"profile"</span>,</span>
+<span>  .selected_var <span class="op">=</span> <span class="st">"selected"</span>,</span>
+<span>  .selected_repeated_var <span class="op">=</span> <span class="st">"selected_repeated"</span>,</span>
+<span>  .fill <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Preview:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out4</span></span></code></pre></div>
+<pre><code><span><span class="co">## &lt;projoint_data&gt;</span></span>
+<span><span class="co">## - data:     6400 rows, 13 columns</span></span>
+<span><span class="co">## - labels:   24 levels, 4 columns</span></span></code></pre>
+</details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>5. Arranging Attribute and Level Labels</strong>
+</summary><p>To reorder or relabel attributes:</p>
+<ol style="list-style-type: decimal">
+<li>Save labels:</li>
+</ol>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/save_labels.html">save_labels</a></span><span class="op">(</span><span class="va">out1</span>, <span class="st">"temp/labels_original.csv"</span><span class="op">)</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Edit the CSV (change <code>order</code>, label columns; leave
+<code>level_id</code> untouched)</p></li>
+<li><p>Save it as “labels_arranged.csv” or something else.</p></li>
+<li><p>Reload labels:</p></li>
+</ol>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">out1_arranged</span>, package <span class="op">=</span> <span class="st">"projoint"</span><span class="op">)</span></span></code></pre></div>
+<p>Compare using our example:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
+<p><img src="read_files/figure-html/unnamed-chunk-13-1.png" width="2100" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span>, .estimand <span class="op">=</span> <span class="st">"mm"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
+<p><img src="read_files/figure-html/unnamed-chunk-14-1.png" width="2100" style="display: block; margin: auto;"></p>
+</details><hr>
+<p>🏠 <strong>Home:</strong> <a href="../index.html">Home</a></p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Yusaku Horiuchi, Aaron Kaufman, Gary King.</p>
+  <p></p>
+<p>Developed by Yusaku Horiuchi, Aaron Kaufman, Gary King.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>
 </div>
 
+  
 
-
-
+  
 
   </body>
 </html>
