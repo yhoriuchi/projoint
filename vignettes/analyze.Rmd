@@ -64,6 +64,8 @@ save_labels(out1, "labels.csv")
 
 <details><summary><b>Choice-Level MMs (Specific Level)</b></summary>
 
+Suppose you want to estimate, within a given profile pair, the probability of choosing a profile that includes "40% of pre-tax income" (`level3`) for Housing Cost (`att1`) rather than one that includes "15% of pre-tax income" (`level1`) for the same attribute, averaging over all combinations of the other attributes and across respondents; then use the following code:
+
 ```{r}
 qoi_2 <- set_qoi(
   .structure = "choice_level",
@@ -84,6 +86,13 @@ summary(mm2)
 ## 📉 Estimate AMCEs
 
 <details><summary><b>Choice-Level AMCEs (Specific Level)</b></summary>
+
+Suppose you want to quantify how the choice probability **changes** between the following profile pairs:
+
+- choosing a profile that includes "40% of pre-tax income" (`level3`) for Housing Cost (`att1`) versus one that includes "15% of pre-tax income" (`level1`) for Housing Cost (`att1`); **and**
+- [baseline] choosing a profile that includes "30% of pre-tax income" (`level2`) for Housing Cost (`att1`) versus one that includes "15% of pre-tax income" (`level1`) for Housing Cost (`att1`); 
+
+averaging over all combinations of the other attributes and across respondents. Then write the following code:
 
 ```{r}
 qoi_4 <- set_qoi(
