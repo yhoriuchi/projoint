@@ -125,7 +125,13 @@ actual text labels because:</p>
 <h2 id="estimate-marginal-means-mms">📈 Estimate Marginal Means (MMs)<a class="anchor" aria-label="anchor" href="#estimate-marginal-means-mms"></a>
 </h2>
 <details><summary><b>Choice-Level MMs (Specific Level)</b>
-</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+</summary><p>Suppose you want to estimate, within a given profile pair, the
+probability of choosing a profile that includes “40% of pre-tax income”
+(<code>level3</code>) for Housing Cost (<code>att1</code>) rather than
+one that includes “15% of pre-tax income” (<code>level1</code>) for the
+same attribute, averaging over all combinations of the other attributes
+and across respondents; then use the following code:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .att_choose <span class="op">=</span> <span class="st">"att1"</span>,</span>
@@ -168,7 +174,22 @@ actual text labels because:</p>
 <h2 id="estimate-amces">📉 Estimate AMCEs<a class="anchor" aria-label="anchor" href="#estimate-amces"></a>
 </h2>
 <details><summary><b>Choice-Level AMCEs (Specific Level)</b>
-</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+</summary><p>Suppose you want to quantify how the choice probability
+<strong>changes</strong> between the following profile pairs:</p>
+<ul>
+<li>choosing a profile that includes “40% of pre-tax income”
+(<code>level3</code>) for Housing Cost (<code>att1</code>) versus one
+that includes “15% of pre-tax income” (<code>level1</code>) for Housing
+Cost (<code>att1</code>); <strong>and</strong>
+</li>
+<li>[baseline] choosing a profile that includes “30% of pre-tax income”
+(<code>level2</code>) for Housing Cost (<code>att1</code>) versus one
+that includes “15% of pre-tax income” (<code>level1</code>) for Housing
+Cost (<code>att1</code>);</li>
+</ul>
+<p>averaging over all combinations of the other attributes and across
+respondents. Then write the following code:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qoi_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_qoi.html">set_qoi</a></span><span class="op">(</span></span>
 <span>  .structure <span class="op">=</span> <span class="st">"choice_level"</span>,</span>
 <span>  .estimand <span class="op">=</span> <span class="st">"amce"</span>,</span>
