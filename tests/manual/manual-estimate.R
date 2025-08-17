@@ -98,3 +98,6 @@ amce1b <- projoint(.data = out1,
 print(amce1b)
 summary(amce1b)
 
+
+
+

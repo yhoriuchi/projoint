@@ -2,7 +2,7 @@
 % Please edit documentation in R/pj_estimate.R
 \name{pj_estimate}
 \alias{pj_estimate}
-\title{Estimate and Correct Marginal Means (MMs) or Average Marginal Component Effects (AMCEs)}
+\title{Internal Estimation Function}
 \usage{
 pj_estimate(
   .data,
@@ -27,73 +27,66 @@ pj_estimate(
   .se_type_1,
   .weights_2,
   .clusters_2,
-  .se_type_2
+  .se_type_2,
+  .auto_cluster = TRUE
 )
 }
 \arguments{
-\item{.data}{A \code{\link{projoint_data}} object produced by \code{reshape_projoint()} or \code{make_projoint_data()}.}
+\item{.data}{A \code{\link{projoint_data}} object created by \code{\link{reshape_projoint}} or \code{\link{make_projoint_data}}.}
 
-\item{.structure}{Either \code{"profile_level"} (default) or \code{"choice_level"}.}
+\item{.structure}{Either \code{"profile_level"} or \code{"choice_level"}.}
 
 \item{.estimand}{Either \code{"mm"} (marginal mean) or \code{"amce"} (average marginal component effect).}
 
-\item{.att_choose}{A character string specifying the attribute of interest (for the level(s) chosen).}
+\item{.att_choose}{Attribute for the chosen profile/feature.}
 
-\item{.lev_choose}{A character vector specifying the level(s) of interest (for the level(s) chosen). Length 1 for profile-level analysis; 1+ for choice-level analysis.}
+\item{.lev_choose}{Level(s) for the chosen profile/feature. Length 1 for \code{profile_level}; may be 1+ for \code{choice_level}.}
 
-\item{.att_notchoose}{A character string specifying the attribute of interest (for the level(s) not chosen). Required only for \code{choice_level}.}
+\item{.att_notchoose}{Attribute for the not-chosen profile/feature (required for \code{choice_level}).}
 
-\item{.lev_notchoose}{A character vector specifying the level(s) not chosen. Required only for \code{choice_level}.}
+\item{.lev_notchoose}{Level(s) for the not-chosen profile/feature (required for \code{choice_level}).}
 
-\item{.att_choose_b}{(AMCE only) A character string specifying the baseline attribute for comparison.}
+\item{.att_choose_b}{(AMCE only) Baseline attribute for comparison.}
 
-\item{.lev_choose_b}{(AMCE only) A character vector specifying the baseline level(s) for comparison.}
+\item{.lev_choose_b}{(AMCE only) Baseline level(s) for comparison.}
 
-\item{.att_notchoose_b}{(AMCE only, choice-level only) A character string specifying the baseline attribute for the not-chosen profile.}
+\item{.att_notchoose_b}{(AMCE only, choice-level only) Baseline attribute for the not-chosen profile.}
 
-\item{.lev_notchoose_b}{(AMCE only, choice-level only) A character vector specifying the baseline level(s) for the not-chosen profile.}
+\item{.lev_notchoose_b}{(AMCE only, choice-level only) Baseline level(s) for the not-chosen profile.}
 
-\item{.se_method}{Method for standard error estimation: one of \code{"analytical"} (default), \code{"simulation"}, or \code{"bootstrap"}.}
+\item{.se_method}{One of \code{"analytical"}, \code{"simulation"}, or \code{"bootstrap"}.}
 
-\item{.irr}{Numeric scalar specifying intra-respondent reliability (IRR). If \code{NULL} (default), it is estimated from repeated tasks.}
+\item{.irr}{\code{NULL} (default) to estimate IRR from repeated tasks; otherwise a numeric IRR value.}
 
-\item{.remove_ties}{Logical; whether to remove ties before estimation (default is \code{TRUE}).}
+\item{.remove_ties}{Logical; should ties be removed before estimation? Defaults to \code{TRUE}.}
 
-\item{.ignore_position}{Logical; if \code{TRUE} (default), profile position (left/right) is ignored. Only relevant for \code{choice_level}.}
+\item{.ignore_position}{Logical; only for \code{choice_level}. If \code{TRUE} (default), ignore profile position (left/right).}
 
-\item{.n_sims}{Number of simulations to run if \code{se_method = "simulation"}.}
+\item{.n_sims}{Integer; required if \code{.se_method == "simulation"}.}
 
-\item{.n_boot}{Number of bootstrap replications if \code{se_method = "bootstrap"}.}
+\item{.n_boot}{Integer; required if \code{.se_method == "bootstrap"}.}
 
-\item{.weights_1}{(Optional) Bare (unquoted) name of a column specifying weights for IRR estimation (see \code{\link[estimatr]{lm_robust}}). Defaults to \code{NULL}.}
+\item{.weights_1}{(Optional) Bare (unquoted) column with weights for IRR estimation; passed to \code{\link[estimatr]{lm_robust}}.}
 
-\item{.clusters_1}{(Optional) Bare (unquoted) name of a column specifying clusters for IRR estimation. Defaults to \code{NULL}.}
+\item{.clusters_1}{(Optional) Bare (unquoted) column with clusters for IRR estimation; passed to \code{\link[estimatr]{lm_robust}}.}
 
-\item{.se_type_1}{Standard error type for IRR estimation; passed to \code{lm_robust()}. Default is \code{"classical"}.}
+\item{.se_type_1}{SE type for IRR estimation; passed to \code{\link[estimatr]{lm_robust}}. If \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).}
 
-\item{.weights_2}{(Optional) Bare (unquoted) name of a column specifying weights for MM or AMCE estimation. Defaults to \code{NULL}.}
+\item{.weights_2}{(Optional) Bare (unquoted) column with weights for MM/AMCE estimation; passed to \code{\link[estimatr]{lm_robust}}.}
 
-\item{.clusters_2}{(Optional) Bare (unquoted) name of a column specifying clusters for MM or AMCE estimation. Defaults to \code{NULL}.}
+\item{.clusters_2}{(Optional) Bare (unquoted) column with clusters for MM/AMCE estimation; passed to \code{\link[estimatr]{lm_robust}}.}
 
-\item{.se_type_2}{Standard error type for MM or AMCE estimation; passed to \code{lm_robust()}. Default is \code{"classical"}.}
+\item{.se_type_2}{SE type for MM/AMCE estimation; passed to \code{\link[estimatr]{lm_robust}}. If \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).}
+
+\item{.auto_cluster}{Logical; if \code{TRUE} (default), auto-cluster on \code{id} when present and no \code{.clusters_*} are supplied; auto-clustering only occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.}
 }
 \value{
-A data frame containing corrected and uncorrected estimates, standard errors, confidence intervals, and tau values.
+A data frame with columns \code{estimand}, \code{estimate}, \code{se}, \code{conf.low}, \code{conf.high}, and \code{tau},
+  ready for downstream aggregation and plotting.
 }
 \description{
-Internal function to estimate and correct MMs or AMCEs from a conjoint experiment, adjusting for measurement error bias.
-}
-\details{
-For weighting and clustering:
-\itemize{
-  \item \strong{Bare names} must be provided (e.g., \code{weight_var} not \code{"weight_var"}).
-  \item If unspecified, estimation proceeds without weights or clustering.
-}
-
-For marginal mean (MM) estimation, the outcome is the probability of selecting a profile or profile feature.
-For AMCE estimation, the outcome is the change in probability associated with a change in feature level.
-
-The function automatically applies measurement error correction based on estimated or user-specified intra-respondent reliability (IRR).
+Core workhorse for computing marginal means (MMs) or AMCEs from a conjoint design,
+with optional intra-respondent reliability (IRR) correction.
 }
 \seealso{
 \code{\link{reshape_projoint}}, \code{\link{make_projoint_data}}, \code{\link{set_qoi}}, \code{\link{projoint}}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/projoint_diff.R
 \name{projoint_diff}
 \alias{projoint_diff}
-\title{Analyze a conjoint data set and correct for measurement error}
+\title{Estimate Differences Across Subgroups}
 \usage{
 projoint_diff(
   .data,
@@ -21,48 +21,52 @@ projoint_diff(
   .se_type_1,
   .weights_2,
   .clusters_2,
-  .se_type_2
+  .se_type_2,
+  .auto_cluster = TRUE
 )
 }
 \arguments{
-\item{.data}{A \code{\link{projoint_data}} object}
+\item{.data}{A \code{\link{projoint_data}} object.}
 
-\item{.qoi}{A \code{\link{projoint_qoi}} object. If \code{NULL}, defaults to producing all MMs and all AMCEs.}
+\item{.qoi}{Optional \code{\link{projoint_qoi}}; if \code{NULL}, produces all MMs/AMCEs.}
 
-\item{.by_var}{A dichotomous variable (character) used for subgroup analysis}
+\item{.by_var}{Subgrouping variable in \code{.data$data}; must be logical (TRUE/FALSE),
+numeric/integer coded as 0/1, or factor with levels \code{"0"}/\code{"1"}.}
 
-\item{.structure}{Either \code{"profile_level"} (default) or \code{"choice_level"}}
+\item{.structure}{Must be \code{"profile_level"} for subgroup analysis.}
 
-\item{.estimand}{Either \code{"mm"} for marginal mean or \code{"amce"} for average marginal component effect}
+\item{.estimand}{Either \code{"mm"} or \code{"amce"}.}
 
-\item{.se_method}{By default, \code{c("analytic", "simulation", "bootstrap")} description}
+\item{.se_method}{One of \code{"analytical"}, \code{"simulation"}, or \code{"bootstrap"}.}
 
-\item{.irr}{\code{NULL} (default) if IRR is to be calculated using the repeated task. Otherwise, a numerical value}
+\item{.irr}{\code{NULL} to estimate IRR from repeated tasks, or numeric to fix IRR.}
 
-\item{.remove_ties}{Logical: should ties be removed before estimation? Defaults to \code{TRUE}.}
+\item{.remove_ties}{Logical; remove ties in choice data before estimation? Default \code{TRUE}.}
 
-\item{.ignore_position}{TRUE (default) if you ignore the location of profile (left or right). Relevant only if analyzed at the choice level}
+\item{.ignore_position}{Ignored (subgroup analysis is profile-level only).}
 
-\item{.n_sims}{The number of simulations. Relevant only if \code{.se_method == "simulation"}}
+\item{.n_sims}{Integer; required when \code{.se_method = "simulation"}.}
 
-\item{.n_boot}{The number of bootstrapped samples. Relevant only if \code{.se_method == "bootstrap"}}
+\item{.n_boot}{Integer; required when \code{.se_method = "bootstrap"}.}
 
-\item{.weights_1}{the weight to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
+\item{.weights_1, .clusters_1, .se_type_1}{Passed to \code{\link[estimatr]{lm_robust}} for IRR estimation.
+If \code{.se_type_1} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
+See \code{\link{projoint}} for valid \code{se_type_*} values.}
 
-\item{.clusters_1}{the clusters to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
+\item{.weights_2, .clusters_2, .se_type_2}{Passed to \code{\link[estimatr]{lm_robust}} for MM/AMCE estimation.
+If \code{.se_type_2} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
+See \code{\link{projoint}} for valid \code{se_type_*} values.}
 
-\item{.se_type_1}{the standard error type to estimate IRR (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)}
-
-\item{.weights_2}{the weight to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
-
-\item{.clusters_2}{the clusters to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{NULL} (default)}
-
-\item{.se_type_2}{the standard error type to estimate MM or AMCE (see \code{\link[estimatr]{lm_robust}}): \code{"classical"} (default)}
+\item{.auto_cluster}{Logical. If \code{TRUE} (default), automatically cluster on an \code{id}
+column when present and no \code{.clusters_*} are supplied. Auto-clustering only
+occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.}
 }
 \value{
-A \code{\link{projoint_results}} object
+A \code{\link{projoint_results}} object with subgroup differences.
 }
 \description{
-This is the internal function used to calculate and correct marginal means or average marginal component effects of a conjoint design.
+Internal function called by \code{\link{projoint}} to compute subgroup differences
+(group \code{== 1} minus group \code{== 0}) in marginal means (MMs) or average marginal component effects (AMCEs).
+Only supported for \code{.structure = "profile_level"}.
 }
 \keyword{internal}

@@ -18,62 +18,70 @@ projoint(
   .n_boot = NULL,
   .weights_1 = NULL,
   .clusters_1 = NULL,
-  .se_type_1 = "classical",
+  .se_type_1 = NULL,
   .weights_2 = NULL,
   .clusters_2 = NULL,
-  .se_type_2 = "classical"
+  .se_type_2 = NULL,
+  .auto_cluster = TRUE
 )
 }
 \arguments{
-\item{.data}{A \code{\link{projoint_data}} object created by \code{reshape_projoint()} or \code{make_projoint_data()}.}
+\item{.data}{A \code{\link{projoint_data}} created by \code{\link{reshape_projoint}} or \code{\link{make_projoint_data}}.}
 
-\item{.qoi}{Optional. A \code{\link{projoint_qoi}} object if targeting custom quantities of interest.}
+\item{.qoi}{Optional \code{\link{projoint_qoi}} specifying custom quantities of interest.
+If supplied, its \code{structure} and \code{estimand} override \code{.structure} and \code{.estimand}.}
 
-\item{.by_var}{Character. Optional. A dichotomous variable for subgroup analysis (e.g., Republican vs Democrat).
-Only available for **profile-level** analysis. Ignored for choice-level analysis.}
+\item{.by_var}{Optional column name (character) for subgroup analysis; must be
+logical (TRUE/FALSE) or numeric/integer coded as 0/1. Only supported for
+\code{.structure = "profile_level"} (ignored for choice-level).}
 
-\item{.structure}{Character. Either \code{"profile_level"} (default) or \code{"choice_level"}.
-If \code{.qoi} is supplied, the structure specified there overrides this.}
+\item{.structure}{Either \code{"profile_level"} or \code{"choice_level"} (default \code{"choice_level"}).
+If \code{.qoi} is supplied, this is overridden by \code{.qoi$structure}.}
 
-\item{.estimand}{Character. Either \code{"mm"} (marginal mean) or \code{"amce"} (average marginal component effect).
-If \code{.qoi} is supplied, the estimand specified there overrides this.}
+\item{.estimand}{Either \code{"mm"} (marginal mean) or \code{"amce"} (average marginal component effect);
+default \code{"mm"}. If \code{.qoi} is supplied, this is overridden by \code{.qoi$estimand}.}
 
-\item{.se_method}{Character. Standard error method: \code{"analytical"} (default), \code{"simulation"}, or \code{"bootstrap"}.}
+\item{.se_method}{Standard-error method: \code{"analytical"} (default), \code{"simulation"}, or \code{"bootstrap"}.}
 
-\item{.irr}{Numeric or \code{NULL} (default). If \code{NULL}, IRR is estimated from repeated tasks; otherwise, user-supplied IRR.}
+\item{.irr}{Numeric or \code{NULL} (default). If \code{NULL}, IRR is estimated from repeated tasks; otherwise IRR is fixed to the supplied value.}
 
-\item{.remove_ties}{Logical. Should ties in choice data be removed before estimation? Defaults to \code{TRUE}.}
+\item{.remove_ties}{Logical; remove ties in choice data before estimation? Default \code{TRUE}.}
 
-\item{.ignore_position}{Logical. Only for choice-level analysis. Should the position of profiles (left/right) be ignored? Default is \code{TRUE}.}
+\item{.ignore_position}{Logical; for choice-level only. Ignore profile position (left/right)? Default \code{TRUE}.}
 
-\item{.n_sims}{Integer. Required if \code{.se_method = "simulation"}. Number of simulation draws.}
+\item{.n_sims}{Integer; required when \code{.se_method = "simulation"}.}
 
-\item{.n_boot}{Integer. Required if \code{.se_method = "bootstrap"}. Number of bootstrap samples.}
+\item{.n_boot}{Integer; required when \code{.se_method = "bootstrap"}.}
 
-\item{.weights_1, }{.clusters_1, .se_type_1 Arguments passed to \code{\link[estimatr]{lm_robust}} when estimating IRR.}
+\item{.weights_1, .clusters_1, .se_type_1}{Arguments passed to \code{\link[estimatr]{lm_robust}} for IRR estimation.
+If \code{.se_type_1} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).}
 
-\item{.clusters_1}{Cluster ID variable for IRR estimation. Passed to \code{lm_robust()}. Default is \code{NULL}.}
+\item{.weights_2, .clusters_2, .se_type_2}{Arguments passed to \code{\link[estimatr]{lm_robust}} for MM/AMCE estimation.
+If \code{.se_type_2} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).}
 
-\item{.se_type_1}{Standard error type for IRR estimation. Passed to \code{lm_robust()}. Default is \code{"classical"}.}
-
-\item{.weights_2, }{.clusters_2, .se_type_2 Arguments passed to \code{\link[estimatr]{lm_robust}} when estimating MMs or AMCEs.}
-
-\item{.clusters_2}{Cluster ID variable for MM/AMCE estimation. Passed to \code{lm_robust()}. Default is \code{NULL}.}
-
-\item{.se_type_2}{Standard error type for MM/AMCE estimation. Passed to \code{lm_robust()}. Default is \code{"classical"}.}
+\item{.auto_cluster}{Logical. If \code{TRUE} (default), automatically cluster on an \code{id}
+column when present and no \code{.clusters_*} are supplied. Auto-clustering only
+occurs when the corresponding \code{.se_type_*} is \code{NULL}.}
 }
 \value{
-A \code{\link{projoint_results}} object containing estimated quantities, ready for plotting or further analysis.
+A \code{\link{projoint_results}} object with estimates and metadata, ready for plotting or further analysis.
 }
 \description{
-This function analyzes a conjoint data set and produces corrected estimates
-of either marginal means (MMs) or average marginal component effects (AMCEs),
-ready for plotting. It corrects for intra-respondent reliability (IRR) bias
-and accounts for repeated tasks if available.
+Computes marginal means (MMs) or average marginal component effects (AMCEs)
+with correction for intra-respondent reliability (IRR), using repeated tasks
+when available. Returns estimates ready for plotting.
 }
 \details{
-Most users simply provide a \code{\link{projoint_data}} object.
-Advanced users can also specify quantities of interest using \code{\link{projoint_qoi}}.
+Most users provide a \code{\link{projoint_data}} object. Advanced users may
+target custom quantities with \code{\link{projoint_qoi}}.
+
+
+Valid \code{se_type_*} values depend on whether clustering is used:
+\itemize{
+  \item Without clusters: \code{"classical"}, \code{"HC0"}, \code{"HC1"}, \code{"HC2"}, \code{"HC3"}
+  \item With clusters: \code{"CR0"}, \code{"CR1"}, \code{"CR2"}, \code{"stata"}, \code{"none"}
+}
+If \code{NULL}, \emph{estimatr} defaults are used (\code{HC2} when unclustered; \code{CR2} when clustered).
 }
 \seealso{
 \code{\link{reshape_projoint}}, \code{\link{projoint_qoi}}, \code{\link{plot.projoint_results}}

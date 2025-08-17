@@ -27,7 +27,6 @@ Imports:
     tibble,
     methods,
     MASS,
-    glue,
     forcats,
     scales
 Suggests:

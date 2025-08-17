@@ -1,55 +1,37 @@
-#' Estimate and Correct Marginal Means (MMs) or Average Marginal Component Effects (AMCEs)
+#' Internal Estimation Function
 #'
-#' Internal function to estimate and correct MMs or AMCEs from a conjoint experiment, adjusting for measurement error bias. 
+#' Core workhorse for computing marginal means (MMs) or AMCEs from a conjoint design,
+#' with optional intra-respondent reliability (IRR) correction.
 #'
-#' @keywords internal
-#' @import dplyr
-#' @import rlang
-#' @import estimatr
-#' @importFrom MASS mvrnorm
-#'
-#' @param .data A \code{\link{projoint_data}} object produced by \code{reshape_projoint()} or \code{make_projoint_data()}.
-#' @param .structure Either \code{"profile_level"} (default) or \code{"choice_level"}.
+#' @param .data A \code{\link{projoint_data}} object created by \code{\link{reshape_projoint}} or \code{\link{make_projoint_data}}.
+#' @param .structure Either \code{"profile_level"} or \code{"choice_level"}.
 #' @param .estimand Either \code{"mm"} (marginal mean) or \code{"amce"} (average marginal component effect).
-#' @param .att_choose A character string specifying the attribute of interest (for the level(s) chosen).
-#' @param .lev_choose A character vector specifying the level(s) of interest (for the level(s) chosen). Length 1 for profile-level analysis; 1+ for choice-level analysis.
-#' @param .att_notchoose A character string specifying the attribute of interest (for the level(s) not chosen). Required only for \code{choice_level}.
-#' @param .lev_notchoose A character vector specifying the level(s) not chosen. Required only for \code{choice_level}.
-#' @param .att_choose_b (AMCE only) A character string specifying the baseline attribute for comparison.
-#' @param .lev_choose_b (AMCE only) A character vector specifying the baseline level(s) for comparison.
-#' @param .att_notchoose_b (AMCE only, choice-level only) A character string specifying the baseline attribute for the not-chosen profile.
-#' @param .lev_notchoose_b (AMCE only, choice-level only) A character vector specifying the baseline level(s) for the not-chosen profile.
-#' @param .se_method Method for standard error estimation: one of \code{"analytical"} (default), \code{"simulation"}, or \code{"bootstrap"}.
-#' @param .irr Numeric scalar specifying intra-respondent reliability (IRR). If \code{NULL} (default), it is estimated from repeated tasks.
-#' @param .remove_ties Logical; whether to remove ties before estimation (default is \code{TRUE}).
-#' @param .ignore_position Logical; if \code{TRUE} (default), profile position (left/right) is ignored. Only relevant for \code{choice_level}.
-#' @param .n_sims Number of simulations to run if \code{se_method = "simulation"}.
-#' @param .n_boot Number of bootstrap replications if \code{se_method = "bootstrap"}.
+#' @param .att_choose Attribute for the chosen profile/feature.
+#' @param .lev_choose Level(s) for the chosen profile/feature. Length 1 for \code{profile_level}; may be 1+ for \code{choice_level}.
+#' @param .att_notchoose Attribute for the not-chosen profile/feature (required for \code{choice_level}).
+#' @param .lev_notchoose Level(s) for the not-chosen profile/feature (required for \code{choice_level}).
+#' @param .att_choose_b (AMCE only) Baseline attribute for comparison.
+#' @param .lev_choose_b (AMCE only) Baseline level(s) for comparison.
+#' @param .att_notchoose_b (AMCE only, choice-level only) Baseline attribute for the not-chosen profile.
+#' @param .lev_notchoose_b (AMCE only, choice-level only) Baseline level(s) for the not-chosen profile.
+#' @param .se_method One of \code{"analytical"}, \code{"simulation"}, or \code{"bootstrap"}.
+#' @param .irr \code{NULL} (default) to estimate IRR from repeated tasks; otherwise a numeric IRR value.
+#' @param .remove_ties Logical; should ties be removed before estimation? Defaults to \code{TRUE}.
+#' @param .ignore_position Logical; only for \code{choice_level}. If \code{TRUE} (default), ignore profile position (left/right).
+#' @param .n_sims Integer; required if \code{.se_method == "simulation"}.
+#' @param .n_boot Integer; required if \code{.se_method == "bootstrap"}.
+#' @param .weights_1 (Optional) Bare (unquoted) column with weights for IRR estimation; passed to \code{\link[estimatr]{lm_robust}}.
+#' @param .clusters_1 (Optional) Bare (unquoted) column with clusters for IRR estimation; passed to \code{\link[estimatr]{lm_robust}}.
+#' @param .se_type_1 SE type for IRR estimation; passed to \code{\link[estimatr]{lm_robust}}. If \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
+#' @param .weights_2 (Optional) Bare (unquoted) column with weights for MM/AMCE estimation; passed to \code{\link[estimatr]{lm_robust}}.
+#' @param .clusters_2 (Optional) Bare (unquoted) column with clusters for MM/AMCE estimation; passed to \code{\link[estimatr]{lm_robust}}.
+#' @param .se_type_2 SE type for MM/AMCE estimation; passed to \code{\link[estimatr]{lm_robust}}. If \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
+#' @param .auto_cluster Logical; if \code{TRUE} (default), auto-cluster on \code{id} when present and no \code{.clusters_*} are supplied; auto-clustering only occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.
 #'
-#' @param .weights_1 (Optional) Bare (unquoted) name of a column specifying weights for IRR estimation (see \code{\link[estimatr]{lm_robust}}). Defaults to \code{NULL}.
-#' @param .clusters_1 (Optional) Bare (unquoted) name of a column specifying clusters for IRR estimation. Defaults to \code{NULL}.
-#' @param .se_type_1 Standard error type for IRR estimation; passed to \code{lm_robust()}. Default is \code{"classical"}.
-#'
-#' @param .weights_2 (Optional) Bare (unquoted) name of a column specifying weights for MM or AMCE estimation. Defaults to \code{NULL}.
-#' @param .clusters_2 (Optional) Bare (unquoted) name of a column specifying clusters for MM or AMCE estimation. Defaults to \code{NULL}.
-#' @param .se_type_2 Standard error type for MM or AMCE estimation; passed to \code{lm_robust()}. Default is \code{"classical"}.
-#'
-#' @return A data frame containing corrected and uncorrected estimates, standard errors, confidence intervals, and tau values.
-#'
-#' @details
-#' 
-#' For weighting and clustering:
-#' \itemize{
-#'   \item \strong{Bare names} must be provided (e.g., \code{weight_var} not \code{"weight_var"}).
-#'   \item If unspecified, estimation proceeds without weights or clustering.
-#' }
-#' 
-#' For marginal mean (MM) estimation, the outcome is the probability of selecting a profile or profile feature.
-#' For AMCE estimation, the outcome is the change in probability associated with a change in feature level.
-#'
-#' The function automatically applies measurement error correction based on estimated or user-specified intra-respondent reliability (IRR).
-#'
+#' @return A data frame with columns \code{estimand}, \code{estimate}, \code{se}, \code{conf.low}, \code{conf.high}, and \code{tau},
+#'   ready for downstream aggregation and plotting.
 #' @seealso \code{\link{reshape_projoint}}, \code{\link{make_projoint_data}}, \code{\link{set_qoi}}, \code{\link{projoint}}
+#' @keywords internal
 
 pj_estimate <- function(
     .data,
@@ -74,841 +56,682 @@ pj_estimate <- function(
     .se_type_1,
     .weights_2,
     .clusters_2,
-    .se_type_2
+    .se_type_2,
+    .auto_cluster = TRUE
 ){
-  
-  # check various settings --------------------------------------------------
-  
+  # ---- Match args -----------------------------------------------------------
   structure <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
-  estimand  <- rlang::arg_match0(.estimand, c("mm", "amce"))
+  estimand  <- rlang::arg_match0(.estimand,  c("mm", "amce"))
   se_method <- rlang::arg_match0(.se_method, c("analytical", "simulation", "bootstrap"))
   
-  if (structure == "choice_level" & is.null(.att_choose)){
-    stop("The .att_choose argument must be specified.")
-  }
-  if (structure == "choice_level" & is.null(.lev_choose)){
-    stop("The .att_choose argument must be specified.")
-  }
+  if (structure == "choice_level" & is.null(.att_choose)) stop("The .att_choose argument must be specified.")
+  if (structure == "choice_level" & is.null(.lev_choose)) stop("The .lev_choose argument must be specified.")
   
-  if (.structure == "profile_level"){
-    
-    if (.estimand == "mm"){
-      if (!is.null(.att_notchoose)){
-        stop("The .att_notchoose argument must be NULL.") 
-      } 
-      if (!is.null(.lev_notchoose)){
-        stop("The .lev_notchoose argument must be NULL.") 
-      } 
-      if (!is.null(.att_choose_b)){
-        stop("The .att_choose_b argument must be NULL.") 
-      } 
-      if (!is.null(.lev_choose_b)){
-        stop("The .lev_choose_b argument must be NULL.") 
-      } 
-      if (!is.null(.att_notchoose_b)){
-        stop("The .att_notchoose_b argument must be NULL.") 
-      } 
-      if (!is.null(.lev_notchoose_b)){
-        stop("The .lev_notchoose_b argument must be NULL.") 
-      } 
-    } else {
-      if (!is.null(.att_notchoose)){
-        stop("The .att_notchoose argument must be NULL.") 
-      } 
-      if (!is.null(.lev_notchoose)){
-        stop("The .lev_notchoose argument must be NULL.") 
-      } 
-      if (is.null(.att_choose_b)){
-        stop("The .att_choose_b argument must be specified") 
-      } 
-      if (is.null(.lev_choose_b)){
-        stop("The .lev_choose_b argument must be specified") 
-      } 
-      if (!is.null(.att_notchoose_b)){
-        stop("The .att_notchoose_b argument must be NULL.") 
-      } 
-      if (!is.null(.lev_notchoose_b)){
-        stop("The .lev_notchoose_b argument must be NULL.") 
-      } 
-    }
-    
-    
-  } else {
-    
-    if (.estimand == "mm"){
-      if (is.null(.att_notchoose)){
-        stop("The .att_notchoose argument must be specified") 
-      } 
-      if (is.null(.lev_notchoose)){
-        stop("The .lev_notchoose argument must be specified") 
-      } 
-      if (!is.null(.att_choose_b)){
-        stop("The .att_choose_b argument must be NULL.") 
-      } 
-      if (!is.null(.lev_choose_b)){
-        stop("The .lev_choose_b argument must be NULL.") 
-      } 
-      if (!is.null(.att_notchoose_b)){
-        stop("The .att_notchoose_b argument must be NULL.") 
-      } 
-      if (!is.null(.lev_notchoose_b)){
-        stop("The .lev_notchoose_b argument must be NULL.") 
-      } 
-    } else {
-      if (is.null(.att_notchoose)){
-        stop("The .att_notchoose argument must be specified") 
-      } 
-      if (is.null(.lev_notchoose)){
-        stop("The .lev_notchoose argument must be specified") 
-      } 
-      if (is.null(.att_choose_b)){
-        stop("The .att_choose_b argument must be specified") 
-      } 
-      if (is.null(.lev_choose_b)){
-        stop("The .lev_choose_b argument must be specified") 
-      } 
-      if (is.null(.att_notchoose_b)){
-        stop("The .att_notchoose_b argument must be specified") 
-      } 
-      if (is.null(.lev_notchoose_b)){
-        stop("The .lev_notchoose_b argument must be specified") 
-      } 
-    }
-    
-  }
-  
-  
-  if(!is.null(.irr) & !is.numeric(.irr) & length(.irr) == 1){
+  # ---- Argument guards ------------------------------------------------------
+  if(!is.null(.irr) & (!is.numeric(.irr) || length(.irr) != 1)) {
     stop("The .irr argument must be either a numeric scalar or NULL.")
   }
+  if(!is.logical(.remove_ties)) stop("The .remove_ties argument must be either TRUE or FALSE.")
   
-  if(!is.logical(.remove_ties)){
-    stop("The .remove_ties argument must be either TRUE or FALSE.")
+  if (structure == "profile_level" && length(.lev_choose) != 1L)
+    stop(".lev_choose must have length 1 for profile-level estimands.")
+  
+  if (structure == "profile_level" & !is.null(.ignore_position)) {
+    stop("The .ignore_position argument can be specified only when .structure = 'choice_level'.")
   }
-  
-  if (.structure == "profile_level" & !is.null(.ignore_position)){
-    stop("The .ignore_position argument can be specified only when the .structure argument is choice_level.")
+  if (structure == "choice_level" & is.null(.ignore_position)) {
+    stop("Specify the .ignore_position argument (TRUE/FALSE) for choice-level analysis.")
   }
-  
-  if (.structure == "choice_level" & is.null(.ignore_position)){
-    stop("Specify the .ignore_position argument.")
-  }
-  
-  if (.structure == "choice_level" & !is.null(.ignore_position) & !is.logical(.ignore_position)){
+  if (structure == "choice_level" & !is.logical(.ignore_position)) {
     stop("The .ignore_position argument must be either TRUE or FALSE.")
   }
   
-  if(!is.null(.n_sims) & !is.numeric(.n_sims) & length(.n_sims) == 1){
+  # after the existing .att_choose / .lev_choose checks
+  if (structure == "choice_level" & is.null(.att_notchoose))
+    stop("The .att_notchoose argument must be specified for choice-level analysis.")
+  if (structure == "choice_level" & is.null(.lev_notchoose))
+    stop("The .lev_notchoose argument must be specified for choice-level analysis.")
+  
+  if (estimand == "amce" & (is.null(.att_choose_b) || is.null(.lev_choose_b)))
+    stop("For AMCE, .att_choose_b and .lev_choose_b (baseline) must be specified.")
+  if (estimand == "amce" && structure == "choice_level" &&
+      (is.null(.att_notchoose_b) || is.null(.lev_notchoose_b)))
+    stop("For choice-level AMCE, .att_notchoose_b and .lev_notchoose_b must be specified.")
+  
+  if(!is.null(.n_sims) & (!is.numeric(.n_sims) || length(.n_sims) != 1)) {
     stop("The .n_sims argument must be either a numeric scalar or NULL.")
   }
-  
-  if(!is.null(.n_boot) & !is.numeric(.n_boot) & length(.n_boot) == 1){
+  if(!is.null(.n_boot) & (!is.numeric(.n_boot) || length(.n_boot) != 1)) {
     stop("The .n_boot argument must be either a numeric scalar or NULL.")
   }
+  if(se_method == "simulation" & is.null(.n_sims))  stop("Specify .n_sims for simulation SEs.")
+  if(se_method != "simulation" & !is.null(.n_sims)) stop("You cannot specify .n_sims unless .se_method = 'simulation'.")
+  if(se_method == "bootstrap"  & is.null(.n_boot))  stop("Specify .n_boot for bootstrap SEs.")
+  if(se_method != "bootstrap"  & !is.null(.n_boot)) stop("You cannot specify .n_boot unless .se_method = 'bootstrap'.")
   
-  if(.se_method == "simulation" & is.null(.n_sims)){
-    stop("Specify the .n_sims argument for simulation")
+  if (structure == "choice_level" & estimand == "mm" & .remove_ties == FALSE) {
+    stop(".remove_ties must be TRUE to estimate choice-level MMs.")
   }
   
-  if(.se_method != "simulation" & !is.null(.n_sims)){
-    stop("You cannot specify the .n_sims argument for analytical derivation or bootstrapping")
-  }
-  
-  if(.se_method == "bootstrap" & is.null(.n_boot)){
-    stop("Specify the .n_boot argument for bootstrapping")
-  }
-  
-  if(.se_method != "bootstrap" & !is.null(.n_boot)){
-    stop("You cannot specify the .n_boot argument for analytical derivation or simulation")
-  }
-  
-  if (.structure == "choice_level" & .estimand == "mm" & .remove_ties == FALSE){
-    stop("The .remove_ties argument should be TRUE to estimate choice-level MMs.")
-  }
-  
-  
-  # Evaluate weights and clusters -------------------------------------------
-  
-  clusters1_quo <- rlang::enquo(.clusters_1)
-  weights1_quo <- rlang::enquo(.weights_1)
-  
-  clusters2_quo <- rlang::enquo(.clusters_2)
-  weights2_quo <- rlang::enquo(.weights_2)
-
-  # Organize data -----------------------------------------------------------
-  
+  # ---- Organize data --------------------------------------------------------
   if (estimand == "mm"){
-    
     if (structure == "choice_level"){
+      attlev_choose    <- stringr::str_c(.att_choose,    ":", .lev_choose)
+      attlev_notchoose <- stringr::str_c(.att_notchoose, ":", .lev_notchoose)
       
-      # specify the attributes and levels of interest
-      attlev_choose    <- stringr::str_c(.att_choose,  ":", .lev_choose)
-      attlev_notchoose <- stringr::str_c(.att_notchoose,  ":", .lev_notchoose)
-      
-      temp1 <- organize_data(.dataframe = .data$data,
-                             .structure = structure,
-                             .estimand = estimand,
-                             .remove_ties,
-                             .att_choose,
-                             .lev_choose,
-                             .att_notchoose,
-                             .lev_notchoose)
+      temp1 <- organize_data(.dataframe = .data$data, .structure = structure, .estimand = estimand,
+                             .remove_ties, .att_choose, .lev_choose, .att_notchoose, .lev_notchoose)
       
       if (isTRUE(.ignore_position)){
-        
         if (.att_choose == .att_notchoose){
-          
-          temp2 <- temp1$data_for_estimand |> 
-            dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
-                          qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) |> 
+          temp2 <- temp1$data_for_estimand |>
+            dplyr::mutate(
+              selected    = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2),
+              qoi_choose  = stringr::str_c(attlev_choose, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
-        } else{
-          
-          temp2 <- temp1$data_for_estimand |> 
-            dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
-                          qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) |> 
+        } else {
+          temp2 <- temp1$data_for_estimand |>
+            dplyr::mutate(
+              selected    = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2),
+              qoi_choose  = stringr::str_c(attlev_choose, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
         }
-        
-      } else{
-        
+      } else {
         if (.att_choose == .att_notchoose){
-          
-          temp2 <- temp1$data_for_estimand |> 
-            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) |> 
-            dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
-                          qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) |> 
+          temp2 <- temp1$data_for_estimand |>
+            dplyr::filter(qoi_1 %in% attlev_notchoose, qoi_2 %in% attlev_choose) |>
+            dplyr::mutate(
+              selected    = selected_2, 
+              qoi_choose  = stringr::str_c(attlev_choose, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
-        } else{
-          
-          temp2 <- temp1$data_for_estimand |> 
-            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) |> 
-            
-            dplyr::mutate(selected = selected_2, 
-                          qoi_choose = stringr::str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")) |> 
+        } else {
+          temp2 <- temp1$data_for_estimand |>
+            dplyr::filter(qoi_notchoose_1 %in% attlev_notchoose, qoi_choose_2 %in% attlev_choose) |>
+            dplyr::mutate(
+              selected    = selected_2,
+              qoi_choose  = stringr::str_c(attlev_choose, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
         }
       }
       
-      # data to estimate irr
-      data_for_irr <- temp1$data_for_irr |> 
-        dplyr::distinct()
-      
-      # data to estimate QoI
+      data_for_irr      <- temp1$data_for_irr |> dplyr::distinct()
       data_for_estimand <- temp2
       
+      # Ensure id exists for bootstrap/resampling
+      if (!"id" %in% names(data_for_irr))      data_for_irr$id      <- seq_len(nrow(data_for_irr))
+      if (!"id" %in% names(data_for_estimand)) data_for_estimand$id <- seq_len(nrow(data_for_estimand))
+      
     } else {
-      
-      .list <- organize_data(.dataframe = .data$data,
-                             .structure = structure,
-                             .estimand = estimand,
-                             .remove_ties,
-                             .att_choose,
-                             .lev_choose,
-                             .att_notchoose,
-                             .lev_notchoose)
-      
-      # save two data frames
-      
+      .list <- organize_data(.dataframe = .data$data, .structure = structure, .estimand = estimand,
+                             .remove_ties, .att_choose, .lev_choose, .att_notchoose, .lev_notchoose)
       data_for_irr      <- .list$data_for_irr
       data_for_estimand <- .list$data_for_estimand
       
+      # Ensure id exists for bootstrap/resampling
+      if (!"id" %in% names(data_for_irr))      data_for_irr$id      <- seq_len(nrow(data_for_irr))
+      if (!"id" %in% names(data_for_estimand)) data_for_estimand$id <- seq_len(nrow(data_for_estimand))
+      
     }
-    
-  } else {
-    
+  } else { # estimand == "amce"
     if (structure == "choice_level"){
-      
-      # NOT baseline ------------------------------------------------------------
-      
-      # specify the attributes and levels of interest
-      attlev_choose    <- stringr::str_c(.att_choose,  ":", .lev_choose)
-      attlev_notchoose <- stringr::str_c(.att_notchoose,  ":", .lev_notchoose)
-      
-      temp1 <- organize_data(.dataframe = .data$data,
-                             .structure = structure,
-                             .estimand = estimand,
-                             .remove_ties,
-                             .att_choose,
-                             .lev_choose,
-                             .att_notchoose,
-                             .lev_notchoose)
-      
+      # Not baseline
+      attlev_choose    <- stringr::str_c(.att_choose,    ":", .lev_choose)
+      attlev_notchoose <- stringr::str_c(.att_notchoose, ":", .lev_notchoose)
+      temp1 <- organize_data(.dataframe = .data$data, .structure = structure, .estimand = estimand,
+                             .remove_ties, .att_choose, .lev_choose, .att_notchoose, .lev_notchoose)
       if (isTRUE(.ignore_position)){
-        
         if (.att_choose == .att_notchoose){
-          
-          temp2 <- temp1$data_for_estimand |> 
-            dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
+          temp2 <- temp1$data_for_estimand |>
+            dplyr::mutate(
+              selected    = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2),
+              qoi_choose  = stringr::str_c(attlev_choose, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
-        } else{
-          
-          temp2 <- temp1$data_for_estimand |> 
-            dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
+        } else {
+          temp2 <- temp1$data_for_estimand |>
+            dplyr::mutate(
+              selected    = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2),
+              qoi_choose  = stringr::str_c(attlev_choose, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
         }
-        
-      } else{
-        
+      } else {
         if (.att_choose == .att_notchoose){
-          
-          temp2 <- temp1$data_for_estimand |> 
-            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) |> 
-            dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
+          temp2 <- temp1$data_for_estimand |>
+            dplyr::filter(qoi_1 %in% attlev_notchoose, qoi_2 %in% attlev_choose) |>
+            dplyr::mutate(
+              selected    = selected_2,
+              qoi_choose  = stringr::str_c(attlev_choose, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
-        } else{
-          
-          temp2 <- temp1$data_for_estimand |> 
-            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) |> 
-            dplyr::mutate(selected = selected_2, 
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
+        } else {
+          temp2 <- temp1$data_for_estimand |>
+            dplyr::filter(qoi_notchoose_1 %in% attlev_notchoose, qoi_choose_2 %in% attlev_choose) |>
+            dplyr::mutate(
+              selected    = selected_2,
+              qoi_choose  = stringr::str_c(attlev_choose, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
         }
       }
       
+      # Baseline
+      attlev_choose_b    <- stringr::str_c(.att_choose_b,    ":", .lev_choose_b)
+      attlev_notchoose_b <- stringr::str_c(.att_notchoose_b, ":", .lev_notchoose_b)
       
-      # Baseline ----------------------------------------------------------------
-      
-      # specify the attributes and levels of interest
-      attlev_choose_b    <- stringr::str_c(.att_choose_b,  ":", .lev_choose_b)
-      attlev_notchoose_b <- stringr::str_c(.att_notchoose_b,  ":", .lev_notchoose_b)
-      
-      temp1_b <- organize_data(.dataframe = .data$data,
-                               .structure = structure,
-                               .estimand = estimand,
+      temp1_b <- organize_data(.dataframe = .data$data, .structure = structure, .estimand = estimand,
                                .remove_ties,
-                               .att_choose = .att_choose_b,
-                               .lev_choose = .lev_choose_b,
-                               .att_notchoose = .att_notchoose_b,
-                               .lev_notchoose = .lev_notchoose_b)
-      
+                               .att_choose = .att_choose_b, .lev_choose = .lev_choose_b,
+                               .att_notchoose = .att_notchoose_b, .lev_notchoose = .lev_notchoose_b)
       if (isTRUE(.ignore_position)){
-        
         if (.att_choose_b == .att_notchoose_b){
-          
-          temp2_b <- temp1_b$data_for_estimand |> 
-            dplyr::mutate(selected = ifelse(qoi_1 %in% attlev_choose, selected_1, selected_2), 
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
+          temp2_b <- temp1_b$data_for_estimand |>
+            dplyr::mutate(
+              selected    = ifelse(qoi_1 %in% attlev_choose_b, selected_1, selected_2),
+              qoi_choose  = stringr::str_c(attlev_choose_b, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose_b, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
-        } else{
-          
-          temp2_b <- temp1_b$data_for_estimand |> 
-            dplyr::mutate(selected = ifelse(qoi_choose_1 %in% attlev_choose, selected_1, selected_2), 
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
+        } else {
+          temp2_b <- temp1_b$data_for_estimand |>
+            dplyr::mutate(
+              selected    = ifelse(qoi_choose_1 %in% attlev_choose_b, selected_1, selected_2),
+              qoi_choose  = stringr::str_c(attlev_choose_b, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose_b, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
         }
-        
-      } else{
-        
+      } else {
         if (.att_choose_b == .att_notchoose_b){
-          
-          temp2_b <- temp1_b$data_for_estimand |> 
-            dplyr::filter(qoi_1 == attlev_notchoose & qoi_2 == attlev_choose) |> 
-            dplyr::mutate(selected = selected_2, # If .ignore_position == FALSE, selected = 1 if the left profile is chosen
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
+          temp2_b <- temp1_b$data_for_estimand |>
+            dplyr::filter(qoi_1 %in% attlev_notchoose_b, qoi_2 %in% attlev_choose_b) |>
+            dplyr::mutate(
+              selected    = selected_2,
+              qoi_choose  = stringr::str_c(attlev_choose_b, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose_b, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
-        } else{
-          
-          temp2_b <- temp1_b$data_for_estimand |> 
-            dplyr::filter(qoi_notchoose_1 == attlev_notchoose & qoi_choose_2 == attlev_choose) |> 
-            
-            dplyr::mutate(selected = selected_2, 
-                          qoi_choose = str_c(attlev_choose, collapse = ", "),
-                          qoi_notchoose = str_c(attlev_notchoose, collapse = ", ")) |> 
+        } else {
+          temp2_b <- temp1_b$data_for_estimand |>
+            dplyr::filter(qoi_notchoose_1 %in% attlev_notchoose_b, qoi_choose_2 %in% attlev_choose_b) |>
+            dplyr::mutate(
+              selected    = selected_2,
+              qoi_choose  = stringr::str_c(attlev_choose_b, collapse = ", "),
+              qoi_notchoose = stringr::str_c(attlev_notchoose_b, collapse = ", ")
+            ) |>
             dplyr::select(-matches("_\\d$"))
-          
         }
       }
       
-      # Merge -------------------------------------------------------------------
-      
-      # merge data to estimate irr
-      data_for_irr <- bind_rows(
-        temp1$data_for_irr,
-        temp1_b$data_for_irr
-      ) |>
-        distinct()
-      
-      # merge data to estimate mm or amce
-      data_for_estimand <- bind_rows(
-        temp2 |> mutate(x = 1),
-        temp2_b |> mutate(x = 0)
+      # Merge
+      data_for_irr <- dplyr::bind_rows(temp1$data_for_irr, temp1_b$data_for_irr) |> dplyr::distinct()
+      data_for_estimand <- dplyr::bind_rows(
+        temp2   |> dplyr::mutate(x = 1),
+        temp2_b |> dplyr::mutate(x = 0)
       )
+      
+      # Ensure id exists for bootstrap/resampling
+      if (!"id" %in% names(data_for_irr))      data_for_irr$id      <- seq_len(nrow(data_for_irr))
+      if (!"id" %in% names(data_for_estimand)) data_for_estimand$id <- seq_len(nrow(data_for_estimand))
+      
       
     } else {
-      
-      temp1 <- organize_data(.dataframe = .data$data,
-                             .structure = structure,
-                             .estimand = estimand,
-                             .remove_ties,
-                             .att_choose,
-                             .lev_choose,
-                             .att_notchoose,
-                             .lev_notchoose)
-      temp1_b <- organize_data(.dataframe = .data$data,
-                               .structure = structure,
-                               .estimand = estimand,
+      temp1   <- organize_data(.dataframe = .data$data, .structure = structure, .estimand = estimand,
+                               .remove_ties, .att_choose, .lev_choose, .att_notchoose, .lev_notchoose)
+      temp1_b <- organize_data(.dataframe = .data$data, .structure = structure, .estimand = estimand,
                                .remove_ties,
-                               .att_choose = .att_choose_b,
-                               .lev_choose = .lev_choose_b,
-                               .att_notchoose = .att_notchoose_b,
-                               .lev_notchoose = .lev_notchoose_b)
-      
-      # merge data to estimate irr
-      data_for_irr <- bind_rows(
-        temp1$data_for_irr,
-        temp1_b$data_for_irr
-      ) |>
-        distinct()
-      
-      # merge data to estimate mm or amce
-      data_for_estimand <- bind_rows(
-        temp1$data_for_estimand |> mutate(x = 1),
-        temp1_b$data_for_estimand |> mutate(x = 0)
+                               .att_choose = .att_choose_b, .lev_choose = .lev_choose_b,
+                               .att_notchoose = .att_notchoose_b, .lev_notchoose = .lev_notchoose_b)
+      data_for_irr <- dplyr::bind_rows(temp1$data_for_irr, temp1_b$data_for_irr) |> dplyr::distinct()
+      data_for_estimand <- dplyr::bind_rows(
+        temp1$data_for_estimand   |> dplyr::mutate(x = 1),
+        temp1_b$data_for_estimand |> dplyr::mutate(x = 0)
       )
       
+      if (!"id" %in% names(data_for_irr))      data_for_irr$id      <- seq_len(nrow(data_for_irr))
+      if (!"id" %in% names(data_for_estimand)) data_for_estimand$id <- seq_len(nrow(data_for_estimand))
+
     }
-    
   }
   
-  # Estimate or specify tau -------------------------------------------------
+  if (!"id" %in% names(data_for_irr))      data_for_irr$id      <- dplyr::row_number()
+  if (!"id" %in% names(data_for_estimand)) data_for_estimand$id <- dplyr::row_number()
+  
+  # ---- Tidy-eval (quosures) -------------------------------------------------
+  # Accept either a bare name (we'll enquo it) or a pre-made quosure
+  clusters1_quo <- if (rlang::is_quosure(.clusters_1)) .clusters_1 else rlang::enquo(.clusters_1)
+  weights1_quo  <- if (rlang::is_quosure(.weights_1))  .weights_1  else rlang::enquo(.weights_1)
+  clusters2_quo <- if (rlang::is_quosure(.clusters_2)) .clusters_2 else rlang::enquo(.clusters_2)
+  weights2_quo  <- if (rlang::is_quosure(.weights_2))  .weights_2  else rlang::enquo(.weights_2)
+  
+  
+  # Auto-cluster only if allowed and sensible
+  if (.auto_cluster &&
+      rlang::quo_is_null(clusters1_quo) &&
+      "id" %in% names(data_for_irr) &&
+      is.null(.se_type_1)) {
+    clusters1_quo <- rlang::quo(id)
+  }
+  if (.auto_cluster &&
+      rlang::quo_is_null(clusters2_quo) &&
+      "id" %in% names(data_for_estimand) &&
+      is.null(.se_type_2)) {
+    clusters2_quo <- rlang::quo(id)
+  }
+  
+  # Figure out whether each stage is clustered
+  is_clustered_1 <- !rlang::quo_is_null(clusters1_quo)
+  is_clustered_2 <- !rlang::quo_is_null(clusters2_quo)
+  
+  # Validate se_type now that we know clustered-ness
+  ok_uncl <- c("classical","HC0","HC1","HC2","HC3","stata","none")
+  ok_cl   <- c("CR0","CR2","stata","none")
+  
+  if (!is.null(.se_type_1)) {
+    if (is_clustered_1 && !(.se_type_1 %in% ok_cl)) {
+      stop("`.se_type_1` must be one of ", paste(ok_cl, collapse=", "),
+           " when clusters are supplied or auto-detected.")
+    }
+    if (!is_clustered_1 && !(.se_type_1 %in% ok_uncl)) {
+      stop("`.se_type_1` must be one of ", paste(ok_uncl, collapse=", "),
+           " when no clusters are used.")
+    }
+  }
+  
+  if (!is.null(.se_type_2)) {
+    if (is_clustered_2 && !(.se_type_2 %in% ok_cl)) {
+      stop("`.se_type_2` must be one of ", paste(ok_cl, collapse=", "),
+           " when clusters are supplied or auto-detected.")
+    }
+    if (!is_clustered_2 && !(.se_type_2 %in% ok_uncl)) {
+      stop("`.se_type_2` must be one of ", paste(ok_uncl, collapse=", "),
+           " when no clusters are used.")
+    }
+  }
+  
+  # ---- Decide actual se_type passed to lm_robust() ---------------------------
+  se_type2_final <- if (is.null(.se_type_2)) {
+    if (is_clustered_2) "CR2" else "HC2"
+  } else {
+    .se_type_2
+  }
+  
+  # Use this name for the label (NULL/NA if no clustering)
+  cluster_by2 <- if (is_clustered_2) {
+    # try to get a nice name for the quosure
+    rlang::as_name(clusters2_quo)
+  } else {
+    NA_character_
+  }
+  
+  # ---- Estimate IRR / tau ---------------------------------------------------
+  
+  if (nrow(data_for_estimand) == 0L) {
+    stop("No rows match the specified attribute/level combination(s).")
+  }
+  if (nrow(data_for_irr) == 0L) {
+    stop("No rows available to estimate IRR/tau.")
+  }
+  
+  critical_from_ci <- function(est, se, lo) {
+    ct <- abs((lo - est) / se)
+    if (!is.finite(ct)) 1.96 else ct
+  }
+  
+  eps <- 1e-8
   
   if (is.null(.irr)) {
-    
     reg_irr <- estimatr::lm_robust(
       agree ~ 1,
-      weights  = if (!rlang::quo_is_null(weights1_quo)) rlang::eval_tidy(weights1_quo, data_for_irr) else NULL,
+      weights  = if (!rlang::quo_is_null(weights1_quo))  rlang::eval_tidy(weights1_quo,  data_for_irr) else NULL,
       clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, data_for_irr) else NULL,
       se_type = .se_type_1,
       data = data_for_irr
     ) |> estimatr::tidy()
     
     irr_raw <- reg_irr$estimate[1]
-    
     if (is.na(irr_raw)) {
       warning("Estimated IRR is NA. Using fallback IRR = 0.75.")
       irr <- 0.75
+      var_irr <- 0   # avoid NA propagation in var_tau
     } else {
-      irr <- irr_raw
-      if (irr < 0.5 || irr > 1) {
-        warning(glue::glue("Estimated IRR was {round(irr_raw, 3)} and clipped to [0.5, 1]."))
+      if (irr_raw < 0.5 || irr_raw > 1) {
+        warning(sprintf("Estimated IRR was %.3f and clipped to [0.5, 1].", irr_raw))
       }
-      irr <- min(max(irr, 0.5), 1)
+      irr <- irr_raw
+      se_irr  <- reg_irr$std.error[1]
+      var_irr <- if (is.na(se_irr)) 0 else se_irr^2
     }
     
-    var_irr <- reg_irr$std.error[1]^2
+    # Nudge off boundaries for stability
+    irr <- min(max(irr, 0.5 + eps), 1 - eps)
     
-    tau     <- if (irr >= 1 - 1e-8) {
-      0
-    } else if (irr <= 1e-8) {
-      0.5
-    } else {
-      (1 - sqrt(1 - 2 * (1 - irr))) / 2
-    }
+    # With interior IRR, no special-casing needed
+    tau     <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
+    var_tau <- 0.25 * (2 * irr - 1)^(-1) * var_irr
     
-    var_tau <- if (irr >= 1 - 1e-8 || irr <= 1e-8) {
-      0
-    } else {
-      0.25 * (2 * irr - 1)^(-1) * var_irr
-    }
-    
-  } else if (!is.null(.irr) & !is.numeric(.irr)) {
-    
-    stop(".irr should be numeric.")
+  } else if (!is.numeric(.irr) || length(.irr) != 1L || is.na(.irr) || !is.finite(.irr)) {
+    stop(".irr should be a finite numeric scalar.")
     
   } else {
+    # user-supplied IRR: warn if outside [0.5,1], then always nudge/clip
+    if (.irr < 0.5 || .irr > 1) {
+      warning(sprintf("Supplied IRR %.3f clipped to [0.5, 1].", .irr))
+    }
+    irr <- min(max(.irr, 0.5 + eps), 1 - eps)
     
-    irr <- .irr
-    tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
-    var_tau <- 0
-    
+    tau     <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
+    var_tau <- 0   # user-supplied IRR treated as fixed
   }
   
   
-  # Estimate MM or AMCE (uncorrected) ---------------------------------------
-  
-  if (estimand == "mm"){
-    
+  # ---- Uncorrected estimate -------------------------------------------------
+  if (estimand == "mm") {
     reg_mm <- estimatr::lm_robust(
       selected ~ 1,
-      weights  = if (!rlang::quo_is_null(weights2_quo)) rlang::eval_tidy(weights2_quo, data_for_estimand) else NULL,
+      weights  = if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  data_for_estimand) else NULL,
       clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL,
-      se_type = .se_type_2,
-      data = data_for_estimand
-    ) |> 
-      estimatr::tidy()
+      se_type  = se_type2_final,
+      data     = data_for_estimand
+    ) |> estimatr::tidy()
     
-    # the critical t-value
-    critical_t <- abs((reg_mm$conf.low[1] - reg_mm$estimate[1]) / reg_mm$std.error[1])
+    critical_t <- critical_from_ci(reg_mm$estimate[1], reg_mm$std.error[1], reg_mm$conf.low[1])
     
-    mm_uncorrected <-  reg_mm$estimate[1]
+    mm_uncorrected     <- reg_mm$estimate[1]
     var_uncorrected_mm <- reg_mm$std.error[1]^2
     
-  } 
+    if (se_method == "simulation" && is.na(reg_mm$std.error[1])) {
+      warning("Simulation SEs require finite standard errors; e.g., with se_type = 'none' results may be NA.")
+    }
+  }
   
   if (estimand == "amce") {
-    
-    reg_amce  <- estimatr::lm_robust(
-      selected ~ x, 
-      weights  = if (!rlang::quo_is_null(weights2_quo)) rlang::eval_tidy(weights2_quo, data_for_estimand) else NULL,
+    reg_amce <- estimatr::lm_robust(
+      selected ~ x,
+      weights  = if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  data_for_estimand) else NULL,
       clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL,
-      se_type = .se_type_2,
-      data = data_for_estimand
-    ) |> 
-      estimatr::tidy()
+      se_type  = se_type2_final,
+      data     = data_for_estimand
+    ) |> estimatr::tidy()
     
-    # the critical t-value
-    critical_t <- abs((reg_amce$conf.low[2] - reg_amce$estimate[2]) / reg_amce$std.error[2])
+    critical_t <- critical_from_ci(reg_amce$estimate[2], reg_amce$std.error[2], reg_amce$conf.low[2])
     
-    amce_uncorrected <-  reg_amce$estimate[2]
+    amce_uncorrected     <- reg_amce$estimate[2]
     var_uncorrected_amce <- reg_amce$std.error[2]^2
     
-  } 
-  
-  # Calculate the covariance ------------------------------------------------
-  
-  # Keep the observations with both "selected" and "agree"
-  
-  data_for_cov <- data_for_estimand |> 
-    dplyr::filter(!is.na(agree))
+    if (se_method == "simulation" && is.na(reg_amce$std.error[2])) {
+      warning("Simulation SEs require finite standard errors; e.g., with se_type = 'none' results may be NA.")
+    }
+  }
+
+  # ---- Covariance pieces ----------------------------------------------------
+  has_agree <- "agree" %in% names(data_for_estimand)
+  data_for_cov <- if (has_agree) dplyr::filter(data_for_estimand, !is.na(agree))
+  else data_for_estimand[0, , drop = FALSE]
+  nz <- has_agree && nrow(data_for_cov) > 0L
   
   if (estimand == "mm"){
-    
-    if (is.null(.irr)){
-      
-      cov_mm_irr  <- cov(data_for_cov$selected, data_for_cov$agree) / nrow(data_for_irr) 
-      
+    if (is.null(.irr) && nz) {
+      cov_mm_irr <- if (nrow(data_for_cov) > 1L)
+        stats::cov(data_for_cov$selected, data_for_cov$agree) / nrow(data_for_irr)
+      else 0
     } else {
-      
       cov_mm_irr <- 0
-      
     }
-    
-    cov_mm_tau  <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm_irr
-    
-  } 
+    cov_mm_tau <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm_irr
+  }
   
-  if (estimand == "amce") {
+  if (estimand == "amce"){
+    d_cov0 <- data_for_cov |> dplyr::filter(x == 0)
+    d_cov1 <- data_for_cov |> dplyr::filter(x == 1)
+    n0 <- if (nz) nrow(d_cov0) else 0L
+    n1 <- if (nz) nrow(d_cov1) else 0L
     
-    d_cov0 <- data_for_cov |> filter(x == 0)
-    d_cov1 <- data_for_cov |> filter(x == 1)
-    
-    if (is.null(.irr)){
-      
-      cov_mm0_irr  <- cov(d_cov0$selected, d_cov0$agree) / nrow(data_for_irr)
-      cov_mm1_irr  <- cov(d_cov1$selected, d_cov1$agree) / nrow(data_for_irr)
-      
+    if (is.null(.irr) && nz) {
+      cov_mm0_irr <- if (n0 > 1L) stats::cov(d_cov0$selected, d_cov0$agree) / nrow(data_for_irr) else 0
+      cov_mm1_irr <- if (n1 > 1L) stats::cov(d_cov1$selected, d_cov1$agree) / nrow(data_for_irr) else 0
     } else {
-      
-      cov_mm0_irr  <- 0
-      cov_mm1_irr  <- 0
-      
+      cov_mm0_irr <- 0
+      cov_mm1_irr <- 0
     }
-    
     cov_mm0_tau  <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm0_irr
     cov_mm1_tau  <- -0.5 * (2 * irr - 1)^(-1/2) * cov_mm1_irr
     cov_amce_tau <- cov_mm1_tau - cov_mm0_tau
-    
   }
   
-  # estimate and correct MMs ------------------------------------------------
-  
+  # ---- Corrected estimates & SEs -------------------------------------------
   if (estimand == "mm"){
-    
     if (se_method == "analytical"){
+      mm_corrected <- (mm_uncorrected - tau) / (1 - 2 * tau)
+      # var_corrected_mm <- (mm_corrected^2 / (1 - (2 * tau))^2) *
+      #   ( ((var_uncorrected_mm + var_tau - 2 * cov_mm_tau) / mm_corrected^2)
+      #     + 4 * (cov_mm_tau - var_tau) / mm_corrected
+      #     + 4 * var_tau )
       
-      # corrected the estimate
-      mm_corrected   <- (mm_uncorrected - tau) / (1 - 2 * tau) 
+      # Use delta-method. Avoid blowing up the variance when the corrected estimate is near 0.
+      dp  <- 1 / (1 - 2 * tau)
+      dt  <- (2 * mm_uncorrected - 1) / (1 - 2 * tau)^2
+      var_corrected_mm <- dp^2 * var_uncorrected_mm + dt^2 * var_tau + 2 * dp * dt * cov_mm_tau
       
-      # analytically calculate variances
-      var_corrected_mm <- 
-        (mm_corrected^2 / (1 - (2 * tau))^2) * 
-        (
-          ((var_uncorrected_mm + var_tau - 2 * cov_mm_tau) / mm_corrected^2)
-          + 4 * (cov_mm_tau - var_tau) / mm_corrected
-          + 4 * var_tau
-        )
-      
-      # return
-      output <- data.frame("estimand" = c("mm_uncorrected", "mm_corrected"),
-                           "estimate" = c(mm_uncorrected, mm_corrected),
-                           "se" = c(sqrt(var_uncorrected_mm),
-                                    sqrt(var_corrected_mm))) |> 
-        dplyr::mutate("conf.low" = estimate - critical_t * se,
-                      "conf.high" = estimate + critical_t * se,
-                      "tau" = tau)
-      
-    } 
+      output <- data.frame(
+        estimand = c("mm_uncorrected", "mm_corrected"),
+        estimate = c(mm_uncorrected, mm_corrected),
+        se       = c(sqrt(var_uncorrected_mm), sqrt(var_corrected_mm))
+      ) |>
+        dplyr::mutate(conf.low = estimate - critical_t * se,
+                      conf.high = estimate + critical_t * se,
+                      tau = tau)
+    }
     
     if (se_method == "simulation"){
+      if ((var_tau <= 0 || !is.finite(var_tau)) && (cov_mm_tau == 0)) {
+        mm_draws  <- stats::rnorm(.n_sims, mean = mm_uncorrected, sd = sqrt(var_uncorrected_mm))
+        tau_draws <- rep(tau, .n_sims)
+        sim_mm <- data.frame(mm_uncorrected = mm_draws, tau = tau_draws) |>
+          dplyr::mutate(mm_corrected = (mm_uncorrected - tau) / (1 - 2 * tau))
+      } else {
+        vcov_mm_tau <- matrix(c(var_uncorrected_mm, cov_mm_tau,
+                                cov_mm_tau,        var_tau), nrow = 2)
+        sim_mm <- as.data.frame(MASS::mvrnorm(.n_sims, c(mm_uncorrected, tau), vcov_mm_tau)) |>
+          rlang::set_names(c("mm_uncorrected", "tau")) |>
+          dplyr::mutate(mm_corrected = (mm_uncorrected - tau) / (1 - 2 * tau))
+      }
       
-      # calculate the variance-covariance matrix
-      vcov_mm_tau  <- matrix(c(var_uncorrected_mm,
-                               cov_mm_tau,
-                               cov_mm_tau,
-                               var_tau),
-                             nrow = 2)
-      
-      # run simulation
-      sim_mm   <- as.data.frame(MASS::mvrnorm(.n_sims, 
-                                              c(mm_uncorrected, tau), 
-                                              vcov_mm_tau)) |>
-        rlang::set_names(c("mm_uncorrected", "tau")) |>
-        
-        # corrected the estimate
-        dplyr::mutate(mm_corrected = (mm_uncorrected - tau) / (1 - 2 * tau))
-      
-      # return
-      output <- data.frame("estimand" = c("mm_uncorrected", "mm_corrected"),
-                           "estimate" = c(mm_uncorrected, mean(sim_mm$mm_corrected)),
-                           "se" = c(sqrt(var_uncorrected_mm), sd(sim_mm$mm_corrected))) |> 
-        dplyr::mutate("conf.low" = estimate - critical_t * se,
-                      "conf.high" = estimate + critical_t * se,
-                      "tau" = tau)
-      
-    }  
+      output <- data.frame(
+        estimand = c("mm_uncorrected", "mm_corrected"),
+        estimate = c(mm_uncorrected, mean(sim_mm$mm_corrected)),
+        se       = c(sqrt(var_uncorrected_mm), stats::sd(sim_mm$mm_corrected))
+      ) |>
+        dplyr::mutate(conf.low = estimate - critical_t * se,
+                      conf.high = estimate + critical_t * se,
+                      tau = tau)
+    }
     
     if (se_method == "bootstrap"){
-      
-      # save a vector of respondent IDs
-      IDs_1 <- unique(data_for_irr$id)
-      IDs_2 <- unique(data_for_estimand$id)
-      
+      IDs_1 <- unique(stats::na.omit(data_for_irr$id))
+      IDs_2 <- unique(stats::na.omit(data_for_estimand$id))
       out <- NULL
-      
-      for (i in 1:.n_boot){
-        
-        # randomly sample respondent IDs
-        set.seed(i)
+      set.seed(1L)
+      for (i in seq_len(.n_boot)) {
         id_1 <- sample(IDs_1, length(IDs_1), replace = TRUE)
         id_2 <- sample(IDs_2, length(IDs_2), replace = TRUE)
         
-        # generate a bootstrapped data frame
-        bs_sample_1 <- data.frame(id = id_1) |> 
-          dplyr::left_join(data_for_irr, 
-                           by = "id", 
-                           relationship = "many-to-many")
-        bs_sample_2 <- data.frame(id = id_2) |> 
-          dplyr::left_join(data_for_estimand, 
-                           by = "id", 
-                           relationship = "many-to-many")
+        bs_sample_1 <- data.frame(id = id_1) |>
+          dplyr::left_join(data_for_irr, by = "id", relationship = "many-to-many")
+        bs_sample_2 <- data.frame(id = id_2) |>
+          dplyr::left_join(data_for_estimand, by = "id", relationship = "many-to-many")
         
-        # run intercept-only regression models
-        reg_irr <- estimatr::lm_robust(agree ~ 1, 
-                                       weights  = if (!rlang::quo_is_null(weights1_quo)) rlang::eval_tidy(weights1_quo, bs_sample_1) else NULL,
-                                       clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
-                                       se_type = .se_type_1,
-                                       data = bs_sample_1) |> 
-          estimatr::tidy()
+        reg_irr <- estimatr::lm_robust(
+          agree ~ 1,
+          weights  = if (!rlang::quo_is_null(weights1_quo))  rlang::eval_tidy(weights1_quo,  bs_sample_1) else NULL,
+          clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
+          se_type = .se_type_1,
+          data = bs_sample_1
+        ) |> estimatr::tidy()
         
-        reg_mm  <- estimatr::lm_robust(selected ~ 1, 
-                                       weights  = if (!rlang::quo_is_null(weights2_quo)) rlang::eval_tidy(weights2_quo, bs_sample_2) else NULL,
-                                       clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, bs_sample_2) else NULL,
-                                       se_type = .se_type_2,
-                                       data = bs_sample_2) |> 
-          estimatr::tidy()
+        reg_mm <- estimatr::lm_robust(
+          selected ~ 1,
+          weights  = if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  bs_sample_2) else NULL,
+          clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, bs_sample_2) else NULL,
+          se_type = se_type2_final,
+          data = bs_sample_2
+        ) |> estimatr::tidy()
         
-        # calculate the means
-        mm_uncorrected <-  reg_mm$estimate[1]
-        
+        mm_uncorrected_bs <- reg_mm$estimate[1]
         if (is.null(.irr)){
-          
-          irr <- reg_irr$estimate[1]
-          tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
-          
+          irr_bs <- reg_irr$estimate[1]
+          tau_bs <- (1 - sqrt(1 - 2 * (1 - irr_bs))) / 2
         } else {
-          
-          tau <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
-          
+          tau_bs <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
         }
+        mm_corrected_bs <- (mm_uncorrected_bs - tau_bs) / (1 - 2 * tau_bs)
         
-        # corrected the estimate
-        mm_corrected   <- (mm_uncorrected - tau) / (1 - 2 * tau) 
-        
-        # save a temporary data frame
-        temp <- data.frame("estimand" = c("mm_corrected", "mm_uncorrected"),
-                           "estimate" = c(mm_corrected, mm_uncorrected))
-        
-        # add the data frame to "out"
-        out <- dplyr::bind_rows(out, temp)
-        
+        out <- dplyr::bind_rows(out,
+                                data.frame(estimand = c("mm_corrected","mm_uncorrected"),
+                                           estimate = c(mm_corrected_bs, mm_uncorrected_bs)))
       }
       
-      # return
-      output <- data.frame("estimand" = c("mm_uncorrected", "mm_corrected"),
-                           "estimate" = c(mean(out |> filter(estimand == "mm_uncorrected") |> pull(estimate)), 
-                                          mean(out |> filter(estimand == "mm_corrected") |> pull(estimate))),
-                           "se"       = c(sd(out |> filter(estimand == "mm_uncorrected") |> pull(estimate)), 
-                                          sd(out |> filter(estimand == "mm_corrected") |> pull(estimate)))) |> 
-        dplyr::mutate("conf.low" = estimate - critical_t * se,
-                      "conf.high" = estimate + critical_t * se,
-                      "tau" = tau)
+      output <- data.frame(
+        estimand = c("mm_uncorrected","mm_corrected"),
+        estimate = c(
+          mean(out |> dplyr::filter(estimand == "mm_uncorrected") |> dplyr::pull(estimate)),
+          mean(out |> dplyr::filter(estimand == "mm_corrected")   |> dplyr::pull(estimate))
+        ),
+        se = c(
+          stats::sd(out |> dplyr::filter(estimand == "mm_uncorrected") |> dplyr::pull(estimate)),
+          stats::sd(out |> dplyr::filter(estimand == "mm_corrected")   |> dplyr::pull(estimate))
+        )
+      ) |>
+        dplyr::mutate(conf.low = estimate - critical_t * se,
+                      conf.high = estimate + critical_t * se,
+                      tau = tau)
     }
-    
-  } 
-  
-  # estimate and correct AMCEs ----------------------------------------------
+  }
   
   if (estimand == "amce"){
-    
     if (se_method == "analytical"){
+      amce_corrected <- amce_uncorrected / (1 - 2 * tau)
       
-      # corrected the estimate
-      amce_corrected   <- amce_uncorrected / (1 - 2 * tau)
+      # var_corrected_amce <- (amce_corrected^2 / (1 - (2 * tau))^2) *
+      #   ( (var_uncorrected_amce / amce_corrected^2)
+      #     + 4 * cov_amce_tau / amce_corrected
+      #     + 4 * var_tau )
       
-      # analytically calculate variances
-      var_corrected_amce <- 
-        (amce_corrected^2 / (1 - (2 * tau))^2) * 
-        (
-          (var_uncorrected_amce / amce_corrected^2) 
-          + 4 * cov_amce_tau / amce_corrected
-          + 4 * var_tau
-        )
+      # Use delta-method. Avoid blowing up the variance when the corrected estimate is near 0.
+      db  <- 1 / (1 - 2 * tau)
+      dt  <- 2 * amce_uncorrected / (1 - 2 * tau)^2
+      var_corrected_amce <- db^2 * var_uncorrected_amce + dt^2 * var_tau + 2 * db * dt * cov_amce_tau
       
-      # return
-      output <- data.frame("estimand" = c("amce_uncorrected", "amce_corrected"),
-                           "estimate" = c(amce_uncorrected, amce_corrected),
-                           "se" = c(sqrt(var_uncorrected_amce),
-                                    sqrt(var_corrected_amce))) |> 
-        dplyr::mutate("conf.low" = estimate - critical_t * se,
-                      "conf.high" = estimate + critical_t * se,
-                      "tau" = tau)
       
-    } 
+      output <- data.frame(
+        estimand = c("amce_uncorrected","amce_corrected"),
+        estimate = c(amce_uncorrected, amce_corrected),
+        se       = c(sqrt(var_uncorrected_amce), sqrt(var_corrected_amce))
+      ) |>
+        dplyr::mutate(conf.low = estimate - critical_t * se,
+                      conf.high = estimate + critical_t * se,
+                      tau = tau)
+    }
     
     if (se_method == "simulation"){
+      if ((var_tau <= 0 || !is.finite(var_tau)) && (cov_amce_tau == 0)) {
+        amce_draws <- stats::rnorm(.n_sims, mean = amce_uncorrected, sd = sqrt(var_uncorrected_amce))
+        tau_draws  <- rep(tau, .n_sims)
+        sim_amce <- data.frame(amce_uncorrected = amce_draws, tau = tau_draws) |>
+          dplyr::mutate(amce_corrected = amce_uncorrected / (1 - 2 * tau))
+      } else {
+        vcov_amce_tau <- matrix(c(var_uncorrected_amce, cov_amce_tau,
+                                  cov_amce_tau,        var_tau), nrow = 2)
+        sim_amce <- as.data.frame(MASS::mvrnorm(.n_sims, c(amce_uncorrected, tau), vcov_amce_tau)) |>
+          rlang::set_names(c("amce_uncorrected","tau")) |>
+          dplyr::mutate(amce_corrected = amce_uncorrected / (1 - 2 * tau))
+      }
       
-      # calculate the variance-covariance matrix
-      vcov_amce_tau  <- matrix(c(var_uncorrected_amce,
-                                 cov_amce_tau,
-                                 cov_amce_tau,
-                                 var_tau),
-                               nrow = 2)
-      
-      # run simulation
-      sim_amce   <- as.data.frame(MASS::mvrnorm(.n_sims, 
-                                                c(amce_uncorrected, tau), 
-                                                vcov_amce_tau)) |>
-        rlang::set_names(c("amce_uncorrected", "tau")) |>
-        
-        # corrected the estimate
-        dplyr::mutate(amce_corrected = amce_uncorrected / (1 - 2 * tau))
-      
-      # return
-      output <- data.frame("estimand" = c("amce_uncorrected", "amce_corrected"),
-                           "estimate" = c(amce_uncorrected, mean(sim_amce$amce_corrected)),
-                           "se" = c(sqrt(var_uncorrected_amce), sd(sim_amce$amce_corrected))) |> 
-        dplyr::mutate("conf.low" = estimate - critical_t * se,
-                      "conf.high" = estimate + critical_t * se,
-                      "tau" = tau)
-      
-    } 
+      output <- data.frame(
+        estimand = c("amce_uncorrected","amce_corrected"),
+        estimate = c(amce_uncorrected, mean(sim_amce$amce_corrected)),
+        se       = c(sqrt(var_uncorrected_amce), stats::sd(sim_amce$amce_corrected))
+      ) |>
+        dplyr::mutate(conf.low = estimate - critical_t * se,
+                      conf.high = estimate + critical_t * se,
+                      tau = tau)
+    }
     
     if (se_method == "bootstrap"){
-      
-      # save a vector of respondent IDs
-      IDs_1 <- unique(data_for_irr$id)
-      IDs_2 <- unique(data_for_estimand$id)
-      
+      IDs_1 <- unique(stats::na.omit(data_for_irr$id))
+      IDs_2 <- unique(stats::na.omit(data_for_estimand$id))
       out <- NULL
-      
-      for (i in 1:.n_boot){
-        
-        # randomly sample respondent IDs
-        set.seed(i)
+      set.seed(1L)
+      for (i in seq_len(.n_boot)) {
         id_1 <- sample(IDs_1, length(IDs_1), replace = TRUE)
         id_2 <- sample(IDs_2, length(IDs_2), replace = TRUE)
         
-        # generate a bootstrapped data frame
-        bs_sample_1 <- data.frame(id = id_1) |> 
-          dplyr::left_join(data_for_irr, 
-                           by = "id", 
-                           relationship = "many-to-many")
-        bs_sample_2 <- data.frame(id = id_2) |> 
-          dplyr::left_join(data_for_estimand, 
-                           by = "id", 
-                           relationship = "many-to-many")
+        bs_sample_1 <- data.frame(id = id_1) |>
+          dplyr::left_join(data_for_irr,      by = "id", relationship = "many-to-many")
+        bs_sample_2 <- data.frame(id = id_2) |>
+          dplyr::left_join(data_for_estimand, by = "id", relationship = "many-to-many")
         
-        # run intercept-only regression models
-        reg_irr <- estimatr::lm_robust(agree ~ 1, 
-                                       weights  = if (!rlang::quo_is_null(weights1_quo)) rlang::eval_tidy(weights1_quo, bs_sample_1) else NULL,
-                                       clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
-                                       se_type = .se_type_1,
-                                       data = bs_sample_1) |> 
-          estimatr::tidy()
+        reg_irr <- estimatr::lm_robust(
+          agree ~ 1,
+          weights  = if (!rlang::quo_is_null(weights1_quo))  rlang::eval_tidy(weights1_quo,  bs_sample_1) else NULL,
+          clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
+          se_type = .se_type_1,
+          data = bs_sample_1
+        ) |> estimatr::tidy()
         
-        reg_amce <- estimatr::lm_robust(selected ~ x, 
-                                         weights  = if (!rlang::quo_is_null(weights2_quo)) rlang::eval_tidy(weights2_quo, bs_sample_2) else NULL,
-                                         clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, bs_sample_2) else NULL,
-                                         se_type = .se_type_2,
-                                         bs_sample_2) |> 
-          estimatr::tidy()        
+        reg_amce <- estimatr::lm_robust(
+          selected ~ x,
+          weights  = if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  bs_sample_2) else NULL,
+          clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, bs_sample_2) else NULL,
+          se_type = se_type2_final,
+          data = bs_sample_2
+        ) |> estimatr::tidy()
         
-        # calculate the means
-        amce_uncorrected <-  reg_amce$estimate[2]
+        amce_uncorrected_bs <- reg_amce$estimate[2]
         if (is.null(.irr)){
-          
-          irr <- reg_irr$estimate[1]
-          tau <- (1 - sqrt(1 - 2 * (1 - irr))) / 2
-          
+          irr_bs <- reg_irr$estimate[1]
+          tau_bs <- (1 - sqrt(1 - 2 * (1 - irr_bs))) / 2
         } else {
-          
-          tau <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
-          
+          tau_bs <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
         }
+        amce_corrected_bs <- amce_uncorrected_bs / (1 - 2 * tau_bs)
         
-        # corrected the estimate
-        amce_corrected   <- amce_uncorrected / (1 - 2 * tau) 
-        
-        # save a temporary data frame
-        temp <- data.frame("estimand" = c("amce_corrected", "amce_uncorrected"),
-                           "estimate" = c(amce_corrected, amce_uncorrected))
-        
-        # add the data frame to "out"
-        out <- dplyr::bind_rows(out, temp)
-        
+        out <- dplyr::bind_rows(out,
+                                data.frame(estimand = c("amce_corrected","amce_uncorrected"),
+                                           estimate = c(amce_corrected_bs, amce_uncorrected_bs)))
       }
       
-      # return
-      output <- data.frame("estimand" = c("amce_uncorrected", "amce_corrected"),
-                           "estimate" = c(mean(out |> filter(estimand == "amce_uncorrected") |> pull(estimate)), 
-                                          mean(out |> filter(estimand == "amce_corrected") |> pull(estimate))),
-                           "se"       = c(sd(out |> filter(estimand == "amce_uncorrected") |> pull(estimate)), 
-                                          sd(out |> filter(estimand == "amce_corrected") |> pull(estimate)))) |> 
-        dplyr::mutate("conf.low" = estimate - critical_t * se,
-                      "conf.high" = estimate + critical_t * se,
-                      "tau" = tau)
-      
+      output <- data.frame(
+        estimand = c("amce_uncorrected","amce_corrected"),
+        estimate = c(
+          mean(out |> dplyr::filter(estimand == "amce_uncorrected") |> dplyr::pull(estimate)),
+          mean(out |> dplyr::filter(estimand == "amce_corrected")   |> dplyr::pull(estimate))
+        ),
+        se = c(
+          stats::sd(out |> dplyr::filter(estimand == "amce_uncorrected") |> dplyr::pull(estimate)),
+          stats::sd(out |> dplyr::filter(estimand == "amce_corrected")   |> dplyr::pull(estimate))
+        )
+      ) |>
+        dplyr::mutate(conf.low = estimate - critical_t * se,
+                      conf.high = estimate + critical_t * se,
+                      tau = tau)
     }
-  }  
+  }
   
-  # return the output -------------------------------------------------------
+  attr(output, "se_type_used") <- se_type2_final
+  attr(output, "cluster_by")   <- cluster_by2
   
   return(output)
-  
-} 
+}
