@@ -28,9 +28,7 @@ predict_tau <- function(
   # data frame
   
   .dataframe <- .data$data
-  
 
-  
   # the number of attributes
   
   n_attributes <- names(.dataframe) %>% str_detect(., "att") %>% sum()
@@ -137,7 +135,10 @@ predict_tau <- function(
     dplyr::filter(!(estimate %in% c(0, 1))) %>% 
     
     # remove if all attributes are the same within task combinations
-    dplyr::filter(x != 0) 
+    dplyr::filter(x != 0) |> 
+    
+    # remove if the standard error is extremely small.
+    dplyr::filter(!(std.error <= .Machine$double.eps))
   
   # then run a weighted least square regression
   
