@@ -381,6 +381,9 @@ pj_estimate <- function(
   if (nrow(data_for_estimand) == 0L) {
     stop("No rows match the specified attribute/level combination(s).")
   }
+  if (is.null(.irr) && nrow(data_for_irr) == 0L) {
+    stop("No rows available to estimate IRR/tau. Consider supplying .irr directly.")
+  }
   if (nrow(data_for_irr) == 0L) {
     stop("No rows available to estimate IRR/tau.")
   }
