@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,9 +81,36 @@ estimate and visualize profile-level QOIs.</p>
 <div class="section level2">
 <h2 id="prepare-example-data">📦 Prepare Example Data<a class="anchor" aria-label="anchor" href="#prepare-example-data"></a>
 </h2>
+<blockquote>
+<p><strong>Outcome naming &amp; order (important)</strong></p>
+<ul>
+<li>List <code>.outcomes</code> in the <strong>order questions were
+asked</strong>.<br>
+</li>
+<li>If you have a repeated task, its outcome must be the <strong>last
+element</strong>.<br>
+</li>
+<li>For base tasks (all but last), the function reads the
+<strong>digits</strong> in each name as the task id (e.g.,
+<code>"choice4"</code>, <code>"Q4"</code>, <code>"task04"</code> → task
+4).<br>
+</li>
+<li>The <strong>repeated base task</strong> is inferred from the
+<strong>first base outcome’s digits</strong>. The repeated outcome
+itself <strong>need not</strong> contain digits—only its position (last)
+matters.<br>
+</li>
+<li>Outcome strings should end with your choice labels; by default we
+parse the <strong>last character</strong> and expect
+<code>"A"</code>/<code>"B"</code>. If your survey uses
+<code>"1"</code>/<code>"2"</code> (or other endings), set
+<code>.choice_labels</code> accordingly.</li>
+</ul>
+</blockquote>
+<p><strong>Examples</strong></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
-<span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">outcomes</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Standard order; repeated = task 1</span></span>
+<span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
 <span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">exampleData1</span>, <span class="va">outcomes</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
