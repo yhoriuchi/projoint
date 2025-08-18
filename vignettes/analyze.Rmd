@@ -28,9 +28,19 @@ The following instructions apply to choice-level data. What if you have profile-
 
 ## 📦 Prepare Example Data
 
+> **Outcome naming & order (important)**
+> 
+> - List `.outcomes` in the **order questions were asked**.  
+> - If you have a repeated task, its outcome must be the **last element**.  
+> - For base tasks (all but last), the function reads the **digits** in each name as the task id (e.g., `"choice4"`, `"Q4"`, `"task04"` → task 4).  
+> - The **repeated base task** is inferred from the **first base outcome’s digits**. The repeated outcome itself **need not** contain digits—only its position (last) matters.  
+> - Outcome strings should end with your choice labels; by default we parse the **last character** and expect `"A"`/`"B"`. If your survey uses `"1"`/`"2"` (or other endings), set `.choice_labels` accordingly.
+
+**Examples**
+
 ```{r}
-outcomes <- paste0("choice", 1:8)
-outcomes <- c(outcomes, "choice1_repeated_flipped")
+# Standard order; repeated = task 1
+outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
 out1 <- reshape_projoint(exampleData1, outcomes)
 ```
 

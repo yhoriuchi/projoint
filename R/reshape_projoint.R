@@ -1,45 +1,96 @@
-#' Reshapes survey response data for conjoint analysis
+#' Reshapes survey response data for conjoint analysis (single task set)
 #'
-#' This function takes a data frame, preferably from \code{\link{read_Qualtrics}}, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
+#' This function takes a wide survey data frame (e.g., from \code{\link{read_Qualtrics}}) and reshapes it so that each row
+#' corresponds to a single respondent–task–profile. It supports arbitrary ordering of base tasks as asked to respondents and
+#' a single repeated task per respondent. The repeated base task is inferred from the first base outcome in \code{.outcomes},
+#' and the repeated outcome must be the last element of \code{.outcomes}.
+#'
+#' @details
+#' **Scope and assumptions**
+#' * One set of conjoint tasks with exactly two profiles per task (profiles 1 and 2).
+#' * For multi-set designs, call \code{reshape_projoint()} once per set and bind the results.
+#'
+#' **Expected input (Qualtrics K-codes)**
+#' * Wide columns named \code{K-<task>-<attribute>} (attribute names) and
+#'   \code{K-<task>-<profile>-<attribute>} (level names), where \code{<task>} is in \code{1..n} and \code{<profile>} is \code{1} or \code{2}.
+#' * Rows with missing \code{K-1-1} are dropped as empty tables (server hiccup safeguard).
+#'
+#' **Outcome columns (\code{.outcomes})**
+#' * List all choice variables in the **order they were asked**. If you include a repeated task, its outcome column must be the **last element**.
+#' * For base tasks (all but the last element), the function extracts the base task id by reading the **digits** in each outcome name
+#'   (e.g., \code{"choice4"}, \code{"Q4"}, \code{"task04"} -> task 4).
+#' * The set of base task ids extracted from \code{.outcomes} must **exactly match** the set of task ids present in the K-codes; otherwise an error is thrown.
+#' * The **repeated base task** is inferred as the **digits in the first base outcome** (i.e., the first element of \code{.outcomes}, excluding the final repeated outcome).
+#' * The repeated outcome’s own name does **not** need to contain digits; only its **position** (last) matters.
+#'
+#' **Choice parsing**
+#' * The selected profile is parsed from the **last character** of each outcome string and matched to \code{.choice_labels}.
+#'   Ensure outcomes end with these labels (e.g., "Candidate A"/"Candidate B"). If outcomes are numeric or differently formatted, pre-process
+#'   or adjust \code{.choice_labels} accordingly.
+#'
+#' **Output**
+#' * Returns a \code{projoint_data} object with:
+#'   \itemize{
+#'     \item \code{$labels}: a data frame mapping human-readable \code{attribute}/\code{level} to stable ids \code{attribute_id = "att1","att2",...}
+#'           and \code{level_id = "attX:levelY"}.
+#'     \item \code{$data}: a tibble with one row per \code{id}–\code{task}–\code{profile}, attribute columns (named by \code{att*}) storing \code{level_id},
+#'           \code{selected} (1 if that profile was chosen within the task, 0 otherwise), \code{agree} (1/0/NA for repeated-task agreement after flip logic),
+#'           and any columns specified in \code{.covariates}. \code{id} is coerced to character; attribute columns are factors.
+#'   }
+#'
+#' **Filling agreement**
+#' * If \code{.fill = TRUE}, \code{agree} is forward/backward filled **within respondent** in task order, propagating the observed repeated-task agreement
+#'   to all tasks for that respondent. This relies on the assumption that IRR is respondent-specific and independent of table content.
+#'
+#' **Recommendation**
+#' * Leave \code{.fill = FALSE} by default. Consider \code{.fill = TRUE} only when sample size or subgroup sparsity makes the single repeated-task observation
+#'   per respondent inadequate, and you are willing to assume that intra-respondent reliability (IRR) is respondent-specific and independent of the conjoint
+#'   table contents. When using \code{.fill = TRUE}, always compute standard errors clustered at the respondent level, and report a sensitivity check comparing
+#'   results with \code{.fill = FALSE}.
+#'
+#' **Common diagnostics**
+#' * After reshaping, \code{dplyr::count(reshaped$data, task, profile)} should show exactly two rows per task (profiles 1 and 2).
+#' * If \code{pj_estimate()} later reports "No rows match the specified attribute/level", construct QOIs from \code{reshaped$labels} (use the exact \code{attX:levelY} ids).
+#'
+#' @param .dataframe A data frame, preferably from \code{\link{read_Qualtrics}}.
+#' @param .outcomes Character vector of outcome column names in the **asked order**. If a repeated task is used, its outcome must be the **last element**.
+#' @param .choice_labels Character vector (default \code{c("A","B")}) giving the two labels that appear at the end of the outcome strings (e.g., \code{"Candidate A"}, \code{"Candidate B"}).
+#' @param .alphabet Single character (default \code{"K"}) indicating the Qualtrics prefix used for conjoint tables.
+#' @param .idvar Character (default \code{"ResponseId"}) indicating the respondent id column.
+#' @param .repeated Logical (default \code{TRUE}) indicating whether a repeated task is present.
+#' @param .flipped Logical (default \code{TRUE}) indicating whether the repeated task flips profiles (1 <-> 2) before agreement is computed.
+#' @param .covariates Optional character vector of respondent-level covariate column names to carry through.
+#' @param .fill Logical (default \code{FALSE}). If \code{TRUE}, fills \code{agree} within respondent across tasks as described under "Filling agreement".
+#'
+#' @return A \code{projoint_data} object with elements \code{$labels} and \code{$data}; see Details.
 #'
 #' @import dplyr
 #' @import tidyr
 #' @import stringr
 #' @import rlang
 #' @import tidyselect
-#' @param .dataframe A data frame, preferably from \code{\link{read_Qualtrics}}
-#' @param .outcomes A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.
-#' @param .choice_labels c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")
-#' @param .alphabet "K" (default): a letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics.
-#' @param .idvar "ResponseId" (default): a character identifying the column name containing respondent
-#' @param .repeated TRUE (default) if there is a repeated task (recommended). The repeated task should be the same as the first task.
-#' @param .flipped TRUE (default) if the profiles of the repeated task are flipped (recommended)
-#' @param .covariates NULL (default): a character vector identifying respondents' covariates used for subgroup analysis
-#' @param .fill FALSE (default): A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).
-#' @return A projoint object of class `projoint_data` ready to pass to `projoint()`.
-#' @return A projoint object of class \code{\link{projoint_data}} ready to pass to \code{\link{projoint}}.
-#' @export
+#' @importFrom readr parse_number
+#'
 #' @examples
 #' library(projoint)
-#' 
 #' data("exampleData1")
-#' head(exampleData1)
 #'
-#' # Write outcome column names
-#' outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-#' outcomes <- c(outcomes, "choice1_repeated_flipped")
-#' 
-#' # Reshape the data
-#' reshaped_data <- reshape_projoint(
-#'   .dataframe = exampleData1, 
-#'   .outcomes = outcomes)
-
+#' # Example 1: Base tasks asked in numeric order, repeated = task 1
+#' outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
+#' reshaped <- reshape_projoint(exampleData1, outcomes)
+#' dplyr::count(reshaped$data, task, profile)  # should be 2 per task
+#'
+#' # Example 2: Arbitrary task order (e.g., respondents saw tasks {2,1,3,4,5}); repeated is last
+#' # The repeated base task is inferred from the FIRST base outcome ("Q2" -> task 2).
+#' # outcomes2 <- c("Q2","Q1","Q3","Q4","Q5","Q2_repeat")
+#' # reshaped2 <- reshape_projoint(exampleData1, outcomes2, .flipped = TRUE)
+#' @export
 reshape_projoint <- function(
-    .dataframe, 
-    .outcomes, 
+    .dataframe,
+    .outcomes,
     .choice_labels = c("A", "B"),
-    .alphabet = "K", 
-    .idvar = "ResponseId", 
+    .alphabet = "K",
+    .idvar = "ResponseId",
     .repeated = TRUE,
     .flipped = TRUE,
     .covariates = NULL,
@@ -50,13 +101,12 @@ reshape_projoint <- function(
   n_tasks_all <- length(.outcomes)
   
   # number of tasks (excluding the repeated task)
-  # number of tasks (excluding the repeated task)
   if (.repeated == TRUE){
     n_tasks <- n_tasks_all - 1
   } else {
     n_tasks <- n_tasks_all
   }
-
+  
   # repeated_task recommended
   if(!is.logical(.repeated)){
     stop("The .repeated argument must be either TRUE or FALSE.")
@@ -66,162 +116,218 @@ reshape_projoint <- function(
   if(!is.logical(.fill)){
     stop("The .fill argument must be either TRUE or FALSE.")
   }
-
+  
   # initial data cleaning
-  df <- .dataframe %>%
+  df <- .dataframe |>
     # Rename the respondent identifier "id"
-    dplyr::rename("id" = all_of(.idvar)) %>%
-    # Sometimes empty conjoint tables are generated due to server problems. 
-    # The following line removes tasks with no information (using "-1-1") 
+    dplyr::rename("id" = all_of(.idvar)) |>
+    # Sometimes empty conjoint tables are generated due to server problems.
+    # The following line removes tasks with no information (using "-1-1")
     # assuming that all contents are empty if "-1-1" is NA.
     dplyr::filter(!is.na(!!rlang::sym(paste0(.alphabet, "-1-1"))))
   
   # data frame that only includes ID and conjoint-related variables
-  temp0 <- df %>% 
+  temp0 <- df |>
     dplyr::select(id, tidyselect::contains(paste0(.alphabet, "-")))
   
   # number of columns in temp0
   n_col <- ncol(temp0)
   
   # c("id", "task", "attribute", "attribute_name")
-  temp1 <- temp0 %>%
-    tidyr::pivot_longer(names_to = "code", values_to = "name", cols = all_of(2:n_col)) %>%
-    dplyr::filter(stringr::str_detect(code, paste0(.alphabet, "-\\d+-\\d+$"))) %>%
-    tidyr::separate(code, into = c("x", "task", "attribute"), sep = "\\-") %>%
-    dplyr::select(-all_of("x")) %>%
+  # "task" is extracted from the "code."
+  temp1 <- temp0 |>
+    tidyr::pivot_longer(names_to = "code", values_to = "name", cols = all_of(2:n_col)) |>
+    dplyr::filter(stringr::str_detect(code, paste0(.alphabet, "-\\d+-\\d+$"))) |>
+    tidyr::separate(code, into = c("x", "task", "attribute"), sep = "\\-") |>
+    dplyr::select(-all_of("x")) |>
     rlang::set_names(c("id", "task", "attribute", "attribute_name"))
   
   # c("id", "task", "profile", "attribute", "level_name")
-  temp2 <- temp0 %>%
-    tidyr::pivot_longer(names_to = "code", values_to = "name", cols = all_of(2:n_col)) %>%
-    dplyr::filter(stringr::str_detect(code, paste0(.alphabet, "-\\d+-\\d+-\\d+"))) %>%
-    tidyr::separate(code, into = c("x", "task", "profile", "attribute"), sep = "\\-") %>%
-    dplyr::select(-all_of("x")) %>%
+  # "task" is extracted from the "code."
+  temp2 <- temp0 |>
+    tidyr::pivot_longer(names_to = "code", values_to = "name", cols = all_of(2:n_col)) |>
+    dplyr::filter(stringr::str_detect(code, paste0(.alphabet, "-\\d+-\\d+-\\d+"))) |>
+    tidyr::separate(code, into = c("x", "task", "profile", "attribute"), sep = "\\-") |>
+    dplyr::select(-all_of("x")) |>
     rlang::set_names(c("id", "task", "profile", "attribute", "level_name"))
   
   # merge temp1 and temp2 and do further wrangling
   attribute_levels_long <- left_join(temp1, temp2,
                                      by = c("id", "task", "attribute"),
-                                     multiple = "all") %>%
-    dplyr::select(-all_of("attribute")) %>%
-    dplyr::mutate(across(c(task, profile), as.numeric)) %>%
+                                     multiple = "all") |>
+    dplyr::select(-all_of("attribute")) |>
+    dplyr::mutate(across(c(task, profile), as.numeric)) |>
     dplyr::rename("attribute" = attribute_name,
-                  "level" = level_name) %>%
+                  "level" = level_name) |>
     dplyr::filter(task <= n_tasks)
   
   # make a list of attributes and levels, as well as their IDs
-  labels <- attribute_levels_long %>%
-    dplyr::arrange(attribute, level) %>%
-    dplyr::select(attribute, level) %>%
-    dplyr::distinct() %>%
-    dplyr::group_by(attribute) %>%
+  labels <- attribute_levels_long |>
+    dplyr::arrange(attribute, level) |>
+    dplyr::select(attribute, level) |>
+    dplyr::distinct() |>
+    dplyr::group_by(attribute) |>
     dplyr::mutate(attribute_id = dplyr::cur_group_id(),
-                  level_id = dplyr::row_number()) %>%
-    dplyr::ungroup() %>%
+                  level_id = dplyr::row_number()) |>
+    dplyr::ungroup() |>
     dplyr::mutate(attribute_id = stringr::str_c("att", attribute_id),
                   level_id = stringr::str_c(attribute_id, ":level", level_id))
   
-  # make a wide-form data frae with the attribute and level IDs
-  attribute_levels_wide <- attribute_levels_long %>%
-    dplyr::left_join(labels, by = c("attribute", "level")) %>%
-    dplyr::select(-attribute, -level) %>%
+  # make a wide-form data frame with the attribute and level IDs
+  attribute_levels_wide <- attribute_levels_long |>
+    dplyr::left_join(labels, by = c("attribute", "level")) |>
+    dplyr::select(-attribute, -level) |>
     dplyr::rename("attribute" = attribute_id,
-                  "level" = level_id) %>%
-    dplyr::group_by(id, task) %>%
-    tidyr::pivot_wider(names_from = "attribute", values_from = "level") %>%
+                  "level" = level_id) |>
+    dplyr::group_by(id, task, profile) |>
+    tidyr::pivot_wider(names_from = "attribute", values_from = "level") |>
     dplyr::ungroup()
   
-  # keep the first task, which is used in the repeated task
-  attribute_levels_repeated <- attribute_levels_wide %>%
-    dplyr::filter(task == 1)
+  # Ensure exactly two profiles per base task exist in the design
+  chk <- attribute_levels_wide |>
+    dplyr::group_by(task) |>
+    dplyr::summarise(has_both = setequal(sort(unique(profile)), c(1, 2)), .groups = "drop")
   
-  # wrangle the response variables
-  responses <- df %>%
-    dplyr::select(id, all_of(.outcomes)) %>%
-    tidyr::pivot_longer(names_to = "outcome_qnum", values_to = "response", cols = 2:(n_tasks_all + 1)) %>%
-    dplyr::mutate(task = NA)
-  
-  # assign the response numbers
-  for (i in 1:n_tasks_all) {
-    responses <- responses %>%
-      dplyr::mutate(task = ifelse(outcome_qnum == .outcomes[i], i, task))
+  if (!all(chk$has_both)) {
+    bad_tasks <- paste(chk$task[!chk$has_both], collapse = ", ")
+    stop(sprintf("Expected profiles 1 and 2 for every task in K-codes; missing for task(s): %s.", bad_tasks))
   }
   
+  
+  ###########################################################################
+  
+  # The outcome names (excluding the repeated task) must include task IDs.
+  # Example: if tasks presented are {2, 1, 3, 4, 5}, then outcomes might be
+  # "Q2","Q1","Q3","Q4","Q5","Q2_repeated". The repeated outcome must be last.
+  
+  taskIDs_in_outcomes <- readr::parse_number(.outcomes)
+  
+  if (.repeated == TRUE){
+    taskIDs_in_outcomes <- taskIDs_in_outcomes[1:(length(taskIDs_in_outcomes)-1)]
+  }
+  
+  # check all numbers in task_order_in_outcomes exist in a sequence of number (tasks)
+  # extracted directly from the code.
+  
+  all_tasks <- unique(attribute_levels_long$task)
+  
+  if (!isTRUE(identical(sort(taskIDs_in_outcomes), 
+                        sort(all_tasks)))){
+    stop("The outcome names (excluding the repeated question) should contain the corresponding task IDs.")
+  }
+  
+  repeated_task <- taskIDs_in_outcomes[1]
+  
+  # keep the repeated task ID
+  attribute_levels_repeated <- attribute_levels_wide |>
+    dplyr::filter(task == repeated_task)
+  
+  # wrangle the response variables
+  responses <- df |>
+    dplyr::select(id, all_of(.outcomes)) |>
+    tidyr::pivot_longer(names_to = "outcome_qnum", 
+                        values_to = "response", 
+                        cols = 2:(n_tasks_all + 1)) |>
+    dplyr::mutate(task = readr::parse_number(outcome_qnum)) |>
+    
+    # tentatively add the order of responses
+    dplyr::group_by(id) |>
+    dplyr::mutate(response_order = row_number(),
+                  task = ifelse(response_order == max(response_order), repeated_task, task)) |>
+    dplyr::ungroup()
+  
+  # Ensure each respondent has the expected number of outcomes
+  if (.repeated) {
+    bad <- responses |> dplyr::count(id) |> dplyr::filter(n != n_tasks_all)
+    if (nrow(bad) > 0) stop("Some respondents are missing the repeated outcome.")
+  }
+  
+  ###########################################################################
+  
+  # # assign the response numbers
+  # for (i in 1:n_tasks_all) {
+  #   responses <- responses |>
+  #     dplyr::mutate(task = ifelse(outcome_qnum == .outcomes[i], i, task))
+  # }
+  
   # further cleaning of the response data frame
-  response_cleaned <- responses %>%
+  response_cleaned <- responses |>
     dplyr::mutate(selected = str_extract(response, ".$"),
                   selected = dplyr::case_when(selected == .choice_labels[1] ~ 1,
-                                              selected == .choice_labels[2] ~ 2)) %>%
+                                              selected == .choice_labels[2] ~ 2)) |>
     dplyr::select(-response, -outcome_qnum)
   
   # data frame excluding the repeated task
-  out1 <- attribute_levels_wide %>%
-    left_join(response_cleaned %>%
-                dplyr::filter(task <= n_tasks),
-              by = c("id", "task")) %>%
+  out1 <- attribute_levels_wide |>
+    left_join(response_cleaned |>
+                dplyr::filter(response_order <= n_tasks),
+              by = c("id", "task")) |>
+    dplyr::select(-response_order) |>
     dplyr::mutate(selected = ifelse(profile == selected, 1, 0))
   
   
   # add the repeated task (if any)
   if (.repeated == TRUE){
     
-    # tasks to estimate ICR
-    out2 <- attribute_levels_repeated %>%
-      left_join(response_cleaned %>%
-                  dplyr::filter(task == n_tasks_all) %>%
-                  dplyr::mutate(task = 1),
-                by = c("id", "task")) %>%
+    # tasks to estimate IRR
+    out2 <- attribute_levels_repeated |>
+      left_join(response_cleaned |>
+                  dplyr::filter(response_order > n_tasks),
+                by = c("id", "task")) |>
+      dplyr::select(-response_order) |>
       dplyr::mutate(selected = dplyr::case_when(profile == selected & .flipped == FALSE ~ 1,
                                                 profile == selected & .flipped == TRUE  ~ 0,
                                                 profile != selected & .flipped == FALSE ~ 0,
-                                                profile != selected & .flipped == TRUE  ~ 1)) %>%
-      dplyr::rename("selected_repeated" = selected) 
+                                                profile != selected & .flipped == TRUE  ~ 1)) |>
+      dplyr::rename("selected_repeated" = selected)
     
     # merge
     suppressMessages(
-      out <- left_join(out1, out2) %>% 
-        dplyr::mutate(agree = ifelse(selected == selected_repeated, 1, 0)) 
+      out <- dplyr::left_join(out1, out2) |>
+        dplyr::mutate(agree = ifelse(selected == selected_repeated, 1, 0))
     )
     
   } else if (.repeated == FALSE){
     
-    out <- out1 %>% 
-      dplyr::mutate(agree = NA) 
+    out <- out1 |>
+      dplyr::mutate(agree = NA)
     
   }
-
+  
   # Make a data frame that includes respondent covariates -------------------
-
-  covariates <- .dataframe %>%
+  
+  covariates <- .dataframe |>
     # Rename the respondent identifier "id"
-    dplyr::rename("id" = all_of(.idvar)) %>%
+    dplyr::rename("id" = all_of(.idvar)) |>
     # Select variables needed
     dplyr::select(all_of(c("id", .covariates)))
   
-
+  
   # Make a final data frame -------------------------------------------------
-
-  out_final_before_fill <- out %>% 
-    dplyr::left_join(covariates, by = "id") %>% 
-    dplyr::mutate(across(where(is.character), as.factor)) %>%
-    dplyr::mutate(id = as.character(id)) %>%
+  
+  out_final_before_fill <- out |>
+    dplyr::left_join(covariates, by = "id") |>
+    dplyr::mutate(across(where(is.character), as.factor)) |>
+    dplyr::mutate(id = as.character(id)) |>
     dplyr::as_tibble()
-
+  
   if (.fill == TRUE){
     
-    out_final <- out_final_before_fill %>% 
-      dplyr::arrange(id, task, agree) %>% 
-      tidyr::fill(agree)
+    out_final <- out_final_before_fill |>
+      dplyr::arrange(id, task) |>
+      dplyr::group_by(id) |>
+      tidyr::fill(agree, .direction = "downup") |> 
+      dplyr::ungroup()
     
   } else{
     
-    out_final <- out_final_before_fill %>% 
+    out_final <- out_final_before_fill |>
       dplyr::arrange(id, task, agree)
   }
   
   
   # return the data frame and the variable labels as a list
-  return(projoint_data("labels" = labels, 
-                        "data" = out_final))
-
+  return(projoint_data("labels" = labels,
+                       "data" = out_final))
+  
 }

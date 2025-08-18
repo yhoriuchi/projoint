@@ -2,7 +2,7 @@
 % Please edit documentation in R/reshape_projoint.R
 \name{reshape_projoint}
 \alias{reshape_projoint}
-\title{Reshapes survey response data for conjoint analysis}
+\title{Reshapes survey response data for conjoint analysis (single task set)}
 \usage{
 reshape_projoint(
   .dataframe,
@@ -17,44 +17,91 @@ reshape_projoint(
 )
 }
 \arguments{
-\item{.dataframe}{A data frame, preferably from \code{\link{read_Qualtrics}}}
+\item{.dataframe}{A data frame, preferably from \code{\link{read_Qualtrics}}.}
 
-\item{.outcomes}{A character vector identifying the column names that contain outcomes. If there is a repeated task, it should be the LAST element in this vector.}
+\item{.outcomes}{Character vector of outcome column names in the **asked order**. If a repeated task is used, its outcome must be the **last element**.}
 
-\item{.choice_labels}{c("A", "B") (default): a vector identifying the possibilities for the outcome variables -- e.g., c("Candidate A", "Candidate B")}
+\item{.choice_labels}{Character vector (default \code{c("A","B")}) giving the two labels that appear at the end of the outcome strings (e.g., \code{"Candidate A"}, \code{"Candidate B"}).}
 
-\item{.alphabet}{"K" (default): a letter indicating conjoint attributes. If using Strezhnev's package (\url{https://github.com/astrezhnev/conjointsdt}) in Qualtrics.}
+\item{.alphabet}{Single character (default \code{"K"}) indicating the Qualtrics prefix used for conjoint tables.}
 
-\item{.idvar}{"ResponseId" (default): a character identifying the column name containing respondent}
+\item{.idvar}{Character (default \code{"ResponseId"}) indicating the respondent id column.}
 
-\item{.repeated}{TRUE (default) if there is a repeated task (recommended). The repeated task should be the same as the first task.}
+\item{.repeated}{Logical (default \code{TRUE}) indicating whether a repeated task is present.}
 
-\item{.flipped}{TRUE (default) if the profiles of the repeated task are flipped (recommended)}
+\item{.flipped}{Logical (default \code{TRUE}) indicating whether the repeated task flips profiles (1 <-> 2) before agreement is computed.}
 
-\item{.covariates}{NULL (default): a character vector identifying respondents' covariates used for subgroup analysis}
+\item{.covariates}{Optional character vector of respondent-level covariate column names to carry through.}
 
-\item{.fill}{FALSE (default): A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).}
+\item{.fill}{Logical (default \code{FALSE}). If \code{TRUE}, fills \code{agree} within respondent across tasks as described under "Filling agreement".}
 }
 \value{
-A projoint object of class `projoint_data` ready to pass to `projoint()`.
-
-A projoint object of class \code{\link{projoint_data}} ready to pass to \code{\link{projoint}}.
+A \code{projoint_data} object with elements \code{$labels} and \code{$data}; see Details.
 }
 \description{
-This function takes a data frame, preferably from \code{\link{read_Qualtrics}}, and reshapes it from wide to long such that each row is a distinct conjoint task rather than a respondent.
+This function takes a wide survey data frame (e.g., from \code{\link{read_Qualtrics}}) and reshapes it so that each row
+corresponds to a single respondent–task–profile. It supports arbitrary ordering of base tasks as asked to respondents and
+a single repeated task per respondent. The repeated base task is inferred from the first base outcome in \code{.outcomes},
+and the repeated outcome must be the last element of \code{.outcomes}.
+}
+\details{
+**Scope and assumptions**
+* One set of conjoint tasks with exactly two profiles per task (profiles 1 and 2).
+* For multi-set designs, call \code{reshape_projoint()} once per set and bind the results.
+
+**Expected input (Qualtrics K-codes)**
+* Wide columns named \code{K-<task>-<attribute>} (attribute names) and
+  \code{K-<task>-<profile>-<attribute>} (level names), where \code{<task>} is in \code{1..n} and \code{<profile>} is \code{1} or \code{2}.
+* Rows with missing \code{K-1-1} are dropped as empty tables (server hiccup safeguard).
+
+**Outcome columns (\code{.outcomes})**
+* List all choice variables in the **order they were asked**. If you include a repeated task, its outcome column must be the **last element**.
+* For base tasks (all but the last element), the function extracts the base task id by reading the **digits** in each outcome name
+  (e.g., \code{"choice4"}, \code{"Q4"}, \code{"task04"} -> task 4).
+* The set of base task ids extracted from \code{.outcomes} must **exactly match** the set of task ids present in the K-codes; otherwise an error is thrown.
+* The **repeated base task** is inferred as the **digits in the first base outcome** (i.e., the first element of \code{.outcomes}, excluding the final repeated outcome).
+* The repeated outcome’s own name does **not** need to contain digits; only its **position** (last) matters.
+
+**Choice parsing**
+* The selected profile is parsed from the **last character** of each outcome string and matched to \code{.choice_labels}.
+  Ensure outcomes end with these labels (e.g., "Candidate A"/"Candidate B"). If outcomes are numeric or differently formatted, pre-process
+  or adjust \code{.choice_labels} accordingly.
+
+**Output**
+* Returns a \code{projoint_data} object with:
+  \itemize{
+    \item \code{$labels}: a data frame mapping human-readable \code{attribute}/\code{level} to stable ids \code{attribute_id = "att1","att2",...}
+          and \code{level_id = "attX:levelY"}.
+    \item \code{$data}: a tibble with one row per \code{id}–\code{task}–\code{profile}, attribute columns (named by \code{att*}) storing \code{level_id},
+          \code{selected} (1 if that profile was chosen within the task, 0 otherwise), \code{agree} (1/0/NA for repeated-task agreement after flip logic),
+          and any columns specified in \code{.covariates}. \code{id} is coerced to character; attribute columns are factors.
+  }
+
+**Filling agreement**
+* If \code{.fill = TRUE}, \code{agree} is forward/backward filled **within respondent** in task order, propagating the observed repeated-task agreement
+  to all tasks for that respondent. This relies on the assumption that IRR is respondent-specific and independent of table content.
+
+**Recommendation**
+* Leave \code{.fill = FALSE} by default. Consider \code{.fill = TRUE} only when sample size or subgroup sparsity makes the single repeated-task observation
+  per respondent inadequate, and you are willing to assume that intra-respondent reliability (IRR) is respondent-specific and independent of the conjoint
+  table contents. When using \code{.fill = TRUE}, always compute standard errors clustered at the respondent level, and report a sensitivity check comparing
+  results with \code{.fill = FALSE}.
+
+**Common diagnostics**
+* After reshaping, \code{dplyr::count(reshaped$data, task, profile)} should show exactly two rows per task (profiles 1 and 2).
+* If \code{pj_estimate()} later reports "No rows match the specified attribute/level", construct QOIs from \code{reshaped$labels} (use the exact \code{attX:levelY} ids).
 }
 \examples{
 library(projoint)
-
 data("exampleData1")
-head(exampleData1)
 
-# Write outcome column names
-outcomes <- paste0("choice", seq(from = 1, to = 8, by = 1))
-outcomes <- c(outcomes, "choice1_repeated_flipped")
+# Example 1: Base tasks asked in numeric order, repeated = task 1
+outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
+reshaped <- reshape_projoint(exampleData1, outcomes)
+dplyr::count(reshaped$data, task, profile)  # should be 2 per task
 
-# Reshape the data
-reshaped_data <- reshape_projoint(
-  .dataframe = exampleData1, 
-  .outcomes = outcomes)
+# Example 2: Arbitrary task order (e.g., respondents saw tasks {2,1,3,4,5}); repeated is last
+# The repeated base task is inferred from the FIRST base outcome ("Q2" -> task 2).
+# outcomes2 <- c("Q2","Q1","Q3","Q4","Q5","Q2_repeat")
+# reshaped2 <- reshape_projoint(exampleData1, outcomes2, .flipped = TRUE)
 }

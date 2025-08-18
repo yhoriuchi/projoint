@@ -56,6 +56,7 @@ if (getRversion() >= "2.15.1") {
     "qoi_notchoose_1",
     "qoi_notchoose_2",
     "response",
+    "response_order",
     "sd",
     "se",
     "se_0",
