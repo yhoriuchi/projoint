@@ -131,8 +131,12 @@ predict_tau <- function(
                                                       data = dplyr::pick(everything()), 
                                                       clusters = id))) %>% 
     
-    # remove if estimated tau is 0 or 1
-    dplyr::filter(!(estimate %in% c(0, 1))) %>% 
+    # Remove boundary cases where estimate of reliability is 0 or 1.
+    # Due to floating-point arithmetic in `estimatr` / its RcppEigen C++ routines,
+    # sometimes the returned estimate is 1-.Machine$double.eps, which is not exactly == 1.
+    # We must use `dplyr::near()` to robustly handle near-equality by adding a tiny tolerance.
+    dplyr::filter(!dplyr::near(estimate, 0, tol = .Machine$double.eps^0.5)) %>%
+    dplyr::filter(!dplyr::near(estimate, 1, tol = .Machine$double.eps^0.5)) %>%
     
     # remove if all attributes are the same within task combinations
     dplyr::filter(x != 0) |> 
