@@ -18,3 +18,6 @@
 - Bug fix for minor issue.  
 - Vignettes extended to illustrate additional choice-level analyses.  
 
+# projoint 1.0.0 (2025-08-19)
+
+- Initial CRAN release

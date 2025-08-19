@@ -4,7 +4,9 @@
 devtools::document()
 devtools::build()
 devtools::install()
-devtools::check()
+# devtools::check()
+devtools::check(args = "--as-cran")
+
 
 # devtools::test()
 
