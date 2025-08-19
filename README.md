@@ -35,7 +35,7 @@ This method can be used not only by researchers at the design stage but also by 
 ## 🚀 Tutorials
 
 <details style="margin-left: 25px; margin-bottom: -10px">
-<summary style="font-size: 18px;">**1. Install** the development version from GitHub</summary>
+<summary style="font-size: 18px;"><b>1. Install</b> the development version from GitHub</summary>
 Open R (or <a href="https://www.r-project.org/" target="_blank">install R</a> if you do not have it), and run the following command in your coding environment.
 ```r
 devtools::install_github("yhoriuchi/projoint")
@@ -43,7 +43,7 @@ devtools::install_github("yhoriuchi/projoint")
 </details>
 
 <details style="margin-left: 25px; margin-bottom: -10px">
-<summary style="font-size: 18px;">**2. Design** your survey</summary>
+<summary style="font-size: 18px;"><b>2. Design</b> your survey</summary>
 Online surveys are frequently written with an online software called Qualtrics. Using our web tool, called the <a href="https://projoint.aaronrkaufman.com/" target="_blank" class="external-link">Projoint Survey Designer</a>, you don't need to learn how to write a survey in Qualtrics.  
 
 * Use the <a href="https://projoint.aaronrkaufman.com/" target="_blank" class="external-link">Projoint Survey Designer</a> and export surveys formatted for Qualtrics.  
