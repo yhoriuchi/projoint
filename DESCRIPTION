@@ -1,8 +1,8 @@
 Package: projoint
 Type: Package
 Title: The One Stop Conjoint Shop
-Version: 0.3.0
-Date: 2025-04-20
+Version: 0.3.1
+Date: 2025-08-18
 Author: Yusaku Horiuchi [aut, cre]
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
 Authors@R: c(

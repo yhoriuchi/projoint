@@ -51,60 +51,60 @@ make_projoint_data <- function(
   } 
   
   # assign attribute_id (in an alphabetical order)
-  attributes <- data.frame(attribute = .attribute_vars) %>% 
-    dplyr::mutate(attribute_id = factor(attribute) %>% as.numeric(),
+  attributes <- data.frame(attribute = .attribute_vars) |> 
+    dplyr::mutate(attribute_id = factor(attribute) |> as.numeric(),
                   attribute_id = stringr::str_c("att", attribute_id))
   
   # rename variables
   variable_names <- data.frame("original" = c("id", "task", "profile"), 
-                               "renamed" = c("id", "task", "profile")) %>%
-    dplyr::bind_rows(attributes %>% 
-                       rlang::set_names(c("original", "renamed"))) %>% 
+                               "renamed" = c("id", "task", "profile")) |>
+    dplyr::bind_rows(attributes |> 
+                       rlang::set_names(c("original", "renamed"))) |> 
     dplyr::add_row(original = "selected", 
                    renamed = "selected")
   
   # rename and reorder variables
   if (is.null(.selected_repeated_var)){
     
-    data <- .dataframe %>% 
+    data <- .dataframe |> 
       dplyr::select("id" = .id_var,
                     "task" = .task_var, 
                     "profile" = .profile_var,
                     all_of(.attribute_vars),
-                    "selected" = .selected_var) %>% 
-      rlang::set_names(pull(variable_names)) %>% 
+                    "selected" = .selected_var) |> 
+      rlang::set_names(pull(variable_names)) |> 
       mutate(selected_repeated = NA,
              agree = NA)
     
   } else{
     
-    variable_names <- variable_names %>% 
+    variable_names <- variable_names |> 
       dplyr::add_row(original = "selected_repeated", 
                      renamed = "selected_repeated")
     
-    data <- .dataframe %>% 
+    data <- .dataframe |> 
       dplyr::select("id" = .id_var,
                     "task" = .task_var, 
                     "profile" = .profile_var,
                     all_of(.attribute_vars),
                     "selected" = .selected_var, 
-                    "selected_repeated" = .selected_repeated_var) %>% 
-      rlang::set_names(pull(variable_names)) %>% 
+                    "selected_repeated" = .selected_repeated_var) |> 
+      rlang::set_names(pull(variable_names)) |> 
       mutate(agree = ifelse(selected == selected_repeated, 1, 0))
     
   }
   
   # make "labels" data frame
-  labels <- data %>% 
-    dplyr::select(contains("att")) %>%
-    pivot_longer(names_to = "attribute_id", values_to = "level", cols = everything()) %>% 
-    distinct() %>% 
-    dplyr::arrange(attribute_id, level) %>% 
-    dplyr::group_by(attribute_id) %>% 
-    dplyr::mutate(level_id = row_number()) %>% 
-    dplyr::ungroup() %>% 
-    dplyr::mutate(level_id = str_c(attribute_id, ":lev", level_id)) %>% 
-    dplyr::left_join(attributes, by = "attribute_id") %>% 
+  labels <- data |> 
+    dplyr::select(contains("att")) |>
+    pivot_longer(names_to = "attribute_id", values_to = "level", cols = everything()) |> 
+    distinct() |> 
+    dplyr::arrange(attribute_id, level) |> 
+    dplyr::group_by(attribute_id) |> 
+    dplyr::mutate(level_id = row_number()) |> 
+    dplyr::ungroup() |> 
+    dplyr::mutate(level_id = str_c(attribute_id, ":lev", level_id)) |> 
+    dplyr::left_join(attributes, by = "attribute_id") |> 
     dplyr::arrange(attribute, level, attribute_id, level_id)
   
   for (i in 1:nrow(attributes)){
@@ -112,16 +112,16 @@ make_projoint_data <- function(
     .attribute_id <- attributes$attribute_id[i]
     var_quo <- rlang::sym(.attribute_id)
     
-    temp <- labels %>% 
-      dplyr::filter(attribute_id == .attribute_id) %>% 
-      dplyr::select(level, level_id) %>% 
+    temp <- labels |> 
+      dplyr::filter(attribute_id == .attribute_id) |> 
+      dplyr::select(level, level_id) |> 
       rlang::set_names(c(.attribute_id, "level_id"))
     
     suppressMessages(
-      data <- data %>% 
+      data <- data |> 
         
-        dplyr::left_join(temp) %>% 
-        dplyr::select(-all_of(.attribute_id)) %>% 
+        dplyr::left_join(temp) |> 
+        dplyr::select(-all_of(.attribute_id)) |> 
         dplyr::rename({{var_quo}} := level_id)
     )
     
@@ -130,13 +130,13 @@ make_projoint_data <- function(
   
   if (.fill == TRUE){
     
-    data_final <- data %>% 
-      dplyr::arrange(id, task, agree) %>% 
+    data_final <- data |> 
+      dplyr::arrange(id, task, agree) |> 
       tidyr::fill(agree)
     
   } else{
     
-    data_final <- data %>% 
+    data_final <- data |> 
       dplyr::arrange(id, task, agree)
   }
   

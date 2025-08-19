@@ -20,27 +20,27 @@ read_labels <- function(
 ){
   
   labels_arranged <- readr::read_csv(.filename, 
-                                     show_col_types = FALSE) %>% 
+                                     show_col_types = FALSE) |> 
     dplyr::mutate(attribute_id = stringr::str_extract(level_id, "^.+(?=\\:)"),
                   attribute_id_arranged = forcats::fct_reorder(attribute_id, order),
-                  attribute_id_arranged = stringr::str_c("att", as.numeric(attribute_id_arranged))) %>% 
-    dplyr::arrange(order) %>% 
-    dplyr::group_by(attribute_id_arranged) %>%
+                  attribute_id_arranged = stringr::str_c("att", as.numeric(attribute_id_arranged))) |> 
+    dplyr::arrange(order) |> 
+    dplyr::group_by(attribute_id_arranged) |>
     dplyr::mutate(level_id_arranged = dplyr::row_number(),
-                  level_id_arranged = stringr::str_c(attribute_id_arranged, ":level", level_id_arranged)) %>%
+                  level_id_arranged = stringr::str_c(attribute_id_arranged, ":level", level_id_arranged)) |>
     dplyr::ungroup() 
   
-  data_arranged <- .data$data %>% 
-    tidyr::pivot_longer(cols = tidyselect::contains("att")) %>% 
-    dplyr::mutate(value = as.character(value)) %>% 
+  data_arranged <- .data$data |> 
+    tidyr::pivot_longer(cols = tidyselect::contains("att")) |> 
+    dplyr::mutate(value = as.character(value)) |> 
     dplyr::left_join(labels_arranged, 
-                     by = c("value" = "level_id")) %>% 
-    dplyr::select(-name, -value, -attribute, -attribute_id, -level, -order) %>% 
+                     by = c("value" = "level_id")) |> 
+    dplyr::select(-name, -value, -attribute, -attribute_id, -level, -order) |> 
     tidyr::pivot_wider(names_from = attribute_id_arranged, 
                        values_from = level_id_arranged)
   
-  labels_arranged <- labels_arranged %>% 
-    dplyr::select(-order, -attribute_id, -level_id) %>% 
+  labels_arranged <- labels_arranged |> 
+    dplyr::select(-order, -attribute_id, -level_id) |> 
     dplyr::rename(attribute_id = attribute_id_arranged,
                   level_id = level_id_arranged)
   

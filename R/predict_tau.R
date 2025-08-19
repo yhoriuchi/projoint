@@ -139,7 +139,7 @@ predict_tau <- function(
     dplyr::filter(!dplyr::near(estimate, 1, tol = .Machine$double.eps^0.5)) %>%
     
     # remove if all attributes are the same within task combinations
-    dplyr::filter(x != 0) |> 
+    dplyr::filter(x != 0) %>% 
     
     # remove if the standard error is extremely small.
     dplyr::filter(!(std.error <= .Machine$double.eps))

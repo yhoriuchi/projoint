@@ -12,3 +12,9 @@
 
 - Robust SEs & clustering: fixes to variance options; users can now pass arguments supported by `estimatr::lm_robust()` for clustering and standard errors.
 - `reshape_projoint()` overhaul: now robust to arbitrary base-task orders, infers the repeated base task from the first base outcome, and requires the repeated outcome to be the last element of `.outcomes`.
+
+# projoint 0.3.1 (2025-08-18)
+
+- Bug fix for minor issue.  
+- Vignettes extended to illustrate additional choice-level analyses.  
+

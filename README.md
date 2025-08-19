@@ -26,8 +26,7 @@ This method can be used not only by researchers at the design stage but also by 
 
 <details>
     <summary>Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">accompanying paper</a> to learn more about our method</summary>
-- **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).**
-“Correcting Measurement Error Bias in Conjoint Survey Experiments.”<br><em>Forthcoming, American Journal of Political Science.</em><br><a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">Pre-Print Available</a>
+- **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).** “Correcting Measurement Error Bias in Conjoint Survey Experiments.”<br><em>Forthcoming, American Journal of Political Science.</em><br><a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">Pre-Print Available</a>
 - <a href="doc/projoint_citation.bib">👉 Download BibTeX Reference</a>
 </details>
 
@@ -92,8 +91,11 @@ dat <- reshape_projoint(
 <summary style="font-size: 18px;"><b>5. Analyze</b> and <b>visualize</b> important <b>Quantities of Interest</b></summary>
 
 * Estimate Marginal Means (MMs) or Average Marginal Component Effects (AMCEs) with correction for measurement error:
+
+> **Note:** The following example illustrates a *profile_level* analysis.  This approach is common in social science and useful as an initial diagnostic, but we encourage researchers to consider *choice_level* analysis (the default for `.structure`). See <a href="articles/structure.html" target="_blank">Choice-Level Analysis</a>. Detailed steps of analysis appear in the <a href="articles/analyze.html" target="_blank">Step-by-Step Guide</a>.
+
 ```r
-output <- projoint(dat)
+output <- projoint(out1_arranged, .structure = "profile_level")
 print(output)
 summary(output)
 ```

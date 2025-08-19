@@ -77,7 +77,7 @@ save_labels(out1, "labels.csv")
 Suppose you want to estimate, within a given profile pair, the probability of choosing a profile that includes "40% of pre-tax income" (`level3`) for Housing Cost (`att1`) rather than one that includes "15% of pre-tax income" (`level1`) for the same attribute, averaging over all combinations of the other attributes and across respondents; then use the following code:
 
 ```{r}
-qoi_2 <- set_qoi(
+qoi <- set_qoi(
   .structure = "choice_level",
   .att_choose = "att1",
   .lev_choose = "level3",
@@ -85,7 +85,7 @@ qoi_2 <- set_qoi(
   .lev_notchoose = "level1"
 )
 
-mm2 <- projoint(out1, .qoi = qoi_2, .ignore_position = FALSE)
+mm2 <- projoint(out1, qoi)
 print(mm2)
 summary(mm2)
 ```
@@ -105,7 +105,7 @@ Suppose you want to quantify how the choice probability **changes** between the 
 averaging over all combinations of the other attributes and across respondents. Then write the following code:
 
 ```{r}
-qoi_4 <- set_qoi(
+qoi <- set_qoi(
   .structure = "choice_level",
   .estimand = "amce",
   .att_choose = "att1",
@@ -118,7 +118,7 @@ qoi_4 <- set_qoi(
   .lev_notchoose_b = "level1"
 )
 
-amce2 <- projoint(out1, .qoi = qoi_4, .ignore_position = TRUE)
+amce2 <- projoint(out1, qoi)
 print(amce2)
 summary(amce2)
 ```
@@ -213,7 +213,7 @@ plot(choice_mm)
 <details>
 <summary><b>Visualize (Differences)</b></summary>
 
-```{r, , fig.width = 8, fig.height = 2}
+```{r, fig.width = 8, fig.height = 2}
 plot(choice_mm, .type = "pointrange")
 ```
 </details>
@@ -222,8 +222,17 @@ plot(choice_mm, .type = "pointrange")
 
 ## 🌟 Explore and Compare Further
 
-Choice-level analysis opens the door to many **new research questions** that traditional profile-level analysis often overlooks.
-This article demonstrates how to estimate **deeper quantities** and **compare subgroups** effectively.
+Choice-level analysis opens the door to many **new research questions** that traditional profile-level analysis often overlooks. Below, we demonstrate how to estimate **deeper quantities** and **compare subgroups** effectively.
+
+Depending on your objectives, you may want to reorganize the data in a `projoint_data` object. The helper function below is internal to the package, but you can call it explicitly in your script.”
+```{r}
+projoint_data <- function(labels, data) {
+  structure(
+    list(labels = labels, data = data),
+    class = "projoint_data"
+  )
+}
+```
 
 ---
 
@@ -241,26 +250,61 @@ out1_arranged$labels
 
 <details><summary><b>Example: Low Housing Costs vs. Low Crime Rates</b></summary>
 
-```{r, fig.height=4, fig.width=8}
-qoi_1 <- set_qoi(
-  .structure = "choice_level",
-  .att_choose = "att1",
-  .lev_choose = "level1",
-  .att_notchoose = "att6",
-  .lev_notchoose = "level2"
+**Goal.** Compare choices between two *joint* profiles:
+
+- **Low housing cost** but **high violent‑crime rate**, versus
+- **High housing cost** but **low violent‑crime rate**.
+
+```{r, message=FALSE, warning=FALSE}
+# 1) Data: keep only the two joint profiles of interest
+d1 <- out1_arranged$data
+d2 <- d1 |> 
+  mutate(y1 = case_when(
+    # Low housing cost, high crime
+    att1 == "att1:level1" & att6 == "att6:level2" ~ 1,
+    TRUE ~ 0
+  ),
+  y0 = case_when(
+    # High housing cost, low crime
+    att1 == "att1:level3" & att6 == "att6:level1" ~ 1,
+    TRUE ~ 0
+  )) |> 
+  filter(y1 == 1 | y0 == 1)
+
+# 2) Labels: rename only the two att1 levels to reflect the joint trade-offs
+labels1 <- out1_arranged$labels
+labels2 <- labels1 |> 
+  mutate(level = case_when(level_id == "att1:level1" ~ "Housing Cost (Low)\nCrime Rate(High)", 
+                           level_id == "att1:level3" ~ "Housing Cost (High)\nCrime Rate(Low)", 
+                           TRUE ~ level_id))
+```
+
+
+**(Optional) Sanity checks**
+```{r}
+d1 |> count(att1, att6)
+d2 |> count(att1, att6) # only the two joint profiles remain
+labels1 |> filter(attribute_id == "att1")
+labels2 |> filter(attribute_id == "att1" & level_id %in% c("att1:level1", "att1:level3"))
+```
+
+**Recreate a `projoint_data` object, set the QOI, and plot.**
+```{r, fig.width = 6, fig.height = 3}
+# 3) Build a new projoint_data object
+pj_data_wrangled <- projoint_data("labels" = labels2, 
+                                  "data" = d2)
+
+# 4) Quantity of interest: Low vs High housing cost under the specified crime conditions (choice-level MM)
+qoi <- set_qoi(
+  .att_choose = "att1", 
+  .lev_choose = "level1", # Low housing cost (with high crime in this subset)
+  .att_notchoose = "att1", 
+  .lev_notchoose = "level3" # High housing cost (with low crime in this subset)
 )
 
-mm1 <- projoint(.data = out1_arranged,
-                .qoi = qoi_1,
-                .structure = "choice_level",
-                .ignore_position = TRUE)
-
-plot(mm1,
-     .labels = c("Housing Cost\n(15% of pre-tax income)",
-                 "Violent Crime Rate\n(20% > National Average)")) +
-  labs(y = "Marginal Mean", x = NULL) +
-  coord_cartesian(ylim = c(0, 1)) +
-  geom_hline(yintercept = 0.5, linetype = "dashed", color = "darkgray")
+# 5) Estimate and plot (horizontal layout)
+out <- projoint(pj_data_wrangled, qoi)
+plot(out)
 ```
 
 </details>
@@ -271,25 +315,65 @@ plot(mm1,
 
 <details><summary><b>Example: Urban vs. Suburban Preferences</b></summary>
 
-```{r, fig.height=4, fig.width=8}
-qoi_2 <- set_qoi(
-  .structure = "choice_level",
-  .att_choose = "att7",
-  .lev_choose = c("level2", "level3"),
+**Goal.** Collapse `att7` into two buckets—City (levels 1–2) vs. Suburban (levels 5–6)—then re‑estimate and plot.
+
+```{r, message=FALSE, warning=FALSE}
+# 1) Data: collapse levels for att7
+d1 <- out1_arranged$data
+d2 <- d1 |>
+  mutate(
+    att7 = case_when(
+      att7 %in% c("att7:level1", "att7:level2") ~ "att7:level7",  # City
+      att7 %in% c("att7:level5", "att7:level6") ~ "att7:level8",  # Suburban
+      TRUE ~ att7
+    )
+  )
+
+# 2) Labels: create matching level IDs and readable names
+labels1 <- out1_arranged$labels
+labels2 <- labels1 |>
+  mutate(
+    level_id = case_when(
+      level_id %in% c("att7:level1", "att7:level2") ~ "att7:level7",
+      level_id %in% c("att7:level5", "att7:level6") ~ "att7:level8",
+      TRUE ~ level_id
+    ),
+    level = case_when(
+      level_id == "att7:level7" ~ "City",
+      level_id == "att7:level8" ~ "Suburban",
+      TRUE ~ level
+    )
+  ) |>
+  distinct()
+```
+
+
+**(Optional) Sanity checks**
+```{r}
+d1 |> count(att7)
+d2 |> count(att7)
+labels1 |> filter(attribute_id == "att7")
+labels2 |> filter(attribute_id == "att7")
+```
+
+**Recreate a `projoint_data` object, set the QOI, and plot.**
+```{r, fig.width = 6, fig.height = 3}
+# 3) Build a new projoint_data object
+pj_data_wrangled <- projoint_data("labels" = labels2, 
+                                  "data" = d2)
+
+# 4) Quantity of interest: City vs. Suburban (choice-level MM)
+qoi <- set_qoi(
+  .structure     = "choice_level",
+  .att_choose    = "att7",
+  .lev_choose    = "level7",  # City
   .att_notchoose = "att7",
-  .lev_notchoose = c("level5", "level6")
+  .lev_notchoose = "level8"   # Suburban
 )
 
-mm2 <- projoint(.data = out1_arranged,
-                .qoi = qoi_2,
-                .structure = "choice_level",
-                .ignore_position = TRUE)
-
-plot(mm2,
-     .labels = c("City", "Suburban")) +
-  labs(y = "Marginal Mean", x = "Type of Place") +
-  coord_cartesian(ylim = c(0, 1)) +
-  geom_hline(yintercept = 0.5, linetype = "dashed", color = "darkgray")
+# 5) Estimate and plot (horizontal layout)
+out <- projoint(pj_data_wrangled, qoi)
+plot(out)
 ```
 
 </details>
@@ -301,9 +385,9 @@ plot(mm2,
 <details><summary><b>Choice-Level Subgroup Comparison: Party Differences</b></summary>
 
 ```{r, fig.height=4, fig.width=8}
-df_D <- exampleData1 %>% filter(party_1 == "Democrat") %>% reshape_projoint(outcomes)
-df_R <- exampleData1 %>% filter(party_1 == "Republican") %>% reshape_projoint(outcomes)
-df_0 <- exampleData1 %>% filter(party_1 %in% c("Something else", "Independent")) %>% reshape_projoint(outcomes)
+df_D <- exampleData1 |> filter(party_1 == "Democrat") |> reshape_projoint(outcomes)
+df_R <- exampleData1 |> filter(party_1 == "Republican") |> reshape_projoint(outcomes)
+df_0 <- exampleData1 |> filter(party_1 %in% c("Something else", "Independent")) |> reshape_projoint(outcomes)
 
 qoi <- set_qoi(
   .structure = "choice_level",
@@ -319,10 +403,10 @@ out_R <- projoint(df_R, qoi)
 out_0 <- projoint(df_0, qoi)
 
 out_merged <- bind_rows(
-  out_D$estimates %>% mutate(party = "Democrat"),
-  out_R$estimates %>% mutate(party = "Republican"),
-  out_0$estimates %>% mutate(party = "Independent")
-) %>% filter(estimand == "mm_corrected")
+  out_D$estimates |> mutate(party = "Democrat"),
+  out_R$estimates |> mutate(party = "Republican"),
+  out_0$estimates |> mutate(party = "Independent")
+) |> filter(estimand == "mm_corrected")
 
 # Plot
 
@@ -338,6 +422,6 @@ ggplot(out_merged, aes(y = party, x = estimate)) +
 </details>
 
 ---
- 
+
 🏠 **Home:** [Home](../index.html)
 

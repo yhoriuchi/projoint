@@ -9,7 +9,7 @@ read_Qualtrics <- function(.file) {
     stop("Error: The specified file cannot be found.")
   }
   
-  colnames <- readr::read_csv(.file, show_col_types = FALSE) %>% names()
+  colnames <- readr::read_csv(.file, show_col_types = FALSE) |> names()
   
   qualtrics <- readr::read_csv(.file, skip = 2, show_col_types = FALSE)
   names(qualtrics) <- colnames

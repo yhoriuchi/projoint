@@ -13,10 +13,10 @@ save_labels <- function(
     .filename
 ){
   
-  (.data$labels %>% 
-      dplyr::select(level_id, attribute, level) %>% 
-      dplyr::arrange(level_id) %>% 
+  (.data$labels |> 
+      dplyr::select(level_id, attribute, level) |> 
+      dplyr::arrange(level_id) |> 
       dplyr::mutate(order = row_number())
-  )%>%
+  )|>
     readr::write_csv(.filename)
 }  

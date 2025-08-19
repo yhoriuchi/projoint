@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,7 +133,34 @@ function in <strong>projoint</strong> makes this easy.</p>
 <h2 id="wrangle-workflow">🚀 Wrangle Workflow<a class="anchor" aria-label="anchor" href="#wrangle-workflow"></a>
 </h2>
 <details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>1. Reshape Your Data</strong>
-</summary><div class="section level3">
+</summary><div>
+<blockquote>
+<p><strong>Outcome naming &amp; order (important)</strong></p>
+<ul>
+<li>List <code>.outcomes</code> in the <strong>order questions were
+asked</strong>.<br>
+</li>
+<li>If you have a repeated task, its outcome must be the <strong>last
+element</strong>.<br>
+</li>
+<li>For base tasks (all but last), the function reads the
+<strong>digits</strong> in each name as the task id (e.g.,
+<code>"choice4"</code>, <code>"Q4"</code>, <code>"task04"</code> → task
+4).<br>
+</li>
+<li>The <strong>repeated base task</strong> is inferred from the
+<strong>first base outcome’s digits</strong>. The repeated outcome
+itself <strong>need not</strong> contain digits—only its position (last)
+matters.<br>
+</li>
+<li>Outcome strings should end with your choice labels; by default we
+parse the <strong>last character</strong> and expect
+<code>"A"</code>/<code>"B"</code>. If your survey uses
+<code>"1"</code>/<code>"2"</code> (or other endings), set
+<code>.choice_labels</code> accordingly.</li>
+</ul>
+</blockquote>
+<div class="section level3">
 <h3 id="example-flipped-repeated-task">Example (Flipped Repeated Task)<a class="anchor" aria-label="anchor" href="#example-flipped-repeated-task"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -164,6 +191,7 @@ last)</li>
 <code>.repeated</code>, <code>.flipped</code>: If repeated task
 exists and is flipped</li>
 </ul>
+</div>
 </div>
 </details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><strong>2. Variations: Repeated vs. Non-Repeated</strong>
 </summary><p><strong>Not-Flipped Repeated Task</strong></p>
