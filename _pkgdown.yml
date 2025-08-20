@@ -25,9 +25,10 @@ articles:
 - title: 🚀 Step-by-Step Tutorials
   desc: "Learn how to design, wrangle, analyze, and visualize conjoint experiments"
   contents:
-  - design       # Survey Design
-  - read         # Importing Qualtrics Data & Data Wrangling
-  - analyze      # Estimating and Visualizing QOIs
+  - design       # Design your survey
+  - read         # Read and wrangle your data
+  - analyze      # Estimating and visualizing QOIs
+  - explore      # Advance choice-level analyses using **projoint**
   - faq          # Frequently Asked Questions
 
 reference:
