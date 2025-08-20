@@ -21,3 +21,11 @@
 # projoint 1.0.0 (2025-08-19)
 
 - Initial CRAN release
+
+# projoint 1.0.1 (2025-08-19)
+
+* Fix CITATION: switched from citEntry() to bibentry().
+* Fixed README links (absolute URLs).
+* Added Depends: R (>= 4.1.0).
+* Removed duplicate Author field.
+* Added cran-comments.md to .Rbuildignore.

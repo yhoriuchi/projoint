@@ -269,5 +269,5 @@ plot(mm)
 
 ---
 
-🏠 **Home:** [Home](../index.html)
+🏠 **Home:** [Home](https://yhoriuchi.github.io/projoint/index.html)
 

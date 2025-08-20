@@ -1,35 +1,37 @@
-citHeader("To cite projoint in publications use:")
+citHeader("To cite projoint in publications, please use:")
 
-
-citEntry(
-  entry    = "Article",
-  title    = "Correcting Measurement Error Bias in Conjoint Survey Experiments",
-  author   =  c(person("Katherine", "Clayton"),
-                person("Yusaku", "Horiuchi"), 
-                person("Aaron", "Kaufman"),
-                person("Gary", "King"),
-                person("Mayya", "Komisarchik")),
-  journal  = "American Journal of Political Science",
-  year     = "Forthcoming",
-  url      = "https://gking.harvard.edu/files/gking/files/conerr.pdf",
-  textVersion = paste(
-    "Katherine Clayton, Yusaku Horiuchi, Aaron R. Kaufman, Gary King, and Mayya Komisarchik (forthcoming).",
-    "Correcting Measurement Error Bias in Conjoint Survey Experiments.",
-    "American Journal of Political Science. URL https://gking.harvard.edu/files/gking/files/conerr.pdf"
-  )
+## 1) Article
+bibentry(
+  bibtype = "Article",
+  title   = "Correcting Measurement Error Bias in Conjoint Survey Experiments",
+  author  = c(
+    person("Katherine", "Clayton"),
+    person("Yusaku", "Horiuchi"),
+    person("Aaron R.", "Kaufman"),
+    person("Gary", "King"),
+    person("Mayya", "Komisarchik")
+  ),
+  journal = "American Journal of Political Science",
+  year    = "2025",                # use a numeric year; move "Forthcoming" to 'note'
+  note    = "Forthcoming",
+  url     = "https://gking.harvard.edu/files/gking/files/conerr.pdf"
 )
 
-citEntry(
-  entry    = "misc",
-  title    = "projoint: The One Stop Conjoint Shop",
-  author   = c(person("Yusaku", "Horiuchi"), 
-                   person("Aaron", "Kaufman"),
-                   person("Gary", "King")),
-  year     = "2025",
-  publisher = "GitHub repository",
-  url      = "https://github.com/yhoriuchi/projoint",
-  textVersion = paste("Yusaku Horiuchi, Aaron R. Kaufman, and Gary King (2025).",
-        "projoint: The One Stop Conjoint Shop.",
-        "URL https://github.com/yhoriuchi/projoint")
-)
+## 2) Software / package
+meta  <- utils::packageDescription("projoint")
+yr    <- if (!is.null(meta$Date)) substr(meta$Date, 1, 4) else
+         if (!is.null(meta$Packaged)) substr(meta$Packaged, 1, 4) else
+         format(Sys.Date(), "%Y")
 
+bibentry(
+  bibtype = "Manual",
+  title   = "projoint: The One Stop Conjoint Shop",
+  author  = c(
+    person("Yusaku", "Horiuchi"),
+    person("Aaron R.", "Kaufman"),
+    person("Gary", "King")
+  ),
+  year    = yr,
+  note    = paste("R package version", meta$Version),
+  url     = "https://yhoriuchi.github.io/projoint"  # pkgdown (avoid CRAN URL until accepted)
+)

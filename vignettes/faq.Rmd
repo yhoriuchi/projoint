@@ -24,9 +24,9 @@ library(patchwork)
 
 Each respondent was given two different profiles (e.g., of a product) and then was asked to rate each of the profiles. Doing so meant that each rating could be thought of as an observation. Thus, researchers were allowed to "stack" their data vertically, with one profile-per-row (i.e., "profile-level data"). However, when respondents were then asked to make a choice between the two profiles, these profiles are no longer independent; choosing one necessarily meant not choosing the other. While researchers often still stack their data into profile-level, this should not be the case. Instead, we use choice-level data, whereby each choice consisting of two profiles is recorded as a single observation.
 
-See the <a href="../articles/structure.html" target="_blank">choice-level analysis article</a> for more information about profile-level vs. choice-level structure.
+See the <a href="https://yhoriuchi.github.io/projoint/articles/structure.html" target="_blank">choice-level analysis article</a> for more information about profile-level vs. choice-level structure.
 
-See the <a href="../articles/correct.html" target="_blank">bias correction article</a> for more information about how projoint corrects bias.
+See the <a href="https://yhoriuchi.github.io/projoint/articles/correct.html" target="_blank">bias correction article</a> for more information about how projoint corrects bias.
 </details>
 
 ## What if I have profile-level data?
@@ -214,7 +214,7 @@ Many researchers use Anton Strezhnev's **Conjoint Survey Design Tool** (Link: [c
 
 The JavaScript randomizer can be inserted into the first screen of your Qualtrics survey using **Edit Question JavaScript**. Example screenshot:  
 
-![](../man/figures/embedded_js.png){#id .class width=80% height=80%}
+![](https://yhoriuchi.github.io/projoint/man/figures/embedded_js.png){#id .class width=80% height=80%}
 
 - Example JavaScript: [Download here](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/example.js)
 
@@ -268,7 +268,7 @@ After generating the randomizer, you must create **HTML tables** displaying embe
 
 Example of the first task:
 
-![](../man/figures/screenshot_first.png){#id .class width=80% height=80%}
+![](https://yhoriuchi.github.io/projoint/man/figures/screenshot_first.png){#id .class width=80% height=80%}
 
 - Example HTML file: [task_first.html](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/task_first.html)
 
@@ -288,7 +288,7 @@ It’s easy to create a **repeated task** for intra-respondent reliability (IRR)
 
 Example repeated task:
 
-![](../man/figures/screenshot_last.png){#id .class width=80% height=80%}
+![](https://yhoriuchi.github.io/projoint/man/figures/screenshot_last.png){#id .class width=80% height=80%}
 
 - Example HTML: [task_repeated.html](https://raw.githubusercontent.com/yhoriuchi/projoint/master/data-raw/task_repeated.html)
 

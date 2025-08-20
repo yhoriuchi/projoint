@@ -17,9 +17,4 @@
 ^doc/.*\.R$
 ^doc/.*\.html$
 ^vignettes/\.install_exclude$
-
-
-
-
-
-
+^cran-comments\.md$

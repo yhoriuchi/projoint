@@ -1,9 +1,8 @@
 Package: projoint
 Type: Package
 Title: The One Stop Conjoint Shop
-Version: 1.0.0
+Version: 1.0.1
 Date: 2025-08-19
-Author: Yusaku Horiuchi [aut, cre]
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
 Authors@R: c(
   person("Yusaku", "Horiuchi", email = "yusaku.horiuchi@gmail.com", role = c("aut", "cre"),
@@ -44,5 +43,5 @@ RoxygenNote: 7.3.2
 Config/testthat/edition: 3
 URL: https://yhoriuchi.github.io/projoint/
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1.0)
 LazyData: true

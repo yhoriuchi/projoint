@@ -6,7 +6,13 @@
 ## R CMD check results
 0 errors | 0 warnings | 2 notes
 
-* This is a new submission.
+* This is a resubmission.  
+* Changes since 1.0.0 (per CRAN pre-test feedback):
+  - Replaced old-style `citEntry()` with `bibentry()` in `inst/CITATION`.
+  - Fixed relative README links (now absolute URLs to pkgdown site; removed invalid URIs).
+  - Added `Depends: R (>= 4.1.0)` to account for `|>` and `\(…)` syntax.
+  - Removed redundant `Author:` field; kept only `Authors@R`.
+  - Added `cran-comments.md` to `.Rbuildignore`.
 
 ### NOTE 1: Package size
 Some checks report:

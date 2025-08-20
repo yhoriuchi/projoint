@@ -68,9 +68,9 @@ There are four options for exporting a survey, and we recommend users do at leas
 
 ## Other Options
 
-If you are interested in how researchers previously set up their conjoint surveys, see the <a href="../articles/faq.html" target="_blank">FAQ Page</a> instructions for using alternative tools<sup><a href="../articles/faq.html#how-did-researchers-design-conjoint-surveys-previously" target="_blank" style="text-decoration: none;">&#9432;</a></sup>
+If you are interested in how researchers previously set up their conjoint surveys, see the <a href="https://yhoriuchi.github.io/projoint/articles/faq.html" target="_blank">FAQ Page</a> instructions for using alternative tools<sup><a href="https://yhoriuchi.github.io/projoint/articles/faq.html#how-did-researchers-design-conjoint-surveys-previously" target="_blank" style="text-decoration: none;">&#9432;</a></sup>
 
 ---
 
-🏠 **Home:** [Home](../index.html)
+🏠 **Home:** [Home](https://yhoriuchi.github.io/projoint/index.html)
 

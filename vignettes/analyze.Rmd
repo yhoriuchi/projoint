@@ -423,5 +423,5 @@ ggplot(out_merged, aes(y = party, x = estimate)) +
 
 ---
 
-🏠 **Home:** [Home](../index.html)
+🏠 **Home:** [Home](https://yhoriuchi.github.io/projoint/index.html)
 
