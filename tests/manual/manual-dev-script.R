@@ -26,4 +26,9 @@ devtools::build()
 untar("projoint_1.0.1.tar.gz", list = TRUE)
 
 # Step 3. Test the tarball directly
-devtools::check_built("projoint_1.0.1.tar.gz")
+devtools::check_built("../projoint_1.0.1.tar.gz")
+
+# Step 4. Optional local install test
+install.packages("../projoint_1.0.1.tar.gz", repos = NULL, type = "source")
+library(projoint)
+citation("projoint")   # check CITATION output
