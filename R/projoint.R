@@ -36,6 +36,8 @@
 #' @param .auto_cluster Logical. If \code{TRUE} (default), automatically cluster on an \code{id}
 #'   column when present and no \code{.clusters_*} are supplied. Auto-clustering only
 #'   occurs when the corresponding \code{.se_type_*} is \code{NULL}.
+#' @param .seed Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call 
+#'   and restores the previous RNG state on exit.
 #'
 #' @details
 #' Valid \code{se_type_*} values depend on whether clustering is used:
@@ -68,7 +70,8 @@ projoint <- function(
     .weights_2 = NULL,
     .clusters_2 = NULL,
     .se_type_2 = NULL,
-    .auto_cluster = TRUE
+    .auto_cluster = TRUE,
+    .seed = NULL
 ) {
   
   if (!is.null(.structure) && !is.null(.qoi)) {
@@ -85,6 +88,17 @@ projoint <- function(
     stop(".by_var is only supported for profile-level analysis.")
   }
   
+  # ---- Optional reproducible RNG (wrapper) -----------------------------------
+  if (!is.null(.seed)) {
+    if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
+      old_seed <- .Random.seed
+      on.exit({
+        if (exists("old_seed", inherits = FALSE)) .Random.seed <<- old_seed
+      }, add = TRUE)
+    }
+    set.seed(.seed)
+  }
+
   weights1_quo  <- rlang::enquo(.weights_1)
   clusters1_quo <- rlang::enquo(.clusters_1)
   weights2_quo  <- rlang::enquo(.weights_2)

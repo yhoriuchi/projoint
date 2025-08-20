@@ -28,7 +28,8 @@ pj_estimate(
   .weights_2,
   .clusters_2,
   .se_type_2,
-  .auto_cluster = TRUE
+  .auto_cluster = TRUE,
+  .seed = NULL
 )
 }
 \arguments{
@@ -79,6 +80,9 @@ pj_estimate(
 \item{.se_type_2}{SE type for MM/AMCE estimation; passed to \code{\link[estimatr]{lm_robust}}. If \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).}
 
 \item{.auto_cluster}{Logical; if \code{TRUE} (default), auto-cluster on \code{id} when present and no \code{.clusters_*} are supplied; auto-clustering only occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.}
+
+\item{.seed}{Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call 
+and restores the previous RNG state on exit.}
 }
 \value{
 A data frame with columns \code{estimand}, \code{estimate}, \code{se}, \code{conf.low}, \code{conf.high}, and \code{tau},

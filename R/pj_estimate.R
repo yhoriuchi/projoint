@@ -27,7 +27,8 @@
 #' @param .clusters_2 (Optional) Bare (unquoted) column with clusters for MM/AMCE estimation; passed to \code{\link[estimatr]{lm_robust}}.
 #' @param .se_type_2 SE type for MM/AMCE estimation; passed to \code{\link[estimatr]{lm_robust}}. If \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
 #' @param .auto_cluster Logical; if \code{TRUE} (default), auto-cluster on \code{id} when present and no \code{.clusters_*} are supplied; auto-clustering only occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.
-#'
+#' @param .seed Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call 
+#'   and restores the previous RNG state on exit.
 #' @return A data frame with columns \code{estimand}, \code{estimate}, \code{se}, \code{conf.low}, \code{conf.high}, and \code{tau},
 #'   ready for downstream aggregation and plotting.
 #' @seealso \code{\link{reshape_projoint}}, \code{\link{make_projoint_data}}, \code{\link{set_qoi}}, \code{\link{projoint}}
@@ -57,7 +58,8 @@ pj_estimate <- function(
     .weights_2,
     .clusters_2,
     .se_type_2,
-    .auto_cluster = TRUE
+    .auto_cluster = TRUE,
+    .seed = NULL
 ){
   # ---- Match args -----------------------------------------------------------
   structure <- rlang::arg_match0(.structure, c("choice_level", "profile_level"))
@@ -111,6 +113,20 @@ pj_estimate <- function(
   
   if (structure == "choice_level" & estimand == "mm" & .remove_ties == FALSE) {
     stop(".remove_ties must be TRUE to estimate choice-level MMs.")
+  }
+  if (identical(.se_type_2, "none") && se_method == "simulation") {
+    stop("Simulation SEs require finite standard errors. Choose analytical or bootstrap when se_type = 'none'.")
+  }
+  
+  # ---- Optional reproducible RNG (low-level) --------------------------------
+  if (!is.null(.seed)) {
+    if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
+      old_seed <- .Random.seed
+      on.exit({
+        if (exists("old_seed", inherits = FALSE)) .Random.seed <<- old_seed
+      }, add = TRUE)
+    }
+    set.seed(.seed)
   }
   
   # ---- Organize data --------------------------------------------------------
@@ -302,7 +318,7 @@ pj_estimate <- function(
       
       if (!"id" %in% names(data_for_irr))      data_for_irr$id      <- seq_len(nrow(data_for_irr))
       if (!"id" %in% names(data_for_estimand)) data_for_estimand$id <- seq_len(nrow(data_for_estimand))
-
+      
     }
   }
   
@@ -318,7 +334,8 @@ pj_estimate <- function(
   
   
   # Auto-cluster only if allowed and sensible
-  if (.auto_cluster &&
+  if (is.null(.irr) &&
+      .auto_cluster &&
       rlang::quo_is_null(clusters1_quo) &&
       "id" %in% names(data_for_irr) &&
       is.null(.se_type_1)) {
@@ -332,14 +349,15 @@ pj_estimate <- function(
   }
   
   # Figure out whether each stage is clustered
-  is_clustered_1 <- !rlang::quo_is_null(clusters1_quo)
+  is_clustered_1 <- if (is.null(.irr)) !rlang::quo_is_null(clusters1_quo) else FALSE
   is_clustered_2 <- !rlang::quo_is_null(clusters2_quo)
   
-  # Validate se_type now that we know clustered-ness
+  # Define allowed se_type values once, before validation
   ok_uncl <- c("classical","HC0","HC1","HC2","HC3","stata","none")
   ok_cl   <- c("CR0","CR2","stata","none")
   
-  if (!is.null(.se_type_1)) {
+  # And gate se_type_1 validation:
+  if (is.null(.irr) && !is.null(.se_type_1)) {
     if (is_clustered_1 && !(.se_type_1 %in% ok_cl)) {
       stop("`.se_type_1` must be one of ", paste(ok_cl, collapse=", "),
            " when clusters are supplied or auto-detected.")
@@ -350,6 +368,7 @@ pj_estimate <- function(
     }
   }
   
+
   if (!is.null(.se_type_2)) {
     if (is_clustered_2 && !(.se_type_2 %in% ok_cl)) {
       stop("`.se_type_2` must be one of ", paste(ok_cl, collapse=", "),
@@ -384,9 +403,9 @@ pj_estimate <- function(
   if (is.null(.irr) && nrow(data_for_irr) == 0L) {
     stop("No rows available to estimate IRR/tau. Consider supplying .irr directly.")
   }
-  if (nrow(data_for_irr) == 0L) {
-    stop("No rows available to estimate IRR/tau.")
-  }
+  # if (nrow(data_for_irr) == 0L) {
+  #   stop("No rows available to estimate IRR/tau.")
+  # }
   
   critical_from_ci <- function(est, se, lo) {
     ct <- abs((lo - est) / se)
@@ -478,7 +497,7 @@ pj_estimate <- function(
       warning("Simulation SEs require finite standard errors; e.g., with se_type = 'none' results may be NA.")
     }
   }
-
+  
   # ---- Covariance pieces ----------------------------------------------------
   has_agree <- "agree" %in% names(data_for_estimand)
   data_for_cov <- if (has_agree) dplyr::filter(data_for_estimand, !is.na(agree))
@@ -531,12 +550,12 @@ pj_estimate <- function(
       output <- data.frame(
         estimand = c("mm_uncorrected", "mm_corrected"),
         estimate = c(mm_uncorrected, mm_corrected),
-        se       = c(sqrt(var_uncorrected_mm), sqrt(var_corrected_mm))
+        se       = c(sqrt(pmax(var_uncorrected_mm, 0)), sqrt(pmax(var_corrected_mm, 0)))
       ) |>
-        dplyr::mutate(conf.low = estimate - critical_t * se,
+        dplyr::mutate(conf.low  = estimate - critical_t * se,
                       conf.high = estimate + critical_t * se,
                       tau = tau)
-    }
+    }  
     
     if (se_method == "simulation"){
       if ((var_tau <= 0 || !is.finite(var_tau)) && (cov_mm_tau == 0)) {
@@ -555,34 +574,47 @@ pj_estimate <- function(
       output <- data.frame(
         estimand = c("mm_uncorrected", "mm_corrected"),
         estimate = c(mm_uncorrected, mean(sim_mm$mm_corrected)),
-        se       = c(sqrt(var_uncorrected_mm), stats::sd(sim_mm$mm_corrected))
+        se       = c(sqrt(pmax(var_uncorrected_mm, 0)), stats::sd(sim_mm$mm_corrected))
       ) |>
-        dplyr::mutate(conf.low = estimate - critical_t * se,
+        dplyr::mutate(conf.low  = estimate - critical_t * se,
                       conf.high = estimate + critical_t * se,
                       tau = tau)
     }
     
     if (se_method == "bootstrap"){
-      IDs_1 <- unique(stats::na.omit(data_for_irr$id))
+      # Only define IDs_1 if we’ll estimate IRR
+      if (is.null(.irr)) {
+        IDs_1 <- unique(stats::na.omit(data_for_irr$id))
+        if (length(IDs_1) == 0L) stop("No rows available to bootstrap IRR/tau. Consider supplying .irr directly.")
+      }
       IDs_2 <- unique(stats::na.omit(data_for_estimand$id))
       out <- NULL
-      set.seed(1L)
       for (i in seq_len(.n_boot)) {
-        id_1 <- sample(IDs_1, length(IDs_1), replace = TRUE)
-        id_2 <- sample(IDs_2, length(IDs_2), replace = TRUE)
         
-        bs_sample_1 <- data.frame(id = id_1) |>
-          dplyr::left_join(data_for_irr, by = "id", relationship = "many-to-many")
+        # Always bootstrap the estimand stage
+        id_2 <- sample(IDs_2, length(IDs_2), replace = TRUE)
         bs_sample_2 <- data.frame(id = id_2) |>
           dplyr::left_join(data_for_estimand, by = "id", relationship = "many-to-many")
         
-        reg_irr <- estimatr::lm_robust(
-          agree ~ 1,
-          weights  = if (!rlang::quo_is_null(weights1_quo))  rlang::eval_tidy(weights1_quo,  bs_sample_1) else NULL,
-          clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
-          se_type = .se_type_1,
-          data = bs_sample_1
-        ) |> estimatr::tidy()
+        # Bootstrap (and fit) IRR only when needed
+        if (is.null(.irr)) {
+          id_1 <- sample(IDs_1, length(IDs_1), replace = TRUE)
+          bs_sample_1 <- data.frame(id = id_1) |>
+            dplyr::left_join(data_for_irr, by = "id", relationship = "many-to-many")
+          
+          reg_irr <- estimatr::lm_robust(
+            agree ~ 1,
+            weights  = if (!rlang::quo_is_null(weights1_quo))  rlang::eval_tidy(weights1_quo,  bs_sample_1) else NULL,
+            clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
+            se_type  = .se_type_1,
+            data     = bs_sample_1
+          ) |> estimatr::tidy()
+          
+          irr_bs <- reg_irr$estimate[1]
+          tau_bs <- (1 - sqrt(1 - 2 * (1 - irr_bs))) / 2
+        } else {
+          tau_bs <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
+        }
         
         reg_mm <- estimatr::lm_robust(
           selected ~ 1,
@@ -591,16 +623,10 @@ pj_estimate <- function(
           se_type = se_type2_final,
           data = bs_sample_2
         ) |> estimatr::tidy()
-        
+
         mm_uncorrected_bs <- reg_mm$estimate[1]
-        if (is.null(.irr)){
-          irr_bs <- reg_irr$estimate[1]
-          tau_bs <- (1 - sqrt(1 - 2 * (1 - irr_bs))) / 2
-        } else {
-          tau_bs <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
-        }
         mm_corrected_bs <- (mm_uncorrected_bs - tau_bs) / (1 - 2 * tau_bs)
-        
+
         out <- dplyr::bind_rows(out,
                                 data.frame(estimand = c("mm_corrected","mm_uncorrected"),
                                            estimate = c(mm_corrected_bs, mm_uncorrected_bs)))
@@ -637,13 +663,12 @@ pj_estimate <- function(
       dt  <- 2 * amce_uncorrected / (1 - 2 * tau)^2
       var_corrected_amce <- db^2 * var_uncorrected_amce + dt^2 * var_tau + 2 * db * dt * cov_amce_tau
       
-      
       output <- data.frame(
         estimand = c("amce_uncorrected","amce_corrected"),
         estimate = c(amce_uncorrected, amce_corrected),
-        se       = c(sqrt(var_uncorrected_amce), sqrt(var_corrected_amce))
+        se       = c(sqrt(pmax(var_uncorrected_amce, 0)), sqrt(pmax(var_corrected_amce, 0)))
       ) |>
-        dplyr::mutate(conf.low = estimate - critical_t * se,
+        dplyr::mutate(conf.low  = estimate - critical_t * se,
                       conf.high = estimate + critical_t * se,
                       tau = tau)
     }
@@ -665,34 +690,49 @@ pj_estimate <- function(
       output <- data.frame(
         estimand = c("amce_uncorrected","amce_corrected"),
         estimate = c(amce_uncorrected, mean(sim_amce$amce_corrected)),
-        se       = c(sqrt(var_uncorrected_amce), stats::sd(sim_amce$amce_corrected))
+        se       = c(sqrt(pmax(var_uncorrected_amce, 0)), stats::sd(sim_amce$amce_corrected))
       ) |>
-        dplyr::mutate(conf.low = estimate - critical_t * se,
+        dplyr::mutate(conf.low  = estimate - critical_t * se,
                       conf.high = estimate + critical_t * se,
                       tau = tau)
     }
     
     if (se_method == "bootstrap"){
-      IDs_1 <- unique(stats::na.omit(data_for_irr$id))
+      
       IDs_2 <- unique(stats::na.omit(data_for_estimand$id))
+      # Only define IDs_1 if we’ll estimate IRR
+      if (is.null(.irr)) {
+        IDs_1 <- unique(stats::na.omit(data_for_irr$id))
+        if (length(IDs_1) == 0L) stop("No rows available to bootstrap IRR/tau. Consider supplying .irr directly.")
+      }
+
       out <- NULL
-      set.seed(1L)
       for (i in seq_len(.n_boot)) {
-        id_1 <- sample(IDs_1, length(IDs_1), replace = TRUE)
-        id_2 <- sample(IDs_2, length(IDs_2), replace = TRUE)
         
-        bs_sample_1 <- data.frame(id = id_1) |>
-          dplyr::left_join(data_for_irr,      by = "id", relationship = "many-to-many")
+        # Always bootstrap the estimand stage
+        id_2 <- sample(IDs_2, length(IDs_2), replace = TRUE)
         bs_sample_2 <- data.frame(id = id_2) |>
           dplyr::left_join(data_for_estimand, by = "id", relationship = "many-to-many")
-        
-        reg_irr <- estimatr::lm_robust(
-          agree ~ 1,
-          weights  = if (!rlang::quo_is_null(weights1_quo))  rlang::eval_tidy(weights1_quo,  bs_sample_1) else NULL,
-          clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
-          se_type = .se_type_1,
-          data = bs_sample_1
-        ) |> estimatr::tidy()
+
+        # Bootstrap (and fit) IRR only when needed
+        if (is.null(.irr)) {
+          id_1 <- sample(IDs_1, length(IDs_1), replace = TRUE)
+          bs_sample_1 <- data.frame(id = id_1) |>
+            dplyr::left_join(data_for_irr, by = "id", relationship = "many-to-many")
+          
+          reg_irr <- estimatr::lm_robust(
+            agree ~ 1,
+            weights  = if (!rlang::quo_is_null(weights1_quo))  rlang::eval_tidy(weights1_quo,  bs_sample_1) else NULL,
+            clusters = if (!rlang::quo_is_null(clusters1_quo)) rlang::eval_tidy(clusters1_quo, bs_sample_1) else NULL,
+            se_type  = .se_type_1,
+            data     = bs_sample_1
+          ) |> estimatr::tidy()
+          
+          irr_bs <- reg_irr$estimate[1]
+          tau_bs <- (1 - sqrt(1 - 2 * (1 - irr_bs))) / 2
+        } else {
+          tau_bs <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
+        }
         
         reg_amce <- estimatr::lm_robust(
           selected ~ x,
@@ -703,12 +743,6 @@ pj_estimate <- function(
         ) |> estimatr::tidy()
         
         amce_uncorrected_bs <- reg_amce$estimate[2]
-        if (is.null(.irr)){
-          irr_bs <- reg_irr$estimate[1]
-          tau_bs <- (1 - sqrt(1 - 2 * (1 - irr_bs))) / 2
-        } else {
-          tau_bs <- (1 - sqrt(1 - 2 * (1 - .irr))) / 2
-        }
         amce_corrected_bs <- amce_uncorrected_bs / (1 - 2 * tau_bs)
         
         out <- dplyr::bind_rows(out,

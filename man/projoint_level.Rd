@@ -21,7 +21,8 @@ projoint_level(
   .weights_2,
   .clusters_2,
   .se_type_2,
-  .auto_cluster = TRUE
+  .auto_cluster = TRUE,
+  .seed = NULL
 )
 }
 \arguments{
@@ -56,6 +57,9 @@ See \code{\link{projoint}} for valid \code{se_type_*} values.}
 \item{.auto_cluster}{Logical. If \code{TRUE} (default), automatically cluster on an \code{id}
 column when present and no \code{.clusters_*} are supplied. Auto-clustering only
 occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.}
+
+\item{.seed}{Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call 
+and restores the previous RNG state on exit.}
 }
 \value{
 A \code{\link{projoint_results}} object (typically returned via \code{\link{projoint}}).

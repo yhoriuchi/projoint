@@ -18,3 +18,4 @@
 ^doc/.*\.html$
 ^vignettes/\.install_exclude$
 ^cran-comments\.md$
+^tests/manual/.*\.R$

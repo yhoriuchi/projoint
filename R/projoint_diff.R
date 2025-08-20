@@ -25,6 +25,8 @@
 #' @param .auto_cluster Logical. If \code{TRUE} (default), automatically cluster on an \code{id}
 #'   column when present and no \code{.clusters_*} are supplied. Auto-clustering only
 #'   occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.
+#' @param .seed Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call 
+#'   and restores the previous RNG state on exit.
 #'
 #' @return A \code{\link{projoint_results}} object with subgroup differences.
 #' @keywords internal
@@ -47,7 +49,8 @@ projoint_diff <- function(
     .weights_2,
     .clusters_2,
     .se_type_2,
-    .auto_cluster = TRUE
+    .auto_cluster = TRUE,
+    .seed = NULL
 ){
   
   # ---- Early guards --------------------------------------------------------
@@ -72,6 +75,17 @@ projoint_diff <- function(
     stop("`.by_var` must be logical (TRUE/FALSE) or numeric/integer coded as 0/1 (factor levels '0'/'1' allowed).")
   }
 
+  # ---- Optional reproducible RNG (wrapper) -----------------------------------
+  if (!is.null(.seed)) {
+    if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
+      old_seed <- .Random.seed
+      on.exit({
+        if (exists("old_seed", inherits = FALSE)) .Random.seed <<- old_seed
+      }, add = TRUE)
+    }
+    set.seed(.seed)
+  }
+  
   # ---- Split data -----------------------------------------------------------
   
   by_col <- .data$data[[.by_var]]
