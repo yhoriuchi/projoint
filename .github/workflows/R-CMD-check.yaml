@@ -1,23 +1,30 @@
-name: R-CMD-check
-
+name: pkgdown
 on:
   push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
-  R-CMD-check:
+  pkgdown:
     runs-on: ubuntu-latest
+    concurrency:
+      group: pkgdown-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-lib/actions/setup-r@v2
-      - name: Install system dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
-      - name: Install R dependencies
-        run: |
-          install.packages(c("devtools", "remotes"))
-          devtools::install_deps(dependencies = TRUE)
+        with: { use-public-rspm: true }
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::pkgdown, local::.
+          needs: website
+      - name: Build site
+        run: pkgdown::build_site(preview = FALSE, install = FALSE)
         shell: Rscript {0}
-      - name: Check
-        run: R CMD check --no-manual --as-cran .
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+      - name: Deploy
+        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: actions/deploy-pages@v4
+
