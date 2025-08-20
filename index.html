@@ -47,17 +47,18 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><p align="center">
-<img src="reference/figures/projoint.png" width="150" height="150"></p>
-<p align="center">
-<a href="https://github.com/yhoriuchi/projoint/actions/workflows/R-CMD-check.yaml" class="external-link"> <img src="https://github.com/yhoriuchi/projoint/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://CRAN.R-project.org/package=projoint" class="external-link"> <img src="https://www.r-pkg.org/badges/version/projoint" alt="CRAN Status"></a> <a href="https://cran.r-project.org/package=projoint" class="external-link"> <img src="https://cranlogs.r-pkg.org/badges/grand-total/projoint" alt="Downloads"></a>
-</p>
-<p align="center" style="font-size: 32px;">
-<b>🛠️ The One-Stop Conjoint Shop: projoint</b>
-</p>
+  <main id="main" class="col-md-9"><div align="center">
+<p><img src="reference/figures/projoint.png" width="150" height="150"></p>
+<p><a href="https://github.com/yhoriuchi/projoint/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/yhoriuchi/projoint/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://CRAN.R-project.org/package=projoint" class="external-link"><img src="https://www.r-pkg.org/badges/version/projoint" alt="CRAN Status"></a> <a href="https://cran.r-project.org/package=projoint" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/projoint" alt="Downloads"></a></p>
+<div class="section level3">
+<h3 id="id_️-the-one-stop-conjoint-shop-projoint">🛠️ The One-Stop Conjoint Shop: <strong>projoint</strong>
+<a class="anchor" aria-label="anchor" href="#id_%EF%B8%8F-the-one-stop-conjoint-shop-projoint"></a>
+</h3>
+</div>
+</div>
 <hr>
 <p>Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many causal effects from a single randomized experiment. Unfortunately, by their ability to mirror complicated real-world choices, these designs often generate substantial <strong>measurement error</strong> and thus <strong>bias</strong>.</p>
-<p><strong>projoint</strong> is a general-purpose R package for conjoint analysis. It produces <strong>more reliable estimates</strong> of the quantities of interest based on questions explicitly about survey respondents’ <strong>choices between two options</strong>.<sup><a href="articles/faq.html#what-is-the-history-of-conjoint-analysis-what-is-the-difference-between-profile-level-and-choice-level-data" target="_blank" style="text-decoration: none;">ⓘ</a></sup></p>
+<p><strong>projoint</strong> is a general-purpose R package for conjoint analysis. It produces <strong>more reliable estimates</strong> of the quantities of interest based on questions explicitly about survey respondents’ <strong>choices between two options</strong>.<sup><a href="https://yhoriuchi.github.io/projoint/articles/faq.html#what-is-the-history-of-conjoint-analysis-what-is-the-difference-between-profile-level-and-choice-level-data" target="_blank" style="text-decoration: none;">ⓘ</a></sup></p>
 <p>This method can be used not only by researchers at the design stage but also by those already analyzing the data. As we explain, everything necessary to correct the bias in an application can be estimated via a slight modification of the standard conjoint design, a separate survey run afterward, or sometimes without new data collection at all.</p>
 <details><summary>
 Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">accompanying paper</a> to learn more about our method
@@ -70,18 +71,25 @@ Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="ex
 <div class="section level2">
 <h2 id="id_-tutorials">🚀 Tutorials<a class="anchor" aria-label="anchor" href="#id_-tutorials"></a>
 </h2>
+<!-- =========================
+     1. Install
+     ========================= -->
 <details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>1. Install</b> the development version from GitHub
 </summary><p>Open R (or <a href="https://www.r-project.org/" target="_blank" class="external-link">install R</a> if you do not have it), and run the following command in your coding environment.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"yhoriuchi/projoint"</span><span class="op">)</span></span></code></pre></div>
-</details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>2. Design</b> your survey
+</details><!-- =========================
+     2. Design
+     ========================= --><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>2. Design</b> your survey
 </summary><p>Online surveys are frequently written with an online software called Qualtrics. Using our web tool, called the <a href="https://projoint.aaronrkaufman.com/" target="_blank" class="external-link">Projoint Survey Designer</a>, you don’t need to learn how to write a survey in Qualtrics.</p>
 <ul>
 <li>Use the <a href="https://projoint.aaronrkaufman.com/" target="_blank" class="external-link">Projoint Survey Designer</a> and export surveys formatted for Qualtrics.<br>
 </li>
-<li>Follow the <a href="articles/design.html" target="_blank">step-by-step guide</a> to learn how to set up your Qualtrics survey.<br>
+<li>Follow the <a href="https://yhoriuchi.github.io/projoint/articles/design.html" target="_blank">step-by-step guide</a> to learn how to set up your Qualtrics survey.<br>
 </li>
-</ul></details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>3. Field</b> your survey
+</ul></details><!-- =========================
+     3. Field
+     ========================= --><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>3. Field</b> your survey
 </summary><ul>
 <li>Using the .QSF file export from the Projoint Survey Designer, load your survey into Qualtrics.
 <ul>
@@ -101,7 +109,9 @@ Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="ex
 <li>Critically, select “Use choice text” rather than coded values.</li>
 </ul>
 </li>
-</ul></details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>4. Read</b> the results into R and <b>wrangle</b> your data into structured form
+</ul></details><!-- =========================
+     4. Read
+     ========================= --><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>4. Read</b> the results into R and <b>wrangle</b> your data into structured form
 </summary><ul>
 <li>Load your <strong>survey responses</strong> into R:</li>
 </ul>
@@ -117,13 +127,15 @@ Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="ex
 <span>  .outcomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <ul>
-<li>Follow the <a href="articles/read.html" target="_blank">step-by-step guide</a> to learn how to read and reshape data for conjoint analysis.</li>
-</ul></details><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>5. Analyze</b> and <b>visualize</b> important <b>Quantities of Interest</b>
+<li>Follow the <a href="https://yhoriuchi.github.io/projoint/articles/read.html" target="_blank">step-by-step guide</a> to learn how to read and reshape data for conjoint analysis.</li>
+</ul></details><!-- =========================
+     5. Analyze
+     ========================= --><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>5. Analyze</b> and <b>visualize</b> important <b>Quantities of Interest</b>
 </summary><ul>
 <li>Estimate Marginal Means (MMs) or Average Marginal Component Effects (AMCEs) with correction for measurement error:</li>
 </ul>
 <blockquote>
-<p><strong>Note:</strong> The following example illustrates a <em>profile_level</em> analysis. This approach is common in social science and useful as an initial diagnostic, but we encourage researchers to consider <em>choice_level</em> analysis (the default for <code>.structure</code>). See <a href="articles/structure.html" target="_blank">Choice-Level Analysis</a>. Detailed steps of analysis appear in the <a href="articles/analyze.html" target="_blank">Step-by-Step Guide</a>.</p>
+<p><strong>Note:</strong> The following example illustrates a <code>profile_level</code> analysis. This approach is common in social science and useful as an initial diagnostic, but we encourage researchers to consider <code>choice_level</code> analysis (the default for <code>.structure</code>). See <a href="https://yhoriuchi.github.io/projoint/articles/structure.html" target="_blank">Choice-Level Analysis</a>. Detailed steps of analysis appear in the <a href="https://yhoriuchi.github.io/projoint/articles/analyze.html" target="_blank">Step-by-Step Guide</a>.</p>
 </blockquote>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span><span class="op">)</span></span>
@@ -136,13 +148,30 @@ Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="ex
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>Estimate additional quantities of interest and explore subgroup comparisons using choice-level analysis.</li>
-<li>Follow the <a href="articles/analyze.html" target="_blank">step-by-step guide</a> to learn how to:
+<li>Follow the <a href="https://yhoriuchi.github.io/projoint/articles/analyze.html" target="_blank">step-by-step guide</a> to learn how to:
 <ul>
 <li>Estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary.</li>
 <li>Visualize the marginal means (MMs) or average marginal component effects (AMCEs).</li>
 <li>Estimate under-investigated quantities of interest and compare subgroups using choice-level analysis.</li>
 </ul>
 </li>
+</ul></details><!-- =========================
+     6. Explore
+     ========================= --><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>6. Explore</b> additional quantities and compare subgroups
+</summary><ul>
+<li>Go beyond standard profile-level summaries.<br>
+</li>
+<li>Use <strong>choice-level analysis</strong> to:
+<ul>
+<li>Directly compare trade-offs (e.g., low housing cost vs. low crime).<br>
+</li>
+<li>Collapse multiple levels (e.g., city vs. suburban preferences).<br>
+</li>
+<li>Estimate subgroup differences (e.g., Democrats vs. Republicans).<br>
+</li>
+</ul>
+</li>
+<li>See detailed examples in the <a href="https://yhoriuchi.github.io/projoint/articles/explore.html" target="_blank">Explore and Compare Further</a> vignette.</li>
 </ul></details><hr>
 </div>
 <div class="section level2">
@@ -154,7 +183,7 @@ Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="ex
 </ul></details><details style="margin-left: 25px; margin-bottom: 5px"><summary>
 Contact
 </summary>
-For comments and suggestions, please open an issue on the <a href="https://github.com/yhoriuchi/projoint/issues" target="_blank" class="external-link">Github repository</a>.
+For comments and suggestions, please open an issue on the <a href="https://github.com/yhoriuchi/projoint/issues" target="_blank" class="external-link">GitHub repository</a>.
 </details><hr>
 <p align="center" style="font-size: 18px;">
 ✨ Thank you for using projoint! ✨
