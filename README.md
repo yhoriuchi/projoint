@@ -107,7 +107,7 @@ dat <- reshape_projoint(
 
 * Estimate Marginal Means (MMs) or Average Marginal Component Effects (AMCEs) with correction for measurement error:
 
-> **Note:** The following example illustrates a `profile_level` analysis.  This approach is common in social science and useful as an initial diagnostic, but we encourage researchers to consider `choice_level` analysis (the default for `.structure`). See <a href="https://yhoriuchi.github.io/projoint/articles/structure.html" target="_blank">Choice-Level Analysis</a>. Detailed steps of analysis appear in the <a href="https://yhoriuchi.github.io/projoint/articles/analyze.html" target="_blank">Step-by-Step Guide</a>.
+> **Note:** The following example illustrates a `profile_level` analysis.  This approach is common in social science and useful as an initial diagnostic, but we encourage researchers to consider `choice_level` analysis (the default for `.structure`). See <a href="https://yhoriuchi.github.io/projoint/articles/structure.html" target="_blank">Choice-Level Analysis</a>. Detailed steps of analysis appear in the <a href="https://yhoriuchi.github.io/projoint/articles/analyze.html" target="_blank">step-by-step guide</a>.
 
 ```r
 output <- projoint(out1_arranged, .structure = "profile_level")
@@ -123,7 +123,6 @@ plot(output)
 * Follow the <a href="https://yhoriuchi.github.io/projoint/articles/analyze.html" target="_blank">step-by-step guide</a> to learn how to:
   * Estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary.
   * Visualize the marginal means (MMs) or average marginal component effects (AMCEs).
-  * Estimate under-investigated quantities of interest and compare subgroups using choice-level analysis.
 
 </details>
 
