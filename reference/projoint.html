@@ -64,7 +64,8 @@ when available. Returns estimates ready for plotting.</p>
 <span>  .weights_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .clusters_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .se_type_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .auto_cluster <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  .auto_cluster <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .seed <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -135,6 +136,11 @@ If <code>.se_type_2</code> is <code>NULL</code>, <em>estimatr</em> defaults are 
 <dd><p>Logical. If <code>TRUE</code> (default), automatically cluster on an <code>id</code>
 column when present and no <code>.clusters_*</code> are supplied. Auto-clustering only
 occurs when the corresponding <code>.se_type_*</code> is <code>NULL</code>.</p></dd>
+
+
+<dt id="arg--seed">.seed<a class="anchor" aria-label="anchor" href="#arg--seed"></a></dt>
+<dd><p>Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call
+and restores the previous RNG state on exit.</p></dd>
 
 </dl></div>
     <div class="section level2">

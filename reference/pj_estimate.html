@@ -67,7 +67,8 @@ with optional intra-respondent reliability (IRR) correction.</p>
 <span>  <span class="va">.weights_2</span>,</span>
 <span>  <span class="va">.clusters_2</span>,</span>
 <span>  <span class="va">.se_type_2</span>,</span>
-<span>  .auto_cluster <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  .auto_cluster <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .seed <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -169,6 +170,11 @@ with optional intra-respondent reliability (IRR) correction.</p>
 
 <dt id="arg--auto-cluster">.auto_cluster<a class="anchor" aria-label="anchor" href="#arg--auto-cluster"></a></dt>
 <dd><p>Logical; if <code>TRUE</code> (default), auto-cluster on <code>id</code> when present and no <code>.clusters_*</code> are supplied; auto-clustering only occurs when the corresponding <code>.se_type_*</code> is <code>NULL</code>. See <code><a href="projoint.html">projoint</a></code>.</p></dd>
+
+
+<dt id="arg--seed">.seed<a class="anchor" aria-label="anchor" href="#arg--seed"></a></dt>
+<dd><p>Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call
+and restores the previous RNG state on exit.</p></dd>
 
 </dl></div>
     <div class="section level2">
