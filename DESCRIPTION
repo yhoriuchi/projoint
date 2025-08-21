@@ -16,9 +16,9 @@ Authors@R:
              role = "aut",
              comment = c(ORCID = "https://orcid.org/0000-0002-5327-7631"))
     )
-Author: Yusaku Horiuchi [aut, cre] (ORCID: https://orcid.org/0000-0003-0295-4089),
-  Aaron Kaufman [aut] (ORCID: https://orcid.org/0000-0003-3688-0428),
-  Gary King [aut] (ORCID: https://orcid.org/0000-0002-5327-7631)
+Author: Yusaku Horiuchi [aut, cre] (ORCID: <https://orcid.org/0000-0003-0295-4089>),
+  Aaron Kaufman [aut] (ORCID: <https://orcid.org/0000-0003-3688-0428>),
+  Gary King [aut] (ORCID: <https://orcid.org/0000-0002-5327-7631>)
 Description: Analyzes data sets generated from conjoint experiments, correcting for measurement error.
 Imports:
     dplyr (>= 1.1.2),
