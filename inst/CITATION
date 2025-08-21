@@ -1,6 +1,6 @@
 citHeader("To cite projoint in publications, please use:")
 
-## 1) Article
+## Article
 bibentry(
   bibtype = "Article",
   title   = "Correcting Measurement Error Bias in Conjoint Survey Experiments",
@@ -12,17 +12,12 @@ bibentry(
     person("Mayya", "Komisarchik")
   ),
   journal = "American Journal of Political Science",
-  year    = "2025",                # use a numeric year; move "Forthcoming" to 'note'
+  year    = "2025",
   note    = "Forthcoming",
   url     = "https://gking.harvard.edu/files/gking/files/conerr.pdf"
 )
 
-## 2) Software / package
-meta  <- utils::packageDescription("projoint")
-yr    <- if (!is.null(meta$Date)) substr(meta$Date, 1, 4) else
-         if (!is.null(meta$Packaged)) substr(meta$Packaged, 1, 4) else
-         format(Sys.Date(), "%Y")
-
+## Software / package
 bibentry(
   bibtype = "Manual",
   title   = "projoint: The One Stop Conjoint Shop",
@@ -31,7 +26,7 @@ bibentry(
     person("Aaron R.", "Kaufman"),
     person("Gary", "King")
   ),
-  year    = yr,
-  note    = paste("R package version", meta$Version),
-  url     = "https://yhoriuchi.github.io/projoint"  # pkgdown (avoid CRAN URL until accepted)
+  year    = "2025",
+  note    = "R package version 1.0.2",
+  url     = "https://yhoriuchi.github.io/projoint/"
 )

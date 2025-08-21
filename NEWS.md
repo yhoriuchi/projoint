@@ -24,8 +24,17 @@
 
 # projoint 1.0.1 (2025-08-19)
 
-* Fix CITATION: switched from citEntry() to bibentry().
-* Fixed README links (absolute URLs).
-* Added Depends: R (>= 4.1.0).
-* Removed duplicate Author field.
-* Added cran-comments.md to .Rbuildignore.
+- Fix CITATION: switched from citEntry() to bibentry().
+- Fixed README links (absolute URLs).
+- Added Depends: R (>= 4.1.0).
+- Removed duplicate Author field.
+- Added cran-comments.md to .Rbuildignore.
+
+# projoint 1.0.2 (2025-08-21)
+
+- CRAN resubmission: fix CITATION (use `bibentry()`, avoid install-time lookups).
+- README: replace relative URLs; fix broken BibTeX link (use GitHub raw URL).
+- DESCRIPTION: add aligned `Author:` alongside `Authors@R`.
+- Bug fix: correct error message when `.irr` is user-specified.
+- Robustness: skip IRR estimation (sim/boot) when `.irr` is fixed.
+- Docs: new vignette “Explore” and corresponding README/pkgdown links.

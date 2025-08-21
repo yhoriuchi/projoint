@@ -16,9 +16,9 @@ pkgdown::build_site(new_process = TRUE, install = TRUE)
 # Step 1. Rebuild tarball
 devtools::document()
 devtools::build_vignettes()
-devtools::check(args = "--as-cran")
-devtools::check_win_devel()   # Windows devel
-devtools::check_win_release() # Windows release
+devtools::check(args = "--as-cran") # CRAN-like check
+# devtools::check_win_devel()   # Windows devel
+# devtools::check_win_release() # Windows release
 # rhub::check_for_cran()        # extra Linux/Windows checks
 devtools::build()
 

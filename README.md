@@ -21,7 +21,7 @@ This method can be used not only by researchers at the design stage but also by 
 <details>
     <summary>Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">accompanying paper</a> to learn more about our method</summary>
 - **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).** “Correcting Measurement Error Bias in Conjoint Survey Experiments.”<br><em>Forthcoming, American Journal of Political Science.</em><br><a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">Pre-Print Available</a>
-- [👉 Download BibTeX Reference](https://yhoriuchi.github.io/projoint/inst/extdata/projoint_citation.bib)
+- [👉 Download BibTeX Reference](https://raw.githubusercontent.com/yhoriuchi/projoint/master/inst/extdata/projoint_citation.bib)
 
 </details>
 
