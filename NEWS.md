@@ -38,3 +38,8 @@
 - Bug fix: correct error message when `.irr` is user-specified.
 - Robustness: skip IRR estimation (sim/boot) when `.irr` is fixed.
 - Docs: new vignette “Explore” and corresponding README/pkgdown links.
+
+# projoint 1.0.3 (2025-08-21)
+
+- DESCRIPTION: aligned `Author:` exactly with CRAN’s derived `Authors@R` format (names and ORCID link formatting) to remove NOTE.
+

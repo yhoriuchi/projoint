@@ -6,13 +6,7 @@
 ## R CMD check results
 0 errors | 0 warnings | 2 notes
 
-* This is a resubmission.  
-* Changes since 1.0.0 (per CRAN pre-test feedback):
-  - Replaced old-style `citEntry()` with `bibentry()` in `inst/CITATION`.
-  - Fixed relative README links (now absolute URLs to pkgdown site; removed invalid URIs).
-  - Added `Depends: R (>= 4.1.0)` to account for `|>` and `\(…)` syntax.
-  - Removed redundant `Author:` field; kept only `Authors@R`.
-  - Added `cran-comments.md` to `.Rbuildignore`.
+* This is a resubmission (1.0.3).
 
 ### NOTE 1: Package size
 Some checks report:
@@ -20,13 +14,14 @@ Some checks report:
 - Large subdirectories: `extdata` (~4 MB), `doc` (~2–3 MB)
 
 **Explanation:**  
-- `inst/extdata/` contains small example datasets used in vignettes and tests to ensure reproducibility.  
+- `inst/extdata/` contains example datasets used in vignettes and tests for reproducibility.  
 - `doc/` contains built vignettes.  
 
 We have compressed data with `xz`, minimized file count, and pruned vignette artifacts. If requested, we can further slim the package (e.g., move large files to a companion data package).
 
-### NOTE 2: Spelling
-Domain terms such as “AMCEs”, “Qualtrics”, “pkgdown”, and “IRR” are correctly spelled.
+### NOTE 2: DESCRIPTION Author field
+A NOTE was raised in v1.0.2 that the `Author:` field differed from the derived `Authors@R`.  
+We have corrected this in v1.0.3 by using ORCID URLs in `Authors@R`, which now matches the automatically generated `Author:` field.
 
 ## Reverse dependencies
 None.
