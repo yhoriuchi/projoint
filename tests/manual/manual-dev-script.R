@@ -32,3 +32,11 @@ devtools::check_built("../projoint_1.0.4.tar.gz")
 install.packages("../projoint_1.0.4.tar.gz", repos = NULL, type = "source")
 library(projoint)
 citation("projoint")   # check CITATION output
+
+# sanity-check inside the tarball
+ct <- utils::untar("../projoint_1.0.4.tar.gz", list = TRUE)
+desc_rel <- ct[grepl("/DESCRIPTION$", ct)][1]
+tmp <- tempfile(); dir.create(tmp)
+utils::untar("../projoint_1.0.4.tar.gz", files = desc_rel, exdir = tmp)
+dcf <- read.dcf(file.path(tmp, desc_rel))
+dcf[,"Author", drop = TRUE]  # should show ORCIDs with <...>
