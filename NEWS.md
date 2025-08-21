@@ -43,3 +43,7 @@
 
 - DESCRIPTION: aligned `Author:` exactly with CRAN’s derived `Authors@R` format (names and ORCID link formatting) to remove NOTE.
 
+# projoint 1.0.4 (2025-08-21)
+
+- Fixed DESCRIPTION metadata mismatch between `Author` and `Authors@R` fields, as requested by CRAN.
+
