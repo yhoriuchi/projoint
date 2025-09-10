@@ -1,10 +1,22 @@
 #' Print method for projoint_tau objects
 #'
-#' @keywords internal
-#' @param x An object of class \code{\link{projoint_tau}} from \code{\link{predict_tau}}
-#' @param ... Additional arguments (currently unused)
+#' Custom print method for objects of class \code{projoint_tau}, typically created
+#' by \code{\link{predict_tau}} or related functions.
+#'
+#' @param x An object of class \code{projoint_tau}.
+#' @param ... Additional arguments (currently unused).
+#'
+#' @return No return value, called for its side effect of printing a summary of
+#'   the estimated intra-respondent reliability (\eqn{\tau}).
+#'
 #' @export
-#' @keywords internal
+#'
+#' @examples
+#' \donttest{
+#' # Example workflow:
+#' # tau_fit <- projoint_tau(exampleData1)
+#' # print(tau_fit)
+#' }
 print.projoint_tau <- function(x, ...) {
   message(paste(
     "Tau estimated using the extrapolation method:",

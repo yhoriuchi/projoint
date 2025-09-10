@@ -1,11 +1,24 @@
 #' Print a projoint_data object
 #'
-#' Custom print method for objects of class `projoint_data`.
+#' Custom print method for objects of class \code{projoint_data}.
 #'
-#' @keywords internal
-#' @param x A `projoint_data` object.
+#' @param x A \code{projoint_data} object.
 #' @param ... Additional arguments (currently unused).
+#'
+#' @return No return value, called for its side effect of printing a summary of
+#'   the \code{projoint_data} object to the console.
+#'
 #' @export
+#'
+#' @examples
+#' \donttest{
+#' data(exampleData1)
+#' dat <- reshape_projoint(
+#'   exampleData1,
+#'   .outcomes = c("choice1", "choice2")
+#' )
+#' print(dat)
+#' }
 print.projoint_data <- function(x, ...) {
   cat("<projoint_data>\n")
   

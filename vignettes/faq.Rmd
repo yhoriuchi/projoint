@@ -35,6 +35,7 @@ See the <a href="https://yhoriuchi.github.io/projoint/articles/correct.html" tar
   <details><summary><b>Profile-Level MMs (All Levels)</b></summary>
   
 ```{r, echo = FALSE}
+data("exampleData1")
 outcomes <- paste0("choice", 1:8)
 outcomes <- c(outcomes, "choice1_repeated_flipped")
 out1 <- reshape_projoint(exampleData1, outcomes)
@@ -131,6 +132,7 @@ currently supported.
 <summary><b>Estimate</b></summary>
 
 ```{r}
+data("out1_arranged")
 mm   <- projoint(out1_arranged, .structure = "profile_level") 
 amce <- projoint(out1_arranged, .structure = "profile_level", .estimand = "amce")
 ```

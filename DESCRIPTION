@@ -1,8 +1,8 @@
 Package: projoint
 Type: Package
-Title: The One Stop Conjoint Shop
-Version: 1.0.4
-Date: 2025-08-21
+Title: Conjoint Analysis with Reliability Correction and Visualization
+Version: 1.0.5
+Date: 2025-09-10
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
 Authors@R: 
     c(
@@ -19,7 +19,7 @@ Authors@R:
 Author: Yusaku Horiuchi [aut, cre] (ORCID: <https://orcid.org/0000-0003-0295-4089>),
   Aaron Kaufman [aut] (ORCID: <https://orcid.org/0000-0003-3688-0428>),
   Gary King [aut] (ORCID: <https://orcid.org/0000-0002-5327-7631>)
-Description: Analyzes data sets generated from conjoint experiments, correcting for measurement error.
+Description: Provides tools for analyzing data generated from conjoint survey experiments, a method widely used in the social sciences for studying multidimensional preferences. The package implements estimation of marginal means (MMs) and average marginal component effects (AMCEs), with corrections for measurement error. Methods include profile-level and choice-level estimators, bias correction using intra-respondent reliability (IRR), and visualization utilities. For details on the methodology, see Clayton, Horiuchi, Kaufman, King, and Komisarchik (American Journal of Political Science) <https://gking.harvard.edu/conjointE>.
 Imports:
     dplyr (>= 1.1.2),
     readr,
@@ -52,4 +52,6 @@ Config/testthat/edition: 3
 URL: https://yhoriuchi.github.io/projoint/
 Depends: 
     R (>= 4.1.0)
-LazyData: true
+LazyData: false
+BugReports: https://github.com/yhoriuchi/projoint/issues
+

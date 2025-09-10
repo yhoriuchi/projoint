@@ -1,32 +1,72 @@
-#' Plot Marginal Means (MMs) or AMCEs from projoint Results
+#' Plot method for \code{projoint_results}
 #'
-#' This function creates publication-ready plots based on the output from `projoint()`.
-#' It supports both profile-level and choice-level analyses, with tailored plotting options.
+#' Creates publication-ready plots from a \code{projoint_results} object produced by
+#' \code{\link{projoint}}. Supports both profile-level and choice-level analyses,
+#' with plotting options tailored to each structure.
 #'
-#' @param x A `projoint_results` object, typically created by `projoint()`.
-#' @param .estimates Character. Which estimates to plot: `"corrected"` (default), `"uncorrected"`, or `"both"`.
-#' @param .by_var Logical. (Profile-level only) Whether to plot subgroup differences. Default is `FALSE`.
-#' @param .labels Character vector. (Choice-level only) Custom x-axis labels for bar or point-range plots.
-#' @param .base_size Numeric. Base font size for plot text. Default is 12.
-#' @param .base_family Character. Base font family for plot text. Default is "" (system default).
-#' @param .type Character. (Choice-level only) Type of plot: `"bar"` (default) or `"pointrange"`.
-#' @param .show_attribute Logical. (Choice-level only) Whether to display the attribute name as a plot title. Default is `FALSE`.
-#' @param .remove_xaxis Logical. (Choice-level only) Whether to remove x-axis labels and ticks. Default is `FALSE`.
-#' @param .xlim Numeric vector of length 2. (Choice-level only) X-axis limits. Default is `c(0, 1)`.
-#' @param .plot.margin Numeric vector of length 4. (Choice-level only) Margins around the plot in centimeters. Default is `c(0, 3, 0, 3)`.
-#' @param ... Additional arguments passed to underlying plotting functions.
+#' @param x A \code{projoint_results} object (typically from \code{\link{projoint}}).
+#' @param .estimates Character: which estimates to plot. One of
+#'   \code{"corrected"}, \code{"uncorrected"}, or \code{"both"} (for profile-level),
+#'   and \code{"corrected"} or \code{"uncorrected"} (for choice-level). Default \code{"corrected"}.
+#' @param .by_var Logical (profile-level only). Whether to plot subgroup differences.
+#'   Default \code{FALSE}.
+#' @param .labels Character vector of length 2 (choice-level only). Custom x-axis
+#'   labels for bar/pointrange plots. If \code{NULL}, labels are taken from \code{x$labels}.
+#' @param .base_size Numeric. Base font size. Default \code{12}.
+#' @param .base_family Character. Base font family. Default \code{""} (system default).
+#' @param .type Character (choice-level only). One of \code{"bar"} or \code{"pointrange"}.
+#'   Default \code{"bar"}.
+#' @param .show_attribute Logical (choice-level only). Show the attribute name as the
+#'   title when both levels belong to the same attribute. Default \code{TRUE}.
+#' @param .remove_xaxis Logical (choice-level only). Remove x-axis line, ticks, and labels.
+#'   Default \code{FALSE}.
+#' @param .xlim Numeric length-2 vector (choice-level only). X-axis limits. Default \code{c(0, 1)}.
+#' @param .plot.margin Numeric length-4 vector (choice-level only). Plot margins in cm:
+#'   \code{c(top, left, bottom, right)}. Default \code{c(0, 3, 0, 3)}.
+#' @param ... Additional arguments passed to downstream plotting helpers.
 #'
 #' @details
-#' For **profile-level results**, only `.by_var`, `.base_size`, and `.base_family` are relevant.
+#' For profile-level results, only \code{.by_var}, \code{.base_size}, and \code{.base_family}
+#' are relevant. For choice-level results, only \code{.type}, \code{.labels},
+#' \code{.show_attribute}, \code{.remove_xaxis}, \code{.xlim}, and \code{.plot.margin}
+#' are relevant. Irrelevant arguments are ignored with a warning.
 #'
-#' For **choice-level results**, only `.type`, `.labels`, `.show_attribute`, `.xtitle`, `.remove_xaxis`,
-#' `.xlim`, `.hjust_left`, `.hjust_right`, `.title_size`, and `.plot.margin` are relevant.
+#' @return A \code{ggplot2} object.
 #'
-#' If irrelevant arguments are provided for a given structure, a warning will be issued and the arguments will be ignored.
+#' @seealso \code{\link{projoint}}, \code{\link{plot_projoint_profile_level}},
+#'   \code{\link{plot_projoint_choice_level_mm}}
 #'
-#' @return A `ggplot2` object.
-#' @seealso [projoint()], [projoint_results], [plot_projoint_profile_level()], [plot_projoint_choice_level_mm()]
 #' @export
+#'
+#' @examples
+#' \donttest{
+#' data(exampleData1)
+#'
+#' # Two base tasks (1 & 2) + repeated of task 1 (last)
+#' dat <- reshape_projoint(
+#'   exampleData1,
+#'   .outcomes = c("choice1", "choice2", "choice1_repeated_flipped")
+#' )
+#'
+#' # Build a valid QOI from the labels
+#' att <- unique(dat$labels$attribute_id)[1]
+#' levs <- subset(dat$labels, attribute_id == att)$level_id
+#' lev_names <- sub(".*:", "", levs)
+#'
+#' q <- set_qoi(
+#'   .structure     = "choice_level",
+#'   .estimand      = "mm",
+#'   .att_choose    = att,
+#'   .lev_choose    = lev_names[2],
+#'   .att_notchoose = att,
+#'   .lev_notchoose = lev_names[1]
+#' )
+#'
+#' fit <- projoint(dat, .qoi = q)
+#'
+#' # Plot method
+#' plot(fit)
+#' }
 plot.projoint_results <- function(
     x, 
     .estimates = "corrected",

@@ -2,19 +2,30 @@
 % Please edit documentation in R/summary.projoint_data.R
 \name{summary.projoint_data}
 \alias{summary.projoint_data}
-\title{Summarize a projoint_data object}
+\title{Summary for \code{projoint_data}}
 \usage{
 \method{summary}{projoint_data}(object, ...)
 }
 \arguments{
-\item{object}{A `projoint_data` object.}
+\item{object}{A \code{projoint_data} object.}
 
 \item{...}{Additional arguments (currently unused).}
 }
 \value{
-A summary list (invisible).
+No return value, called for its side effect of printing a summary of the
+  \code{projoint_data} object to the console.
 }
 \description{
-Custom summary method for objects of class `projoint_data`.
+Custom summary method for objects of class \code{projoint_data}. Prints a brief
+overview of the main data and attribute-level labels contained in the object.
 }
-\keyword{internal}
+\examples{
+\donttest{
+data(exampleData1)
+dat <- reshape_projoint(
+  exampleData1,
+  .outcomes = c("choice1", "choice2")
+)
+summary(dat)
+}
+}

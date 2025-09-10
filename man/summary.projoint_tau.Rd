@@ -7,14 +7,23 @@
 \method{summary}{projoint_tau}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{\link{projoint_tau}} from \code{\link{predict_tau}}}
+\item{object}{An object of class \code{projoint_tau}.}
 
-\item{...}{Additional arguments (currently unused)}
+\item{...}{Additional arguments (currently unused).}
 }
 \value{
-A tibble showing IRR estimates by the number of differing attributes.
+A tibble (data frame) showing IRR estimates, typically by the number
+  of differing attributes, as stored in \code{object$irr}.
 }
 \description{
-Summary method for projoint_tau objects
+Custom summary method for objects of class \code{projoint_tau}, typically created
+by \code{\link{predict_tau}} or related functions. Summarizes intra-respondent
+reliability (IRR) estimates.
 }
-\keyword{internal}
+\examples{
+\donttest{
+# Example workflow (assuming predict_tau is available):
+# tau_fit <- projoint_tau(exampleData1)
+# summary(tau_fit)
+}
+}

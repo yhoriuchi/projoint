@@ -29,11 +29,19 @@
 #' @param .auto_cluster Logical; if \code{TRUE} (default), auto-cluster on \code{id} when present and no \code{.clusters_*} are supplied; auto-clustering only occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.
 #' @param .seed Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call 
 #'   and restores the previous RNG state on exit.
-#' @return A data frame with columns \code{estimand}, \code{estimate}, \code{se}, \code{conf.low}, \code{conf.high}, and \code{tau},
-#'   ready for downstream aggregation and plotting.
-#' @seealso \code{\link{reshape_projoint}}, \code{\link{make_projoint_data}}, \code{\link{set_qoi}}, \code{\link{projoint}}
+#' @return A data frame with rows for the requested estimand(s) and columns:
+#'   \itemize{
+#'     \item \code{estimand}: one of \code{"mm_uncorrected"}, \code{"mm_corrected"},
+#'           \code{"amce_uncorrected"}, \code{"amce_corrected"}.
+#'     \item \code{estimate}, \code{se}, \code{conf.low}, \code{conf.high}, \code{tau}.
+#'   }
+#' @seealso \code{\link[estimatr]{lm_robust}}, \code{\link{projoint}},
+#'   \code{\link{projoint_level}}, \code{\link{projoint_diff}}
 #' @keywords internal
-
+#' @details
+#' IRR is clipped to \code{[0.5, 1)} (with a tiny epsilon) to avoid boundary issues.
+#' For choice-level MMs, ties must be removed (\code{.remove_ties = TRUE}).
+#' When \code{.seed} is supplied, the previous RNG state is restored on exit.
 pj_estimate <- function(
     .data,
     .structure,
@@ -368,7 +376,7 @@ pj_estimate <- function(
     }
   }
   
-
+  
   if (!is.null(.se_type_2)) {
     if (is_clustered_2 && !(.se_type_2 %in% ok_cl)) {
       stop("`.se_type_2` must be one of ", paste(ok_cl, collapse=", "),
@@ -461,13 +469,77 @@ pj_estimate <- function(
   
   # ---- Uncorrected estimate -------------------------------------------------
   if (estimand == "mm") {
-    reg_mm <- estimatr::lm_robust(
-      selected ~ 1,
-      weights  = if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  data_for_estimand) else NULL,
-      clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL,
-      se_type  = se_type2_final,
-      data     = data_for_estimand
-    ) |> estimatr::tidy()
+    # reg_mm <- estimatr::lm_robust(
+    #   selected ~ 1,
+    #   weights  = if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  data_for_estimand) else NULL,
+    #   clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL,
+    #   se_type  = se_type2_final,
+    #   data     = data_for_estimand
+    # ) |> estimatr::tidy()
+    
+    # Fixed on Sep 10, 2025     ###############################################
+    
+    # cache once
+    w2  <- if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  data_for_estimand) else NULL
+    cl2 <- if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL
+    
+    # 1) fit with configured se_type2_final (often "CR2")
+    reg_mm_fit <- suppressWarnings(
+      estimatr::lm_robust(
+        selected ~ 1,
+        weights  = w2,
+        clusters = cl2,
+        se_type  = se_type2_final,
+        data     = data_for_estimand
+      )
+    )
+    
+    V <- reg_mm_fit$vcov
+    d <- diag(V)
+    bad_vcov <- any(!is.finite(d) | d < -1e-10)
+    bad_se   <- any(!is.finite(summary(reg_mm_fit)$coefficients[, "Std. Error"]))
+    
+    # 2) fallback if NA/Inf or negative diag
+    if (bad_vcov || bad_se) {
+      reg_mm_fit <- suppressWarnings(
+        estimatr::lm_robust(
+          selected ~ 1,
+          weights  = w2,
+          clusters = cl2,
+          se_type  = "stata",
+          data     = data_for_estimand
+        )
+      )
+      
+      V <- reg_mm_fit$vcov
+      d <- diag(V)
+      bad_vcov <- any(!is.finite(d) | d < -1e-10)
+      bad_se   <- any(!is.finite(summary(reg_mm_fit)$coefficients[, "Std. Error"]))
+      
+      # optional last resort: drop clusters + HC1
+      if (bad_vcov || bad_se) {
+        reg_mm_fit <- estimatr::lm_robust(
+          selected ~ 1,
+          weights  = w2,
+          clusters = NULL,
+          se_type  = "HC1",
+          data     = data_for_estimand
+        )
+        V <- reg_mm_fit$vcov
+        d <- diag(V)
+      }
+      
+      warning("MM analytical SEs: CR2 produced non-PSD/NA variances; fell back to se_type='stata' (then HC1 if needed).")
+    }
+    
+    # (optional) record what actually got used
+    se_type2_used_mm <- reg_mm_fit$se_type
+    # meta$main_se$se_type_used_mm <- se_type2_used_mm
+    
+    # proceed
+    reg_mm <- estimatr::tidy(reg_mm_fit)
+    
+    ###############################################
     
     critical_t <- critical_from_ci(reg_mm$estimate[1], reg_mm$std.error[1], reg_mm$conf.low[1])
     
@@ -480,13 +552,85 @@ pj_estimate <- function(
   }
   
   if (estimand == "amce") {
-    reg_amce <- estimatr::lm_robust(
-      selected ~ x,
-      weights  = if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  data_for_estimand) else NULL,
-      clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL,
-      se_type  = se_type2_final,
-      data     = data_for_estimand
-    ) |> estimatr::tidy()
+    
+    
+    # reg_amce <- estimatr::lm_robust(
+    #   selected ~ x,
+    #   weights  = if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  data_for_estimand) else NULL,
+    #   clusters = if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL,
+    #   se_type  = se_type2_final,
+    #   data     = data_for_estimand
+    # ) |> estimatr::tidy()
+    
+    # Fixed on Sep 10, 2025     ###############################################
+    
+    # cache weights/clusters once
+    w2  <- if (!rlang::quo_is_null(weights2_quo))  rlang::eval_tidy(weights2_quo,  data_for_estimand) else NULL
+    cl2 <- if (!rlang::quo_is_null(clusters2_quo)) rlang::eval_tidy(clusters2_quo, data_for_estimand) else NULL
+    
+    # 1) fit with your configured se_type2_final (likely "CR2")
+    reg_amce_fit <- suppressWarnings(
+      estimatr::lm_robust(
+        selected ~ x,
+        weights  = w2,
+        clusters = cl2,
+        se_type  = se_type2_final,
+        data     = data_for_estimand
+      )
+    )
+    
+    V <- reg_amce_fit$vcov
+    d <- diag(V)
+    bad_vcov <- any(!is.finite(d) | d < -1e-10)
+    bad_se   <- any(!is.finite(summary(reg_amce_fit)$coefficients[, "Std. Error"]))
+
+    # 2) fallback if vcov is NA/Inf or non-PSD (negative diag)
+    if (bad_vcov || bad_se) {
+      reg_amce_fit <- suppressWarnings(
+        estimatr::lm_robust(
+          selected ~ x,
+          weights  = w2,
+          clusters = cl2,
+          se_type  = "stata"   # HC1/Stata-style; typically PSD
+          ,
+          data     = data_for_estimand
+        )
+      )
+      
+      V <- reg_amce_fit$vcov
+      d <- diag(V)
+      bad_vcov <- any(!is.finite(d) | d < -1e-10)
+      bad_se   <- any(!is.finite(summary(reg_amce_fit)$coefficients[, "Std. Error"]))
+      
+      # optional last resort: drop clustering if still bad
+      if (bad_vcov || bad_se) {
+        reg_amce_fit <- suppressWarnings(
+          estimatr::lm_robust(
+            selected ~ x,
+            weights  = w2,
+            clusters = NULL,
+            se_type  = "HC1",
+            data     = data_for_estimand
+          )
+        )
+        V <- reg_amce_fit$vcov
+        d <- diag(V)
+      }
+      
+      warning("AMCE analytical SEs: CR2 produced non-PSD/NA variances; fell back to se_type='stata' (then HC1 if needed).")
+    }
+    
+    # (optional) record what actually got used
+    se_type2_used <- reg_amce_fit$se_type
+    # e.g., stash in your result/meta if you have one:
+    # meta$main_se$se_type_used <- se_type2_used
+    
+    # proceed as before
+    reg_amce <- estimatr::tidy(reg_amce_fit)
+    
+    ###############################################
+    
+    
     
     critical_t <- critical_from_ci(reg_amce$estimate[2], reg_amce$std.error[2], reg_amce$conf.low[2])
     
@@ -623,10 +767,10 @@ pj_estimate <- function(
           se_type = se_type2_final,
           data = bs_sample_2
         ) |> estimatr::tidy()
-
+        
         mm_uncorrected_bs <- reg_mm$estimate[1]
         mm_corrected_bs <- (mm_uncorrected_bs - tau_bs) / (1 - 2 * tau_bs)
-
+        
         out <- dplyr::bind_rows(out,
                                 data.frame(estimand = c("mm_corrected","mm_uncorrected"),
                                            estimate = c(mm_corrected_bs, mm_uncorrected_bs)))
@@ -705,7 +849,7 @@ pj_estimate <- function(
         IDs_1 <- unique(stats::na.omit(data_for_irr$id))
         if (length(IDs_1) == 0L) stop("No rows available to bootstrap IRR/tau. Consider supplying .irr directly.")
       }
-
+      
       out <- NULL
       for (i in seq_len(.n_boot)) {
         
@@ -713,7 +857,7 @@ pj_estimate <- function(
         id_2 <- sample(IDs_2, length(IDs_2), replace = TRUE)
         bs_sample_2 <- data.frame(id = id_2) |>
           dplyr::left_join(data_for_estimand, by = "id", relationship = "many-to-many")
-
+        
         # Bootstrap (and fit) IRR only when needed
         if (is.null(.irr)) {
           id_1 <- sample(IDs_1, length(IDs_1), replace = TRUE)
@@ -767,7 +911,22 @@ pj_estimate <- function(
     }
   }
   
-  attr(output, "se_type_used") <- se_type2_final
+  if (any(!is.finite(output$se))) {
+    warning("Some standard errors are NA/Inf after corrections. ",
+            "Consider se_type='stata' or bootstrap SEs.")
+  }
+  
+  # Prefer the se_type captured from the finalized fit (AMCE first, then MM).
+  se_type_used_final <-
+    if (exists("se_type2_used", inherits = FALSE)) {
+      se_type2_used
+    } else if (exists("se_type2_used_mm", inherits = FALSE)) {
+      se_type2_used_mm
+    } else {
+      se_type2_final  # fallback: what was requested
+    }
+  
+  attr(output, "se_type_used") <- se_type_used_final
   attr(output, "cluster_by")   <- cluster_by2
   
   return(output)

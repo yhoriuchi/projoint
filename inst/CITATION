@@ -27,6 +27,6 @@ bibentry(
     person("Gary", "King")
   ),
   year    = "2025",
-  note    = "R package version 1.0.3",
+  note    = "R package version 1.0.5",
   url     = "https://yhoriuchi.github.io/projoint/"
 )

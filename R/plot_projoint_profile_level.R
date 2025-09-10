@@ -1,20 +1,27 @@
-#' Plot all "profile-level" MMs or AMCEs
+#' Plot all profile-level MMs or AMCEs (helper)
 #'
-#' This method produces profile-level MM or AMCE plots given a \code{\link{projoint_results}} object, the output from the \code{\link{projoint}} function. The structure must be profile-level to use this function.
+#' Internal helper used by \code{\link{plot.projoint_results}} to render
+#' profile-level marginal means (MMs) or AMCEs.
 #'
-#' @import ggplot2
-#' @import ggthemes
-#' @import dplyr
-#' @import stringr
 #' @keywords internal
-#' @param x A \code{\link{projoint_results}} object
-#' @param .estimates The estimates to be plotted, either \code{"corrected"} (default), \code{"uncorrected"}, or \code{"both"}
-#' @param .by_var \code{TRUE} to plot the difference in estimates between the two subgroups, \code{FALSE} (default) otherwise 
-#' @param .base_size base font size, given in pts.
-#' @param .base_family base font family
-#' @param ... Additional optional arguments
-#' @return A \code{ggplot} object
-
+#' @param x A \code{\link{projoint_results}} object (profile-level).
+#' @param .estimates \code{"corrected"}, \code{"uncorrected"}, or \code{"both"}.
+#' @param .by_var Logical; if \code{TRUE}, plot subgroup differences.
+#' @param .base_size Base font size (pts).
+#' @param .base_family Base font family.
+#' @param ... Additional options passed internally.
+#'
+#' @return A \code{ggplot2} object.
+#'
+#' @examples
+#' \donttest{
+#' # Normally use: plot(fit_profile)
+#' # The helper is internal and called by plot.projoint_results():
+#' # dat <- reshape_projoint(exampleData1, .outcomes = c("choice1","choice2"))
+#' # fit_profile <- projoint(dat, .structure = "profile_level")
+#' # p <- projoint:::plot_projoint_profile_level(fit_profile, .estimates = "both")
+#' # print(p)
+#' }
 plot_projoint_profile_level <- function(
     x, 
     .estimates = "corrected",

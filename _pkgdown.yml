@@ -5,31 +5,20 @@ template:
 
 navbar:
   structure:
-    left:
-      - articles
-      - reference
-      - news
-      - faq_page
+    left: [articles, reference, news, faq_page]
   components:
     faq_page:
       text: "FAQ"
       href: articles/faq.html
-        
+
 articles:
 - title: 📚 Getting Started
   desc: "Fundamental concepts before using projoint"
-  contents:
-  - structure
-  - correct
+  contents: [structure, correct]
 
 - title: 🚀 Step-by-Step Tutorials
   desc: "Learn how to design, wrangle, analyze, and visualize conjoint experiments"
-  contents:
-  - design       # Design your survey
-  - read         # Read and wrangle your data
-  - analyze      # Estimating and visualizing QOIs
-  - explore      # Advance choice-level analyses using **projoint**
-  - faq          # Frequently Asked Questions
+  contents: [design, read, analyze, explore, faq]
 
 reference:
 - title: 📦 Data Sets
@@ -54,11 +43,22 @@ reference:
 - title: 📊 Analysis
   desc: Core estimation methods
   contents:
-  - predict_tau
   - projoint
+  - predict_tau
 
 - title: 🎨 Visualization
   desc: Functions to visualize profile- and choice-level results
   contents:
   - plot.projoint_results
   - plot.projoint_tau
+
+- title: 🧩 S3 methods
+  desc: Print and summary helpers for key objects
+  contents:
+  - print.projoint_data
+  - print.projoint_results
+  - print.projoint_tau
+  - summary.projoint_data
+  - summary.projoint_results
+  - summary.projoint_tau
+

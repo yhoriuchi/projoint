@@ -1,36 +1,46 @@
-#' Estimate Differences Across Subgroups
+#' Estimate subgroup differences (internal)
 #'
-#' Internal function called by \code{\link{projoint}} to compute subgroup differences
-#' (group \code{== 1} minus group \code{== 0}) in marginal means (MMs) or average marginal component effects (AMCEs).
-#' Only supported for \code{.structure = "profile_level"}.
+#' Worker used by \code{\link{projoint}} to compute subgroup differences
+#' (group \code{== 1} minus group \code{== 0}) in marginal means (MMs) or
+#' average marginal component effects (AMCEs). Supported only for
+#' \code{.structure = "profile_level"}.
 #'
 #' @param .data A \code{\link{projoint_data}} object.
-#' @param .qoi Optional \code{\link{projoint_qoi}}; if \code{NULL}, produces all MMs/AMCEs.
-#' @param .by_var Subgrouping variable in \code{.data$data}; must be logical (TRUE/FALSE),
+#' @param .qoi Optional \code{\link{projoint_qoi}}; if \code{NULL}, estimates all MMs/AMCEs.
+#' @param .by_var Column name in \code{.data$data} defining subgroups; must be logical,
 #'   numeric/integer coded as 0/1, or factor with levels \code{"0"}/\code{"1"}.
-#' @param .structure Must be \code{"profile_level"} for subgroup analysis.
+#' @param .structure Must be \code{"profile_level"}.
 #' @param .estimand Either \code{"mm"} or \code{"amce"}.
 #' @param .se_method One of \code{"analytical"}, \code{"simulation"}, or \code{"bootstrap"}.
 #' @param .irr \code{NULL} to estimate IRR from repeated tasks, or numeric to fix IRR.
-#' @param .remove_ties Logical; remove ties in choice data before estimation? Default \code{TRUE}.
+#' @param .remove_ties Logical; drop ties before estimation? Default \code{TRUE}.
 #' @param .ignore_position Ignored (subgroup analysis is profile-level only).
 #' @param .n_sims Integer; required when \code{.se_method = "simulation"}.
 #' @param .n_boot Integer; required when \code{.se_method = "bootstrap"}.
 #' @param .weights_1,.clusters_1,.se_type_1 Passed to \code{\link[estimatr]{lm_robust}} for IRR estimation.
-#'   If \code{.se_type_1} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
-#'   See \code{\link{projoint}} for valid \code{se_type_*} values.
 #' @param .weights_2,.clusters_2,.se_type_2 Passed to \code{\link[estimatr]{lm_robust}} for MM/AMCE estimation.
-#'   If \code{.se_type_2} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
-#'   See \code{\link{projoint}} for valid \code{se_type_*} values.
-#' @param .auto_cluster Logical. If \code{TRUE} (default), automatically cluster on an \code{id}
-#'   column when present and no \code{.clusters_*} are supplied. Auto-clustering only
-#'   occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.
-#' @param .seed Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call 
-#'   and restores the previous RNG state on exit.
+#' @param .auto_cluster Logical; if \code{TRUE} (default), auto-cluster on \code{id} when suitable
+#'   and no clusters are provided (applies only if the corresponding \code{.se_type_*} is \code{NULL}).
+#' @param .seed Optional integer; sets a temporary RNG seed and restores prior state on exit.
 #'
-#' @return A \code{\link{projoint_results}} object with subgroup differences.
+#' @return A \code{\link{projoint_results}} object containing subgroup differences with fields:
+#' \itemize{
+#'   \item \code{estimates}: tibble with one row per attribute/level and columns
+#'         like \code{estimate} (group1 minus group0), \code{se}, \code{conf.low},
+#'         \code{conf.high}, plus internal columns (\code{estimate_1}, \code{estimate_0},
+#'         \code{se_1}, \code{se_0}) used in the diff.
+#'   \item \code{estimand}: \code{"mm"} or \code{"amce"}.
+#'   \item \code{structure}: \code{"profile_level"}.
+#'   \item \code{se_method}: SE method used.
+#'   \item \code{irr}: \code{"Estimated"} or \code{"Assumed (<value> )"}.
+#'   \item \code{tau}: numeric reliability used (average of subgroup taus when estimated).
+#'   \item \code{remove_ties}, \code{ignore_position}: flags echoed from inputs.
+#'   \item \code{se_type_used}, \code{cluster_by}: details propagated from fitting calls.
+#'   \item \code{labels}, \code{data}: design labels and the analysis data (passed through).
+#' }
+#'
 #' @keywords internal
-
+#' @seealso \code{\link{projoint}}, \code{\link{projoint_level}}, \code{\link{projoint_results}}
 projoint_diff <- function(
     .data,
     .qoi,

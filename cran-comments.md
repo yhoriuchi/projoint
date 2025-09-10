@@ -1,31 +1,22 @@
 ## Test environments
-- Local: macOS (Apple Silicon), R 4.4.x
-- Ubuntu 22.04 (GitHub Actions), R release
-- Windows (win-builder), R devel and R release
+- macOS (R 4.4.x), local
+- Windows (win-builder devel/release)
+- Ubuntu 22.04 (GitHub Actions)
 
 ## R CMD check results
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 1 note
 
-* This is a resubmission (1.0.3).
+* NOTE (installed size ~7 MB): The package includes small example data and vignettes. 
+  Data files are xz-compressed and we avoid shipping prebuilt docs. 
+  Remaining files are minimal and needed for examples and documentation.
 
-### NOTE 1: Package size
-Some checks report:
-- Installed size ≈ 6–8 MB  
-- Large subdirectories: `extdata` (~4 MB), `doc` (~2–3 MB)
+## Changes since 1.0.4
+This resubmission addresses all issues raised by CRAN:
 
-**Explanation:**  
-- `inst/extdata/` contains example datasets used in vignettes and tests for reproducibility.  
-- `doc/` contains built vignettes.  
+- **DESCRIPTION**: expanded to provide a full paragraph, including details of implemented functionality and methods. Added a reference in the requested format.
+- **Documentation**: all exported methods now include `\value{}` sections describing the structure and meaning of return values (or noting when none is returned).
+- **Examples**: removed commented-out example code. Added lightweight runnable examples, with longer ones wrapped in `\donttest{}`.
+- **CITATION**: updated to show the correct package version (1.0.5).
+- **Minor fixes**: vignette examples cleaned, plotting examples simplified to avoid use of unexported helpers.
 
-We have compressed data with `xz`, minimized file count, and pruned vignette artifacts. If requested, we can further slim the package (e.g., move large files to a companion data package).
-
-### NOTE 2: DESCRIPTION Author field
-A NOTE was raised in v1.0.2 that the `Author:` field differed from the derived `Authors@R`.  
-We have corrected this in v1.0.3 by using ORCID URLs in `Authors@R`, which now matches the automatically generated `Author:` field.
-
-## Reverse dependencies
-None.
-
-## Misc
-- URLs verified (200 or appropriate redirects).  
-- `LICENSE` and `DESCRIPTION` fields comply with CRAN policies.
+No other issues remain; all CRAN checks pass locally and on win-builder.

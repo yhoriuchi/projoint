@@ -2,7 +2,7 @@
 % Please edit documentation in R/projoint_diff.R
 \name{projoint_diff}
 \alias{projoint_diff}
-\title{Estimate Differences Across Subgroups}
+\title{Estimate subgroup differences (internal)}
 \usage{
 projoint_diff(
   .data,
@@ -29,12 +29,12 @@ projoint_diff(
 \arguments{
 \item{.data}{A \code{\link{projoint_data}} object.}
 
-\item{.qoi}{Optional \code{\link{projoint_qoi}}; if \code{NULL}, produces all MMs/AMCEs.}
+\item{.qoi}{Optional \code{\link{projoint_qoi}}; if \code{NULL}, estimates all MMs/AMCEs.}
 
-\item{.by_var}{Subgrouping variable in \code{.data$data}; must be logical (TRUE/FALSE),
+\item{.by_var}{Column name in \code{.data$data} defining subgroups; must be logical,
 numeric/integer coded as 0/1, or factor with levels \code{"0"}/\code{"1"}.}
 
-\item{.structure}{Must be \code{"profile_level"} for subgroup analysis.}
+\item{.structure}{Must be \code{"profile_level"}.}
 
 \item{.estimand}{Either \code{"mm"} or \code{"amce"}.}
 
@@ -42,7 +42,7 @@ numeric/integer coded as 0/1, or factor with levels \code{"0"}/\code{"1"}.}
 
 \item{.irr}{\code{NULL} to estimate IRR from repeated tasks, or numeric to fix IRR.}
 
-\item{.remove_ties}{Logical; remove ties in choice data before estimation? Default \code{TRUE}.}
+\item{.remove_ties}{Logical; drop ties before estimation? Default \code{TRUE}.}
 
 \item{.ignore_position}{Ignored (subgroup analysis is profile-level only).}
 
@@ -50,27 +50,39 @@ numeric/integer coded as 0/1, or factor with levels \code{"0"}/\code{"1"}.}
 
 \item{.n_boot}{Integer; required when \code{.se_method = "bootstrap"}.}
 
-\item{.weights_1, .clusters_1, .se_type_1}{Passed to \code{\link[estimatr]{lm_robust}} for IRR estimation.
-If \code{.se_type_1} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
-See \code{\link{projoint}} for valid \code{se_type_*} values.}
+\item{.weights_1, .clusters_1, .se_type_1}{Passed to \code{\link[estimatr]{lm_robust}} for IRR estimation.}
 
-\item{.weights_2, .clusters_2, .se_type_2}{Passed to \code{\link[estimatr]{lm_robust}} for MM/AMCE estimation.
-If \code{.se_type_2} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
-See \code{\link{projoint}} for valid \code{se_type_*} values.}
+\item{.weights_2, .clusters_2, .se_type_2}{Passed to \code{\link[estimatr]{lm_robust}} for MM/AMCE estimation.}
 
-\item{.auto_cluster}{Logical. If \code{TRUE} (default), automatically cluster on an \code{id}
-column when present and no \code{.clusters_*} are supplied. Auto-clustering only
-occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.}
+\item{.auto_cluster}{Logical; if \code{TRUE} (default), auto-cluster on \code{id} when suitable
+and no clusters are provided (applies only if the corresponding \code{.se_type_*} is \code{NULL}).}
 
-\item{.seed}{Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call 
-and restores the previous RNG state on exit.}
+\item{.seed}{Optional integer; sets a temporary RNG seed and restores prior state on exit.}
 }
 \value{
-A \code{\link{projoint_results}} object with subgroup differences.
+A \code{\link{projoint_results}} object containing subgroup differences with fields:
+\itemize{
+  \item \code{estimates}: tibble with one row per attribute/level and columns
+        like \code{estimate} (group1 minus group0), \code{se}, \code{conf.low},
+        \code{conf.high}, plus internal columns (\code{estimate_1}, \code{estimate_0},
+        \code{se_1}, \code{se_0}) used in the diff.
+  \item \code{estimand}: \code{"mm"} or \code{"amce"}.
+  \item \code{structure}: \code{"profile_level"}.
+  \item \code{se_method}: SE method used.
+  \item \code{irr}: \code{"Estimated"} or \code{"Assumed (<value> )"}.
+  \item \code{tau}: numeric reliability used (average of subgroup taus when estimated).
+  \item \code{remove_ties}, \code{ignore_position}: flags echoed from inputs.
+  \item \code{se_type_used}, \code{cluster_by}: details propagated from fitting calls.
+  \item \code{labels}, \code{data}: design labels and the analysis data (passed through).
+}
 }
 \description{
-Internal function called by \code{\link{projoint}} to compute subgroup differences
-(group \code{== 1} minus group \code{== 0}) in marginal means (MMs) or average marginal component effects (AMCEs).
-Only supported for \code{.structure = "profile_level"}.
+Worker used by \code{\link{projoint}} to compute subgroup differences
+(group \code{== 1} minus group \code{== 0}) in marginal means (MMs) or
+average marginal component effects (AMCEs). Supported only for
+\code{.structure = "profile_level"}.
+}
+\seealso{
+\code{\link{projoint}}, \code{\link{projoint_level}}, \code{\link{projoint_results}}
 }
 \keyword{internal}

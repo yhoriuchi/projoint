@@ -7,11 +7,36 @@
 \method{print}{projoint_results}(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{projoint_results}}
+\item{x}{An object of class \code{projoint_results}.}
 
-\item{...}{Additional arguments (ignored)}
+\item{...}{Additional arguments (ignored).}
+}
+\value{
+No return value, called for its side effect of printing a summary of
+  the \code{projoint_results} object to the console.
 }
 \description{
-Print method for projoint_results
+Custom print method for objects of class \code{projoint_results}.
 }
-\keyword{internal}
+\examples{
+\donttest{
+data(exampleData1)
+dat <- reshape_projoint(
+  exampleData1,
+  .outcomes = c("choice1", "choice2", "choice1_repeated_flipped")
+)
+att <- unique(dat$labels$attribute_id)[1]
+levs <- subset(dat$labels, attribute_id == att)$level_id
+lev_names <- sub(".*:", "", levs)
+q <- set_qoi(
+  .structure     = "choice_level",
+  .estimand      = "mm",
+  .att_choose    = att,
+  .lev_choose    = lev_names[2],
+  .att_notchoose = att,
+  .lev_notchoose = lev_names[1]
+)
+fit <- projoint(dat, .qoi = q)
+print(fit)
+}
+}

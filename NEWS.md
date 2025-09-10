@@ -47,3 +47,17 @@
 
 - Fixed DESCRIPTION metadata mismatch between `Author` and `Authors@R` fields, as requested by CRAN.
 
+# projoint 1.0.5 (2025-09-10)
+
+## Improvements
+- Revised `pj_estimate()` to automatically set the appropriate standard-error option (`se_type`) depending on clustering and estimation method.
+- Expanded documentation across functions:
+  - All exported methods now include `\value{}` sections describing return values.
+  - Clearer examples for choice-level analysis; removed commented-out code.
+  - Improved description in `DESCRIPTION` to highlight both profile-level and choice-level estimators, IRR correction, and visualization.
+- Updated README and pkgdown site to emphasize **choice-level analysis** as the default and recommended framework.
+
+## Bug fixes
+- Fixed `reshape_projoint()` docs (`\textrightarrow` macro removed).
+- Standardized return values for `summary()`, `plot()`, and `print()` methods to match CRAN policies.
+

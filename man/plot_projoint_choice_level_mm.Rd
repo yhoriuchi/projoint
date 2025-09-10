@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_projoint_choice_level_mm.R
 \name{plot_projoint_choice_level_mm}
 \alias{plot_projoint_choice_level_mm}
-\title{Plot Choice-Level Marginal Means (MMs)}
+\title{Plot choice-level marginal means (MMs) (helper)}
 \usage{
 plot_projoint_choice_level_mm(
   x,
@@ -17,37 +17,69 @@ plot_projoint_choice_level_mm(
 )
 }
 \arguments{
-\item{x}{A \code{\link{projoint_results}} object. This is the output from the \code{projoint()} function.}
+\item{x}{A \code{\link{projoint_results}} object produced by
+\code{\link{projoint}} with \code{structure = "choice_level"} and
+\code{estimand = "mm"}.}
 
-\item{.type}{Type of plot to produce. Either \code{"bar"} (default) for bar plots or \code{"pointrange"} for a horizontal point-range plot.}
+\item{.type}{Character. Either \code{"bar"} (two bars with CIs) or
+\code{"pointrange"} (horizontal estimate with CI and level labels at the
+extremes). Default \code{"pointrange"}.}
 
-\item{.estimates}{Which estimates to plot. Options are \code{"corrected"} (default) or \code{"uncorrected"}.}
+\item{.estimates}{Character. Which estimate version to plot:
+\code{"corrected"} (default) or \code{"uncorrected"}.}
 
-\item{.labels}{A character vector specifying custom labels for the x-axis (optional). If \code{NULL} (default), labels are automatically generated from the data.}
+\item{.labels}{Optional character vector of length 2 for custom level labels
+(left/right). If \code{NULL}, labels are derived from \code{x$labels}.}
 
-\item{.show_attribute}{Logical; if \code{TRUE} (default), display the attribute name as the plot title.}
+\item{.show_attribute}{Logical; if \code{TRUE} (default), add the attribute
+name as the title when both levels are from the same attribute.}
 
-\item{.remove_xaxis}{Logical; if \code{TRUE}, remove the x-axis elements (ticks, labels, and line). Default is \code{FALSE}.}
+\item{.remove_xaxis}{Logical; if \code{TRUE}, remove x-axis line, ticks, and
+labels (useful when embedding). Default \code{FALSE}.}
 
-\item{.xlim}{A numeric vector specifying the x-axis limits (default is \code{c(0, 1)}).}
+\item{.xlim}{Numeric length-2 giving the x-axis limits. Default \code{c(0, 1)}.}
 
-\item{.plot.margin}{A numeric vector specifying plot margins in centimeters, ordered as \code{c(top, left, bottom, right)}. Default is \code{c(1, 2, 1, 2)}. 
-If \code{NULL}, margins are automatically set based on label lengths.}
+\item{.plot.margin}{Numeric vector of plot margins in cm,
+\code{c(top, left, bottom, right)}. Default \code{c(1, 2, 1, 2)}.}
 
-\item{...}{Additional arguments (currently unused).}
+\item{...}{Currently unused (reserved for future extensions).}
 }
 \value{
 A \code{ggplot2} object.
 }
 \description{
-This function produces a plot of choice-level marginal means (MMs) given a \code{\link{projoint_results}} object, 
-which is the output from the \code{\link{projoint}} function. 
-It supports two types of visualizations: a bar plot and a pointrange plot.
+Internal helper used by \code{\link{plot.projoint_results}} to render
+choice-level marginal means (MMs). Supports a bar chart or a horizontal
+pointrange layout and optional custom level labels.
 }
 \details{
-When \code{.type = "pointrange"}, the two attribute levels are automatically positioned slightly outside the [0,1] x-axis range to avoid overlap with confidence intervals. 
-If \code{.labels} is not supplied, the function attempts to extract level labels from the input object.
+This helper expects that the \code{projoint_results} object \emph{already}
+contains a single pair of choice-level MMs (i.e., one \code{att_level_choose}
+and one \code{att_level_notchoose}). It is called internally by
+\code{\link{plot.projoint_results}} when \code{x$structure == "choice_level"}
+and \code{x$estimand == "mm"}.
 
-If the two levels being compared belong to different attributes, a warning message is shown and no title is added.
+When \code{.type = "pointrange"}, the level labels are placed just outside
+\code{.xlim} to avoid overlap with the confidence interval. If the two levels
+correspond to different attributes, the attribute title is omitted and a
+message is emitted.
+}
+\examples{
+data(exampleData1)
+dat <- reshape_projoint(exampleData1,
+  .outcomes = c("choice1", "choice2", "choice1_repeated_flipped")
+)
+att <- unique(dat$labels$attribute_id)[1]
+levs <- subset(dat$labels, attribute_id == att)$level_id
+lev_names <- sub(".*:", "", levs)
+q <- set_qoi("choice_level", "mm",
+  .att_choose = att, .lev_choose = lev_names[2],
+  .att_notchoose = att, .lev_notchoose = lev_names[1]
+)
+fit <- projoint(dat, .qoi = q)
+plot(fit)
+}
+\seealso{
+\code{\link{plot.projoint_results}} for the user-facing plot method.
 }
 \keyword{internal}

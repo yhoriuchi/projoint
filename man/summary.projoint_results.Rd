@@ -2,16 +2,57 @@
 % Please edit documentation in R/summary.projoint_results.R
 \name{summary.projoint_results}
 \alias{summary.projoint_results}
-\title{Summary method for projoint_results}
+\title{Summary method for \code{projoint_results}}
 \usage{
 \method{summary}{projoint_results}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{projoint_results}}
+\item{object}{An object of class \code{projoint_results}.}
 
-\item{...}{Additional arguments (ignored)}
+\item{...}{Additional arguments (ignored).}
+}
+\value{
+A data frame (often a tibble) summarizing the estimated effects.
+  At minimum, it contains the columns produced in \code{object$estimates}
+  (e.g., attribute/level identifiers and the point estimate with its
+  standard error and confidence interval in columns such as
+  \code{estimate}, \code{std.error}, \code{conf.low}, \code{conf.high}).
+  This table is suitable for further processing or printing.
 }
 \description{
-Summary method for projoint_results
+Creates a concise tabular summary of a \code{projoint_results} object,
+including the chosen estimand, analysis structure, standard-error settings,
+and a data frame of estimates.
 }
-\keyword{internal}
+\examples{
+\donttest{
+  data(exampleData1)
+
+  # Reshape data for two base tasks + repeated (for IRR estimation)
+  dat <- reshape_projoint(
+    exampleData1,
+    .outcomes = c("choice1", "choice2", "choice1_repeated_flipped")
+  )
+
+  # Build a valid choice-level QoI
+  att <- unique(dat$labels$attribute_id)[1]
+  lev_ids   <- dat$labels$level_id[dat$labels$attribute_id == att]
+  lev_names <- sub(".*:", "", lev_ids)
+
+  q <- set_qoi(
+    .structure     = "choice_level",
+    .estimand      = "mm",
+    .att_choose    = att,
+    .lev_choose    = lev_names[2],
+    .att_notchoose = att,
+    .lev_notchoose = lev_names[1]
+  )
+
+  # Fit model
+  fit <- projoint(dat, .qoi = q)
+
+  # Get the tabular summary of estimates
+  tab <- summary(fit)
+  head(tab)
+}
+}

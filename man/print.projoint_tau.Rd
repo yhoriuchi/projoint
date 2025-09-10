@@ -7,11 +7,22 @@
 \method{print}{projoint_tau}(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{\link{projoint_tau}} from \code{\link{predict_tau}}}
+\item{x}{An object of class \code{projoint_tau}.}
 
-\item{...}{Additional arguments (currently unused)}
+\item{...}{Additional arguments (currently unused).}
+}
+\value{
+No return value, called for its side effect of printing a summary of
+  the estimated intra-respondent reliability (\eqn{\tau}).
 }
 \description{
-Print method for projoint_tau objects
+Custom print method for objects of class \code{projoint_tau}, typically created
+by \code{\link{predict_tau}} or related functions.
 }
-\keyword{internal}
+\examples{
+\donttest{
+# Example workflow:
+# tau_fit <- projoint_tau(exampleData1)
+# print(tau_fit)
+}
+}

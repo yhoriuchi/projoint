@@ -1,18 +1,33 @@
-#' Organize Data for Estimation
+#' Organize data for estimation (internal helper)
 #'
-#' Internal helper function to organize data for marginal mean (MM) or average marginal component effect (AMCE) estimation.
-#' Called inside \code{pj_estimate()}.
+#' Prepares tidy inputs for MM/AMCE estimation and IRR handling.
+#' Called inside \code{pj_estimate()} after reshaping to respondent–task–profile.
 #'
-#' @param .dataframe The reshaped conjoint dataset (from \code{reshape_projoint()}).
+#' @param .dataframe A tibble/data frame from \code{\link{reshape_projoint}()},
+#'   containing columns like \code{id}, \code{task}, \code{profile}, \code{selected},
+#'   \code{agree} (if repeated), and attribute columns named \code{att1}, \code{att2}, ...
+#'   that store \code{level_id}s (e.g., \code{"att1:level2"}).
 #' @param .structure Either \code{"profile_level"} or \code{"choice_level"}.
 #' @param .estimand Either \code{"mm"} or \code{"amce"}.
-#' @param .remove_ties Logical. Whether to remove tied responses (default = TRUE).
-#' @param .att_choose Attribute ID for chosen profile.
-#' @param .lev_choose Level ID for chosen profile.
-#' @param .att_notchoose (Optional) Attribute ID for non-chosen profile (only for choice-level analysis).
-#' @param .lev_notchoose (Optional) Level ID for non-chosen profile (only for choice-level analysis).
+#' @param .remove_ties Logical; if \code{TRUE} (default) remove tied responses
+#'   in profile-level setups (keeps tasks where exactly one profile is selected).
+#' @param .att_choose Attribute ID for the “chosen” side (e.g., \code{"att3"}).
+#' @param .lev_choose Level ID(s) for the chosen side (e.g., \code{"level2"} for
+#'   profile-level; vector of level IDs for choice-level).
+#' @param .att_notchoose Attribute ID for the “not chosen” side (choice-level only).
+#' @param .lev_notchoose Level ID(s) for the not-chosen side (choice-level only).
 #'
-#' @return A list with two tibbles: \code{data_for_estimand} and \code{data_for_irr}.
+#' @return A named list with two tibbles:
+#' \itemize{
+#'   \item \code{$data_for_estimand}: rows restricted and reshaped to the
+#'         requested estimand/QOI. For profile-level, one row per respondent–task–profile
+#'         where the target level is present (ties optionally removed). For choice-level,
+#'         one row per respondent–task with paired information for profiles 1 and 2,
+#'         restricted to the requested attribute-level pair(s).
+#'   \item \code{$data_for_irr}: one row per respondent with columns \code{id},
+#'         \code{agree} (if available), and any detected weight/cluster hints
+#'         (columns matching \code{"my_weight|my_cluster|^weights?$|^clusters?$"}).
+#' }
 #'
 #' @keywords internal
 organize_data <- function(

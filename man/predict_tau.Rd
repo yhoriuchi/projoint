@@ -2,18 +2,55 @@
 % Please edit documentation in R/predict_tau.R
 \name{predict_tau}
 \alias{predict_tau}
-\title{Estimate tau when there is no repeated task.}
+\title{Estimate intra-respondent reliability (tau) without a repeated task}
 \usage{
 predict_tau(.data, .title = NULL)
 }
 \arguments{
-\item{.data}{A \code{\link{projoint_data}} object, outputted from \code{\link{reshape_projoint}}}
+\item{.data}{A \code{\link{projoint_data}} object (from \code{\link{reshape_projoint}}).}
 
-\item{.title}{The title of a figure}
+\item{.title}{Optional character string used as the plot title prefix.}
 }
 \value{
-A \code{\link{projoint_tau}} object containing the estimate of tau and a figure visualizing the extrapolation method.
+A \code{projoint_tau} object (list-like) with components:
+\itemize{
+  \item \code{$irr}: a tibble with columns \code{x} (number of differing attributes) and
+        \code{predicted} (fitted agreement), including \code{x = 0} which is the estimate
+        of \eqn{\tau}.
+  \item \code{$figure}: a \code{ggplot2} object visualizing observed agreement by \code{x}
+        and the fitted line with the extrapolated point at \code{x = 0}.
+}
 }
 \description{
-Given an output from \code{\link{projoint_data}}, this function uses the extrapolation method to produce an estimate of intra-coder reliability (IRR).
+Uses the extrapolation method to estimate intra-respondent reliability (IRR, \eqn{\tau})
+when your conjoint design does not include an explicit repeated task. The input is a
+\code{\link{projoint_data}} object (e.g., produced by \code{\link{reshape_projoint}}).
+}
+\details{
+The procedure constructs pairs of base tasks within respondent, computes the proportion
+of identical choices as a function of how many attributes differ between the two tasks,
+fits a weighted regression of agreement on the number of differing attributes, and
+extrapolates to zero differences to obtain \eqn{\hat{\tau}}.
+}
+\examples{
+\donttest{
+# Example workflow:
+data(exampleData1)
+outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
+
+# Even if your real study lacks a repeated task, this shows the API:
+pj <- reshape_projoint(exampleData1, outcomes, .repeated = TRUE)
+
+tau_fit <- predict_tau(pj, .title = "IRR (tau): ")
+# Inspect the extrapolated tau (row where x == 0)
+tau_fit$irr[tau_fit$irr$x == 0, ]
+
+# Plot (also available via plot(tau_fit))
+print(tau_fit$figure)
+}
+
+}
+\seealso{
+\code{\link{plot.projoint_tau}}, \code{\link{summary.projoint_tau}},
+  \code{\link{reshape_projoint}}
 }

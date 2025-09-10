@@ -12,18 +12,11 @@
 
 ---
 
-Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many causal effects from a single randomized experiment. Unfortunately, by their ability to mirror complicated real-world choices, these designs often generate substantial **measurement error** and thus **bias**.
+Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many quantities of interest from a single randomized experiment. **Projoint is general-purpose software for the design, implementation, and analysis of conjoint surveys.** Its easy-to-use components include a drag-and-drop web-based application for survey design and an R package for analysis.
 
-**projoint** is a general-purpose R package for conjoint analysis. It produces **more reliable estimates** of the quantities of interest based on questions explicitly about survey respondents’ **choices between two options**.<sup><a href="https://yhoriuchi.github.io/projoint/articles/faq.html#what-is-the-history-of-conjoint-analysis-what-is-the-difference-between-profile-level-and-choice-level-data" target="_blank" style="text-decoration: none;">&#9432;</a></sup>
+We created this software for our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link"><em>American Journal of Political Science</em> article</a> that shows how to **correct measurement error** in conjoint surveys,<sup><a href="https://yhoriuchi.github.io/projoint/articles/correct.html" target="_blank" style="text-decoration: none;">&#9432;</a></sup> and so Projoint makes that easy too. This correction is essential because conjoint’s ability to mirror complicated real-world choices, explicitly about survey respondents’ **choices between two options**,<sup><a href="https://yhoriuchi.github.io/projoint/articles/faq.html#what-is-the-history-of-conjoint-analysis-what-is-the-difference-between-profile-level-and-choice-level-data" target="_blank" style="text-decoration: none;">&#9432;</a></sup> often generates substantial measurement error and, without corrections, can lead to substantial bias.
 
-This method can be used not only by researchers at the design stage but also by those already analyzing the data. As we explain, everything necessary to correct the bias in an application can be estimated via a slight modification of the standard conjoint design, a separate survey run afterward, or sometimes without new data collection at all.
-
-<details>
-    <summary>Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">accompanying paper</a> to learn more about our method</summary>
-- **Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).** “Correcting Measurement Error Bias in Conjoint Survey Experiments.”<br><em>Forthcoming, American Journal of Political Science.</em><br><a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">Pre-Print Available</a>
-- [👉 Download BibTeX Reference](https://raw.githubusercontent.com/yhoriuchi/projoint/master/inst/extdata/projoint_citation.bib)
-
-</details>
+We intend for Projoint to be the easiest and fastest way to correctly field and analyze conjoint surveys. Take the 6 steps below and you should be all set.
 
 ---
 

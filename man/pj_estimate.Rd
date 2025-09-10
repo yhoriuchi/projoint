@@ -85,14 +85,24 @@ pj_estimate(
 and restores the previous RNG state on exit.}
 }
 \value{
-A data frame with columns \code{estimand}, \code{estimate}, \code{se}, \code{conf.low}, \code{conf.high}, and \code{tau},
-  ready for downstream aggregation and plotting.
+A data frame with rows for the requested estimand(s) and columns:
+  \itemize{
+    \item \code{estimand}: one of \code{"mm_uncorrected"}, \code{"mm_corrected"},
+          \code{"amce_uncorrected"}, \code{"amce_corrected"}.
+    \item \code{estimate}, \code{se}, \code{conf.low}, \code{conf.high}, \code{tau}.
+  }
 }
 \description{
 Core workhorse for computing marginal means (MMs) or AMCEs from a conjoint design,
 with optional intra-respondent reliability (IRR) correction.
 }
+\details{
+IRR is clipped to \code{[0.5, 1)} (with a tiny epsilon) to avoid boundary issues.
+For choice-level MMs, ties must be removed (\code{.remove_ties = TRUE}).
+When \code{.seed} is supplied, the previous RNG state is restored on exit.
+}
 \seealso{
-\code{\link{reshape_projoint}}, \code{\link{make_projoint_data}}, \code{\link{set_qoi}}, \code{\link{projoint}}
+\code{\link[estimatr]{lm_robust}}, \code{\link{projoint}},
+  \code{\link{projoint_level}}, \code{\link{projoint_diff}}
 }
 \keyword{internal}

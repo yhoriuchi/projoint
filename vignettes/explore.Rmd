@@ -38,6 +38,7 @@ projoint_data <- function(labels, data) {
 We use the already wrangled and cleaned data `out1_arranged`.
 
 ```{r}
+data("out1_arranged")
 out1_arranged$labels
 ```
 
@@ -54,6 +55,7 @@ out1_arranged$labels
 
 ```{r, message=FALSE, warning=FALSE}
 # 1) Data: keep only the two joint profiles of interest
+data("out1_arranged")
 d1 <- out1_arranged$data
 d2 <- d1 |> 
   mutate(y1 = case_when(
@@ -182,6 +184,7 @@ plot(out)
 <details><summary><b>Choice-Level Subgroup Comparison: Party Differences</b></summary>
 
 ```{r, fig.width = 6, fig.height = 3}
+data("exampleData1")
 
 outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
 

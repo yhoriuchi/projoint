@@ -1,21 +1,54 @@
-#' Make a projoint_data object using a labelled tibble (data frame)
+#' Make a \code{projoint_data} object from a labelled tibble
 #'
-#' This function converts a labelled tibble (data frame) to a "projoint_data" class object necessary for \code{\link{projoint}}.
-#' @import dplyr
-#' @import tidyr
-#' @import stringr
-#' @import rlang
-#' @import tidyselect
-#' @param .dataframe A data frame. The unit of observation must be each of two profiles in each task for each respondent.
-#' @param .attribute_vars A character vector identifying the names of attributes
-#' @param .id_var A character identifying the name of a column containing respondent IDs (default: "id")
-#' @param .task_var A character identifying the name of a column containing task numbers (default: "task")
-#' @param .profile_var A character identifying the name of a column containing profile numbers IDs (default: "profile")
-#' @param .selected_var A character identifying the name of a column containing each dichotomous response (\{0, 1\}) for each task (default: "selected")
-#' @param .selected_repeated_var A character identifying the name of a column containing each dichotomous response (\{0, 1\}) for the repeated task (default: NULL)
-#' @param .fill A logical vector: TRUE if you want to use information about whether a respondent chose the same profile for the repeated task and "fill" (using the `tidyr` package) missing values for the non-repeated tasks, FALSE (otherwise). If the number of respondents is small, if the number of specific profile pairs of your interest is small, and/or if the number of specific respondent subgroups you want to study is small, it is worth changing this option to TRUE. But please note that `.fill = TRUE` is based on an assumption that IRR is independent of information contained in conjoint tables. Although our empirical tests suggest the validity of this assumption, if you are unsure about it, it is better to use the default value (FALSE).
-#' @return A projoint object of class \code{\link{projoint_data}} ready to pass to \code{\link{projoint}}.
+#' Converts a labelled tibble/data frame (one column per attribute) into an object
+#' of class \code{projoint_data} that downstream functions (e.g., \code{\link{projoint}})
+#' can consume. The unit of observation should be each of two profiles in each task
+#' for each respondent.
+#'
+#' @param .dataframe A data frame (or tibble). One row per profile per task per respondent.
+#' @param .attribute_vars Character vector of attribute column names.
+#' @param .id_var Column name (character) with respondent IDs. Default \code{"id"}.
+#' @param .task_var Column name (character) with task numbers. Default \code{"task"}.
+#' @param .profile_var Column name (character) with profile numbers. Default \code{"profile"}.
+#' @param .selected_var Column name (character) with the binary choice for each task
+#'   (values in \code{\{0,1\}}). Default \code{"selected"}.
+#' @param .selected_repeated_var Optional column name (character) with the binary choice
+#'   for the repeated task. Default \code{NULL}.
+#' @param .fill Logical. If \code{TRUE}, uses repeated-task agreement to \emph{fill}
+#'   missing agreement values for non-repeated tasks (assumes IRR is independent of
+#'   table content). If unsure, prefer the default \code{FALSE}.
+#'
+#' @return A \code{projoint_data} object (a list-like object containing a \code{labels}
+#'   tibble and a \code{data} tibble) ready to pass to \code{\link{projoint}} and related
+#'   functions.
+#'
 #' @export
+#'
+#' @examples
+#' \donttest{
+#' # Example: build a projoint_data object from the labelled-tibble example
+#' data(exampleData1_labelled_tibble)
+#'
+#' att_cols <- c("School Quality", "Violent Crime Rate (Vs National Rate)",
+#'               "Racial Composition", "Housing Cost",
+#'               "Presidential Vote (2020)", 
+#'               "Total Daily Driving Time for Commuting and Errands",
+#'               "Type of Place")
+#'
+#' pj_dat <- make_projoint_data(
+#'   .dataframe             = exampleData1_labelled_tibble,
+#'   .attribute_vars        = att_cols,
+#'   .id_var                = "id",
+#'   .task_var              = "task",
+#'   .profile_var           = "profile",
+#'   .selected_var          = "selected",
+#'   .selected_repeated_var = "selected_repeated",
+#'   .fill                  = FALSE
+#' )
+#'
+#' class(pj_dat)
+#' # [1] "projoint_data"
+#' }
 make_projoint_data <- function(
     .dataframe, 
     .attribute_vars,
@@ -34,6 +67,9 @@ make_projoint_data <- function(
   if (!is.character(.attribute_vars)){
     stop("The .attribute_vars argument must be a vector of characters with the length of 1 or more.")
   } 
+  if (length(.attribute_vars) == 0L) {
+    stop("`.attribute_vars` is empty. Supply the names of your attribute columns.")
+  }
   if (!is.character(.id_var)){
     stop("The .id_var argument must be a character")
   } 
@@ -96,14 +132,14 @@ make_projoint_data <- function(
   
   # make "labels" data frame
   labels <- data |> 
-    dplyr::select(contains("att")) |>
-    pivot_longer(names_to = "attribute_id", values_to = "level", cols = everything()) |> 
+    dplyr::select(dplyr::all_of(attributes$attribute_id)) |>
+    pivot_longer(names_to = "attribute_id", values_to = "level", cols = dplyr::everything()) |> 
     distinct() |> 
     dplyr::arrange(attribute_id, level) |> 
     dplyr::group_by(attribute_id) |> 
-    dplyr::mutate(level_id = row_number()) |> 
+    dplyr::mutate(level_id = dplyr::row_number()) |> 
     dplyr::ungroup() |> 
-    dplyr::mutate(level_id = str_c(attribute_id, ":lev", level_id)) |> 
+    dplyr::mutate(level_id = stringr::str_c(attribute_id, ":lev", level_id)) |> 
     dplyr::left_join(attributes, by = "attribute_id") |> 
     dplyr::arrange(attribute, level, attribute_id, level_id)
   

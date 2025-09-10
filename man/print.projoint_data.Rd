@@ -7,11 +7,24 @@
 \method{print}{projoint_data}(x, ...)
 }
 \arguments{
-\item{x}{A `projoint_data` object.}
+\item{x}{A \code{projoint_data} object.}
 
 \item{...}{Additional arguments (currently unused).}
 }
-\description{
-Custom print method for objects of class `projoint_data`.
+\value{
+No return value, called for its side effect of printing a summary of
+  the \code{projoint_data} object to the console.
 }
-\keyword{internal}
+\description{
+Custom print method for objects of class \code{projoint_data}.
+}
+\examples{
+\donttest{
+data(exampleData1)
+dat <- reshape_projoint(
+  exampleData1,
+  .outcomes = c("choice1", "choice2")
+)
+print(dat)
+}
+}

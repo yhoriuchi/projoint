@@ -2,7 +2,7 @@
 % Please edit documentation in R/projoint_level.R
 \name{projoint_level}
 \alias{projoint_level}
-\title{Estimate Profile- or Choice-Level Effects}
+\title{Estimate profile- or choice-level effects (internal)}
 \usage{
 projoint_level(
   .data,
@@ -28,44 +28,70 @@ projoint_level(
 \arguments{
 \item{.data}{A \code{\link{projoint_data}} object.}
 
-\item{.qoi}{Optional \code{\link{projoint_qoi}}; if \code{NULL}, produces all MMs/AMCEs.}
+\item{.qoi}{Optional \code{\link{projoint_qoi}}; if \code{NULL}, estimates all
+MMs/AMCEs implied by the design. When supplied, overrides \code{.structure}
+and \code{.estimand}.}
 
 \item{.structure}{Either \code{"profile_level"} or \code{"choice_level"}.}
 
-\item{.estimand}{Either \code{"mm"} (marginal mean) or \code{"amce"} (average marginal component effect).}
+\item{.estimand}{Either \code{"mm"} (marginal mean) or \code{"amce"} (average
+marginal component effect).}
 
-\item{.se_method}{One of \code{"analytical"}, \code{"simulation"}, or \code{"bootstrap"}.}
+\item{.se_method}{One of \code{"analytical"}, \code{"simulation"}, or
+\code{"bootstrap"}.}
 
-\item{.irr}{\code{NULL} to estimate IRR from repeated tasks, or numeric to fix IRR.}
+\item{.irr}{\code{NULL} to estimate IRR from repeated tasks; numeric to fix IRR.}
 
-\item{.remove_ties}{Logical; remove ties in choice data before estimation? Default \code{TRUE}.}
+\item{.remove_ties}{Logical; whether to drop tied responses (default \code{TRUE}).}
 
-\item{.ignore_position}{Logical; for choice-level only. Ignore profile position (left/right)? Default \code{TRUE}.}
+\item{.ignore_position}{Logical; choice-level only. Ignore left/right position?
+Default \code{TRUE}.}
 
 \item{.n_sims}{Integer; required when \code{.se_method = "simulation"}.}
 
 \item{.n_boot}{Integer; required when \code{.se_method = "bootstrap"}.}
 
-\item{.weights_1, .clusters_1, .se_type_1}{Passed to \code{\link[estimatr]{lm_robust}} for IRR estimation.
-If \code{.se_type_1} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
-See \code{\link{projoint}} for valid \code{se_type_*} values.}
+\item{.weights_1, .clusters_1, .se_type_1}{Arguments passed to
+\code{\link[estimatr]{lm_robust}} for IRR estimation. If \code{.se_type_1}
+is \code{NULL}, \emph{estimatr} defaults are used.}
 
-\item{.weights_2, .clusters_2, .se_type_2}{Passed to \code{\link[estimatr]{lm_robust}} for MM/AMCE estimation.
-If \code{.se_type_2} is \code{NULL}, \emph{estimatr} defaults are used (HC2 when unclustered; CR2 when clustered).
-See \code{\link{projoint}} for valid \code{se_type_*} values.}
+\item{.weights_2, .clusters_2, .se_type_2}{Arguments passed to
+\code{\link[estimatr]{lm_robust}} for MM/AMCE estimation. If \code{.se_type_2}
+is \code{NULL}, \emph{estimatr} defaults are used.}
 
-\item{.auto_cluster}{Logical. If \code{TRUE} (default), automatically cluster on an \code{id}
-column when present and no \code{.clusters_*} are supplied. Auto-clustering only
-occurs when the corresponding \code{.se_type_*} is \code{NULL}. See \code{\link{projoint}}.}
+\item{.auto_cluster}{Logical; if \code{TRUE} (default) and an \code{id} column
+is present while no clusters are provided, cluster automatically. Only applied
+when the corresponding \code{.se_type_*} is \code{NULL}.}
 
-\item{.seed}{Optional integer. If supplied, sets a temporary RNG seed for reproducible simulation/bootstrap inside this call 
-and restores the previous RNG state on exit.}
+\item{.seed}{Optional integer; if supplied, sets a temporary RNG seed for
+simulation/bootstrap and restores prior state on exit.}
 }
 \value{
-A \code{\link{projoint_results}} object (typically returned via \code{\link{projoint}}).
+A \code{\link{projoint_results}} object containing:
+\itemize{
+  \item \code{estimates}: tibble of estimates (point estimate, SE, CI) with
+        identifier columns (e.g., \code{att_level_*}).
+  \item \code{estimand}: \code{"mm"} or \code{"amce"}.
+  \item \code{structure}: \code{"profile_level"} or \code{"choice_level"}.
+  \item \code{se_method}: SE computation method used.
+  \item \code{irr}: character noting IRR usage (e.g., \code{"Estimated"} or
+        \code{"Assumed (<value> )"}).
+  \item \code{tau}: numeric \eqn{\tau} used to correct measurement error.
+  \item \code{remove_ties}, \code{ignore_position}: flags echoed from inputs.
+  \item \code{se_type_used}, \code{cluster_by}: details propagated from
+        fitting calls (if available).
+  \item \code{labels}, \code{data}: design labels and the analysis data
+        passed through for downstream methods.
+}
 }
 \description{
-Internal function called by \code{\link{projoint}} to compute marginal means (MMs) or
-average marginal component effects (AMCEs) at the chosen structure.
+Core worker used by \code{\link{projoint}} to compute marginal means (MMs)
+or average marginal component effects (AMCEs) under either the profile- or
+choice-level structure. Handles IRR usage (estimated or fixed) and the
+requested standard-error method.
+}
+\seealso{
+\code{\link{projoint}}, \code{\link{pj_estimate}}, \code{\link{organize_data}},
+  \code{\link{projoint_results}}
 }
 \keyword{internal}

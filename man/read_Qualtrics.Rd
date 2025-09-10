@@ -2,16 +2,36 @@
 % Please edit documentation in R/read_Qualtrics.R
 \name{read_Qualtrics}
 \alias{read_Qualtrics}
-\title{Read and re-format a Qualtrics csv (choice text)}
+\title{Read and re-format a Qualtrics CSV (choice text)}
 \usage{
 read_Qualtrics(.file)
 }
 \arguments{
-\item{.file}{A file name corresponding to a csv downloaded from Qualtrics.}
+\item{.file}{A character string giving the path to a Qualtrics CSV file.}
 }
 \value{
-A data frame suitable for \code{\link{reshape_projoint}}
+A data frame where column names are preserved from the Qualtrics export.
+  The first two rows of Qualtrics metadata are skipped automatically.
 }
 \description{
-Read and re-format a Qualtrics csv (choice text)
+Reads a CSV file exported from Qualtrics (with "Use choice text" enabled) and
+returns a data frame formatted for downstream processing with
+\code{\link{reshape_projoint}}.
+}
+\examples{
+\donttest{
+# Write a tiny dummy Qualtrics-style CSV to a temp file
+tmp <- tempfile(fileext = ".csv")
+readr::write_csv(
+  data.frame(Q1 = c("Choice Text", "Choice Text", "A", "B")),
+  tmp
+)
+# Read it back in
+df <- read_Qualtrics(tmp)
+head(df)
+}
+
+}
+\seealso{
+\code{\link{reshape_projoint}}
 }

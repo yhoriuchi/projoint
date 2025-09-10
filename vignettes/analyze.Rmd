@@ -40,6 +40,7 @@ The following instructions apply to choice-level data. What if you have profile-
 
 ```{r}
 # Standard order; repeated = task 1
+data("exampleData1")
 outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
 out1 <- reshape_projoint(exampleData1, outcomes)
 ```

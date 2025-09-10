@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_projoint_profile_level.R
 \name{plot_projoint_profile_level}
 \alias{plot_projoint_profile_level}
-\title{Plot all "profile-level" MMs or AMCEs}
+\title{Plot all profile-level MMs or AMCEs (helper)}
 \usage{
 plot_projoint_profile_level(
   x,
@@ -14,22 +14,33 @@ plot_projoint_profile_level(
 )
 }
 \arguments{
-\item{x}{A \code{\link{projoint_results}} object}
+\item{x}{A \code{\link{projoint_results}} object (profile-level).}
 
-\item{.estimates}{The estimates to be plotted, either \code{"corrected"} (default), \code{"uncorrected"}, or \code{"both"}}
+\item{.estimates}{\code{"corrected"}, \code{"uncorrected"}, or \code{"both"}.}
 
-\item{.by_var}{\code{TRUE} to plot the difference in estimates between the two subgroups, \code{FALSE} (default) otherwise}
+\item{.by_var}{Logical; if \code{TRUE}, plot subgroup differences.}
 
-\item{.base_size}{base font size, given in pts.}
+\item{.base_size}{Base font size (pts).}
 
-\item{.base_family}{base font family}
+\item{.base_family}{Base font family.}
 
-\item{...}{Additional optional arguments}
+\item{...}{Additional options passed internally.}
 }
 \value{
-A \code{ggplot} object
+A \code{ggplot2} object.
 }
 \description{
-This method produces profile-level MM or AMCE plots given a \code{\link{projoint_results}} object, the output from the \code{\link{projoint}} function. The structure must be profile-level to use this function.
+Internal helper used by \code{\link{plot.projoint_results}} to render
+profile-level marginal means (MMs) or AMCEs.
+}
+\examples{
+\donttest{
+# Normally use: plot(fit_profile)
+# The helper is internal and called by plot.projoint_results():
+# dat <- reshape_projoint(exampleData1, .outcomes = c("choice1","choice2"))
+# fit_profile <- projoint(dat, .structure = "profile_level")
+# p <- projoint:::plot_projoint_profile_level(fit_profile, .estimates = "both")
+# print(p)
+}
 }
 \keyword{internal}

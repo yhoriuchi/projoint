@@ -1,18 +1,49 @@
-#' Reads in a CSV of reordered attributes and levels, and applies it to a \code{\link{projoint_data}} object.
+#' Read and apply a reordered attribute/level mapping
 #'
-#' For users interested in reordering the attributes and levels of their conjoint data set.
-#' First save the existing order to a CSV using \code{\link{save_labels}}, then manually reorder them in the CSV.
-#' Finally, use this function to read in the modified CSV and automatically apply the new order to the existing \code{\link{projoint_data}}.
-#' 
+#' Reads a CSV containing a revised ordering of attributes and levels and applies it
+#' to an existing \code{\link{projoint_data}} object. Typical workflow: first save the
+#' current labels to CSV (e.g., with \code{\link{save_labels}}), manually reorder rows
+#' (and/or the attribute grouping) in the CSV, then call \code{read_labels()} to apply.
+#'
+#' @param .data A \code{\link{projoint_data}} object whose labels/data should be reordered.
+#' @param .filename Path to the revised labels CSV (originally produced from the package's labels).
+#'
+#' @return A \code{\link{projoint_data}} object with the same content as \code{.data} but with
+#'   attributes and levels reordered to match the CSV. The returned object contains:
+#'   \itemize{
+#'     \item \code{$labels}: a tibble with new \code{attribute_id} and \code{level_id} reflecting the chosen order
+#'     \item \code{$data}: a tibble whose \code{att*} columns have been remapped to the new \code{level_id}s
+#'   }
+#'
+#' @seealso \code{\link{save_labels}}, \code{\link{reshape_projoint}}
+#'
 #' @import readr
 #' @import dplyr
 #' @import forcats
 #' @import tidyr
 #' @import stringr
 #' @import tidyselect
-#' @param .data A \code{\link{projoint_data}} object
-#' @param .filename The name of a revised CSV file, originally derived from \code{\link{save_labels}}, after manual arrangement
-#' @return A projoint object of class \code{\link{projoint_data}} ready to pass to \code{\link{projoint}}.
+#'
+#' @examples
+#' \donttest{
+#' # Create a projoint_data object from the example dataset
+#' data(exampleData1)
+#' outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
+#' pj <- reshape_projoint(exampleData1, outcomes)
+#'
+#' # Write current labels to a temporary CSV, adding an 'order' column
+#' tmp <- tempfile(fileext = ".csv")
+#' pj$labels |>
+#'   dplyr::mutate(order = dplyr::row_number()) |>
+#'   readr::write_csv(tmp)
+#'
+#' # (User would reorder rows in 'tmp' manually; we just read it back)
+#' pj_reordered <- read_labels(pj, tmp)
+#'
+#' # Inspect the updated label order
+#' head(pj_reordered$labels)
+#' }
+#'
 #' @export
 read_labels <- function(
     .data,
