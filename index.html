@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>The One Stop Conjoint Shop • projoint</title>
+<title>Conjoint Analysis with Reliability Correction and Visualization • projoint</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="The One Stop Conjoint Shop">
-<meta name="description" content="Analyzes data sets generated from conjoint experiments, correcting for measurement error.">
-<meta property="og:description" content="Analyzes data sets generated from conjoint experiments, correcting for measurement error.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Conjoint Analysis with Reliability Correction and Visualization">
+<meta name="description" content="Provides tools for analyzing data generated from conjoint survey experiments, a method widely used in the social sciences for studying multidimensional preferences. The package implements estimation of marginal means (MMs) and average marginal component effects (AMCEs), with corrections for measurement error. Methods include profile-level and choice-level estimators, bias correction using intra-respondent reliability (IRR), and visualization utilities. For details on the methodology, see Clayton, Horiuchi, Kaufman, King, and Komisarchik (American Journal of Political Science) &lt;https://gking.harvard.edu/conjointE&gt;.">
+<meta property="og:description" content="Provides tools for analyzing data generated from conjoint survey experiments, a method widely used in the social sciences for studying multidimensional preferences. The package implements estimation of marginal means (MMs) and average marginal component effects (AMCEs), with corrections for measurement error. Methods include profile-level and choice-level estimators, bias correction using intra-respondent reliability (IRR), and visualization utilities. For details on the methodology, see Clayton, Horiuchi, Kaufman, King, and Komisarchik (American Journal of Political Science) &lt;https://gking.harvard.edu/conjointE&gt;.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/yhoriuchi/projoint/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -57,17 +58,10 @@
 </div>
 </div>
 <hr>
-<p>Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many causal effects from a single randomized experiment. Unfortunately, by their ability to mirror complicated real-world choices, these designs often generate substantial <strong>measurement error</strong> and thus <strong>bias</strong>.</p>
-<p><strong>projoint</strong> is a general-purpose R package for conjoint analysis. It produces <strong>more reliable estimates</strong> of the quantities of interest based on questions explicitly about survey respondents’ <strong>choices between two options</strong>.<sup><a href="https://yhoriuchi.github.io/projoint/articles/faq.html#what-is-the-history-of-conjoint-analysis-what-is-the-difference-between-profile-level-and-choice-level-data" target="_blank" style="text-decoration: none;">ⓘ</a></sup></p>
-<p>This method can be used not only by researchers at the design stage but also by those already analyzing the data. As we explain, everything necessary to correct the bias in an application can be estimated via a slight modification of the standard conjoint design, a separate survey run afterward, or sometimes without new data collection at all.</p>
-<details><summary>
-Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">accompanying paper</a> to learn more about our method
-</summary><ul>
-<li>
-<strong>Clayton, Horiuchi, Kaufman, King, Komisarchik (Forthcoming).</strong> “Correcting Measurement Error Bias in Conjoint Survey Experiments.”<br><em>Forthcoming, American Journal of Political Science.</em><br><a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link">Pre-Print Available</a>
-</li>
-<li><a href="https://raw.githubusercontent.com/yhoriuchi/projoint/master/inst/extdata/projoint_citation.bib" class="external-link">👉 Download BibTeX Reference</a></li>
-</ul></details><hr>
+<p>Conjoint survey designs are spreading across the social sciences due to their unusual capacity to estimate many quantities of interest from a single randomized experiment. <strong>Projoint is general-purpose software for the design, implementation, and analysis of conjoint surveys.</strong> Its easy-to-use components include a drag-and-drop web-based application for survey design and an R package for analysis.</p>
+<p>We created this software for our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link"><em>American Journal of Political Science</em> article</a> that shows how to <strong>correct measurement error</strong> in conjoint surveys,<sup><a href="https://yhoriuchi.github.io/projoint/articles/correct.html" target="_blank" style="text-decoration: none;">ⓘ</a></sup> and so Projoint makes that easy too. This correction is essential because conjoint’s ability to mirror complicated real-world choices, explicitly about survey respondents’ <strong>choices between two options</strong>,<sup><a href="https://yhoriuchi.github.io/projoint/articles/faq.html#what-is-the-history-of-conjoint-analysis-what-is-the-difference-between-profile-level-and-choice-level-data" target="_blank" style="text-decoration: none;">ⓘ</a></sup> often generates substantial measurement error and, without corrections, can lead to substantial bias.</p>
+<p>We intend for Projoint to be the easiest and fastest way to correctly field and analyze conjoint surveys. Take the 6 steps below and you should be all set.</p>
+<hr>
 <div class="section level2">
 <h2 id="id_-tutorials">🚀 Tutorials<a class="anchor" aria-label="anchor" href="#id_-tutorials"></a>
 </h2>
@@ -77,7 +71,7 @@ Read our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="ex
 <details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>1. Install</b> the development version from GitHub
 </summary><p>Open R (or <a href="https://www.r-project.org/" target="_blank" class="external-link">install R</a> if you do not have it), and run the following command in your coding environment.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"yhoriuchi/projoint"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"yhoriuchi/projoint"</span><span class="op">)</span></span></code></pre></div>
 </details><!-- =========================
      2. Design
      ========================= --><details style="margin-left: 25px; margin-bottom: -10px"><summary style="font-size: 18px;"><b>2. Design</b> your survey
@@ -189,7 +183,15 @@ For comments and suggestions, please open an issue on the <a href="https://githu
 </p>
 </div>
 
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/yhoriuchi/projoint/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/yhoriuchi/projoint/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>

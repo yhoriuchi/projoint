@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/yhoriuchi/projoint/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -57,7 +58,7 @@
       <h1>FAQ Page</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/yhoriuchi/projoint/blob/master/vignettes/faq.Rmd" class="external-link"><code>vignettes/faq.Rmd</code></a></small>
       <div class="d-none name"><code>faq.Rmd</code></div>
     </div>
 
@@ -203,7 +204,9 @@ We have tools available to help you with profile-level QOIs:
 </details><details><summary><b>Profile-Level AMCEs (All Levels)</b>
 </summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">amce0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in sqrt(diag(vcov_fit$Vcov_hat)): NaNs produced</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in pj_estimate(.data = .data, .structure = structure, .estimand =</span></span>
+<span><span class="co">## estimand, : AMCE analytical SEs: CR2 produced non-PSD/NA variances; fell back</span></span>
+<span><span class="co">## to se_type='stata' (then HC1 if needed).</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">amce0</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -325,9 +328,12 @@ currently supported.
 </h3>
 <details><summary><b>Estimate</b>
 </summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mm</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"out1_arranged"</span><span class="op">)</span></span>
+<span><span class="va">mm</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span><span class="op">)</span> </span>
 <span><span class="va">amce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projoint.html">projoint</a></span><span class="op">(</span><span class="va">out1_arranged</span>, .structure <span class="op">=</span> <span class="st">"profile_level"</span>, .estimand <span class="op">=</span> <span class="st">"amce"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in sqrt(diag(vcov_fit$Vcov_hat)): NaNs produced</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in pj_estimate(.data = .data, .structure = structure, .estimand =</span></span>
+<span><span class="co">## estimand, : AMCE analytical SEs: CR2 produced non-PSD/NA variances; fell back</span></span>
+<span><span class="co">## to se_type='stata' (then HC1 if needed).</span></span></code></pre>
 </details><details><summary><b>Visualize</b>
 </summary><ul>
 <li>Marginal Means</li>

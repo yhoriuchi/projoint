@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/yhoriuchi/projoint/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -58,7 +59,7 @@
       <h1>Explore and Compare Further</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/yhoriuchi/projoint/blob/master/vignettes/explore.Rmd" class="external-link"><code>vignettes/explore.Rmd</code></a></small>
       <div class="d-none name"><code>explore.Rmd</code></div>
     </div>
 
@@ -91,7 +92,8 @@ script.”</p>
 <p>We use the already wrangled and cleaned data
 <code>out1_arranged</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out1_arranged</span><span class="op">$</span><span class="va">labels</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"out1_arranged"</span><span class="op">)</span></span>
+<span><span class="va">out1_arranged</span><span class="op">$</span><span class="va">labels</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
 <span><span class="co">##    attribute                     level                   attribute_id level_id  </span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
@@ -124,6 +126,7 @@ rate</strong>.</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 1) Data: keep only the two joint profiles of interest</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"out1_arranged"</span><span class="op">)</span></span>
 <span><span class="va">d1</span> <span class="op">&lt;-</span> <span class="va">out1_arranged</span><span class="op">$</span><span class="va">data</span></span>
 <span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="va">d1</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>y1 <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span>
@@ -302,7 +305,9 @@ and plot.</strong></p>
 </h2>
 <details><summary><b>Choice-Level Subgroup Comparison: Party Differences</b>
 </summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"exampleData1"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"choice"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="st">"choice1_repeated_flipped"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df_D</span> <span class="op">&lt;-</span> <span class="va">exampleData1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">party_1</span> <span class="op">==</span> <span class="st">"Democrat"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">outcomes</span><span class="op">)</span></span>
 <span><span class="va">df_R</span> <span class="op">&lt;-</span> <span class="va">exampleData1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">party_1</span> <span class="op">==</span> <span class="st">"Republican"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/reshape_projoint.html">reshape_projoint</a></span><span class="op">(</span><span class="va">outcomes</span><span class="op">)</span></span>

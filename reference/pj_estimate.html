@@ -9,7 +9,7 @@ with optional intra-respondent reliability (IRR) correction."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,6 +23,7 @@ with optional intra-respondent reliability (IRR) correction."></head><body>
 <li class="nav-item"><a class="nav-link" href="../articles/faq.html">FAQ</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/yhoriuchi/projoint/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -32,7 +33,7 @@ with optional intra-respondent reliability (IRR) correction."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Internal Estimation Function</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/yhoriuchi/projoint/blob/master/R/pj_estimate.R" class="external-link"><code>R/pj_estimate.R</code></a></small>
       <div class="d-none name"><code>pj_estimate.Rd</code></div>
     </div>
 
@@ -179,12 +180,20 @@ and restores the previous RNG state on exit.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame with columns <code>estimand</code>, <code>estimate</code>, <code>se</code>, <code>conf.low</code>, <code>conf.high</code>, and <code>tau</code>,
-  ready for downstream aggregation and plotting.</p>
+    <p>A data frame with rows for the requested estimand(s) and columns:</p><ul><li><p><code>estimand</code>: one of <code>"mm_uncorrected"</code>, <code>"mm_corrected"</code>,
+          <code>"amce_uncorrected"</code>, <code>"amce_corrected"</code>.</p></li>
+<li><p><code>estimate</code>, <code>se</code>, <code>conf.low</code>, <code>conf.high</code>, <code>tau</code>.</p></li>
+</ul></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>IRR is clipped to <code>[0.5, 1)</code> (with a tiny epsilon) to avoid boundary issues.
+For choice-level MMs, ties must be removed (<code>.remove_ties = TRUE</code>).
+When <code>.seed</code> is supplied, the previous RNG state is restored on exit.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="reshape_projoint.html">reshape_projoint</a></code>, <code><a href="make_projoint_data.html">make_projoint_data</a></code>, <code><a href="set_qoi.html">set_qoi</a></code>, <code><a href="projoint.html">projoint</a></code></p></div>
+    <div class="dont-index"><p><code><a href="https://declaredesign.org/r/estimatr/reference/lm_robust.html" class="external-link">lm_robust</a></code>, <code><a href="projoint.html">projoint</a></code>,
+  <code><a href="projoint_level.html">projoint_level</a></code>, <code><a href="projoint_diff.html">projoint_diff</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

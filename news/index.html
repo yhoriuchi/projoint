@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">projoint</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +21,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/faq.html">FAQ</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/yhoriuchi/projoint/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -30,7 +31,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-
+      <small>Source: <a href="https://github.com/yhoriuchi/projoint/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -83,6 +84,24 @@
 <h2 class="pkg-version" data-toc-text="1.0.4" id="projoint-104-2025-08-21">projoint 1.0.4 (2025-08-21)<a class="anchor" aria-label="anchor" href="#projoint-104-2025-08-21"></a></h2>
 <ul><li>Fixed DESCRIPTION metadata mismatch between <code>Author</code> and <code>Authors@R</code> fields, as requested by CRAN.</li>
 </ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.5" id="projoint-105-2025-09-10">projoint 1.0.5 (2025-09-10)<a class="anchor" aria-label="anchor" href="#projoint-105-2025-09-10"></a></h2>
+<div class="section level3">
+<h3 id="improvements-1-0-5">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-0-5"></a></h3>
+<ul><li>Revised <code><a href="../reference/pj_estimate.html">pj_estimate()</a></code> to automatically set the appropriate standard-error option (<code>se_type</code>) depending on clustering and estimation method.</li>
+<li>Expanded documentation across functions:
+<ul><li>All exported methods now include <code>\value{}</code> sections describing return values.</li>
+<li>Clearer examples for choice-level analysis; removed commented-out code.</li>
+<li>Improved description in <code>DESCRIPTION</code> to highlight both profile-level and choice-level estimators, IRR correction, and visualization.</li>
+</ul></li>
+<li>Updated README and pkgdown site to emphasize <strong>choice-level analysis</strong> as the default and recommended framework.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-5">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-5"></a></h3>
+<ul><li>Fixed <code><a href="../reference/reshape_projoint.html">reshape_projoint()</a></code> docs (<code>\textrightarrow</code> macro removed).</li>
+<li>Standardized return values for <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>, <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, and <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods to match CRAN policies.</li>
+</ul></div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
