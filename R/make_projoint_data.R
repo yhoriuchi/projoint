@@ -103,11 +103,11 @@ make_projoint_data <- function(
   if (is.null(.selected_repeated_var)){
     
     data <- .dataframe |> 
-      dplyr::select("id" = .id_var,
-                    "task" = .task_var, 
-                    "profile" = .profile_var,
-                    all_of(.attribute_vars),
-                    "selected" = .selected_var) |> 
+      dplyr::select("id" = all_of(.id_var),
+                    "task" = all_of(.task_var), 
+                    "profile" = all_of(.profile_var),
+                    any_of(.attribute_vars),
+                    "selected" = all_of(.selected_var)) |> 
       rlang::set_names(pull(variable_names)) |> 
       mutate(selected_repeated = NA,
              agree = NA)
@@ -119,12 +119,12 @@ make_projoint_data <- function(
                      renamed = "selected_repeated")
     
     data <- .dataframe |> 
-      dplyr::select("id" = .id_var,
-                    "task" = .task_var, 
-                    "profile" = .profile_var,
-                    all_of(.attribute_vars),
-                    "selected" = .selected_var, 
-                    "selected_repeated" = .selected_repeated_var) |> 
+      dplyr::select("id" = all_of(.id_var),
+                    "task" = all_of(.task_var), 
+                    "profile" = all_of(.profile_var),
+                    any_of(.attribute_vars),
+                    "selected" = all_of(.selected_var), 
+                    "selected_repeated" = all_of(.selected_repeated_var)) |> 
       rlang::set_names(pull(variable_names)) |> 
       mutate(agree = ifelse(selected == selected_repeated, 1, 0))
     
@@ -139,7 +139,7 @@ make_projoint_data <- function(
     dplyr::group_by(attribute_id) |> 
     dplyr::mutate(level_id = dplyr::row_number()) |> 
     dplyr::ungroup() |> 
-    dplyr::mutate(level_id = stringr::str_c(attribute_id, ":lev", level_id)) |> 
+    dplyr::mutate(level_id = stringr::str_c(attribute_id, ":level", level_id)) |> 
     dplyr::left_join(attributes, by = "attribute_id") |> 
     dplyr::arrange(attribute, level, attribute_id, level_id)
   
