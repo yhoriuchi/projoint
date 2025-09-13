@@ -20,9 +20,9 @@ library(patchwork)
 ## What is the history of conjoint analysis? What is the difference between "profile-level" and "choice-level" data?
 
 <details>
-<summary>Conjoint designs were popular in market research.</summary>
+<summary>Conjoint designs originated in market research and psychology.</summary>
 
-Each respondent was given two different profiles (e.g., of a product) and then was asked to rate each of the profiles. Doing so meant that each rating could be thought of as an observation. Thus, researchers were allowed to "stack" their data vertically, with one profile-per-row (i.e., "profile-level data"). However, when respondents were then asked to make a choice between the two profiles, these profiles are no longer independent; choosing one necessarily meant not choosing the other. While researchers often still stack their data into profile-level, this should not be the case. Instead, we use choice-level data, whereby each choice consisting of two profiles is recorded as a single observation.
+Historical uses of conjoint involves asking each respondent to rate each of two different profiles (e.g., of a product). Doing so meant that each rating could be thought of as a separate observation. This led researchers to arrange their data with one profile per row, and thus twice as many rows as respondents (i.e., "profile-level data"). However, when respondents are instead asked to choose between the two profiles, as has become common in political science, these profiles are dependent, as choosing one necessarily meant not choosing the other. While researchers often still stack their data in this way, they then need to correct the statistical problem the induced by arranging the data at the profile level. A much easier and preferable approach is to arrange your data at the level of the respondent's choice, so that each row in the data matrix includes information about both profiles together.
 
 See the <a href="https://yhoriuchi.github.io/projoint/articles/structure.html" target="_blank">choice-level analysis article</a> for more information about profile-level vs. choice-level structure.
 
