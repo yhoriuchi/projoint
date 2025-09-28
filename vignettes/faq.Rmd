@@ -27,7 +27,7 @@ Historical uses of conjoint often involved asking each respondent to separately 
 
 ## What if I have profile-level data?
 
-<details><summary>We have tools available to help you with profile-level QOIs:</summary>
+<details><summary>Transform to choice-level or use our profile-level tools</summary>
   <details><summary><b>Profile-Level MMs (All Levels)</b></summary>
   
 ```{r, echo = FALSE}
@@ -199,7 +199,7 @@ plot_d +
 </details>
 
 
-## How did researchers design conjoint surveys previously?
+## Is there other conjoint software??
 
 <details>
   <summary>Using Anton Strezhnev’s <strong>Conjoint Survey Design Tool</strong> (Link: <a href="https://github.com/astrezhnev/conjointsdt/" class="external-link" target="_blank">conjointSDT</a>)</summary>
