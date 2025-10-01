@@ -11,14 +11,19 @@ vignette: >
 
 ## **Why Choice-Level Analysis?**.  
 
-- In traditional conjoint analysis, researchers typically estimate **profile-level** quantities, treating each profile independently — an approach that became the standard following the influential work of Hainmueller, Hopkins, and Yamamoto (2014). Their method rests on an important assumption: that each profile is *independently* generated.  
-- However, **profile-level analysis can systematically miss how people actually make decisions**. 
+<summary>Choice-level analysis is simpler, easier, and more powerful than profile-level analysis.</summary>
+
+Conjoint designs originated in market research and psychology where each respondent is asked to rate each of two different profiles (e.g., two products). Each of the two ratings provided separate information, and the two are analyzed as separate observations. Researchers with this <em>profile-level</em> design find it convenient to arrange their data with one profile per row, and thus twice as many rows as respondents. 
+
+<p>Unfortunately, when social scientists adopted the conjoint survey design, they kept the same profile-level design but changed the outcome measure from separate ratings to a single choice between the two profiles (e.g., to reflect a voter choice between two candidates). In this situation, respondents asked to make one choice between the two profiles that are exactly dependent, as choosing one necessarily meant not choosing the other (e.g., in a two-candidate partisan election, one observation would be "Democrat" and the other would be "not the Republican"). Using this profile-level design with 2*n rows but only n independent observations requires the introduction of complicated statistical procedures to correct for the dependence induced solely by the researcher's decision to organize the data in this complicated way.</p>
+
+<p>We recommend the much simpler and more powerful <em>choice-level</em> design.  The idea is to arrange data at the level of the respondent's choice, so that each row in the data matrix includes information about one choice (and both profiles together, with n observations and n rows). Our <a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link"><em>AJPS</em> article</a> clarifies this point, shows how this choice-level analysis vastly simplifies the notation, statistical analysis procedures, and intuition, and greatly expands the substantive questions conjoint analysis be used to answer.</p>
 
 **Key Issues:**
 
 - Profile-level quantities like AMCEs, which require the assumption of independently generated profiles and disregard the context of comparison, prevent researchers from investigating many questions that (implicitly or explicitly) assume dependence between profiles.
 
-- **Examples** of choice-level research questions
+- **Examples** of choice-level research questions 
 <details>
 
   - Do voters choose a **white** candidate over a **non-white** candidate?  
