@@ -149,8 +149,8 @@ plot(output)
 </details>
 
 <details style="margin-left: 25px; margin-bottom: 5px">
-    <summary>Comments, Questions, Suggestions</summary>
-    Please open an issue on the <a href="https://github.com/yhoriuchi/projoint/issues" target="_blank">GitHub repository</a>.
+    <summary>Contact us</summary>
+    For any comments, questions, suggestions, please check issues already filed on our <a href="https://github.com/yhoriuchi/projoint/issues" target="_blank">GitHub repository</a>. If you don't see an answer to your question, click on the green "new issue" button.
 </details>
 
 ---
