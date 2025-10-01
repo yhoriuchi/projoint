@@ -138,16 +138,19 @@ plot(output)
 
 ---
 
-## 📦 Upcoming Features
+## 📦 Additional Info
 
 <details style="margin-left: 25px; margin-bottom: 5px">
-- Weighted estimation for features and respondents
-- Support for non-binary outcomes (ratings, rankings)
+    <summary>Upcoming Features</summary>
+    <ul>
+    <li>Weighted estimation for features and respondents</li>
+    <li>Support for non-binary outcomes (ratings, rankings)</li>
+    </ul>
 </details>
 
 <details style="margin-left: 25px; margin-bottom: 5px">
-    <summary>Contact</summary>
-For comments and suggestions, please open an issue on the <a href="https://github.com/yhoriuchi/projoint/issues" target="_blank">GitHub repository</a>.
+    <summary>Comments, Questions, Suggestions</summary>
+    Please open an issue on the <a href="https://github.com/yhoriuchi/projoint/issues" target="_blank">GitHub repository</a>.
 </details>
 
 ---
