@@ -65,6 +65,7 @@ Conjoint designs originated in market research and psychology where each respond
 | Ignores comparative psychology | Captures influence of side-by-side comparisons |
 | May blur or bias tradeoffs | Highlights real tradeoffs |
 | Can be misleading | Much more informative |
+| Requires complicated statistics | Allows simple methods |
 
 ---
 
