@@ -12,17 +12,17 @@
 \item{...}{Additional arguments (currently unused).}
 }
 \value{
-No return value, called for its side effect of printing a summary of
+No return value; called for its side effect of printing a summary of
   the estimated intra-respondent reliability (\eqn{\tau}).
 }
 \description{
 Custom print method for objects of class \code{projoint_tau}, typically created
-by \code{\link{predict_tau}} or related functions.
+by \code{\link{projoint}} or related functions.
 }
 \examples{
-\donttest{
-# Example workflow:
-# tau_fit <- projoint_tau(exampleData1)
-# print(tau_fit)
-}
+toy_tau <- structure(
+  list(irr = data.frame(predicted = 0.413, se = 0.02, n = 200)),
+  class = "projoint_tau"
+)
+print(toy_tau)
 }

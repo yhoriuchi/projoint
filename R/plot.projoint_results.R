@@ -33,7 +33,7 @@
 #'
 #' @return A \code{ggplot2} object.
 #'
-#' @seealso \code{\link{projoint}}, \code{\link{plot_projoint_profile_level}},
+#' @seealso \code{\link{projoint}}, \code{plot_projoint_profile_level},
 #'   \code{\link{plot_projoint_choice_level_mm}}
 #'
 #' @export

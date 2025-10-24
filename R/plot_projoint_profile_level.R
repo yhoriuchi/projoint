@@ -13,15 +13,8 @@
 #'
 #' @return A \code{ggplot2} object.
 #'
-#' @examples
-#' \donttest{
-#' # Normally use: plot(fit_profile)
-#' # The helper is internal and called by plot.projoint_results():
-#' # dat <- reshape_projoint(exampleData1, .outcomes = c("choice1","choice2"))
-#' # fit_profile <- projoint(dat, .structure = "profile_level")
-#' # p <- projoint:::plot_projoint_profile_level(fit_profile, .estimates = "both")
-#' # print(p)
-#' }
+#' @keywords internal
+#' @noRd
 plot_projoint_profile_level <- function(
     x, 
     .estimates = "corrected",
@@ -33,9 +26,14 @@ plot_projoint_profile_level <- function(
   
   # check -------------------------------------------------------------------
   
-  if(!is(x, "projoint_results")){
-    stop("The x argument must be of class `projoint_results` from the `projoint` function.")
+  if (!inherits(x, "projoint_results")) {
+    stop("`x` must be a 'projoint_results' object returned by `projoint()`.", call. = FALSE)
   }
+  
+  .estimates <- match.arg(.estimates, c("corrected", "uncorrected", "both"))
+
+  if (!is.logical(.by_var) || length(.by_var) != 1) stop("`.by_var` must be TRUE or FALSE.", call. = FALSE)
+  
   
   .estimand = x$estimand
   
@@ -75,22 +73,22 @@ plot_projoint_profile_level <- function(
   out1 <- dplyr::left_join(
     x$estimates |> 
       dplyr::mutate(level_id = att_level_choose,
-                    estimates = case_when(str_detect(estimand, "uncorrected") ~ "uncorrected",
-                                          str_detect(estimand, "corrected") ~ "corrected")) |>
+                    estimates = dplyr::case_when(stringr::str_detect(estimand, "uncorrected") ~ "uncorrected",
+                                                 stringr::str_detect(estimand, "corrected") ~ "corrected")) |>
       dplyr::select(-estimand),
     x$labels |> 
       dplyr::select(attribute, level, level_id),
-    by = join_by(level_id)
+    by = dplyr::join_by(level_id)
   )
   
   attributes <-  x$labels |> 
     dplyr::select(attribute, level_id) |>
-    dplyr::mutate(level_id = str_replace_all(level_id, "\\d+$", "0")) |> 
+    dplyr::mutate(level_id = stringr::str_replace_all(level_id, "\\d+$", "0")) |> 
     dplyr::distinct()
   
   if (.estimand == "mm"){
     
-    out2 <- bind_rows(
+    out2 <- dplyr::bind_rows(
       out1,
       attributes |> dplyr::mutate(estimates = "corrected"),
       attributes |> dplyr::mutate(estimates = "uncorrected")
@@ -100,9 +98,9 @@ plot_projoint_profile_level <- function(
     
     levels1 <- x$labels |> 
       dplyr::select(attribute, level, level_id) |> 
-      dplyr::filter(str_detect(level_id, "level1$"))
+      dplyr::filter(stringr::str_detect(level_id, "level1$"))
     
-    out2 <- bind_rows(
+    out2 <- dplyr::bind_rows(
       out1,
       levels1 |> dplyr::mutate(estimates = "corrected"),
       levels1 |> dplyr::mutate(estimates = "uncorrected"),
@@ -119,26 +117,18 @@ plot_projoint_profile_level <- function(
   out3 <- dplyr::bind_rows(
     out2 |> 
       dplyr::filter(estimates == "corrected") |> 
-      dplyr::arrange(desc(level_id)) |> 
-      dplyr::mutate(order = row_number()),
+      dplyr::arrange(dplyr::desc(level_id)) |> 
+      dplyr::mutate(order = dplyr::row_number()),
     out2 |> 
       dplyr::filter(estimates == "uncorrected") |> 
-      dplyr::arrange(desc(level_id)) |> 
-      dplyr::mutate(order = row_number())
+      dplyr::arrange(dplyr::desc(level_id)) |> 
+      dplyr::mutate(order = dplyr::row_number())
   )
   
-  if (.estimates == "both"){
-    
-    out4 <- out3
-    
-  } else if (.estimates != "both"){
-    
-    out4 <- out3 |> dplyr::filter(estimates == .estimates)
-    
-  } else{
-    
-    stop("The .estimates argument should be corrected, uncorrected, or both.")
-    
+  out4 <- if (.estimates == "both") out3 else out3 |> dplyr::filter(estimates == .estimates)
+  
+  if (!nrow(out4)) {
+    stop("No data to plot for the requested options.", call. = FALSE)
   }
   
   # make labels for the vertical axis ---------------------------------------
@@ -149,7 +139,7 @@ plot_projoint_profile_level <- function(
                                             stringr::str_c("     ", level))) |> 
     dplyr::select(order, att_level_labels) |> 
     dplyr::distinct() |> 
-    pull(att_level_labels)
+    dplyr::pull(att_level_labels)
   
   # make a figure -----------------------------------------------------------
   
@@ -157,7 +147,7 @@ plot_projoint_profile_level <- function(
     ggplot2::geom_vline(xintercept = .xintercept,
                         linetype = "dashed", 
                         color = "gray") +
-    ggplot2::scale_y_continuous(breaks = 1:length(labels),
+    ggplot2::scale_y_continuous(breaks = seq_along(labels),
                                 labels = labels) +
     ggplot2::labs(y = NULL,
                   x = .xlabel) +
@@ -182,7 +172,7 @@ plot_projoint_profile_level <- function(
     
     if (.estimand == "mm"){
       
-      g + ggplot2::geom_pointrange(aes(x = estimate,
+      g + ggplot2::geom_pointrange(ggplot2::aes(x = estimate,
                                        xmin = conf.low,
                                        xmax = conf.high, 
                                        y = order), 
@@ -192,14 +182,14 @@ plot_projoint_profile_level <- function(
       
       g + ggplot2::geom_pointrange(data = out4 |> 
                                      dplyr::filter(!stringr::str_detect(level_id, "level1$")),
-                                   aes(x = estimate,
+                                   ggplot2::aes(x = estimate,
                                        xmin = conf.low,
                                        xmax = conf.high, 
                                        y = order), 
                                    na.rm = TRUE) +
         ggplot2::geom_pointrange(data = out4 |> 
                                    dplyr::filter(stringr::str_detect(level_id, "level1$")),
-                                 aes(x = estimate,
+                                 ggplot2::aes(x = estimate,
                                      xmin = estimate,
                                      xmax = estimate,
                                      y = order), 
@@ -213,7 +203,7 @@ plot_projoint_profile_level <- function(
     if (.estimand == "mm"){
       
       g + ggplot2::geom_pointrange(data = out4,
-                                   aes(x = estimate,
+                                   ggplot2::aes(x = estimate,
                                        xmin = conf.low,
                                        xmax = conf.high, 
                                        y = order,
@@ -227,7 +217,7 @@ plot_projoint_profile_level <- function(
       
       g + ggplot2::geom_pointrange(data = out4 |> 
                                      dplyr::filter(!stringr::str_detect(level_id, "level1$")),
-                                   aes(x = estimate,
+                                   ggplot2::aes(x = estimate,
                                        xmin = conf.low,
                                        xmax = conf.high, 
                                        y = order,
@@ -236,7 +226,7 @@ plot_projoint_profile_level <- function(
                                    na.rm = TRUE) +
         ggplot2::geom_pointrange(data = out4 |> 
                                    dplyr::filter(stringr::str_detect(level_id, "level1$")),
-                                 aes(x = estimate,
+                                 ggplot2::aes(x = estimate,
                                      xmin = estimate,
                                      xmax = estimate,
                                      y = order), 

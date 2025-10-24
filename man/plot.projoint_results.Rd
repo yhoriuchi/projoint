@@ -97,6 +97,6 @@ plot(fit)
 }
 }
 \seealso{
-\code{\link{projoint}}, \code{\link{plot_projoint_profile_level}},
+\code{\link{projoint}}, \code{plot_projoint_profile_level},
   \code{\link{plot_projoint_choice_level_mm}}
 }

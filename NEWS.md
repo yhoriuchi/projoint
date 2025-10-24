@@ -61,3 +61,22 @@
 - Fixed `reshape_projoint()` docs (`\textrightarrow` macro removed).
 - Standardized return values for `summary()`, `plot()`, and `print()` methods to match CRAN policies.
 
+# projoint 1.0.6 (2026-10-24)
+
+## CRAN maintenance update
+
+This release addresses all issues raised in the CRAN review and includes several small improvements and documentation updates.
+
+### Changes and fixes
+
+- **DESCRIPTION:** References now follow the required format `authors (year) <https://...>`.  
+- **Examples:** Removed commented-out code and replaced examples of unexported functions (`projoint_data()`) with runnable toy examples.  
+- **Internal helpers:** Suppressed documentation for unexported internal functions (`projoint_tau()`, `plot_projoint_profile_level()`) using `@noRd`.  
+- **Cross-references:** Fixed a missing link warning in `plot.projoint_results.Rd`.  
+- **make_projoint_data():** Fixed a minor error affecting input validation.  
+- **Vignettes and website:** Revised and expanded for clarity, examples, and reproducibility.  
+
+### Notes
+
+- `R CMD check --as-cran` runs cleanly with 0 errors, 0 warnings, and 2 expected NOTES (package size and timestamps).
+

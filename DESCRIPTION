@@ -1,8 +1,8 @@
 Package: projoint
 Type: Package
 Title: Conjoint Analysis with Reliability Correction and Visualization
-Version: 1.0.5
-Date: 2025-09-10
+Version: 1.0.6
+Date: 2025-10-24
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
 Authors@R: 
     c(
@@ -19,7 +19,7 @@ Authors@R:
 Author: Yusaku Horiuchi [aut, cre] (ORCID: <https://orcid.org/0000-0003-0295-4089>),
   Aaron Kaufman [aut] (ORCID: <https://orcid.org/0000-0003-3688-0428>),
   Gary King [aut] (ORCID: <https://orcid.org/0000-0002-5327-7631>)
-Description: Provides tools for analyzing data generated from conjoint survey experiments, a method widely used in the social sciences for studying multidimensional preferences. The package implements estimation of marginal means (MMs) and average marginal component effects (AMCEs), with corrections for measurement error. Methods include profile-level and choice-level estimators, bias correction using intra-respondent reliability (IRR), and visualization utilities. For details on the methodology, see Clayton, Horiuchi, Kaufman, King, and Komisarchik (American Journal of Political Science) <https://gking.harvard.edu/conjointE>.
+Description: Provides tools for analyzing data generated from conjoint survey experiments, a method widely used in the social sciences for studying multidimensional preferences. The package implements estimation of marginal means (MMs) and average marginal component effects (AMCEs), with corrections for measurement error. Methods include profile-level and choice-level estimators, bias correction using intra-respondent reliability (IRR), and visualization utilities. For details on the methodology, see Clayton, Horiuchi, Kaufman, King, and Komisarchik (2025) <https://gking.harvard.edu/conjointE>.
 Imports:
     dplyr (>= 1.1.2),
     readr,

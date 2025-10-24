@@ -1,7 +1,7 @@
 #' Summary method for projoint_tau objects
 #'
 #' Custom summary method for objects of class \code{projoint_tau}, typically created
-#' by \code{\link{predict_tau}} or related functions. Summarizes intra-respondent
+#' by \code{\link{projoint}} or related functions. Summarizes intra-respondent
 #' reliability (IRR) estimates.
 #'
 #' @param object An object of class \code{projoint_tau}.
@@ -13,11 +13,15 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Example workflow (assuming predict_tau is available):
-#' # tau_fit <- projoint_tau(exampleData1)
-#' # summary(tau_fit)
-#' }
+#' toy_tau <- structure(
+#'   list(irr = data.frame(predicted = 0.413, se = 0.02, n = 200)),
+#'   class = "projoint_tau"
+#' )
+#' summary(toy_tau)
 summary.projoint_tau <- function(object, ...) {
-  object$irr
+  irr <- object$irr
+  if (is.null(irr) || !is.data.frame(irr)) {
+    stop("Invalid 'projoint_tau' object: missing or invalid `irr`.", call. = FALSE)
+  }
+  irr
 }

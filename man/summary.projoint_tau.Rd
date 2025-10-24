@@ -17,13 +17,13 @@ A tibble (data frame) showing IRR estimates, typically by the number
 }
 \description{
 Custom summary method for objects of class \code{projoint_tau}, typically created
-by \code{\link{predict_tau}} or related functions. Summarizes intra-respondent
+by \code{\link{projoint}} or related functions. Summarizes intra-respondent
 reliability (IRR) estimates.
 }
 \examples{
-\donttest{
-# Example workflow (assuming predict_tau is available):
-# tau_fit <- projoint_tau(exampleData1)
-# summary(tau_fit)
-}
+toy_tau <- structure(
+  list(irr = data.frame(predicted = 0.413, se = 0.02, n = 200)),
+  class = "projoint_tau"
+)
+summary(toy_tau)
 }
