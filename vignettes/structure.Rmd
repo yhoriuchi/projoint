@@ -13,7 +13,7 @@ vignette: >
 
 💡 **Choice-level analysis is simpler, easier, and more powerful than profile-level analysis.**
 
-- 🧠 Conjoint designs began in market research and psychology, where respondents **rated** two profiles (e.g., products). Each rating was treated as an **independent observation**, creating the **profile-level design** with `2 × n` rows for `n` respondents. **Stacking profiles** is fine when measuring **latent partworth utilities**.  
+- 🧠 Conjoint designs began in market research and psychology, where respondents **rated** two profiles (e.g., products). Each rating was treated as an **independent observation**, creating the **profile-level design** with `2 × n` rows for `n` respondents. 
 - 🔍 Social scientists later used conjoint designs for **choices** instead of ratings but kept the same structure with a **single binary outcome**. This shift introduced **statistical and conceptual issues**.
 
 ---
