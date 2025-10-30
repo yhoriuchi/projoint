@@ -27,10 +27,10 @@ We intend for Projoint software to be the easiest and fastest way to design, fie
      ========================= -->
 
 <details style="margin-left: 25px; margin-bottom: -10px">
-<summary style="font-size: 18px;"><b>1. Install</b> the development version from GitHub</summary>
+<summary style="font-size: 18px;"><b>1. Install</b> the software</summary>
 Open R (or <a href="https://www.r-project.org/" target="_blank">install R</a> if you do not have it), and run the following command in your coding environment.
 ```r
-devtools::install_github("yhoriuchi/projoint")
+library("projoint")
 ```
 </details>
 
