@@ -6,6 +6,7 @@
 [![CRAN Status](https://www.r-pkg.org/badges/version/projoint)](https://CRAN.R-project.org/package=projoint)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/projoint)](https://cran.r-project.org/package=projoint)
 
+
 ### 🛠️ The One-Stop Conjoint Shop: **projoint**
 
 </div>
@@ -30,7 +31,7 @@ We intend for Projoint software to be the easiest and fastest way to design, fie
 <summary style="font-size: 18px;"><b>1. Install</b> the software</summary>
 Open R (or <a href="https://www.r-project.org/" target="_blank">install R</a> if you do not have it), and run the following command in your coding environment.
 ```r
-library("projoint")
+install.packages("projoint")
 ```
 </details>
 
