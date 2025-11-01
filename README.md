@@ -7,7 +7,7 @@
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/projoint)](https://cran.r-project.org/package=projoint)
 
 
-### 🛠️ The One-Stop Conjoint Shop: **projoint**
+### 🛠️ *Projoint*: The One-Stop Conjoint Shop
 
 </div>
 

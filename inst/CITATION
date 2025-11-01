@@ -14,19 +14,19 @@ bibentry(
   journal = "American Journal of Political Science",
   year    = "2025",
   note    = "Forthcoming",
-  url     = "https://gking.harvard.edu/files/gking/files/conerr.pdf"
+  url     = "https://gking.harvard.edu/conjointE"
 )
 
 ## Software / package
 bibentry(
   bibtype = "Manual",
-  title   = "projoint: The One Stop Conjoint Shop",
+  title   = "Projoint: The One Stop Conjoint Shop",
   author  = c(
     person("Yusaku", "Horiuchi"),
     person("Aaron R.", "Kaufman"),
     person("Gary", "King")
   ),
   year    = "2025",
-  note    = "R package version 1.0.5",
+  note    = "R package version 1.0.6",
   url     = "https://yhoriuchi.github.io/projoint/"
 )
