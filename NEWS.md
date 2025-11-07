@@ -61,7 +61,7 @@
 - Fixed `reshape_projoint()` docs (`\textrightarrow` macro removed).
 - Standardized return values for `summary()`, `plot()`, and `print()` methods to match CRAN policies.
 
-# projoint 1.0.6 (2026-10-24)
+# projoint 1.0.6 (2025-10-24)
 
 ## CRAN maintenance update
 
