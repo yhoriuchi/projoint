@@ -21,7 +21,7 @@ library(patchwork)
 
 Choice-level analysis opens the door to many **new research questions** that traditional profile-level analysis often overlooks. Below, we demonstrate how to estimate **deeper quantities** and **compare subgroups** effectively.
 
-Depending on your objectives, you may want to reorganize the data in a `projoint_data` object. The helper function below is internal to the package, but you can call it explicitly in your script.”
+Depending on your objectives, you may want to reorganize the data in a `projoint_data` object. The helper function below is internal to the package, but you can call it explicitly in your script.
 ```{r}
 projoint_data <- function(labels, data) {
   structure(
