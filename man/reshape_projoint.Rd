@@ -118,7 +118,7 @@ must be the last element of \code{.outcomes}.
 data(exampleData1)
 outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
 reshaped <- reshape_projoint(exampleData1, outcomes)
-dplyr::count(reshaped$data, task, profile)  # should be 2 per task
+dplyr::count(reshaped$data, task, profile) # should be 2 per task
 }
 
 }

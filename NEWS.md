@@ -80,3 +80,18 @@ This release addresses all issues raised in the CRAN review and includes several
 
 - `R CMD check --as-cran` runs cleanly with 0 errors, 0 warnings, and 2 expected NOTES (package size and timestamps).
 
+# projoint 1.1.0 (2026-02-16)
+
+## Bug fixes
+
+- Fixed ``reshape_projoint()'' to handle repeated-task reshaping more robustly when tasks/outcomes are not in a simple 1..T order. The function now standardizes the mapping between the last outcome (the repeated measure) and the inferred base task, reducing misalignment in the ``task'' variable for some inputs.
+
+## Improvements
+
+- Added stricter input/design validation in ``reshape_projoint()'':
+  - Checks that each base task contains exactly the two expected profiles (1 and 2) in the K-code design and aborts with an informative message otherwise.
+  - When ``.repeated = TRUE'', checks that each respondent provides the expected number of outcomes and aborts if repeated outcomes are missing.
+
+## Internal changes
+
+- Refactored the implementation of ``reshape_projoint()'' into a dedicated source file (``R/reshape_projoint.R'') with no changes to the exported function name or arguments.

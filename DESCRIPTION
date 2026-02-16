@@ -1,8 +1,8 @@
 Package: projoint
 Type: Package
 Title: Conjoint Analysis with Reliability Correction and Visualization
-Version: 1.0.6
-Date: 2025-10-24
+Version: 1.1.0
+Date: 2026-02-16
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
 Authors@R: 
     c(
@@ -47,11 +47,10 @@ Suggests:
 VignetteBuilder: knitr
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Config/testthat/edition: 3
 URL: https://yhoriuchi.github.io/projoint/
 Depends: 
     R (>= 4.1.0)
 LazyData: false
 BugReports: https://github.com/yhoriuchi/projoint/issues
-
