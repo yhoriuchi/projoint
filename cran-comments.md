@@ -1,22 +1,16 @@
 ## Test environments
-- macOS (R 4.4.x), local
-- Windows (win-builder devel/release)
-- Ubuntu 22.04 (GitHub Actions)
+- macOS (R 4.5.2), local
+- Windows (win-builder: R-release, R-devel)
+- Ubuntu 22.04 (GitHub Actions, R-release)
 
 ## R CMD check results
 0 errors | 0 warnings | 1 note
 
-* NOTE (installed size ~7 MB): The package includes small example data and vignettes. 
-  Data files are xz-compressed and we avoid shipping prebuilt docs. 
-  Remaining files are minimal and needed for examples and documentation.
+* NOTE: installed size is ~7 MB.
+  The package includes example data and vignettes used in documentation and runnable examples.
+  Data files are compressed; no unnecessary large files are shipped.
 
-## Changes since 1.0.4
-This resubmission addresses all issues raised by CRAN:
-
-- **DESCRIPTION**: expanded to provide a full paragraph, including details of implemented functionality and methods. Added a reference in the requested format.
-- **Documentation**: all exported methods now include `\value{}` sections describing the structure and meaning of return values (or noting when none is returned).
-- **Examples**: removed commented-out example code. Added lightweight runnable examples, with longer ones wrapped in `\donttest{}`.
-- **CITATION**: updated to show the correct package version (1.0.5).
-- **Minor fixes**: vignette examples cleaned, plotting examples simplified to avoid use of unexported helpers.
-
-No other issues remain; all CRAN checks pass locally and on win-builder.
+## Changes since 1.0.5
+- Fixed a bug in ``reshape_projoint()'' related to repeated-task reshaping / task-outcome alignment for some inputs.
+- Added additional validation checks in ``reshape_projoint()'' to fail fast with clearer messages when the supplied design/outcomes are incomplete.
+- Internal refactor only: moved implementation into ``R/reshape_projoint.R''; no changes to exported API.
