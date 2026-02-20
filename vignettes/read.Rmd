@@ -250,6 +250,10 @@ save_labels(out1, "temp/labels_original.csv")
 4. Reload labels:
 
 ```{r, eval=FALSE}
+out1_arranged <- read_labels(out1, "temp/labels_arranged.csv")
+```
+
+```{r, eval=TRUE, eco=FALSE}
 data(out1_arranged, package = "projoint")
 ```
 
