@@ -57,7 +57,7 @@ out1_arranged$labels
 # 1) Data: keep only the two joint profiles of interest
 data("out1_arranged")
 d1 <- out1_arranged$data
-d2 <- d1 |> 
+d2 <- d1 |>
   mutate(y1 = case_when(
     # Low housing cost, high crime
     att1 == "att1:level1" & att6 == "att6:level2" ~ 1,
@@ -67,7 +67,7 @@ d2 <- d1 |>
     # High housing cost, low crime
     att1 == "att1:level3" & att6 == "att6:level1" ~ 1,
     TRUE ~ 0
-  )) |> 
+  )) |>
   filter(y1 == 1 | y0 == 1)
 
 # 2) Labels: rename only the two att1 levels to reflect the joint trade-offs

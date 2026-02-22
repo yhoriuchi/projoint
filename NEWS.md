@@ -95,3 +95,12 @@ This release addresses all issues raised in the CRAN review and includes several
 ## Internal changes
 
 - Refactored the implementation of ``reshape_projoint()'' into a dedicated source file (``R/reshape_projoint.R'') with no changes to the exported function name or arguments.
+
+# projoint 1.1.1
+
+## Bug fixes
+- Fixed issue in `organize_data()` where profile-varying columns (e.g., `selected_repeated`) were incorrectly included in `pivot_wider(id_cols)`, which could drop respondent-level covariates (e.g., weights) and cause `.weights_2` to fail in `choice_level` estimation.
+- Improved cross-attribute pairing logic in choice-level QOI filtering.
+- Added regression tests for `.weights_1` and `.weights_2`.
+
+
