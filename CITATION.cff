@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use projoint, please cite it using the metadata below."
 type: software
 title: "projoint: Conjoint Analysis with Reliability Correction and Visualization"
-version: 1.1.1
-date-released: 2026-02-22
+version: 1.1.2
+date-released: 2026-07-15
 authors:
   - family-names: Horiuchi
     given-names: Yusaku

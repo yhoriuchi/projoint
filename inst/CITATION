@@ -14,7 +14,7 @@ bibentry(
     person("Gary", "King")
   ),
   year         = "2026",
-  note         = "R package version 1.1.1",
+  note         = "R package version 1.1.2",
   organization = "Comprehensive R Archive Network (CRAN)",
   doi          = "10.32614/CRAN.package.projoint",
   url          = "https://CRAN.R-project.org/package=projoint"

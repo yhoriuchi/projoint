@@ -11,6 +11,7 @@
 ^desktop\.ini$
 ^CODE_OF_CONDUCT\.md$
 ^CITATION\.cff$
+^project_history$
 ^doc$
 ^Meta$
 ^doc/

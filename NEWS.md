@@ -103,4 +103,12 @@ This release addresses all issues raised in the CRAN review and includes several
 - Improved cross-attribute pairing logic in choice-level QOI filtering.
 - Added regression tests for `.weights_1` and `.weights_2`.
 
+# projoint 1.1.2 (2026-07-15)
+
+## Citation and website
+
+- Updated the recommended software citation to use the canonical CRAN record and DOI, the current package title, and stable BibTeX keys.
+- Added `CITATION.cff` for GitHub's “Cite this repository” panel and citation guidance to the package website.
+- Corrected ORCID metadata so pkgdown renders valid author links.
+- Added regression coverage to keep the package citation aligned with the released version.
 

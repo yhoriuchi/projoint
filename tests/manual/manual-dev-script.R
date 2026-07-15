@@ -25,16 +25,16 @@ devtools::check(args = "--as-cran") # CRAN-like check
 devtools::build()
 
 # Step 2. Inspect the tarball
-untar("../projoint_1.0.6.tar.gz", list = TRUE)
+untar("../projoint_1.1.2.tar.gz", list = TRUE)
 
 # Step 3. Test the tarball directly
-devtools::check_built("../projoint_1.0.5.tar.gz")
+devtools::check_built("../projoint_1.1.2.tar.gz")
 
 # # Step 4. Optional local install test
-# install.packages("../projoint_1.0.6.tar.gz", repos = NULL, type = "source")
+# install.packages("../projoint_1.1.2.tar.gz", repos = NULL, type = "source")
 
 # # sanity-check inside the tarball
-# ct <- utils::untar("../projoint_1.0.5.tar.gz", list = TRUE)
+# ct <- utils::untar("../projoint_1.1.2.tar.gz", list = TRUE)
 # desc_rel <- ct[grepl("/DESCRIPTION$", ct)][1]
 # tmp <- tempfile(); dir.create(tmp)
 # utils::untar("../projoint_1.0.5.tar.gz", files = desc_rel, exdir = tmp)

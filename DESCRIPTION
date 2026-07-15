@@ -1,8 +1,8 @@
 Package: projoint
 Type: Package
 Title: Conjoint Analysis with Reliability Correction and Visualization
-Version: 1.1.1
-Date: 2026-02-22
+Version: 1.1.2
+Date: 2026-07-15
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
 Authors@R: 
     c(
