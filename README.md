@@ -139,6 +139,14 @@ plot(output)
 
 ---
 
+## Cite projoint
+
+Please cite **projoint** whenever you use it. Run `citation("projoint")` in R for ready-to-use text and BibTeX, or use the [package citation page](https://yhoriuchi.github.io/projoint/authors.html#citation). The canonical package record is available from [CRAN](https://CRAN.R-project.org/package=projoint) and its DOI is [10.32614/CRAN.package.projoint](https://doi.org/10.32614/CRAN.package.projoint).
+
+If your analysis uses the package’s measurement-error correction method, please cite the accompanying [methodological article](https://gking.harvard.edu/conjointE) as well. GitHub’s **Cite this repository** panel uses the same package metadata from [CITATION.cff](https://github.com/yhoriuchi/projoint/blob/master/CITATION.cff).
+
+---
+
 ## 📦 Additional Info
 
 <details style="margin-left: 25px; margin-bottom: 5px">
@@ -157,4 +165,3 @@ plot(output)
 ---
 
 <p align="center" style="font-size: 18px;">✨ Thank you for using projoint! ✨</p>
-

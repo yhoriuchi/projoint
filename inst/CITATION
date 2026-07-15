@@ -1,8 +1,29 @@
-citHeader("To cite projoint in publications, please use:")
+citHeader(paste0(
+  "Please cite the projoint package whenever you use it. If your analysis ",
+  "uses its measurement-error correction method, cite the methodological article as well."
+))
 
-## Article
+## Software / package (recommended citation)
+bibentry(
+  bibtype = "Manual",
+  key     = "projoint",
+  title   = "projoint: Conjoint Analysis with Reliability Correction and Visualization",
+  author  = c(
+    person("Yusaku", "Horiuchi"),
+    person("Aaron R.", "Kaufman"),
+    person("Gary", "King")
+  ),
+  year         = "2026",
+  note         = "R package version 1.1.1",
+  organization = "Comprehensive R Archive Network (CRAN)",
+  doi          = "10.32614/CRAN.package.projoint",
+  url          = "https://CRAN.R-project.org/package=projoint"
+)
+
+## Methodological article (cite when using the correction method)
 bibentry(
   bibtype = "Article",
+  key     = "ClaytonEtAl2025",
   title   = "Correcting Measurement Error Bias in Conjoint Survey Experiments",
   author  = c(
     person("Katherine", "Clayton"),
@@ -15,18 +36,4 @@ bibentry(
   year    = "2025",
   note    = "Forthcoming",
   url     = "https://gking.harvard.edu/conjointE"
-)
-
-## Software / package
-bibentry(
-  bibtype = "Manual",
-  title   = "Projoint: The One Stop Conjoint Shop",
-  author  = c(
-    person("Yusaku", "Horiuchi"),
-    person("Aaron R.", "Kaufman"),
-    person("Gary", "King")
-  ),
-  year    = "2025",
-  note    = "R package version 1.0.6",
-  url     = "https://yhoriuchi.github.io/projoint/"
 )

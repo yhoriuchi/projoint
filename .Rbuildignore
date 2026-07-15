@@ -10,6 +10,7 @@
 ^data-raw$
 ^desktop\.ini$
 ^CODE_OF_CONDUCT\.md$
+^CITATION\.cff$
 ^doc$
 ^Meta$
 ^doc/

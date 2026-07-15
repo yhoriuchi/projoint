@@ -8,13 +8,13 @@ Authors@R:
     c(
       person("Yusaku", "Horiuchi", email = "yusaku.horiuchi@gmail.com",
              role = c("aut", "cre"),
-             comment = c(ORCID = "https://orcid.org/0000-0003-0295-4089")),
+             comment = c(ORCID = "0000-0003-0295-4089")),
       person("Aaron", "Kaufman", email = "aaronkaufman@nyu.edu",
              role = "aut",
-             comment = c(ORCID = "https://orcid.org/0000-0003-3688-0428")),
+             comment = c(ORCID = "0000-0003-3688-0428")),
       person("Gary", "King", email = "king@harvard.edu",
              role = "aut",
-             comment = c(ORCID = "https://orcid.org/0000-0002-5327-7631"))
+             comment = c(ORCID = "0000-0002-5327-7631"))
     )
 Author: Yusaku Horiuchi [aut, cre] (ORCID: <https://orcid.org/0000-0003-0295-4089>),
   Aaron Kaufman [aut] (ORCID: <https://orcid.org/0000-0003-3688-0428>),

@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use projoint, please cite it using the metadata below."
+type: software
+title: "projoint: Conjoint Analysis with Reliability Correction and Visualization"
+version: 1.1.1
+date-released: 2026-02-22
+authors:
+  - family-names: Horiuchi
+    given-names: Yusaku
+    orcid: https://orcid.org/0000-0003-0295-4089
+  - family-names: Kaufman
+    given-names: Aaron R.
+    orcid: https://orcid.org/0000-0003-3688-0428
+  - family-names: King
+    given-names: Gary
+    orcid: https://orcid.org/0000-0002-5327-7631
+identifiers:
+  - type: doi
+    value: 10.32614/CRAN.package.projoint
+    description: "DOI for the package's CRAN record"
+license: MIT
+repository-code: https://github.com/yhoriuchi/projoint
+url: https://CRAN.R-project.org/package=projoint
