@@ -12,6 +12,8 @@
 ^CODE_OF_CONDUCT\.md$
 ^CITATION\.cff$
 ^project_history$
+^AGENTS\.md$
+^tmp$
 ^doc$
 ^Meta$
 ^doc/

@@ -4,14 +4,19 @@
 \alias{read_Qualtrics}
 \title{Read and re-format a Qualtrics CSV (choice text)}
 \usage{
-read_Qualtrics(.file)
+read_Qualtrics(.file, .metadata_rows = NULL)
 }
 \arguments{
 \item{.file}{A character string giving the path to a Qualtrics CSV file.}
+
+\item{.metadata_rows}{Number of metadata rows after the CSV header. The
+  default, \code{NULL}, detects current Qualtrics exports (question text plus
+  an \code{ImportId} row) and legacy exports (question text only). Supply a
+  non-negative integer to override detection.}
 }
 \value{
-A data frame where column names are preserved from the Qualtrics export.
-  The first two rows of Qualtrics metadata are skipped automatically.
+A tibble containing response rows only. Column names and physical
+  column order are preserved from the Qualtrics export.
 }
 \description{
 Reads a CSV file exported from Qualtrics (with "Use choice text" enabled) and
@@ -23,7 +28,7 @@ returns a data frame formatted for downstream processing with
 # Write a tiny dummy Qualtrics-style CSV to a temp file
 tmp <- tempfile(fileext = ".csv")
 readr::write_csv(
-  data.frame(Q1 = c("Choice Text", "Choice Text", "A", "B")),
+  data.frame(Q1 = c("Choice Text", "{\"ImportId\":\"QID1\"}", "A", "B")),
   tmp
 )
 # Read it back in

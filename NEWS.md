@@ -112,3 +112,28 @@ This release addresses all issues raised in the CRAN review and includes several
 - Corrected ORCID metadata so pkgdown renders valid author links.
 - Added regression coverage to keep the package citation aligned with the released version.
 
+# projoint 1.1.3 (2026-07-31)
+
+## Choice-mapping safeguards
+
+- Added `.choice_map` to `reshape_projoint()` so analysts can record an
+  explicit, auditable mapping from exported choice labels or codes to profiles
+  1 and 2.
+- Choice parsing now supports full multi-character suffixes and stops on
+  unrecognized, ambiguous, case-mismatched, or whitespace-altered labels.
+- Missing choices now stop by default. They may be retained as `NA` only with
+  `.allow_missing_choices = TRUE`.
+- Added validation for duplicate or missing respondent IDs, malformed outcome
+  and covariate specifications, choice mappings, and logical arguments.
+- Added post-reshape integrity checks requiring exactly one selected profile
+  for each observed respondent-task choice.
+- Added regression tests confirming that declared task mapping is unchanged
+  when Qualtrics response columns are physically reordered.
+
+## Qualtrics import
+
+- Updated `read_Qualtrics()` to detect both current exports with an `ImportId`
+  metadata row and legacy exports with only question-text metadata.
+- Preserved the exact CSV variable names and physical column order, added an
+  explicit `.metadata_rows` override, and added regression tests for current,
+  legacy, and metadata-free files.

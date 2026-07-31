@@ -34,7 +34,11 @@ The following instructions apply to choice-level data. What if you have profile-
 > - If you have a repeated task, its outcome must be the **last element**.  
 > - For base tasks (all but last), the function reads the **digits** in each name as the task id (e.g., `"choice4"`, `"Q4"`, `"task04"` → task 4).  
 > - The **repeated base task** is inferred from the **first base outcome’s digits**. The repeated outcome itself **need not** contain digits—only its position (last) matters.  
-> - Outcome strings should end with your choice labels; by default we parse the **last character** and expect `"A"`/`"B"`. If your survey uses `"1"`/`"2"` (or other endings), set `.choice_labels` accordingly.
+> - Outcome strings must end with verified choice labels. Prefer an explicit
+>   map such as `.choice_map = c("A" = 1, "B" = 2)`. Verify this mapping from
+>   the survey instrument or QSF file; it cannot be inferred from the CSV.
+> - Invalid labels, trailing whitespace, and missing choices stop with an
+>   informative error. Use `.allow_missing_choices = TRUE` only after review.
 
 **Examples**
 

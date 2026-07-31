@@ -85,9 +85,16 @@ dat <- read_Qualtrics("your_file.csv")
 ```r
 dat <- reshape_projoint(
   .dataframe = dat,
-  .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped")
+  .outcomes = c(paste0("choice", 1:8), "choice1_repeated_flipped"),
+  .choice_map = c("A" = 1, "B" = 2)
 )
 ```
+
+Verify the response-label mapping against the Qualtrics instrument or QSF file.
+Neither the CSV nor **projoint** can infer whether an exported label or numeric
+recode refers to profile 1 or profile 2. Invalid, ambiguous, or missing choices
+now stop before estimation; missing choices can be retained only with the
+explicit `.allow_missing_choices = TRUE` option.
 
 * Follow the <a href="https://yhoriuchi.github.io/projoint/articles/read.html" target="_blank">step-by-step guide</a> to learn how to read and reshape data for conjoint analysis.
 </details>

@@ -36,10 +36,17 @@
 #'
 #' \strong{Choice parsing}
 #' \itemize{
-#'   \item The selected profile is parsed from the \emph{last character} of each outcome string
-#'         and matched to \code{.choice_labels}. Ensure outcomes end with these labels (e.g.,
-#'         \code{"Candidate A"}/\code{"Candidate B"}). If outcomes are numeric or differently
-#'         formatted, pre-process or adjust \code{.choice_labels} accordingly.
+#'   \item The selected profile is parsed from the end of each outcome string and
+#'         matched to \code{.choice_labels} or \code{.choice_map}. Matching is
+#'         case-sensitive and uses the full supplied label, so multi-character
+#'         labels are supported.
+#'   \item The package cannot infer whether a Qualtrics code or displayed label
+#'         refers to profile 1 or profile 2. Analysts must verify that mapping
+#'         from the survey instrument or QSF file. Use \code{.choice_map} to make
+#'         the verified mapping explicit and auditable.
+#'   \item Unrecognized, ambiguous, or whitespace-altered choice values cause an
+#'         error. Missing choices also cause an error unless
+#'         \code{.allow_missing_choices = TRUE} is supplied explicitly.
 #' }
 #'
 #' \strong{Output}
@@ -73,7 +80,14 @@
 #' @param .outcomes Character vector of outcome column names in the \emph{asked order}.
 #'   If a repeated task is used, its outcome must be the \emph{last element}.
 #' @param .choice_labels Character vector (default \code{c("A","B")}) giving the two labels that
-#'   appear at the end of the outcome strings.
+#'   appear at the end of the outcome strings. Position defines profile identity:
+#'   the first label means profile 1 and the second means profile 2. Ignored when
+#'   \code{.choice_map} is supplied.
+#' @param .choice_map Optional named numeric vector that explicitly maps response
+#'   suffixes to profile numbers, for example \code{c("Candidate A" = 1,
+#'   "Candidate B" = 2)} or \code{c("1" = 1, "2" = 2)}. It must map exactly two
+#'   unique labels to profiles 1 and 2. The mapping must be verified against the
+#'   survey instrument; it cannot be inferred from the CSV alone.
 #' @param .alphabet Single character (default \code{"K"}) indicating the Qualtrics prefix.
 #' @param .idvar Character (default \code{"ResponseId"}) indicating the respondent id column.
 #' @param .repeated Logical (default \code{TRUE}) indicating whether a repeated task is present.
@@ -82,6 +96,9 @@
 #' @param .covariates Optional character vector of respondent-level covariate column names to carry through.
 #' @param .fill Logical (default \code{FALSE}). If \code{TRUE}, fills \code{agree} within respondent
 #'   across tasks as described under “Filling agreement”.
+#' @param .allow_missing_choices Logical (default \code{FALSE}). If \code{FALSE},
+#'   any missing outcome stops with an error. If \code{TRUE}, missing choices are
+#'   retained as \code{NA} for both profiles in the affected task.
 #'
 #' @return A \code{projoint_data} object with elements \code{$labels} and \code{$data}; see Details.
 #'
@@ -108,13 +125,139 @@ reshape_projoint <- function(
   .dataframe,
   .outcomes,
   .choice_labels = c("A", "B"),
+  .choice_map = NULL,
   .alphabet = "K",
   .idvar = "ResponseId",
   .repeated = TRUE,
   .flipped = TRUE,
   .covariates = NULL,
-  .fill = FALSE
+  .fill = FALSE,
+  .allow_missing_choices = FALSE
 ) {
+  # Validate arguments -----------------------------------------------------
+
+  if (!is.data.frame(.dataframe)) {
+    stop("`.dataframe` must be a data frame.", call. = FALSE)
+  }
+
+  if (!is.character(.outcomes) || length(.outcomes) == 0L ||
+      anyNA(.outcomes) || any(.outcomes == "") || anyDuplicated(.outcomes)) {
+    stop("`.outcomes` must contain unique, non-missing column names.", call. = FALSE)
+  }
+
+  missing_outcomes <- setdiff(.outcomes, names(.dataframe))
+  if (length(missing_outcomes) > 0L) {
+    stop(
+      sprintf(
+        "Outcome column(s) not found: %s.",
+        paste(missing_outcomes, collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  if (!is.character(.idvar) || length(.idvar) != 1L ||
+      is.na(.idvar) || !nzchar(.idvar) || !.idvar %in% names(.dataframe)) {
+    stop("`.idvar` must name one respondent identifier column.", call. = FALSE)
+  }
+
+  respondent_ids <- .dataframe[[.idvar]]
+  if (anyNA(respondent_ids)) {
+    stop("The respondent identifier contains missing values.", call. = FALSE)
+  }
+  if (anyDuplicated(respondent_ids)) {
+    stop("The respondent identifier must be unique; duplicate IDs were found.", call. = FALSE)
+  }
+
+  if (!is.character(.alphabet) || length(.alphabet) != 1L ||
+      is.na(.alphabet) || !nzchar(.alphabet)) {
+    stop("`.alphabet` must be one non-missing character string.", call. = FALSE)
+  }
+
+  logical_arguments <- list(
+    .repeated = .repeated,
+    .flipped = .flipped,
+    .fill = .fill,
+    .allow_missing_choices = .allow_missing_choices
+  )
+  invalid_logical <- vapply(
+    logical_arguments,
+    function(x) !is.logical(x) || length(x) != 1L || is.na(x),
+    logical(1)
+  )
+  if (any(invalid_logical)) {
+    stop(
+      sprintf(
+        "%s must be either TRUE or FALSE.",
+        names(logical_arguments)[which(invalid_logical)[1]]
+      ),
+      call. = FALSE
+    )
+  }
+
+  if (.repeated && length(.outcomes) < 2L) {
+    stop("A repeated design requires at least one base outcome and one repeated outcome.", call. = FALSE)
+  }
+
+  if (!is.null(.covariates)) {
+    if (!is.character(.covariates) || anyNA(.covariates) || anyDuplicated(.covariates)) {
+      stop("`.covariates` must contain unique, non-missing column names.", call. = FALSE)
+    }
+    missing_covariates <- setdiff(.covariates, names(.dataframe))
+    if (length(missing_covariates) > 0L) {
+      stop(
+        sprintf(
+          "Covariate column(s) not found: %s.",
+          paste(missing_covariates, collapse = ", ")
+        ),
+        call. = FALSE
+      )
+    }
+  }
+
+  if (is.null(.choice_map)) {
+    if (!is.character(.choice_labels) || length(.choice_labels) != 2L ||
+        anyNA(.choice_labels) || any(!nzchar(.choice_labels)) ||
+        anyDuplicated(.choice_labels)) {
+      stop("`.choice_labels` must contain exactly two unique, non-missing labels.", call. = FALSE)
+    }
+    choice_tokens <- .choice_labels
+    choice_profiles <- c(1L, 2L)
+  } else {
+    valid_choice_map <-
+      is.numeric(.choice_map) &&
+      length(.choice_map) == 2L &&
+      !is.null(names(.choice_map)) &&
+      !anyNA(.choice_map) &&
+      !anyNA(names(.choice_map)) &&
+      all(nzchar(names(.choice_map))) &&
+      !anyDuplicated(names(.choice_map)) &&
+      setequal(as.integer(.choice_map), c(1L, 2L)) &&
+      all(.choice_map == as.integer(.choice_map))
+
+    if (!valid_choice_map) {
+      stop(
+        "`.choice_map` must be a named numeric vector mapping two unique labels to profiles 1 and 2.",
+        call. = FALSE
+      )
+    }
+    choice_tokens <- names(.choice_map)
+    choice_profiles <- as.integer(.choice_map)
+  }
+
+  if (any(trimws(choice_tokens) != choice_tokens)) {
+    stop("Choice labels must not contain leading or trailing whitespace.", call. = FALSE)
+  }
+
+  ambiguous_tokens <- outer(
+    choice_tokens,
+    choice_tokens,
+    Vectorize(function(x, y) x != y && endsWith(x, y))
+  )
+  if (any(ambiguous_tokens)) {
+    stop("Choice labels must not be suffixes of one another.", call. = FALSE)
+  }
+
   # number of tasks (including the repeated task)
   n_tasks_all <- length(.outcomes)
 
@@ -123,16 +266,6 @@ reshape_projoint <- function(
     n_tasks <- n_tasks_all - 1
   } else {
     n_tasks <- n_tasks_all
-  }
-
-  # repeated_task recommended
-  if (!is.logical(.repeated)) {
-    stop("The .repeated argument must be either TRUE or FALSE.")
-  }
-
-  # check the .fill argument
-  if (!is.logical(.fill)) {
-    stop("The .fill argument must be either TRUE or FALSE.")
   }
 
   # initial data cleaning
@@ -296,15 +429,67 @@ reshape_projoint <- function(
   #     dplyr::mutate(task = ifelse(outcome_qnum == .outcomes[i], i, task))
   # }
 
-  # further cleaning of the response data frame
+  # Parse and validate the profile mapping ---------------------------------
+
+  response_values <- as.character(responses$response)
+  missing_choice <- is.na(response_values)
+
+  choice_matches <- vapply(
+    choice_tokens,
+    function(token) {
+      matched <- endsWith(response_values, token)
+      matched[is.na(matched)] <- FALSE
+      matched
+    },
+    logical(length(response_values))
+  )
+  if (is.null(dim(choice_matches))) {
+    choice_matches <- matrix(choice_matches, ncol = length(choice_tokens))
+  }
+
+  match_count <- rowSums(choice_matches)
+  invalid_choice <- !missing_choice & match_count != 1L
+
+  if (any(invalid_choice)) {
+    invalid_values <- unique(response_values[invalid_choice])
+    shown_values <- utils::head(invalid_values, 5L)
+    stop(
+      sprintf(
+        paste0(
+          "Outcome values must end with exactly one verified choice label (%s). ",
+          "Invalid value(s): %s%s. Check case and trailing whitespace."
+        ),
+        paste(sprintf("'%s'", choice_tokens), collapse = ", "),
+        paste(sprintf("'%s'", shown_values), collapse = ", "),
+        if (length(invalid_values) > length(shown_values)) " (additional values omitted)" else ""
+      ),
+      call. = FALSE
+    )
+  }
+
+  if (any(missing_choice) && !.allow_missing_choices) {
+    missing_columns <- unique(responses$outcome_qnum[missing_choice])
+    stop(
+      sprintf(
+        paste0(
+          "Missing choices were found in %s row(s), including outcome column(s): %s. ",
+          "Set `.allow_missing_choices = TRUE` only after confirming that retaining them is appropriate."
+        ),
+        sum(missing_choice),
+        paste(missing_columns, collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  selected_profile <- rep(NA_integer_, length(response_values))
+  valid_choice <- !missing_choice & match_count == 1L
+  selected_profile[valid_choice] <- choice_profiles[
+    max.col(choice_matches[valid_choice, , drop = FALSE], ties.method = "first")
+  ]
+
   response_cleaned <- responses |>
-    dplyr::mutate(
-      selected = str_extract(response, ".$"),
-      selected = dplyr::case_when(
-        selected == .choice_labels[1] ~ 1,
-        selected == .choice_labels[2] ~ 2
-      )
-    ) |>
+    dplyr::mutate(selected = selected_profile) |>
     dplyr::select(-response, -outcome_qnum)
 
   if (.repeated) {
@@ -354,6 +539,50 @@ reshape_projoint <- function(
   } else if (.repeated == FALSE) {
     out <- out1 |>
       dplyr::mutate(agree = NA)
+  }
+
+  # Verify one selected profile per observed choice ------------------------
+
+  choice_integrity <- out |>
+    dplyr::group_by(id, task) |>
+    dplyr::summarise(
+      n_profiles = dplyr::n_distinct(profile),
+      n_observed = sum(!is.na(selected)),
+      n_selected = sum(selected, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    dplyr::filter(
+      .data$n_profiles != 2L |
+        !(.data$n_observed == 0L |
+          (.data$n_observed == 2L & .data$n_selected == 1L))
+    )
+
+  if (nrow(choice_integrity) > 0L) {
+    stop(
+      "Choice integrity check failed: each observed respondent-task must have exactly one selected profile.",
+      call. = FALSE
+    )
+  }
+
+  if (.repeated) {
+    repeated_integrity <- out |>
+      dplyr::group_by(id, task) |>
+      dplyr::summarise(
+        n_observed = sum(!is.na(selected_repeated)),
+        n_selected = sum(selected_repeated, na.rm = TRUE),
+        .groups = "drop"
+      ) |>
+      dplyr::filter(
+        !(.data$n_observed == 0L |
+          (.data$n_observed == 2L & .data$n_selected == 1L))
+      )
+
+    if (nrow(repeated_integrity) > 0L) {
+      stop(
+        "Repeated-choice integrity check failed: each observed repeated task must have exactly one selected profile.",
+        call. = FALSE
+      )
+    }
   }
 
   # Make a data frame that includes respondent covariates -------------------

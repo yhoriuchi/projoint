@@ -8,12 +8,14 @@ reshape_projoint(
   .dataframe,
   .outcomes,
   .choice_labels = c("A", "B"),
+  .choice_map = NULL,
   .alphabet = "K",
   .idvar = "ResponseId",
   .repeated = TRUE,
   .flipped = TRUE,
   .covariates = NULL,
-  .fill = FALSE
+  .fill = FALSE,
+  .allow_missing_choices = FALSE
 )
 }
 \arguments{
@@ -23,7 +25,15 @@ reshape_projoint(
 If a repeated task is used, its outcome must be the \emph{last element}.}
 
 \item{.choice_labels}{Character vector (default \code{c("A","B")}) giving the two labels that
-appear at the end of the outcome strings.}
+appear at the end of the outcome strings. Position defines profile identity:
+the first label means profile 1 and the second means profile 2. Ignored when
+\code{.choice_map} is supplied.}
+
+\item{.choice_map}{Optional named numeric vector that explicitly maps response
+suffixes to profile numbers, for example \code{c("Candidate A" = 1,
+"Candidate B" = 2)} or \code{c("1" = 1, "2" = 2)}. It must map exactly two
+unique labels to profiles 1 and 2. The mapping must be verified against the
+survey instrument; it cannot be inferred from the CSV alone.}
 
 \item{.alphabet}{Single character (default \code{"K"}) indicating the Qualtrics prefix.}
 
@@ -38,6 +48,10 @@ before agreement is computed.}
 
 \item{.fill}{Logical (default \code{FALSE}). If \code{TRUE}, fills \code{agree} within respondent
 across tasks as described under “Filling agreement”.}
+
+\item{.allow_missing_choices}{Logical (default \code{FALSE}). If \code{FALSE},
+any missing outcome stops with an error. If \code{TRUE}, missing choices are
+retained as \code{NA} for both profiles in the affected task.}
 }
 \value{
 A \code{projoint_data} object with elements \code{$labels} and \code{$data}; see Details.
@@ -79,10 +93,17 @@ must be the last element of \code{.outcomes}.
 
 \strong{Choice parsing}
 \itemize{
-  \item The selected profile is parsed from the \emph{last character} of each outcome string
-        and matched to \code{.choice_labels}. Ensure outcomes end with these labels (e.g.,
-        \code{"Candidate A"}/\code{"Candidate B"}). If outcomes are numeric or differently
-        formatted, pre-process or adjust \code{.choice_labels} accordingly.
+  \item The selected profile is parsed from the end of each outcome string and
+        matched to \code{.choice_labels} or \code{.choice_map}. Matching is
+        case-sensitive and uses the full supplied label, so multi-character
+        labels are supported.
+  \item The package cannot infer whether a Qualtrics code or displayed label
+        refers to profile 1 or profile 2. Analysts must verify that mapping
+        from the survey instrument or QSF file. Use \code{.choice_map} to make
+        the verified mapping explicit and auditable.
+  \item Unrecognized, ambiguous, or whitespace-altered choice values cause an
+        error. Missing choices also cause an error unless
+        \code{.allow_missing_choices = TRUE} is supplied explicitly.
 }
 
 \strong{Output}
