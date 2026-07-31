@@ -29,3 +29,6 @@ docs/
 inst/doc
 /doc/
 project_history/
+/AGENTS.md
+/tmp/
+/projoint_*.tar.gz
