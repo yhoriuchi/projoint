@@ -29,7 +29,11 @@ jobs:
 
       # Build the site into ./docs
       - name: Build site
-        run: Rscript -e 'pkgdown::build_site(preview = FALSE)'
+        run: |
+          # AGENTS.md contains local AI-workflow instructions, not public
+          # package documentation. Keep it out of pkgdown's automatic pages.
+          rm -f AGENTS.md
+          Rscript -e 'pkgdown::build_site(preview = FALSE)'
 
       # Publish to GitHub Pages (Actions source)
       - name: Upload Pages artifact

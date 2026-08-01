@@ -44,6 +44,10 @@
 #'         refers to profile 1 or profile 2. Analysts must verify that mapping
 #'         from the survey instrument or QSF file. Use \code{.choice_map} to make
 #'         the verified mapping explicit and auditable.
+#'   \item For clarity, use the complete response strings stored in the outcome
+#'         columns as the names of \code{.choice_map}. Shorter suffixes are
+#'         supported, but the supplied strings must match the ends of all
+#'         non-missing outcome values exactly, including case and whitespace.
 #'   \item Unrecognized, ambiguous, or whitespace-altered choice values cause an
 #'         error. Missing choices also cause an error unless
 #'         \code{.allow_missing_choices = TRUE} is supplied explicitly.
@@ -84,10 +88,14 @@
 #'   the first label means profile 1 and the second means profile 2. Ignored when
 #'   \code{.choice_map} is supplied.
 #' @param .choice_map Optional named numeric vector that explicitly maps response
-#'   suffixes to profile numbers, for example \code{c("Candidate A" = 1,
-#'   "Candidate B" = 2)} or \code{c("1" = 1, "2" = 2)}. It must map exactly two
-#'   unique labels to profiles 1 and 2. The mapping must be verified against the
-#'   survey instrument; it cannot be inferred from the CSV alone.
+#'   values to Qualtrics profile positions, for example
+#'   \code{c("Community A" = 1, "Community B" = 2)}. The names should preferably
+#'   be the complete strings stored in the outcome columns; shorter suffixes are
+#'   also supported. The numbers refer to the profile positions encoded by
+#'   columns such as \code{K-1-1-*} and \code{K-1-2-*}, not to new profile names.
+#'   The vector must map exactly two unique labels to profiles 1 and 2. Verify
+#'   the mapping against the survey instrument or QSF file because it cannot be
+#'   inferred from the CSV alone.
 #' @param .alphabet Single character (default \code{"K"}) indicating the Qualtrics prefix.
 #' @param .idvar Character (default \code{"ResponseId"}) indicating the respondent id column.
 #' @param .repeated Logical (default \code{TRUE}) indicating whether a repeated task is present.
@@ -116,7 +124,11 @@
 #' # Base tasks asked in numeric order; repeated task corresponds to task 1
 #' data(exampleData1)
 #' outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
-#' reshaped <- reshape_projoint(exampleData1, outcomes)
+#' reshaped <- reshape_projoint(
+#'   exampleData1,
+#'   outcomes,
+#'   .choice_map = c("Community A" = 1, "Community B" = 2)
+#' )
 #' dplyr::count(reshaped$data, task, profile) # should be 2 per task
 #' }
 #'

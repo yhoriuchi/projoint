@@ -114,13 +114,43 @@ Preparing your data correctly is one of the most important steps in conjoint ana
 > - If you have a repeated task, its outcome must be the **last element**.  
 > - For base tasks (all but last), the function reads the **digits** in each name as the task id (e.g., `"choice4"`, `"Q4"`, `"task04"` → task 4).  
 > - The **repeated base task** is inferred from the **first base outcome’s digits**. The repeated outcome itself **need not** contain digits—only its position (last) matters.  
-> - Outcome strings must end with verified choice labels. For an auditable
->   mapping, use `.choice_map = c("A" = 1, "B" = 2)` (or the corresponding
->   mapping from your instrument). **projoint cannot infer whether an exported
->   label or numeric recode refers to profile 1 or profile 2.**
+> - Specify the two exported response values with `.choice_map`. Its **names**
+>   are the response strings stored in the outcome columns, and its values are
+>   the corresponding Qualtrics profile positions (`1` or `2`). For example,
+>   use `.choice_map = c("Community A" = 1, "Community B" = 2)` when those are
+>   the exported choices and the instrument confirms that Community A is
+>   profile 1. **projoint cannot infer this mapping from the CSV.**
 > - Invalid labels, trailing whitespace, and missing choices now stop with an
 >   informative error. Retain missing choices only after review by setting
 >   `.allow_missing_choices = TRUE`.
+
+### Specify response labels and profile positions
+
+First inspect the response values that actually appear in your outcome
+columns. For example:
+
+```{r}
+outcomes <- paste0("choice", 1:8)
+sort(unique(unlist(exampleData1[outcomes], use.names = FALSE)))
+```
+
+Then verify the relationship between those response values and the two profile
+positions using the Qualtrics instrument or QSF file. Write the verified
+relationship as:
+
+```r
+.choice_map = c(
+  "exact response value for profile 1" = 1,
+  "exact response value for profile 2" = 2
+)
+```
+
+The strings on the left are not new profile names created by
+`reshape_projoint()`. They must match the ends of the values stored in every
+outcome column, including capitalization and whitespace. The numbers on the
+right refer to the profile positions encoded in columns such as `K-1-1-*` and
+`K-1-2-*`. Although shorter suffixes such as `"A"` and `"B"` are supported,
+using the complete exported response strings is clearer and more auditable.
 
 
 ### Example (Flipped Repeated Task)
@@ -132,7 +162,7 @@ outcomes1 <- c(outcomes, "choice1_repeated_flipped")
 out1 <- reshape_projoint(
   .dataframe = exampleData1,
   .outcomes = outcomes1,
-  .choice_map = c("A" = 1, "B" = 2),
+  .choice_map = c("Community A" = 1, "Community B" = 2),
   .alphabet = "K",
   .idvar = "ResponseId",
   .repeated = TRUE,
@@ -143,7 +173,8 @@ out1 <- reshape_projoint(
 **Key Arguments**:
 
 - `.outcomes`: Outcome columns (include repeated task last)
-- `.choice_map`: Verified mapping from response labels to profiles
+- `.choice_map`: Verified mapping from exact exported response values to
+  Qualtrics profile positions 1 and 2
 - `.idvar`: Respondent ID variable
 - `.alphabet`: Variable prefix ("K")
 - `.repeated`, `.flipped`: If repeated task exists and is flipped

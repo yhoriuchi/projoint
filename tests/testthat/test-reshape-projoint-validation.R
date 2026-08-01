@@ -32,13 +32,13 @@ test_that("reshape_projoint supports an explicit choice-to-profile map", {
   explicit <- reshape_projoint(
     exampleData3,
     outcomes,
-    .choice_map = c("A" = 1, "B" = 2),
+    .choice_map = c("Community A" = 1, "Community B" = 2),
     .repeated = FALSE
   )
   reversed <- reshape_projoint(
     exampleData3,
     outcomes,
-    .choice_map = c("A" = 2, "B" = 1),
+    .choice_map = c("Community A" = 2, "Community B" = 1),
     .repeated = FALSE
   )
 
