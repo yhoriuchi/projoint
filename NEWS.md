@@ -1,3 +1,14 @@
+# projoint 1.1.4 (2026-08-28)
+
+## Compatibility
+
+- Updated `predict_tau()` for compatibility with estimatr 2.0.0 by excluding
+  groups with fewer than two respondent clusters before estimating a
+  cluster-robust variance. These groups were already discarded after fitting,
+  so predicted IRR values are unchanged.
+- Added regression coverage for the complete predicted-IRR sequence returned
+  for the bundled `out1_arranged` data.
+
 # projoint 0.1.0 (2025-02-05)
 
 - Initial release.

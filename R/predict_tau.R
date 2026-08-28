@@ -165,6 +165,8 @@ predict_tau <- function(
   out1 <- y %>% 
     dplyr::left_join(x, by = c("id", "t1", "t2")) %>% 
     dplyr::group_by(x) %>% 
+    # Cluster-robust variances require between-cluster variation.
+    dplyr::filter(dplyr::n_distinct(id) > 1) %>%
     dplyr::reframe(estimatr::tidy(estimatr::lm_robust(y_same ~ 1, 
                                                       data = dplyr::pick(everything()), 
                                                       clusters = id))) %>% 
